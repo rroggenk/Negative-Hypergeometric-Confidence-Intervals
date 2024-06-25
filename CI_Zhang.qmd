@@ -12,20 +12,28 @@ library(tidyverse)
 
 ```{r}
 ngh_pmf = function(x, N, M, m) {
-  # m = # total successes (unknown) - (our notation: M)
-  m_pmf = M  
-  
-  # n = # total failures - (our notation: X = N - M)
-  n_pmf = N - m_pmf 
-  
-  # r = # fixed successes (our notation: m)
-  r_pmf = m   
-  
-  # x = # balls being drawn (our notation: n = m + x) 
-  x_pmf = r_pmf + x
-  
-  return(dnhyper(x = x_pmf, m = m_pmf, n = n_pmf, r = r_pmf))
+  numerator = choose(m + x - 1, m - 1) * choose(N - m - x, M - m)
+  denominator = choose(N, M)
+  result = numerator / denominator
+  return(result)
 }
+
+
+# ngh_pmf = function(x, N, M, m) {
+#   # m = # total successes (unknown) - (our notation: M)
+#   m_pmf = M  
+#   
+#   # n = # total failures - (our notation: X = N - M)
+#   n_pmf = N - m_pmf 
+#   
+#   # r = # fixed successes (our notation: m)
+#   r_pmf = m   
+#   
+#   # x = # balls being drawn (our notation: n = m + x) 
+#   x_pmf = r_pmf + x
+#   
+#   return(dnhyper(x = x_pmf, m = m_pmf, n = n_pmf, r = r_pmf))
+# }
 ```
 
 ```{r}
@@ -198,9 +206,13 @@ coverage_prob_MLE <- function(M, N, m, conf_level = 0.95) {
     filter(lower_bound <= M & upper_bound >= M) %>% 
     pull(x)
   
+  if (length(covered_x) == 0) {
+    return(data.frame(M = M, coverage_prob = 0, min_x = -1, max_x = -1))
+  }
+  
   # Finds the min and max of covered x's to know which lines to connect in plot
-  min_x = min(covered_x)
-  max_x = max(covered_x)
+  min_x = min(covered_x, na.rm = TRUE)
+  max_x = max(covered_x, na.rm = TRUE)
   
   # Sums the probabilities (pmf's) of all x's where M is in the CI 
   #total_prob = sum(sapply(covered_x, function(x) ngh_pmf(x, N, M, m)))
@@ -210,10 +222,33 @@ coverage_prob_MLE <- function(M, N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+N = 20
+m = 3
+conf_level = 0.95
+M_values = 0:N
+
+coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_MLE(M, N, m, conf_level)))
+
+# Create a group column for consistent min_x and max_x
+# The group column assigns a unique group number whenever there is a change in min_x or max_x values
+# cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x
+coverage_df = coverage_df %>%
+  mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
+
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "M", y = "Coverage Probability of M") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  ylim(0, 1) +
+  theme_minimal()
+```
+
+```{r}
 N = 50
 m = 3
 conf_level = 0.95
-M_values = m:(N-1)
+M_values = 0:N
 
 coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_MLE(M, N, m, conf_level)))
 
@@ -270,9 +305,13 @@ coverage_prob_unbiased <- function(M, N, m, conf_level = 0.95) {
     filter(lower_bound <= M & upper_bound >= M) %>% 
     pull(x)
   
+  if (length(covered_x) == 0) {
+    return(data.frame(M = M, coverage_prob = 0, min_x = -1, max_x = -1))
+  }
+  
   # Finds the min and max of covered x's to know which lines to connect in plot
-  min_x = min(covered_x)
-  max_x = max(covered_x)
+  min_x = min(covered_x, na.rm = TRUE)
+  max_x = max(covered_x, na.rm = TRUE)
   
   # Sums the probabilities (pmf's) of all x's where M is in the CI 
   #total_prob = sum(sapply(covered_x, function(x) ngh_pmf(x, N, M, m)))
@@ -282,10 +321,33 @@ coverage_prob_unbiased <- function(M, N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+N = 20
+m = 3
+conf_level = 0.95
+M_values = 0:N
+
+coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_unbiased(M, N, m, conf_level)))
+
+# Create a group column for consistent min_x and max_x
+# The group column assigns a unique group number whenever there is a change in min_x or max_x values
+# cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x
+coverage_df = coverage_df %>%
+  mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
+
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "M", y = "Coverage Probability of M") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  ylim(0, 1) +
+  theme_minimal()
+```
+
+```{r}
 N = 50
 m = 3
 conf_level = 0.95
-M_values = m:(N-1)
+M_values = 0:N
 
 coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_unbiased(M, N, m, conf_level)))
 
