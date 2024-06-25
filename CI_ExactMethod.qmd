@@ -11,21 +11,32 @@ library(tidyverse)
 ```
 
 ```{r}
+# ngh_pmf = function(x, N, M, m) {
+#   # m = # total successes (unknown) - (our notation: M)
+#   m_pmf = M  
+#   
+#   # n = # total failures - (our notation: X = N - M)
+#   n_pmf = N - m_pmf 
+#   
+#   # r = # fixed successes (our notation: m)
+#   r_pmf = m   
+#   
+#   # x = # balls being drawn (our notation: n = m + x) 
+#   x_pmf = r_pmf + x
+#   
+#   return(dnhyper(x = x_pmf, m = m_pmf, n = n_pmf, r = r_pmf))
+# }
+
+
 ngh_pmf = function(x, N, M, m) {
-  # m = # total successes (unknown) - (our notation: M)
-  m_pmf = M  
-  
-  # n = # total failures - (our notation: X = N - M)
-  n_pmf = N - m_pmf 
-  
-  # r = # fixed successes (our notation: m)
-  r_pmf = m   
-  
-  # x = # balls being drawn (our notation: n = m + x) 
-  x_pmf = r_pmf + x
-  
-  return(dnhyper(x = x_pmf, m = m_pmf, n = n_pmf, r = r_pmf))
+  numerator = choose(m + x - 1, m - 1) * choose(N - m - x, M - m)
+  denominator = choose(N, M)
+  result = numerator / denominator
+  return(result)
 }
+
+# ngh_pmf(x = 0, N = 50, M = 50, m = 3) -> R crashes (end points doesn't work for coverage prob)
+# ngh_pmf_choose(x = 0, N = 50, M = 50, m = 3) -> 1
 ```
 
 ```{r}
@@ -62,53 +73,27 @@ M = 21
 
 data = data.frame(x = seq(0, 50))
 data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
-# data$y = ngh_pmf(x = (data$x - m), N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
   ggtitle(paste("NGH: M =", M)) +
   xlab("x values") +
   ylab("Density")
-
-
-
-# Code using built in functions:
-# # m = # total successes (unknown) - (our notation: M)
-# m_pmf = M  
-# 
-# # n = # total failures - (our notation: X = N - M where N = 50)
-# n_pmf = N - m_pmf 
-# 
-# # r = # fixed successes (our notation: m)
-# r_pmf = m   
-# 
-# # x = # balls being drawn (our notation: n = m + x where x = 4) 
-# x_pmf = r_pmf + x
-# 
-# data = data.frame(x = seq(0, 47))
-# data$y = dnhyper(x = data$x, m = m_pmf, n = n_pmf, r = r_pmf)
-# ggplot(data, aes(x = x, y = y)) +
-#   geom_line() +
-#   geom_vline(xintercept = x, color = "red") +
-#   ggtitle(paste("NGH: M =", m_pmf)) +
-#   xlab("x values") +
-#   ylab("Density")
 ```
 
 ### Lower Bound
 
 ```{r}
 # Lower Bound
-# M = 5: Area to the left is just under (not over) 0.025 (alpha = 0.05)
+# M = 6: Area to the left is just over (not under) 0.025 (alpha = 0.05)
 
 m = 3
 x = 4
 N = 50
-M = 5
+M = 6
 
 data = data.frame(x = seq(0, 50))
 data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
-#data$y = ngh_pmf(x = (data$x - m), N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -121,48 +106,18 @@ area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
 area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
 print(paste("Area to the left of n =", m + x, "is:", area_left))
 #print(paste("Area to the right of n =", m + x, "is:", area_right))
-
-
-
-# Code using built in functions:
-# # m = # total successes (unknown) - (our notation: M)
-# m_pmf = M
-# 
-# # n = # total failures - (our notation: X = N - M where N = 50)
-# n_pmf = N - m_pmf 
-# 
-# # r = # fixed successes (our notation: m)
-# r_pmf = m   
-# 
-# # x = # balls being drawn (our notation: n = m + x where x = 4) 
-# x_pmf = r_pmf + x
-# 
-# data = data.frame(x = seq(0, 47))
-# data$y = dnhyper(x = data$x, m = m_pmf, n = n_pmf, r = r_pmf)
-# ggplot(data, aes(x = x, y = y)) +
-#   geom_line() +
-#   geom_vline(xintercept = x, color = "red") +
-#   ggtitle(paste("NGH: M =", m_pmf)) +
-#   xlab("x values") +
-#   ylab("Density")
-# 
-# 
-# area_left = pnhyper(x_pmf, n_pmf, m_pmf, r_pmf, lower.tail = TRUE)
-# area_right = pnhyper(x_pmf - 1, n_pmf, m_pmf, r_pmf, lower.tail = FALSE)
-# print(paste("Area to the left of n =", x_pmf, "is:", area_left))
-# #print(paste("Area to the right of n =", x_pmf, "is:", area_right))
 ```
 
 ### Upper Bound
 
 ```{r}
 # Upper Bound
-# M = 38: Area to the right is just under (not over) 0.025 (alpha = 0.05)
+# M = 37: Area to the right is just over (not under) 0.025 (alpha = 0.05)
 
 m = 3
 x = 4
 N = 50
-M = 38
+M = 37
 
 data = data.frame(x = seq(0, 50))
 data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
@@ -180,36 +135,6 @@ area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
 area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
 #print(paste("Area to the left of n =", m + x, "is:", area_left))
 print(paste("Area to the right of n =", m + x, "is:", area_right))
-
-
-
-# Code using built in functions:
-# # m = # total successes (unknown) - (our notation: M)
-# m_pmf = M
-# 
-# # n = # total failures - (our notation: X = N - M where N = 50)
-# n_pmf = N - m_pmf 
-# 
-# # r = # fixed successes (our notation: m)
-# r_pmf = m   
-# 
-# # x = # balls being drawn (our notation: n = m + x where x = 4) 
-# x_pmf = r_pmf + x
-# 
-# data = data.frame(x = seq(0, 47))
-# data$y = dnhyper(x = data$x, m = m_pmf, n = n_pmf, r = r_pmf)
-# ggplot(data, aes(x = x, y = y)) +
-#   geom_line() +
-#   geom_vline(xintercept = x, color = "red") +
-#   ggtitle(paste("NGH: M =", m_pmf)) +
-#   xlab("x values") +
-#   ylab("Density")
-# 
-# 
-# area_left = pnhyper(x_pmf, n_pmf, m_pmf, r_pmf, lower.tail = TRUE)
-# area_right = pnhyper(x_pmf - 1, n_pmf, m_pmf, r_pmf, lower.tail = FALSE)
-# #print(paste("Area to the left of n =", x_pmf, "is:", area_left))
-# print(paste("Area to the right of n =", x_pmf, "is:", area_right))
 ```
 
 ## Confidence Interval Function
@@ -217,108 +142,54 @@ print(paste("Area to the right of n =", m + x, "is:", area_right))
 ```{r}
 NGH_CI_Exact_Method <- function(m, x, N, conf_level = 0.95) {
   target_probability = (1 - conf_level) / 2
-
-  lower_bound = m
-  upper_bound = N
   
-  # Find lower bound
-  for (M in m:N) {
-    area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
+  # Speical End Cases: When x in N-m to N
+  if ((x >= (N - m)) & (x <= N)) {
+    lower_bound = N - x
+    upper_bound = N - x
+  }
+  
+  else {
+    lower_bound = m
+    upper_bound = N
     
-    #if (area_left == target_probability) {
-    if (isTRUE(all.equal(area_left, target_probability))) {
-      lower_bound = M
-      break
+    # Find lower bound
+    for (M in m:N) {
+      area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
+      
+      #if (area_left == target_probability) {
+      if (isTRUE(all.equal(area_left, target_probability))) {
+        lower_bound = M
+        break
+      }
+      
+      else if (area_left > target_probability) {
+        lower_bound = M
+        break
+      }
     }
-    
-    else if (area_left > target_probability) {
-      lower_bound = M - 1
-      break
+  
+    # Find upper bound
+    for (M in N:m) {
+      area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
+      
+      #if (area_right == target_probability) {
+      if (isTRUE(all.equal(area_right, target_probability))) {
+        upper_bound = M
+        break
+      }
+      
+      else if (area_right > target_probability) {
+        upper_bound = M 
+        break
+      }
     }
   }
 
-  # Find upper bound
-  for (M in N:m) {
-    area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
-    
-    #if (area_right == target_probability) {
-    if (isTRUE(all.equal(area_right, target_probability))) {
-      upper_bound = M
-      break
-    }
-    
-    else if (area_right > target_probability) {
-      upper_bound = M + 1
-      break
-    }
-  }
   
   CL = (conf_level) * 100
   return(cat(CL, "% Confidence Interval for M: [", lower_bound, ",", upper_bound, "]\n"))
 }
-
-
-
-# Code using built in functions:
-# NGH_CI_Exact_Method <- function(m, x, N, alpha = 0.05) {
-#   target_probability = alpha / 2
-# 
-#   lower_bound = m
-#   upper_bound = N
-#   
-#   # Find lower bound
-#   for (M in m:N) {
-#     # m_pmf = # total successes (unknown) - (our notation: M)
-#     m_pmf = M
-#     # n_pmf = # total failures - (our notation: X = N - M)
-#     n_pmf = N - m_pmf
-#     # r_pmf = # fixed successes (our notation: m)
-#     r_pmf = m   
-#     # x_pmf = # balls being drawn (our notation: n = m + x) 
-#     x_pmf = r_pmf + x 
-# 
-#     area_left = pnhyper(x_pmf, n_pmf, m_pmf, r_pmf, lower.tail = TRUE)
-#     
-#     #if (area_left == target_probability) {
-#     if (isTRUE(all.equal(area_left, target_probability))) {
-#       lower_bound = M
-#       break
-#     }
-#     
-#     else if (area_left > target_probability) {
-#       lower_bound = M 
-#       break
-#     }
-#   }
-# 
-#   # Find upper bound
-#   for (M in N:m) {
-#     # m_pmf = # total successes (unknown) - (our notation: M)
-#     m_pmf = M
-#     # n_pmf = # total failures - (our notation: X = N - M)
-#     n_pmf = N - m_pmf
-#     # r_pmf = # fixed successes (our notation: m)
-#     r_pmf = m   
-#     # x_pmf = # balls being drawn (our notation: n = m + x) 
-#     x_pmf = r_pmf + x 
-# 
-#     area_right = pnhyper(x_pmf - 1, n_pmf, m_pmf, r_pmf, lower.tail = FALSE)
-#     
-#     #if (area_right == target_probability) {
-#     if (isTRUE(all.equal(area_right, target_probability))) {
-#       upper_bound = M
-#       break
-#     }
-#     
-#     if (area_right > target_probability) {
-#       upper_bound = M 
-#       break
-#     }
-#   }
-#   
-#   CL = (1 - alpha) * 100
-#   return(cat(CL, "% Confidence Interval for M: [", lower_bound, ",", upper_bound, "]\n"))
-# }
 ```
 
 ### Testing Confidence Interval Function
@@ -474,41 +345,48 @@ CI_cov_prob <- function(N, m, conf_level = 0.95) {
   
   #for (xi in 0:(N - m)) {
   for (xi in 0:(N)) {
-    lower_bound = m
-    upper_bound = N
+    # Speical End Cases: When x in N-m to N
+    if ((xi >= (N - m)) & (xi <= N)) {
+      lower_bound = N - xi
+      upper_bound = N - xi
+    }
     
-    # Find lower bound
-    for (M in m:N) {
-      area_left = ngh_cdf(x = xi, N = N, M = M, m = m, lower_tail = TRUE)
+    else {
+      lower_bound = m
+      upper_bound = N
       
-      #if (area_left == target_probability) {
-      if (isTRUE(all.equal(area_left, target_probability))) {
-        lower_bound = M
-        break
+      # Find lower bound
+      for (M in m:N) {
+        area_left = ngh_cdf(x = xi, N = N, M = M, m = m, lower_tail = TRUE)
+        
+        #if (area_left == target_probability) {
+        if (isTRUE(all.equal(area_left, target_probability))) {
+          lower_bound = M
+          break
+        }
+        
+        else if (area_left > target_probability) {
+          lower_bound = M
+          break
+        }
       }
-      
-      else if (area_left > target_probability) {
-        lower_bound = M - 1
-        break
+    
+      # Find upper bound
+      for (M in N:m) {
+        area_right = ngh_cdf(x = xi - 1, N = N, M = M, m = m, lower_tail = FALSE)
+        
+        #if (area_right == target_probability) {
+        if (isTRUE(all.equal(area_right, target_probability))) {
+          upper_bound = M
+          break
+        }
+        
+        else if (area_right > target_probability) {
+          upper_bound = M
+          break
+        }
       }
     }
-  
-    # Find upper bound
-    for (M in N:m) {
-      area_right = ngh_cdf(x = xi - 1, N = N, M = M, m = m, lower_tail = FALSE)
-      
-      #if (area_right == target_probability) {
-      if (isTRUE(all.equal(area_right, target_probability))) {
-        upper_bound = M
-        break
-      }
-      
-      else if (area_right > target_probability) {
-        upper_bound = M + 1
-        break
-      }
-    }
-
     
     # Store the results
     results[xi + 1, "lower_bound"] = lower_bound
@@ -533,9 +411,13 @@ coverage_prob <- function(M, N, m, conf_level = 0.95) {
     filter(lower_bound <= M & upper_bound >= M) %>% 
     pull(x)
   
+  if (length(covered_x) == 0) {
+    return(data.frame(M = M, coverage_prob = NA, min_x = NA, max_x = NA))
+  }
+  
   # Finds the min and max of covered x's to know which lines to connect in plot
-  min_x = min(covered_x)
-  max_x = max(covered_x)
+  min_x = min(covered_x, na.rm = TRUE)
+  max_x = max(covered_x, na.rm = TRUE)
   
   # Sums the probabilities (pmf's) of all x's where M is in the CI 
   #total_prob = sum(sapply(covered_x, function(x) ngh_pmf(x, N, M, m)))
@@ -549,14 +431,14 @@ N = 50
 m = 3
 conf_level = 0.95
 # R session aborts when M goes up to N
-# all points get connected together when I start at 0
-M_values = m:(N-1)
+M_values = 0:N
 
 coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob(M, N, m, conf_level)))
 
 # Create a group column for consistent min_x and max_x
 # The group column assigns a unique group number whenever there is a change in min_x or max_x values
-# cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x
+# cumsum is used to create a cumulative sum that increments the group number whenever there is a
+# change in min_x or max_x
 coverage_df = coverage_df %>%
   mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
 
@@ -595,74 +477,60 @@ test <- function(M, N, m, conf_level = 0.95) {
   return(covered_x)
 }
 
-test(M = 20, N = 50, m = 3)
-test(M = 21, N = 50, m = 3)
-test(M = 22, N = 50, m = 3)
-test(M = 23, N = 50, m = 3)
-test(M = 24, N = 50, m = 3)
-test(M = 25, N = 50, m = 3)
-test(M = 26, N = 50, m = 3)
-test(M = 27, N = 50, m = 3)
-test(M = 28, N = 50, m = 3)
-test(M = 29, N = 50, m = 3)
-test(M = 30, N = 50, m = 3)
-test(M = 31, N = 50, m = 3)
+# test(M = 0, N = 50, m = 3)
+# test(M = 1, N = 50, m = 3)
+# test(M = 2, N = 50, m = 3)
+# test(M = 3, N = 50, m = 3)
+# test(M = 4, N = 50, m = 3)
+# test(M = 5, N = 50, m = 3)
+# test(M = 6, N = 50, m = 3)
+# test(M = 7, N = 50, m = 3)
+# test(M = 8, N = 50, m = 3)
+# test(M = 9, N = 50, m = 3)
+# test(M = 10, N = 50, m = 3)
+# test(M = 11, N = 50, m = 3)
+# test(M = 12, N = 50, m = 3)
+# test(M = 13, N = 50, m = 3)
+# test(M = 14, N = 50, m = 3)
+# test(M = 15, N = 50, m = 3)
+# test(M = 16, N = 50, m = 3)
+# test(M = 17, N = 50, m = 3)
+# test(M = 18, N = 50, m = 3)
+# test(M = 19, N = 50, m = 3)
+# test(M = 20, N = 50, m = 3)
+# test(M = 21, N = 50, m = 3)
+# test(M = 22, N = 50, m = 3)
+# test(M = 23, N = 50, m = 3)
+# test(M = 24, N = 50, m = 3)
+# test(M = 25, N = 50, m = 3)
+# test(M = 26, N = 50, m = 3)
+# test(M = 27, N = 50, m = 3)
+# test(M = 28, N = 50, m = 3)
+# test(M = 29, N = 50, m = 3)
+# test(M = 30, N = 50, m = 3)
+# test(M = 31, N = 50, m = 3)
+# test(M = 32, N = 50, m = 3)
+# test(M = 33, N = 50, m = 3)
+# test(M = 34, N = 50, m = 3)
+# test(M = 35, N = 50, m = 3)
+# test(M = 36, N = 50, m = 3)
+# test(M = 37, N = 50, m = 3)
+# test(M = 38, N = 50, m = 3)
+# test(M = 39, N = 50, m = 3)
+# test(M = 40, N = 50, m = 3)
+# test(M = 41, N = 50, m = 3)
+# test(M = 42, N = 50, m = 3)
+# test(M = 43, N = 50, m = 3)
+# test(M = 44, N = 50, m = 3)
+# test(M = 45, N = 50, m = 3)
+# test(M = 46, N = 50, m = 3)
+# test(M = 47, N = 50, m = 3)
+# test(M = 48, N = 50, m = 3)
+# test(M = 49, N = 50, m = 3)
+#test(M = 50, N = 50, m = 3)
 ```
 
 ```{r}
-CI_cov_prob(N = 50, m = 3) 
-```
-
-Testing x =0:
-
-```{r}
-# Lower Bound
-# M = 15: Area to the left is just under (not over) 0.025 (alpha = 0.05)
-
-m = 3
-x = 0
-N = 50
-M = 15
-
-# data = data.frame(x = seq(0, 50))
-# data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
-# #data$y = ngh_pmf(x = (data$x - m), N = N, M = M, m = m)
-# ggplot(data, aes(x = x, y = y)) +
-#   geom_line() +
-#   geom_vline(xintercept = x, color = "red") +
-#   ggtitle(paste("NGH: M =", M)) +
-#   xlab("x values") +
-#   ylab("Density")
-
-
-area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
-area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
-print(paste("Area to the left of n =", m + x, "is:", area_left))
-#print(paste("Area to the right of n =", m + x, "is:", area_right))
-```
-
-```{r}
-# Upper Bound
-# M = ?: Area to the right is just under (not over) 0.025 (alpha = 0.05)
-
-m = 3
-x = 0
-N = 50
-M = 50
-
-data = data.frame(x = seq(0, 50))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
-ggplot(data, aes(x = x, y = y)) +
-  geom_line() +
-  geom_vline(xintercept = x, color = "red") +
-  ggtitle(paste("NGH: M =", M)) +
-  xlab("x values") +
-  ylab("Density") +
-  xlim(0, 10)
-
-
-area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
-area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
-print(paste("Area to the left of n =", m + x, "is:", area_left))
-print(paste("Area to the right of n =", m + x, "is:", area_right))
+test_CI = CI_cov_prob(N = 50, m = 3) 
+test_CI
 ```
