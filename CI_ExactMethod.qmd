@@ -1535,7 +1535,7 @@ sum_ngh_pmf(N = 20, M = 0, m = 3, min_x = 20, max_x = 20)
 ### Plot of All Possible Minimal Cardinality Acceptance Curves
 
 ```{r}
-url = ""
+url = "https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/main/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2020%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"
 
 data = read.csv(url, header = TRUE)
 ```
