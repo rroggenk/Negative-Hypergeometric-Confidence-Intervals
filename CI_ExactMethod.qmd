@@ -1200,7 +1200,7 @@ sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 8, max_x = 41)
 
 -\> 10-45 with CP = 0.9566522
 
--\> 11-46 with CP = 0.9387538
+-\> 11-46 with CP = 0.9509466
 
 ```{r}
 sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 6, max_x = 39)
@@ -1266,5 +1266,24 @@ sum_ngh_pmf(N = 50, M = 0, m = 3, min_x = 50, max_x = 50)
 ### Plot of All Possible Minimal Cardinality Acceptance Curves
 
 ```{r}
-## ACCESS FILE THROUGH GITHUB LINK FOR REPRODUCIBILITY
+url = "https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/main/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2050%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"
+
+data = read.csv(url, header = TRUE)
+```
+
+```{r}
+head(data)
+```
+
+```{r}
+conf_level= 0.95
+
+ggplot(data, aes(x = M, y = Coverage.Probability, group = X.s.Set, color = X.s.Set)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "M", y = "Coverage Probability of M") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  ylim(conf_level - 0.005, 1) +
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
