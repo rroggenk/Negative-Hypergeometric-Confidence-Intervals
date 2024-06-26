@@ -609,7 +609,7 @@ sum_ngh_pmf = function(N, M, m, min_x, max_x) {
 
 ## N = 50, m = 3, Confidence Level = 0.95
 
-### M = 50 
+### M = 50
 
 -\> 0-0 with CP = 1
 
@@ -620,7 +620,7 @@ sum_ngh_pmf(N = 50, M = 50, m = 3, min_x = 1, max_x = 1)
 sum_ngh_pmf(N = 50, M = 50, m = 3, min_x = 0, max_x = 1)
 ```
 
-### M = 49 
+### M = 49
 
 -\> 0-1 with CP = 1
 
@@ -651,7 +651,7 @@ sum_ngh_pmf(N = 50, M = 47, m = 3, min_x = 0, max_x = 1)
 sum_ngh_pmf(N = 50, M = 47, m = 3, min_x = 1, max_x = 2)
 ```
 
-### M = 46: 
+### M = 46:
 
 -\> 0-1 with CP = 0.9722319
 
@@ -1267,6 +1267,275 @@ sum_ngh_pmf(N = 50, M = 0, m = 3, min_x = 50, max_x = 50)
 
 ```{r}
 url = "https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/main/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2050%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"
+
+data = read.csv(url, header = TRUE)
+```
+
+```{r}
+conf_level= 0.95
+
+ggplot(data, aes(x = M, y = Coverage.Probability, group = X.s.Set, color = X.s.Set)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "M", y = "Coverage Probability of M") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  ylim(conf_level - 0.005, 1) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+## N = 20, m = 3, Confidence Level = 0.95
+
+### M = 20 
+
+-\> 0-0 with CP = 1
+
+```{r}
+sum_ngh_pmf(N = 20, M = 20, m = 3, min_x = 0, max_x = 0)
+sum_ngh_pmf(N = 20, M = 20, m = 3, min_x = 1, max_x = 1)
+```
+
+### M = 19
+
+-\> 0-1 with CP = 1
+
+```{r}
+sum_ngh_pmf(N = 20, M = 19, m = 3, min_x = 0, max_x = 0)
+sum_ngh_pmf(N = 20, M = 19, m = 3, min_x = 1, max_x = 1)
+
+sum_ngh_pmf(N = 20, M = 19, m = 3, min_x = 0, max_x = 1)
+sum_ngh_pmf(N = 20, M = 19, m = 3, min_x = 1, max_x = 2)
+```
+
+### M = 18
+
+-\> 0-1 with CP = 0.9684211
+
+```{r}
+sum_ngh_pmf(N = 20, M = 18, m = 3, min_x = 0, max_x = 1)
+sum_ngh_pmf(N = 20, M = 18, m = 3, min_x = 1, max_x = 2)
+```
+
+### M = 17
+
+-\> 0-2 with CP = 0.9912281
+
+```{r}
+sum_ngh_pmf(N = 20, M = 17, m = 3, min_x = 0, max_x = 1)
+sum_ngh_pmf(N = 20, M = 17, m = 3, min_x = 1, max_x = 2)
+
+sum_ngh_pmf(N = 20, M = 17, m = 3, min_x = 0, max_x = 2)
+sum_ngh_pmf(N = 20, M = 17, m = 3, min_x = 1, max_x = 3)
+```
+
+### M = 16
+
+-\> 0-2 with CP = 0.9680083
+
+```{r}
+sum_ngh_pmf(N = 20, M = 16, m = 3, min_x = 0, max_x = 2)
+sum_ngh_pmf(N = 20, M = 16, m = 3, min_x = 1, max_x = 3)
+```
+
+### M = 15
+
+-\> 0-3 with CP = 0.9860681
+
+```{r}
+sum_ngh_pmf(N = 20, M = 15, m = 3, min_x = 0, max_x = 2)
+sum_ngh_pmf(N = 20, M = 15, m = 3, min_x = 1, max_x = 3)
+
+sum_ngh_pmf(N = 20, M = 15, m = 3, min_x = 0, max_x = 3)
+sum_ngh_pmf(N = 20, M = 15, m = 3, min_x = 1, max_x = 4)
+```
+
+### M = 14
+
+-\> 0-3 with CP = 0.9625903
+
+```{r}
+sum_ngh_pmf(N = 20, M = 14, m = 3, min_x = 0, max_x = 3)
+sum_ngh_pmf(N = 20, M = 14, m = 3, min_x = 1, max_x = 4)
+```
+
+### M = 13
+
+-\> 0-4 with CP = 0.9776832
+
+```{r}
+sum_ngh_pmf(N = 20, M = 13, m = 3, min_x = 0, max_x = 3)
+sum_ngh_pmf(N = 20, M = 13, m = 3, min_x = 1, max_x = 4)
+
+sum_ngh_pmf(N = 20, M = 13, m = 3, min_x = 0, max_x = 4)
+sum_ngh_pmf(N = 20, M = 13, m = 3, min_x = 1, max_x = 5)
+```
+
+### M = 12
+
+-\> 0-5 with CP = 0.9845598
+
+```{r}
+sum_ngh_pmf(N = 20, M = 12, m = 3, min_x = 0, max_x = 4)
+sum_ngh_pmf(N = 20, M = 12, m = 3, min_x = 1, max_x = 5)
+
+sum_ngh_pmf(N = 20, M = 12, m = 3, min_x = 0, max_x = 5)
+sum_ngh_pmf(N = 20, M = 12, m = 3, min_x = 1, max_x = 6)
+```
+
+### M = 11
+
+-\> 0-5 with CP = 0.9601095
+
+```{r}
+sum_ngh_pmf(N = 20, M = 11, m = 3, min_x = 0, max_x = 5)
+sum_ngh_pmf(N = 20, M = 11, m = 3, min_x = 1, max_x = 6)
+```
+
+### M = 10
+
+-\> 0-6 with CP = 0.9651107
+
+```{r}
+sum_ngh_pmf(N = 20, M = 10, m = 3, min_x = 0, max_x = 5)
+sum_ngh_pmf(N = 20, M = 10, m = 3, min_x = 1, max_x = 6)
+
+sum_ngh_pmf(N = 20, M = 10, m = 3, min_x = 0, max_x = 6)
+sum_ngh_pmf(N = 20, M = 10, m = 3, min_x = 1, max_x = 7)
+```
+
+### M = 9
+
+-\> 0-7 with CP = 0.9651107
+
+```{r}
+sum_ngh_pmf(N = 20, M = 9, m = 3, min_x = 0, max_x = 6)
+sum_ngh_pmf(N = 20, M = 9, m = 3, min_x = 1, max_x = 7)
+
+sum_ngh_pmf(N = 20, M = 9, m = 3, min_x = 0, max_x = 7)
+sum_ngh_pmf(N = 20, M = 9, m = 3, min_x = 1, max_x = 8)
+```
+
+### M = 8
+
+-\> 0-8 with CP = 0.9601095
+
+```{r}
+sum_ngh_pmf(N = 20, M = 8, m = 3, min_x = 0, max_x = 7)
+sum_ngh_pmf(N = 20, M = 8, m = 3, min_x = 1, max_x = 8)
+
+sum_ngh_pmf(N = 20, M = 8, m = 3, min_x = 0, max_x = 8)
+sum_ngh_pmf(N = 20, M = 8, m = 3, min_x = 1, max_x = 9)
+```
+
+### M = 7
+
+-\> 0-10 with CP = 0.9776832
+
+-\> 1-11 with CP = 0.9620743
+
+```{r}
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 0, max_x = 8)
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 1, max_x = 9)
+
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 0, max_x = 9)
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 1, max_x = 10)
+
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 0, max_x = 10)
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 1, max_x = 11)
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 2, max_x = 12)
+```
+
+### M = 6
+
+-\> 0-11 with CP = 0.9625903
+
+-\> 1-12 with CP = 0.9685243
+
+```{r}
+sum_ngh_pmf(N = 20, M = 6, m = 3, min_x = 0, max_x = 10)
+sum_ngh_pmf(N = 20, M = 6, m = 3, min_x = 1, max_x = 11)
+sum_ngh_pmf(N = 20, M = 6, m = 3, min_x = 2, max_x = 12)
+
+sum_ngh_pmf(N = 20, M = 6, m = 3, min_x = 0, max_x = 11)
+sum_ngh_pmf(N = 20, M = 6, m = 3, min_x = 1, max_x = 12)
+sum_ngh_pmf(N = 20, M = 6, m = 3, min_x = 2, max_x = 13)
+```
+
+### M = 5
+
+-\> 1-13 with CP = 0.9592363
+
+-\> 2-14 with CP = 0.9592363
+
+```{r}
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 0, max_x = 11)
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 1, max_x = 12)
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 2, max_x = 13)
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 3, max_x = 14)
+
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 0, max_x = 12)
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 1, max_x = 13)
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 2, max_x = 14)
+sum_ngh_pmf(N = 20, M = 5, m = 3, min_x = 3, max_x = 15)
+```
+
+### M = 4
+
+-\> 2-15 with CP = 0.9550052
+
+-\> 3-16 with CP = 0.9680083
+
+```{r}
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 1, max_x = 13)
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 2, max_x = 14)
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 3, max_x = 15)
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 4, max_x = 16)
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 5, max_x = 17)
+
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 1, max_x = 14)
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 2, max_x = 15)
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 3, max_x = 16)
+sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 4, max_x = 17)
+```
+
+### M = 3
+
+-\> 4-17 with CP = 0.9824561
+
+```{r}
+sum_ngh_pmf(N = 20, M = 3, m = 3, min_x = 2, max_x = 15)
+sum_ngh_pmf(N = 20, M = 3, m = 3, min_x = 3, max_x = 16)
+sum_ngh_pmf(N = 20, M = 3, m = 3, min_x = 4, max_x = 17)
+```
+
+### M = 2
+
+-\> 18-18 with CP = 0
+
+```{r}
+sum_ngh_pmf(N = 20, M = 2, m = 3, min_x = 18, max_x = 18)
+```
+
+### M = 1
+
+-\> 19-19 with CP = 0
+
+```{r}
+sum_ngh_pmf(N = 20, M = 1, m = 3, min_x = 19, max_x = 19)
+```
+
+### M = 0
+
+-\> 20-20 with CP = 0
+
+```{r}
+sum_ngh_pmf(N = 20, M = 0, m = 3, min_x = 20, max_x = 20)
+```
+
+### Plot of All Possible Minimal Cardinality Acceptance Curves
+
+```{r}
+url = ""
 
 data = read.csv(url, header = TRUE)
 ```
