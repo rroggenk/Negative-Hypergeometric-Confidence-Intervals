@@ -615,8 +615,9 @@ sum_ngh_pmf = function(N, M, m, min_x, max_x) {
 
 ```{r}
 sum_ngh_pmf(N = 50, M = 50, m = 3, min_x = 0, max_x = 0)
-sum_ngh_pmf(N = 50, M = 50, m = 3, min_x = 0, max_x = 1)
 sum_ngh_pmf(N = 50, M = 50, m = 3, min_x = 1, max_x = 1)
+
+sum_ngh_pmf(N = 50, M = 50, m = 3, min_x = 0, max_x = 1)
 ```
 
 ### M = 49 
@@ -626,7 +627,9 @@ sum_ngh_pmf(N = 50, M = 50, m = 3, min_x = 1, max_x = 1)
 ```{r}
 sum_ngh_pmf(N = 50, M = 49, m = 3, min_x = 0, max_x = 0)
 sum_ngh_pmf(N = 50, M = 49, m = 3, min_x = 1, max_x = 1)
+
 sum_ngh_pmf(N = 50, M = 49, m = 3, min_x = 0, max_x = 1)
+
 sum_ngh_pmf(N = 50, M = 49, m = 3, min_x = 0, max_x = 2)
 ```
 
@@ -673,6 +676,7 @@ sum_ngh_pmf(N = 50, M = 45, m = 3, min_x = 1, max_x = 2)
 ```{r}
 sum_ngh_pmf(N = 50, M = 44, m = 3, min_x = 0, max_x = 1)
 sum_ngh_pmf(N = 50, M = 44, m = 3, min_x = 1, max_x = 2)
+
 sum_ngh_pmf(N = 50, M = 44, m = 3, min_x = 0, max_x = 2)
 sum_ngh_pmf(N = 50, M = 44, m = 3, min_x = 1, max_x = 3)
 ```
@@ -720,6 +724,7 @@ sum_ngh_pmf(N = 50, M = 40, m = 3, min_x = 1, max_x = 3)
 ```{r}
 sum_ngh_pmf(N = 50, M = 39, m = 3, min_x = 0, max_x = 2)
 sum_ngh_pmf(N = 50, M = 39, m = 3, min_x = 1, max_x = 3)
+
 sum_ngh_pmf(N = 50, M = 39, m = 3, min_x = 0, max_x = 3)
 sum_ngh_pmf(N = 50, M = 39, m = 3, min_x = 1, max_x = 4)
 ```
@@ -758,6 +763,7 @@ sum_ngh_pmf(N = 50, M = 36, m = 3, min_x = 1, max_x = 4)
 ```{r}
 sum_ngh_pmf(N = 50, M = 35, m = 3, min_x = 0, max_x = 3)
 sum_ngh_pmf(N = 50, M = 35, m = 3, min_x = 1, max_x = 4)
+
 sum_ngh_pmf(N = 50, M = 35, m = 3, min_x = 0, max_x = 4)
 sum_ngh_pmf(N = 50, M = 35, m = 3, min_x = 1, max_x = 5)
 ```
@@ -796,6 +802,7 @@ sum_ngh_pmf(N = 50, M = 32, m = 3, min_x = 1, max_x = 5)
 ```{r}
 sum_ngh_pmf(N = 50, M = 31, m = 3, min_x = 0, max_x = 4)
 sum_ngh_pmf(N = 50, M = 31, m = 3, min_x = 1, max_x = 5)
+
 sum_ngh_pmf(N = 50, M = 31, m = 3, min_x = 0, max_x = 5)
 sum_ngh_pmf(N = 50, M = 31, m = 3, min_x = 1, max_x = 6)
 ```
@@ -825,6 +832,7 @@ sum_ngh_pmf(N = 50, M = 29, m = 3, min_x = 1, max_x = 6)
 ```{r}
 sum_ngh_pmf(N = 50, M = 28, m = 3, min_x = 0, max_x = 5)
 sum_ngh_pmf(N = 50, M = 28, m = 3, min_x = 1, max_x = 6)
+
 sum_ngh_pmf(N = 50, M = 28, m = 3, min_x = 0, max_x = 6)
 sum_ngh_pmf(N = 50, M = 28, m = 3, min_x = 1, max_x = 7)
 ```
@@ -845,6 +853,7 @@ sum_ngh_pmf(N = 50, M = 27, m = 3, min_x = 1, max_x = 7)
 ```{r}
 sum_ngh_pmf(N = 50, M = 26, m = 3, min_x = 0, max_x = 6)
 sum_ngh_pmf(N = 50, M = 26, m = 3, min_x = 1, max_x = 7)
+
 sum_ngh_pmf(N = 50, M = 26, m = 3, min_x = 0, max_x = 7)
 sum_ngh_pmf(N = 50, M = 26, m = 3, min_x = 1, max_x = 8)
 ```
@@ -874,6 +883,7 @@ sum_ngh_pmf(N = 50, M = 24, m = 3, min_x = 1, max_x = 8)
 ```{r}
 sum_ngh_pmf(N = 50, M = 23, m = 3, min_x = 0, max_x = 7)
 sum_ngh_pmf(N = 50, M = 23, m = 3, min_x = 1, max_x = 8)
+
 sum_ngh_pmf(N = 50, M = 23, m = 3, min_x = 0, max_x = 8)
 sum_ngh_pmf(N = 50, M = 23, m = 3, min_x = 1, max_x = 9)
 ```
@@ -885,6 +895,7 @@ sum_ngh_pmf(N = 50, M = 23, m = 3, min_x = 1, max_x = 9)
 ```{r}
 sum_ngh_pmf(N = 50, M = 22, m = 3, min_x = 0, max_x = 8)
 sum_ngh_pmf(N = 50, M = 22, m = 3, min_x = 1, max_x = 9)
+
 sum_ngh_pmf(N = 50, M = 22, m = 3, min_x = 0, max_x = 9)
 sum_ngh_pmf(N = 50, M = 22, m = 3, min_x = 1, max_x = 10)
 ```
@@ -905,6 +916,7 @@ sum_ngh_pmf(N = 50, M = 21, m = 3, min_x = 1, max_x = 10)
 ```{r}
 sum_ngh_pmf(N = 50, M = 20, m = 3, min_x = 0, max_x = 9)
 sum_ngh_pmf(N = 50, M = 20, m = 3, min_x = 1, max_x = 10)
+
 sum_ngh_pmf(N = 50, M = 20, m = 3, min_x = 0, max_x = 10)
 sum_ngh_pmf(N = 50, M = 20, m = 3, min_x = 1, max_x = 11)
 ```
@@ -925,6 +937,7 @@ sum_ngh_pmf(N = 50, M = 19, m = 3, min_x = 1, max_x = 11)
 ```{r}
 sum_ngh_pmf(N = 50, M = 18, m = 3, min_x = 0, max_x = 10)
 sum_ngh_pmf(N = 50, M = 18, m = 3, min_x = 1, max_x = 11)
+
 sum_ngh_pmf(N = 50, M = 18, m = 3, min_x = 0, max_x = 11)
 sum_ngh_pmf(N = 50, M = 18, m = 3, min_x = 1, max_x = 12)
 ```
@@ -936,6 +949,7 @@ sum_ngh_pmf(N = 50, M = 18, m = 3, min_x = 1, max_x = 12)
 ```{r}
 sum_ngh_pmf(N = 50, M = 17, m = 3, min_x = 0, max_x = 11)
 sum_ngh_pmf(N = 50, M = 17, m = 3, min_x = 1, max_x = 12)
+
 sum_ngh_pmf(N = 50, M = 17, m = 3, min_x = 0, max_x = 12)
 sum_ngh_pmf(N = 50, M = 17, m = 3, min_x = 1, max_x = 13)
 ```
@@ -947,6 +961,7 @@ sum_ngh_pmf(N = 50, M = 17, m = 3, min_x = 1, max_x = 13)
 ```{r}
 sum_ngh_pmf(N = 50, M = 16, m = 3, min_x = 0, max_x = 12)
 sum_ngh_pmf(N = 50, M = 16, m = 3, min_x = 1, max_x = 13)
+
 sum_ngh_pmf(N = 50, M = 16, m = 3, min_x = 0, max_x = 13)
 sum_ngh_pmf(N = 50, M = 16, m = 3, min_x = 1, max_x = 14)
 ```
@@ -958,6 +973,7 @@ sum_ngh_pmf(N = 50, M = 16, m = 3, min_x = 1, max_x = 14)
 ```{r}
 sum_ngh_pmf(N = 50, M = 15, m = 3, min_x = 0, max_x = 13)
 sum_ngh_pmf(N = 50, M = 15, m = 3, min_x = 1, max_x = 14)
+
 sum_ngh_pmf(N = 50, M = 15, m = 3, min_x = 0, max_x = 14)
 sum_ngh_pmf(N = 50, M = 15, m = 3, min_x = 1, max_x = 15)
 ```
@@ -971,9 +987,284 @@ sum_ngh_pmf(N = 50, M = 15, m = 3, min_x = 1, max_x = 15)
 ```{r}
 sum_ngh_pmf(N = 50, M = 14, m = 3, min_x = 0, max_x = 14)
 sum_ngh_pmf(N = 50, M = 14, m = 3, min_x = 1, max_x = 15)
+
 sum_ngh_pmf(N = 50, M = 14, m = 3, min_x = 0, max_x = 15)
 sum_ngh_pmf(N = 50, M = 14, m = 3, min_x = 1, max_x = 16)
 sum_ngh_pmf(N = 50, M = 14, m = 3, min_x = 2, max_x = 17)
 ```
 
 ### M = 13
+
+-\> 0-16 with CP = 0.951061
+
+-\> 1-17 with CP = 0.9509473
+
+```{r}
+sum_ngh_pmf(N = 50, M = 13, m = 3, min_x = 0, max_x = 15)
+sum_ngh_pmf(N = 50, M = 13, m = 3, min_x = 1, max_x = 16)
+sum_ngh_pmf(N = 50, M = 13, m = 3, min_x = 2, max_x = 17)
+
+sum_ngh_pmf(N = 50, M = 13, m = 3, min_x = 0, max_x = 16)
+sum_ngh_pmf(N = 50, M = 13, m = 3, min_x = 1, max_x = 17)
+sum_ngh_pmf(N = 50, M = 13, m = 3, min_x = 2, max_x = 18)
+```
+
+### M = 12
+
+-\> 0-18 with CP = 0.9589394
+
+-\> 1-19 with CP = 0.9596626
+
+```{r}
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 0, max_x = 16)
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 1, max_x = 17)
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 2, max_x = 18)
+
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 0, max_x = 17)
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 1, max_x = 18)
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 2, max_x = 19)
+
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 0, max_x = 18)
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 1, max_x = 19)
+sum_ngh_pmf(N = 50, M = 12, m = 3, min_x = 2, max_x = 20)
+```
+
+### M = 11
+
+-\> 1-20 with CP = 0.9542938
+
+```{r}
+sum_ngh_pmf(N = 50, M = 11, m = 3, min_x = 0, max_x = 18)
+sum_ngh_pmf(N = 50, M = 11, m = 3, min_x = 1, max_x = 19)
+sum_ngh_pmf(N = 50, M = 11, m = 3, min_x = 2, max_x = 20)
+
+sum_ngh_pmf(N = 50, M = 11, m = 3, min_x = 0, max_x = 19)
+sum_ngh_pmf(N = 50, M = 11, m = 3, min_x = 1, max_x = 20)
+sum_ngh_pmf(N = 50, M = 11, m = 3, min_x = 2, max_x = 21)
+```
+
+### M = 10
+
+-\> 1-22 with CP = 0.9570001
+
+-\> 2-23 with CP = 0.9514762
+
+```{r}
+sum_ngh_pmf(N = 50, M = 10, m = 3, min_x = 1, max_x = 20)
+sum_ngh_pmf(N = 50, M = 10, m = 3, min_x = 2, max_x = 21)
+
+sum_ngh_pmf(N = 50, M = 10, m = 3, min_x = 1, max_x = 21)
+sum_ngh_pmf(N = 50, M = 10, m = 3, min_x = 2, max_x = 22)
+
+sum_ngh_pmf(N = 50, M = 10, m = 3, min_x = 1, max_x = 22)
+sum_ngh_pmf(N = 50, M = 10, m = 3, min_x = 2, max_x = 23)
+sum_ngh_pmf(N = 50, M = 10, m = 3, min_x = 3, max_x = 24)
+```
+
+### M = 9
+
+-\> 1-24 with CP = 0.9557588
+
+-\> 2-25 with CP = 0.954996
+
+```{r}
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 1, max_x = 22)
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 2, max_x = 23)
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 3, max_x = 24)
+
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 1, max_x = 23)
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 2, max_x = 24)
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 3, max_x = 25)
+
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 1, max_x = 24)
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 2, max_x = 25)
+sum_ngh_pmf(N = 50, M = 9, m = 3, min_x = 3, max_x = 26)
+```
+
+### M = 8
+
+-\> 2-27 with CP = 0.9535121
+
+```{r}
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 1, max_x = 24)
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 2, max_x = 25)
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 3, max_x = 26)
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 4, max_x = 27)
+
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 1, max_x = 25)
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 2, max_x = 26)
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 3, max_x = 27)
+
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 1, max_x = 26)
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 2, max_x = 27)
+sum_ngh_pmf(N = 50, M = 8, m = 3, min_x = 3, max_x = 28)
+```
+
+### M = 7
+
+-\> 2-30 with CP = 0.9563191
+
+-\> 3-31 with CP = 0.9569898
+
+-\> 4-32 with CP = 0.9510655
+
+```{r}
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 2, max_x = 27)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 3, max_x = 28)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 4, max_x = 29)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 5, max_x = 30)
+
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 2, max_x = 28)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 3, max_x = 29)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 4, max_x = 30)
+
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 2, max_x = 29)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 3, max_x = 30)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 4, max_x = 31)
+
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 2, max_x = 30)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 3, max_x = 31)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 4, max_x = 32)
+sum_ngh_pmf(N = 50, M = 7, m = 3, min_x = 5, max_x = 33)
+```
+
+### M = 6
+
+-\> 2-33 with CP = 0.9517038
+
+-\> 3-34 with CP = 0.9576847
+
+-\> 4-35 with CP = 0.9585707
+
+-\> 5-36 with CP = 0.954221
+
+```{r}
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 2, max_x = 30)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 3, max_x = 31)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 4, max_x = 32)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 5, max_x = 33)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 6, max_x = 34)
+
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 2, max_x = 31)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 3, max_x = 32)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 4, max_x = 33)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 5, max_x = 34)
+
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 2, max_x = 32)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 3, max_x = 33)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 4, max_x = 34)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 5, max_x = 35)
+
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 2, max_x = 33)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 3, max_x = 34)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 4, max_x = 35)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 5, max_x = 36)
+sum_ngh_pmf(N = 50, M = 6, m = 3, min_x = 6, max_x = 37)
+```
+
+### M = 5
+
+-\> 6-39 with CP = 0.9516585
+
+```{r}
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 2, max_x = 33)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 3, max_x = 34)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 4, max_x = 35)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 5, max_x = 36)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 6, max_x = 37)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 7, max_x = 38)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 8, max_x = 39)
+
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 2, max_x = 34)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 3, max_x = 35)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 4, max_x = 36)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 5, max_x = 37)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 6, max_x = 38)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 7, max_x = 39)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 8, max_x = 40)
+
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 2, max_x = 35)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 3, max_x = 36)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 4, max_x = 37)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 5, max_x = 38)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 6, max_x = 39)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 7, max_x = 40)
+sum_ngh_pmf(N = 50, M = 5, m = 3, min_x = 8, max_x = 41)
+```
+
+### M = 4
+
+-\> 8-43 with CP = 0.9504776
+
+-\> 9-44 with CP = 0.9563396
+
+-\> 10-45 with CP = 0.9566522
+
+-\> 11-46 with CP = 0.9387538
+
+```{r}
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 6, max_x = 39)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 7, max_x = 40)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 8, max_x = 41)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 9, max_x = 42)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 10, max_x = 43)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 11, max_x = 44)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 12, max_x = 45)
+
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 6, max_x = 40)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 7, max_x = 41)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 8, max_x = 42)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 9, max_x = 43)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 10, max_x = 44)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 11, max_x = 45)
+
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 6, max_x = 41)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 7, max_x = 42)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 8, max_x = 43)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 9, max_x = 44)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 10, max_x = 45)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 11, max_x = 46)
+sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 12, max_x = 47)
+```
+
+### M = 3
+
+-\> 12-47 with CP = 0.9814286
+
+```{r}
+sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 8, max_x = 43)
+sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 9, max_x = 44)
+sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 10, max_x = 45)
+sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 11, max_x = 46)
+sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 12, max_x = 47)
+```
+
+### M = 2
+
+-\> 48-48 with CP = 0
+
+```{r}
+sum_ngh_pmf(N = 50, M = 2, m = 3, min_x = 48, max_x = 48)
+```
+
+### M = 1
+
+-\> 49-49 with CP = 0
+
+```{r}
+sum_ngh_pmf(N = 50, M = 1, m = 3, min_x = 49, max_x = 49)
+```
+
+### M = 0
+
+-\> 50-50 with CP = 0
+
+```{r}
+sum_ngh_pmf(N = 50, M = 0, m = 3, min_x = 50, max_x = 50)
+```
+
+### Plot of All Possible Minimal Cardinality Acceptance Curves
+
+```{r}
+## ACCESS FILE THROUGH GITHUB LINK FOR REPRODUCIBILITY
+```
