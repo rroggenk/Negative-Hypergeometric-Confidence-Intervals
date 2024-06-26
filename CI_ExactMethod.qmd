@@ -1272,10 +1272,6 @@ data = read.csv(url, header = TRUE)
 ```
 
 ```{r}
-head(data)
-```
-
-```{r}
 conf_level= 0.95
 
 ggplot(data, aes(x = M, y = Coverage.Probability, group = X.s.Set, color = X.s.Set)) +

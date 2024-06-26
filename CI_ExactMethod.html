@@ -145,8 +145,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ngh_pmf(x = 0, N = 50, M = 50, m = 3) -&gt; R crashes (end points doesn't work for coverage prob)</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ngh_pmf_choose(x = 0, N = 50, M = 50, m = 3) -&gt; 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Original (top): ngh_pmf(x = 0, N = 50, M = 50, m = 3) -&gt; R crashes (end points doesn't work for coverage prob)</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># New (bottom): ngh_pmf(x = 0, N = 50, M = 50, m = 3) -&gt; 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ngh_cdf <span class="ot">=</span> <span class="cf">function</span>(x, N, M, m, <span class="at">lower_tail =</span> <span class="cn">TRUE</span>) {</span>
@@ -863,6 +863,1309 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 51 50           0           0</code></pre>
 </div>
 </div>
+</section>
+</section>
+<section id="minimal-cardinality-acceptance-curves" class="level1">
+<h1>Minimal <strong>Cardinality</strong> Acceptance Curves</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>sum_ngh_pmf <span class="ot">=</span> <span class="cf">function</span>(N, M, m, min_x, max_x) {</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  sum_pmf <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (x <span class="cf">in</span> min_x<span class="sc">:</span>max_x) {</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>    sum_pmf <span class="ot">=</span> sum_pmf <span class="sc">+</span> <span class="fu">ngh_pmf</span>(x, N, M, m)</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(sum_pmf)</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="n-50-m-3-confidence-level-0.95-1" class="level2">
+<h2 class="anchored" data-anchor-id="n-50-m-3-confidence-level-0.95-1">N = 50, m = 3, Confidence Level = 0.95</h2>
+<section id="m-50" class="level3">
+<h3 class="anchored" data-anchor-id="m-50">M = 50</h3>
+<p>-&gt; 0-0 with CP = 1</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">50</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">50</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">50</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+</section>
+<section id="m-49" class="level3">
+<h3 class="anchored" data-anchor-id="m-49">M = 49</h3>
+<p>-&gt; 0-1 with CP = 1</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">49</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.94</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">49</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">49</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">49</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+</section>
+<section id="m-48" class="level3">
+<h3 class="anchored" data-anchor-id="m-48">M = 48</h3>
+<p>-&gt; 0-1 with CP = 0.9951021</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">48</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.995102</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">48</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.117551</code></pre>
+</div>
+</div>
+</section>
+<section id="m-47" class="level3">
+<h3 class="anchored" data-anchor-id="m-47">M = 47</h3>
+<p>-&gt; 0-1 with CP = 0.9857143</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">47</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9857143</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">47</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1721939</code></pre>
+</div>
+</div>
+</section>
+<section id="m-46" class="level3">
+<h3 class="anchored" data-anchor-id="m-46">M = 46:</h3>
+<p>-&gt; 0-1 with CP = 0.9722319</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">46</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9722319</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">46</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2235345</code></pre>
+</div>
+</div>
+</section>
+<section id="m-45" class="level3">
+<h3 class="anchored" data-anchor-id="m-45">M = 45</h3>
+<p>-&gt; 0-1 with CP = 0.9550369</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">45</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9550369</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">45</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2712412</code></pre>
+</div>
+</div>
+</section>
+<section id="m-44" class="level3">
+<h3 class="anchored" data-anchor-id="m-44">M = 44</h3>
+<p>-&gt; 0-2 with CP = 0.9907559</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">44</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9344985</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">44</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3150416</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">44</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9907559</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">44</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3233761</code></pre>
+</div>
+</div>
+</section>
+<section id="m-43" class="level3">
+<h3 class="anchored" data-anchor-id="m-43">M = 43</h3>
+<p>-&gt; 0-2 with CP = 0.9843631</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">43</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.984363</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">43</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.368311</code></pre>
+</div>
+</div>
+</section>
+<section id="m-42" class="level3">
+<h3 class="anchored" data-anchor-id="m-42">M = 42</h3>
+<p>-&gt; 0-2 with CP = 0.9758292</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">42</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9758293</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">42</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4103432</code></pre>
+</div>
+</div>
+</section>
+<section id="m-41" class="level3">
+<h3 class="anchored" data-anchor-id="m-41">M = 41</h3>
+<p>-&gt; 0-2 with CP = 0.9649928</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">41</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9649927</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">41</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4492902</code></pre>
+</div>
+</div>
+</section>
+<section id="m-40" class="level3">
+<h3 class="anchored" data-anchor-id="m-40">M = 40</h3>
+<p>-&gt; 0-2 with CP = 0.9517396</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">40</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9517397</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">40</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4849629</code></pre>
+</div>
+</div>
+</section>
+<section id="m-39" class="level3">
+<h3 class="anchored" data-anchor-id="m-39">M = 39</h3>
+<p>-&gt; 0-3 with CP = 0.9834488</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">39</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9360017</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">39</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5171733</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">39</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9834488</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">39</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5301134</code></pre>
+</div>
+</div>
+</section>
+<section id="m-38" class="level3">
+<h3 class="anchored" data-anchor-id="m-38">M = 38</h3>
+<p>-&gt; 0-3 with CP = 0.9761493</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">38</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9761493</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">38</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5636582</code></pre>
+</div>
+</div>
+</section>
+<section id="m-37" class="level3">
+<h3 class="anchored" data-anchor-id="m-37">M = 37</h3>
+<p>-&gt; 0-3 with CP = 0.9669288</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">37</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9669288</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">37</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5943373</code></pre>
+</div>
+</div>
+</section>
+<section id="m-36" class="level3">
+<h3 class="anchored" data-anchor-id="m-36">M = 36</h3>
+<p>-&gt; 0-3 with CP = 0.9555901</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">36</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9555901</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">36</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6219704</code></pre>
+</div>
+</div>
+</section>
+<section id="m-35" class="level3">
+<h3 class="anchored" data-anchor-id="m-35">M = 35</h3>
+<p>-&gt; 0-4 with CP = 0.9802933</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">35</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9419607</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">35</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6463647</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">35</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9802933</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">35</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6600931</code></pre>
+</div>
+</div>
+</section>
+<section id="m-34" class="level3">
+<h3 class="anchored" data-anchor-id="m-34">M = 34</h3>
+<p>-&gt; 0-4 with CP = 0.9726268</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">34</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9726268</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">34</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6855776</code></pre>
+</div>
+</div>
+</section>
+<section id="m-33" class="level3">
+<h3 class="anchored" data-anchor-id="m-33">M = 33</h3>
+<p>-&gt; 0-4 with CP = 0.963006</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">33</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.963006</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">33</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7082206</code></pre>
+</div>
+</div>
+</section>
+<section id="m-32" class="level3">
+<h3 class="anchored" data-anchor-id="m-32">M = 32</h3>
+<p>-&gt; 0-4 with CP = 0.9511876</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">32</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9511876</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb158"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb158-1"><a href="#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">32</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7278099</code></pre>
+</div>
+</div>
+</section>
+<section id="m-31" class="level3">
+<h3 class="anchored" data-anchor-id="m-31">M = 31</h3>
+<p>-&gt; 0-5 with CP = 0.9734503</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">31</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9369421</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">31</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7441135</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">31</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9734503</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">31</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7603394</code></pre>
+</div>
+</div>
+</section>
+<section id="m-30" class="level3">
+<h3 class="anchored" data-anchor-id="m-30">M = 30</h3>
+<p>-&gt; 0-5 with CP = 0.9640288</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">30</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9640288</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">30</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7778225</code></pre>
+</div>
+</div>
+</section>
+<section id="m-29" class="level3">
+<h3 class="anchored" data-anchor-id="m-29">M = 29</h3>
+<p>-&gt; 0-5 with CP = 0.9523043</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">29</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9523043</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb174"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb174-1"><a href="#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">29</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7922558</code></pre>
+</div>
+</div>
+</section>
+<section id="m-28" class="level3">
+<h3 class="anchored" data-anchor-id="m-28">M = 28</h3>
+<p>-&gt; 0-6 with CP = 0.9704975</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb176"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">28</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9379772</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb178"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb178-1"><a href="#cb178-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">28</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8033546</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb180"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb180-1"><a href="#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">28</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9704975</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb182"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">28</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8196714</code></pre>
+</div>
+</div>
+</section>
+<section id="m-27" class="level3">
+<h3 class="anchored" data-anchor-id="m-27">M = 27</h3>
+<p>-&gt; 0-6 with CP = 0.9600445</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb184"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb184-1"><a href="#cb184-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">27</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9600445</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb186"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">27</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8317522</code></pre>
+</div>
+</div>
+</section>
+<section id="m-26" class="level3">
+<h3 class="anchored" data-anchor-id="m-26">M = 26</h3>
+<p>-&gt; 0-7 with CP = 0.9732304</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb188"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb188-1"><a href="#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">26</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9469499</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb190"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb190-1"><a href="#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">26</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8405774</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb192"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb192-1"><a href="#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">26</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9732304</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb194"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb194-1"><a href="#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">26</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8545389</code></pre>
+</div>
+</div>
+</section>
+<section id="m-25" class="level3">
+<h3 class="anchored" data-anchor-id="m-25">M = 25</h3>
+<p>-&gt; 0-7 with CP = 0.9631225</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb196"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb196-1"><a href="#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">25</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9631225</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb198"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb198-1"><a href="#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">25</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8639382</code></pre>
+</div>
+</div>
+</section>
+<section id="m-24" class="level3">
+<h3 class="anchored" data-anchor-id="m-24">M = 24</h3>
+<p>-&gt; 0-7 with CP = 0.9502069</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb200"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">24</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9502069</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb202"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">24</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8700283</code></pre>
+</div>
+</div>
+</section>
+<section id="m-23" class="level3">
+<h3 class="anchored" data-anchor-id="m-23">M = 23</h3>
+<p>-&gt; 0-8 with CP = 0.9627122</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb204"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb204-1"><a href="#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">23</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9340057</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb206"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb206-1"><a href="#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">23</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.872355</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb208"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb208-1"><a href="#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">23</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9627122</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb210"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb210-1"><a href="#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">23</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8894481</code></pre>
+</div>
+</div>
+</section>
+<section id="m-22" class="level3">
+<h3 class="anchored" data-anchor-id="m-22">M = 22</h3>
+<p>-&gt; 0-9 with CP = 0.9708871</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb212"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb212-1"><a href="#cb212-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">22</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.948983</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb214"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb214-1"><a href="#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">22</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8923157</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb216"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb216-1"><a href="#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">22</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9708871</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">22</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9054582</code></pre>
+</div>
+</div>
+</section>
+<section id="m-21" class="level3">
+<h3 class="anchored" data-anchor-id="m-21">M = 21</h3>
+<p>-&gt; 0-9 with CP = 0.9589394</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb220"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">21</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9589394</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb222"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb222-1"><a href="#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">21</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9084065</code></pre>
+</div>
+</div>
+</section>
+<section id="m-20" class="level3">
+<h3 class="anchored" data-anchor-id="m-20">M = 20</h3>
+<p>-&gt; 0-10 with CP = 0.9655391</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb224"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb224-1"><a href="#cb224-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">20</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9432651</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb226"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">20</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9073758</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb228"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb228-1"><a href="#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">20</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9655391</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb230"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb230-1"><a href="#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">20</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9216049</code></pre>
+</div>
+</div>
+</section>
+<section id="m-19" class="level3">
+<h3 class="anchored" data-anchor-id="m-19">M = 19</h3>
+<p>-&gt; 0-10 with CP = 0.951061</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb232"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb232-1"><a href="#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">19</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.951061</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb234"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb234-1"><a href="#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">19</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.920369</code></pre>
+</div>
+</div>
+</section>
+<section id="m-18" class="level3">
+<h3 class="anchored" data-anchor-id="m-18">M = 18</h3>
+<p>-&gt; 0-11 with CP = 0.9559944</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb236"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb236-1"><a href="#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">18</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9319384</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb238"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb238-1"><a href="#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">18</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9143617</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb240"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb240-1"><a href="#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">18</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9559944</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb242"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">18</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9307332</code></pre>
+</div>
+</div>
+</section>
+<section id="m-17" class="level3">
+<h3 class="anchored" data-anchor-id="m-17">M = 17</h3>
+<p>-&gt; 0-12 with CP = 0.958723</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb244"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">17</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">11</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9372841</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb246"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb246-1"><a href="#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">17</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9240291</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb248"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb248-1"><a href="#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">17</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.958723</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb250"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb250-1"><a href="#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">17</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9388714</code></pre>
+</div>
+</div>
+</section>
+<section id="m-16" class="level3">
+<h3 class="anchored" data-anchor-id="m-16">M = 16</h3>
+<p>-&gt; 0-13 with CP = 0.959596</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb252"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">16</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9398064</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb254"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">16</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9310246</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb256"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">16</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.959596</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb258"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb258-1"><a href="#cb258-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">16</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">14</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9449938</code></pre>
+</div>
+</div>
+</section>
+<section id="m-15" class="level3">
+<h3 class="anchored" data-anchor-id="m-15">M = 15</h3>
+<p>-&gt; 0-14 with CP = 0.958723</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb260"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb260-1"><a href="#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">15</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">13</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9398064</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb262"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb262-1"><a href="#cb262-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">15</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">14</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9355087</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb264"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb264-1"><a href="#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">15</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">14</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.958723</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb266"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb266-1"><a href="#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">15</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9491516</code></pre>
+</div>
+</div>
+</section>
+<section id="m-14" class="level3">
+<h3 class="anchored" data-anchor-id="m-14">M = 14</h3>
+<p>-&gt; 0-15 with CP = 0.9559944</p>
+<p>-&gt; 1-16 with CP = 0.9512364</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb268"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb268-1"><a href="#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">14</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">14</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9372841</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb270"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb270-1"><a href="#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">14</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.937423</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb272"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb272-1"><a href="#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">14</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9559944</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb274"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb274-1"><a href="#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">14</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9512364</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb276"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb276-1"><a href="#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">14</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">17</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.918522</code></pre>
+</div>
+</div>
+</section>
+<section id="m-13" class="level3">
+<h3 class="anchored" data-anchor-id="m-13">M = 13</h3>
+<p>-&gt; 0-16 with CP = 0.951061</p>
+<p>-&gt; 1-17 with CP = 0.9509473</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb278"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb278-1"><a href="#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">13</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9319384</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb280"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb280-1"><a href="#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">13</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9364692</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb282"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb282-1"><a href="#cb282-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">13</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">17</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9164857</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb284"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb284-1"><a href="#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">13</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.951061</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb286"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb286-1"><a href="#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">13</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">17</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9509473</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb288"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb288-1"><a href="#cb288-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">13</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9272102</code></pre>
+</div>
+</div>
+</section>
+<section id="m-12" class="level3">
+<h3 class="anchored" data-anchor-id="m-12">M = 12</h3>
+<p>-&gt; 0-18 with CP = 0.9589394</p>
+<p>-&gt; 1-19 with CP = 0.9596626</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb290"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb290-1"><a href="#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9231125</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb292"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb292-1"><a href="#cb292-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">17</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9320407</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb294"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb294-1"><a href="#cb294-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9204896</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb296"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb296-1"><a href="#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">17</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9432651</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb298"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb298-1"><a href="#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9477149</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb300"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb300-1"><a href="#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9324373</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb302"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb302-1"><a href="#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9589394</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb304"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb304-1"><a href="#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9596626</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb306"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb306-1"><a href="#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">12</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9413554</code></pre>
+</div>
+</div>
+</section>
+<section id="m-11" class="level3">
+<h3 class="anchored" data-anchor-id="m-11">M = 11</h3>
+<p>-&gt; 1-20 with CP = 0.9542938</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb308"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb308-1"><a href="#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">11</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9315094</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb310"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">11</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9405646</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb312"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb312-1"><a href="#cb312-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">11</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9333375</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb314"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb314-1"><a href="#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">11</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">0</span>, <span class="at">max_x =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.948983</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb316"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb316-1"><a href="#cb316-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">11</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9542938</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb318"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb318-1"><a href="#cb318-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">11</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">21</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9439189</code></pre>
+</div>
+</div>
+</section>
+<section id="m-10" class="level3">
+<h3 class="anchored" data-anchor-id="m-10">M = 10</h3>
+<p>-&gt; 1-22 with CP = 0.9570001</p>
+<p>-&gt; 2-23 with CP = 0.9514762</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb320"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb320-1"><a href="#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9278832</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb322"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb322-1"><a href="#cb322-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">21</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9284526</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb324"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb324-1"><a href="#cb324-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">21</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9440844</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb326"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb326-1"><a href="#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9413683</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb328"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb328-1"><a href="#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9570001</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb330"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb330-1"><a href="#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">23</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9514762</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb332"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb332-1"><a href="#cb332-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9327265</code></pre>
+</div>
+</div>
+</section>
+<section id="m-9" class="level3">
+<h3 class="anchored" data-anchor-id="m-9">M = 9</h3>
+<p>-&gt; 1-24 with CP = 0.9557588</p>
+<p>-&gt; 2-25 with CP = 0.954996</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb334"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb334-1"><a href="#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9265477</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb336"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb336-1"><a href="#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">23</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9314484</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb338"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb338-1"><a href="#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9250373</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb340"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb340-1"><a href="#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">23</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9426642</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb342"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb342-1"><a href="#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.944543</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb344"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb344-1"><a href="#cb344-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9354902</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb346"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb346-1"><a href="#cb346-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9557588</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb348"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb348-1"><a href="#cb348-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.954996</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb350"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb350-1"><a href="#cb350-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">9</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">26</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9436771</code></pre>
+</div>
+</div>
+</section>
+<section id="m-8" class="level3">
+<h3 class="anchored" data-anchor-id="m-8">M = 8</h3>
+<p>-&gt; 2-27 with CP = 0.9535121</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb352"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb352-1"><a href="#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9179034</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb354"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb354-1"><a href="#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9274605</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb356"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb356-1"><a href="#cb356-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">26</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9281336</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb358"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb358-1"><a href="#cb358-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">27</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9196299</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb360"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb360-1"><a href="#cb360-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9351201</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb362"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb362-1"><a href="#cb362-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">26</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9417876</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb364"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb364-1"><a href="#cb364-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">27</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9398581</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb366"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb366-1"><a href="#cb366-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">1</span>, <span class="at">max_x =</span> <span class="dv">26</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9494472</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb368"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb368-1"><a href="#cb368-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">27</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9535121</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb370"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb370-1"><a href="#cb370-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">8</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">28</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9492795</code></pre>
+</div>
+</div>
+</section>
+<section id="m-7" class="level3">
+<h3 class="anchored" data-anchor-id="m-7">M = 7</h3>
+<p>-&gt; 2-30 with CP = 0.9563191</p>
+<p>-&gt; 3-31 with CP = 0.9569898</p>
+<p>-&gt; 4-32 with CP = 0.9510655</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb372"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb372-1"><a href="#cb372-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">27</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9133751</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb374"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb374-1"><a href="#cb374-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">28</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9213051</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb376"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb376-1"><a href="#cb376-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">29</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9219598</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb378"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb378-1"><a href="#cb378-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9152453</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb380"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb380-1"><a href="#cb380-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">28</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9302552</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb382"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb382-1"><a href="#cb382-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">29</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9355506</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb384"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb384-1"><a href="#cb384-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9337782</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb386"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb386-1"><a href="#cb386-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">29</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9445006</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb388"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb388-1"><a href="#cb388-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9473691</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb390"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb390-1"><a href="#cb390-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">31</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.943399</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb392"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb392-1"><a href="#cb392-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9563191</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb394"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb394-1"><a href="#cb394-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">31</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9569898</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb396"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb396-1"><a href="#cb396-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">32</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9510655</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb398"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb398-1"><a href="#cb398-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">7</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">33</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9384954</code></pre>
+</div>
+</div>
+</section>
+<section id="m-6" class="level3">
+<h3 class="anchored" data-anchor-id="m-6">M = 6</h3>
+<p>-&gt; 2-33 with CP = 0.9517038</p>
+<p>-&gt; 3-34 with CP = 0.9576847</p>
+<p>-&gt; 4-35 with CP = 0.9585707</p>
+<p>-&gt; 5-36 with CP = 0.954221</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb400"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb400-1"><a href="#cb400-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9034042</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb402"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb402-1"><a href="#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">31</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9166535</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb404"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb404-1"><a href="#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">32</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9243822</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb406"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb406-1"><a href="#cb406-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">33</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9263623</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb408"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb408-1"><a href="#cb408-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">34</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9225298</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb410"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb410-1"><a href="#cb410-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">31</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9220113</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb412"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb412-1"><a href="#cb412-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">32</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9327166</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb414"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb414-1"><a href="#cb414-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">33</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9380115</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb416"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb416-1"><a href="#cb416-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">34</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.937701</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb418"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb418-1"><a href="#cb418-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">32</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9380745</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb420"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb420-1"><a href="#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">33</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.946346</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb422"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb422-1"><a href="#cb422-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">34</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9493502</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb424"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb424-1"><a href="#cb424-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9469215</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb426"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb426-1"><a href="#cb426-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">33</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9517038</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb428"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb428-1"><a href="#cb428-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">34</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9576847</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb430"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb430-1"><a href="#cb430-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9585707</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb432"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb432-1"><a href="#cb432-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">36</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.954221</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb434"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb434-1"><a href="#cb434-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">6</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">37</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9446456</code></pre>
+</div>
+</div>
+</section>
+<section id="m-5" class="level3">
+<h3 class="anchored" data-anchor-id="m-5">M = 5</h3>
+<p>-&gt; 6-39 with CP = 0.9516585</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb436"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb436-1"><a href="#cb436-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">33</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8718382</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb438"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb438-1"><a href="#cb438-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">34</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8922275</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb440"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb440-1"><a href="#cb440-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9085088</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb442"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb442-1"><a href="#cb442-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">36</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9203647</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb444"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb444-1"><a href="#cb444-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">37</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.927569</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb446"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb446-1"><a href="#cb446-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">7</span>, <span class="at">max_x =</span> <span class="dv">38</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9299855</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb448"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb448-1"><a href="#cb448-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">8</span>, <span class="at">max_x =</span> <span class="dv">39</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.927569</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb450"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb450-1"><a href="#cb450-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">34</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8950311</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb452"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb452-1"><a href="#cb452-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9129736</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb454"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb454-1"><a href="#cb454-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">36</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9267576</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb456"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb456-1"><a href="#cb456-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">37</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9361027</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb458"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb458-1"><a href="#cb458-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">38</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.940822</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb460"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb460-1"><a href="#cb460-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">7</span>, <span class="at">max_x =</span> <span class="dv">39</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.940822</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb462"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb462-1"><a href="#cb462-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">8</span>, <span class="at">max_x =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9361027</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb464"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb464-1"><a href="#cb464-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">2</span>, <span class="at">max_x =</span> <span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9157772</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb466"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb466-1"><a href="#cb466-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">3</span>, <span class="at">max_x =</span> <span class="dv">36</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9312225</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb468"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb468-1"><a href="#cb468-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">4</span>, <span class="at">max_x =</span> <span class="dv">37</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9424956</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb470"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb470-1"><a href="#cb470-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">5</span>, <span class="at">max_x =</span> <span class="dv">38</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9493558</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb472"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb472-1"><a href="#cb472-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">39</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9516585</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb474"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb474-1"><a href="#cb474-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">7</span>, <span class="at">max_x =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9493558</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb476"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb476-1"><a href="#cb476-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">8</span>, <span class="at">max_x =</span> <span class="dv">41</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9424956</code></pre>
+</div>
+</div>
+</section>
+<section id="m-4" class="level3">
+<h3 class="anchored" data-anchor-id="m-4">M = 4</h3>
+<p>-&gt; 8-43 with CP = 0.9504776</p>
+<p>-&gt; 9-44 with CP = 0.9563396</p>
+<p>-&gt; 10-45 with CP = 0.9566522</p>
+<p>-&gt; 11-46 with CP = 0.9509466</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb478"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb478-1"><a href="#cb478-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">39</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8742857</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb480"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb480-1"><a href="#cb480-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">7</span>, <span class="at">max_x =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8954711</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb482"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb482-1"><a href="#cb482-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">8</span>, <span class="at">max_x =</span> <span class="dv">41</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9127442</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb484"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb484-1"><a href="#cb484-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">9</span>, <span class="at">max_x =</span> <span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9256622</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb486"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb486-1"><a href="#cb486-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">10</span>, <span class="at">max_x =</span> <span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.933782</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb488"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb488-1"><a href="#cb488-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">11</span>, <span class="at">max_x =</span> <span class="dv">44</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9366609</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb490"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb490-1"><a href="#cb490-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">12</span>, <span class="at">max_x =</span> <span class="dv">45</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9338558</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb492"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb492-1"><a href="#cb492-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9004559</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb494"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb494-1"><a href="#cb494-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">7</span>, <span class="at">max_x =</span> <span class="dv">41</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.918997</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb496"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb496-1"><a href="#cb496-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">8</span>, <span class="at">max_x =</span> <span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9332827</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb498"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb498-1"><a href="#cb498-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">9</span>, <span class="at">max_x =</span> <span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9428571</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb500"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb500-1"><a href="#cb500-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">10</span>, <span class="at">max_x =</span> <span class="dv">44</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9472644</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb502"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb502-1"><a href="#cb502-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">11</span>, <span class="at">max_x =</span> <span class="dv">45</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9460486</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb504"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb504-1"><a href="#cb504-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">6</span>, <span class="at">max_x =</span> <span class="dv">41</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9239818</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb506"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb506-1"><a href="#cb506-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">7</span>, <span class="at">max_x =</span> <span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9395354</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb508"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb508-1"><a href="#cb508-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">8</span>, <span class="at">max_x =</span> <span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9504776</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb510"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb510-1"><a href="#cb510-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">9</span>, <span class="at">max_x =</span> <span class="dv">44</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9563396</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb512"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb512-1"><a href="#cb512-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">10</span>, <span class="at">max_x =</span> <span class="dv">45</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9566522</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb514"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb514-1"><a href="#cb514-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">11</span>, <span class="at">max_x =</span> <span class="dv">46</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9509466</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb516"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb516-1"><a href="#cb516-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">4</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">12</span>, <span class="at">max_x =</span> <span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9387538</code></pre>
+</div>
+</div>
+</section>
+<section id="m-3" class="level3">
+<h3 class="anchored" data-anchor-id="m-3">M = 3</h3>
+<p>-&gt; 12-47 with CP = 0.9814286</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb518"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb518-1"><a href="#cb518-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">3</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">8</span>, <span class="at">max_x =</span> <span class="dv">43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7683673</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb520"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb520-1"><a href="#cb520-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">3</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">9</span>, <span class="at">max_x =</span> <span class="dv">44</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8188776</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb522"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb522-1"><a href="#cb522-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">3</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">10</span>, <span class="at">max_x =</span> <span class="dv">45</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8712245</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb524"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb524-1"><a href="#cb524-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">3</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">11</span>, <span class="at">max_x =</span> <span class="dv">46</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9254082</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb526"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb526-1"><a href="#cb526-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">3</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">12</span>, <span class="at">max_x =</span> <span class="dv">47</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9814286</code></pre>
+</div>
+</div>
+</section>
+<section id="m-2" class="level3">
+<h3 class="anchored" data-anchor-id="m-2">M = 2</h3>
+<p>-&gt; 48-48 with CP = 0</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb528"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb528-1"><a href="#cb528-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">2</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">48</span>, <span class="at">max_x =</span> <span class="dv">48</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="m-1" class="level3">
+<h3 class="anchored" data-anchor-id="m-1">M = 1</h3>
+<p>-&gt; 49-49 with CP = 0</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb530"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb530-1"><a href="#cb530-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">1</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">49</span>, <span class="at">max_x =</span> <span class="dv">49</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="m-0" class="level3">
+<h3 class="anchored" data-anchor-id="m-0">M = 0</h3>
+<p>-&gt; 50-50 with CP = 0</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb532"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb532-1"><a href="#cb532-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum_ngh_pmf</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">M =</span> <span class="dv">0</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">min_x =</span> <span class="dv">50</span>, <span class="at">max_x =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+<section id="plot-of-all-possible-minimal-cardinality-acceptance-curves" class="level3">
+<h3 class="anchored" data-anchor-id="plot-of-all-possible-minimal-cardinality-acceptance-curves">Plot of All Possible Minimal Cardinality Acceptance Curves</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb534"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb534-1"><a href="#cb534-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">"https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/main/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2050%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"</span></span>
+<span id="cb534-2"><a href="#cb534-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb534-3"><a href="#cb534-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(url, <span class="at">header =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb535"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb535-1"><a href="#cb535-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb535-2"><a href="#cb535-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb535-3"><a href="#cb535-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> Coverage.Probability, <span class="at">group =</span> X.s.Set, <span class="at">color =</span> X.s.Set)) <span class="sc">+</span></span>
+<span id="cb535-4"><a href="#cb535-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb535-5"><a href="#cb535-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb535-6"><a href="#cb535-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of M"</span>) <span class="sc">+</span></span>
+<span id="cb535-7"><a href="#cb535-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb535-8"><a href="#cb535-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb535-9"><a href="#cb535-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb535-10"><a href="#cb535-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing missing values (`geom_line()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_ExactMethod_files/figure-html/unnamed-chunk-78-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 
