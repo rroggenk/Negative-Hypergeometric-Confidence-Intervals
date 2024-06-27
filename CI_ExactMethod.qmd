@@ -1229,14 +1229,10 @@ sum_ngh_pmf(N = 50, M = 4, m = 3, min_x = 12, max_x = 47)
 
 ### M = 3
 
--\> 12-47 with CP = 0.9814286
+-\> 17-47 with CP = 0.9505612
 
 ```{r}
-sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 8, max_x = 43)
-sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 9, max_x = 44)
-sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 10, max_x = 45)
-sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 11, max_x = 46)
-sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 12, max_x = 47)
+sum_ngh_pmf(N = 50, M = 3, m = 3, min_x = 17, max_x = 47)
 ```
 
 ### M = 2
@@ -1286,7 +1282,7 @@ ggplot(data, aes(x = M, y = Coverage.Probability, group = X.s.Set, color = X.s.S
 
 ## N = 20, m = 3, Confidence Level = 0.95
 
-### M = 20 
+### M = 20
 
 -\> 0-0 with CP = 1
 
@@ -1436,6 +1432,7 @@ sum_ngh_pmf(N = 20, M = 8, m = 3, min_x = 1, max_x = 9)
 ```{r}
 sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 0, max_x = 8)
 sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 1, max_x = 9)
+sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 2, max_x = 10)
 
 sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 0, max_x = 9)
 sum_ngh_pmf(N = 20, M = 7, m = 3, min_x = 1, max_x = 10)
@@ -1500,12 +1497,10 @@ sum_ngh_pmf(N = 20, M = 4, m = 3, min_x = 4, max_x = 17)
 
 ### M = 3
 
--\> 4-17 with CP = 0.9824561
+-\> 6-17 with CP = 0.9508772
 
 ```{r}
-sum_ngh_pmf(N = 20, M = 3, m = 3, min_x = 2, max_x = 15)
-sum_ngh_pmf(N = 20, M = 3, m = 3, min_x = 3, max_x = 16)
-sum_ngh_pmf(N = 20, M = 3, m = 3, min_x = 4, max_x = 17)
+sum_ngh_pmf(N = 20, M = 3, m = 3, min_x = 6, max_x = 17)
 ```
 
 ### M = 2
@@ -1551,4 +1546,73 @@ ggplot(data, aes(x = M, y = Coverage.Probability, group = X.s.Set, color = X.s.S
   ylim(conf_level - 0.005, 1) +
   theme_minimal() +
   theme(legend.position = "none")
+```
+
+## Function
+
+```{r}
+# Not working 100% yet, making sure a and b are non decreasing still not working 
+
+all_mc_ac <- function(N, m, conf_level = 0.95) {
+  results = data.frame(M = integer(), 
+                       a = integer(), 
+                       b = integer(), 
+                       cardinality = integer(), 
+                       coverage_prob = numeric())
+  
+  for (M in N:0) {
+    if (M < m) {
+      a = N - M
+      b = N - M
+      coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+      cardinality = b - a + 1
+      results = rbind(results, data.frame(M = M, 
+                                          a = a, 
+                                          b = b, 
+                                          cardinality = cardinality, 
+                                          coverage_prob = coverage_prob))
+    } 
+    else {
+      for (a in 0:(N - M)) {
+        for (b in a:(N - M)) {
+          coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+          cardinality = b - a + 1
+          results = rbind(results, data.frame(M = M, 
+                                              a = a, 
+                                              b = b, 
+                                              cardinality = cardinality, 
+                                              coverage_prob = coverage_prob))
+        }
+      }
+    }
+  }
+
+  # Separate the results into two data frames
+  results_M_ge_m = results %>% 
+    filter(M >= m & valid)
+  
+  results_M_lt_m = results %>% 
+    filter(M < m)
+  
+  # Filter out the sets with the smallest cardinality and coverage probability >= conf_level for M >= m
+  filtered_results_M_ge_m = results_M_ge_m %>%
+    filter(coverage_prob >= conf_level) %>%
+    group_by(M) %>%
+    slice_min(order_by = cardinality, with_ties = TRUE) %>%
+    ungroup() 
+
+  # Combine the two data frames
+  filtered_results = bind_rows(filtered_results_M_ge_m, results_M_lt_m) %>%
+    arrange(desc(M)) %>%
+    select(-valid)
+  
+  return(filtered_results)
+}
+```
+
+```{r}
+test = all_mc_ac(N = 50, m = 3, conf_level = 0.95)
+test 
+
+# a and b non decreasing not working at M = 10, 0-21 inlcuded when it should not be 
 ```
