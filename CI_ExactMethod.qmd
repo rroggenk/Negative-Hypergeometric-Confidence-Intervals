@@ -1553,6 +1553,129 @@ ggplot(data, aes(x = M, y = Coverage.Probability, group = X.s.Set, color = X.s.S
 ```{r}
 # Not working 100% yet, making sure a and b are non decreasing still not working 
 
+# all_mc_ac <- function(N, m, conf_level = 0.95) {
+#   results = data.frame(M = integer(), 
+#                        a = integer(), 
+#                        b = integer(), 
+#                        cardinality = integer(), 
+#                        coverage_prob = numeric())
+#   
+#   for (M in N:0) {
+#     if (M < m) {
+#       a = N - M
+#       b = N - M
+#       coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+#       cardinality = b - a + 1
+#       results = rbind(results, data.frame(M = M, 
+#                                           a = a, 
+#                                           b = b, 
+#                                           cardinality = cardinality, 
+#                                           coverage_prob = coverage_prob))
+#     } 
+#     else {
+#       for (a in 0:(N - m)) {
+#         for (b in a:(N - m)) {
+#           coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+#           cardinality = b - a + 1
+#           results = rbind(results, data.frame(M = M, 
+#                                               a = a, 
+#                                               b = b, 
+#                                               cardinality = cardinality, 
+#                                               coverage_prob = coverage_prob))
+#         }
+#       }
+#     }
+#   }
+# 
+#   # Separate the results into two data frames
+#   results_M_ge_m = results %>% 
+#     filter(M >= m)
+#   
+#   results_M_lt_m = results %>% 
+#     filter(M < m)
+#   
+#   # Filter out the sets with the smallest cardinality and coverage probability >= conf_level 
+#   # for M >= m
+#   filtered_results_M_ge_m = results_M_ge_m %>%
+#     filter(coverage_prob >= conf_level) %>%
+#     group_by(M) %>%
+#     slice_min(order_by = cardinality, with_ties = TRUE) %>%
+#     ungroup() 
+# 
+#   # Combine the two data frames
+#   filtered_results = bind_rows(filtered_results_M_ge_m, results_M_lt_m) %>%
+#     arrange(desc(M))
+#   
+#   return(filtered_results)
+# }
+```
+
+```{r}
+# all_mc_ac <- function(N, m, conf_level = 0.95) {
+#   results = data.frame(M = integer(), 
+#                        a = integer(), 
+#                        b = integer(), 
+#                        cardinality = integer(), 
+#                        coverage_prob = numeric())
+#   
+#   min_a = 0
+#   min_b = 0
+#   
+#   for (M in N:0) {
+#     if (M < m) {
+#       a = N - M
+#       b = N - M
+#       coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+#       cardinality = b - a + 1
+#       results = rbind(results, data.frame(M = M, 
+#                                           a = a, 
+#                                           b = b, 
+#                                           cardinality = cardinality, 
+#                                           coverage_prob = coverage_prob))
+#     } 
+#     else {
+#       for (a in min_a:(N - m)) {
+#         for (b in max(a, min_b):(N - m)) {
+#           coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+#           cardinality = b - a + 1
+#           results = rbind(results, data.frame(M = M, 
+#                                               a = a, 
+#                                               b = b, 
+#                                               cardinality = cardinality, 
+#                                               coverage_prob = coverage_prob))
+#         }
+#       }
+#     }
+# 
+#     min_a = max(min_a, min(results$a[results$M == M]))
+#     min_b = max(min_b, min(results$b[results$M == M]))
+#   }
+# 
+#   # Separate the results into two data frames
+#   results_M_ge_m = results %>% 
+#     filter(M >= m)
+#   
+#   results_M_lt_m = results %>% 
+#     filter(M < m)
+#   
+#   # Filter out the sets with the smallest cardinality and coverage probability >= conf_level 
+#   # for M >= m
+#   filtered_results_M_ge_m = results_M_ge_m %>%
+#     filter(coverage_prob >= conf_level) %>%
+#     group_by(M) %>%
+#     slice_min(order_by = cardinality, with_ties = TRUE) %>%
+#     ungroup() 
+# 
+#   # Combine the two data frames
+#   filtered_results = bind_rows(filtered_results_M_ge_m, results_M_lt_m) %>%
+#     arrange(desc(M))
+#   
+#   return(filtered_results)
+# }
+```
+
+
+```{r}
 all_mc_ac <- function(N, m, conf_level = 0.95) {
   results = data.frame(M = integer(), 
                        a = integer(), 
@@ -1560,55 +1683,76 @@ all_mc_ac <- function(N, m, conf_level = 0.95) {
                        cardinality = integer(), 
                        coverage_prob = numeric())
   
+  min_a = 0
+  min_b = 0
+  
   for (M in N:0) {
+    temp_results = data.frame(M = integer(), 
+                              a = integer(), 
+                              b = integer(), 
+                              cardinality = integer(), 
+                              coverage_prob = numeric())
+
     if (M < m) {
       a = N - M
       b = N - M
       coverage_prob = sum_ngh_pmf(N, M, m, a, b)
       cardinality = b - a + 1
-      results = rbind(results, data.frame(M = M, 
-                                          a = a, 
-                                          b = b, 
-                                          cardinality = cardinality, 
-                                          coverage_prob = coverage_prob))
+      temp_results = rbind(temp_results, data.frame(M = M, 
+                                                    a = a, 
+                                                    b = b, 
+                                                    cardinality = cardinality, 
+                                                    coverage_prob = coverage_prob))
     } 
     else {
-      for (a in 0:(N - M)) {
-        for (b in a:(N - M)) {
+      for (a in min_a:(N - m)) {
+        for (b in max(a, min_b):(N - m)) {
           coverage_prob = sum_ngh_pmf(N, M, m, a, b)
           cardinality = b - a + 1
-          results = rbind(results, data.frame(M = M, 
-                                              a = a, 
-                                              b = b, 
-                                              cardinality = cardinality, 
-                                              coverage_prob = coverage_prob))
+          temp_results = rbind(temp_results, data.frame(M = M, 
+                                                        a = a, 
+                                                        b = b, 
+                                                        cardinality = cardinality, 
+                                                        coverage_prob = coverage_prob))
         }
       }
     }
+
+    # Filter out the sets with the smallest cardinality and coverage probability >= conf_level 
+    if (M >= m) {
+      temp_results = temp_results %>%
+        filter(coverage_prob >= conf_level) %>%
+        group_by(M) %>%
+        slice_min(order_by = cardinality, with_ties = TRUE) %>%
+        ungroup()
+      
+      if (nrow(temp_results) > 0) {
+        min_a = max(min_a, min(temp_results$a))
+        min_b = max(min_b, min(temp_results$b))
+      }
+    }
+    
+    results = rbind(results, temp_results)
   }
 
   # Separate the results into two data frames
   results_M_ge_m = results %>% 
-    filter(M >= m & valid)
+    filter(M >= m)
   
   results_M_lt_m = results %>% 
     filter(M < m)
   
-  # Filter out the sets with the smallest cardinality and coverage probability >= conf_level for M >= m
-  filtered_results_M_ge_m = results_M_ge_m %>%
-    filter(coverage_prob >= conf_level) %>%
-    group_by(M) %>%
-    slice_min(order_by = cardinality, with_ties = TRUE) %>%
-    ungroup() 
-
   # Combine the two data frames
-  filtered_results = bind_rows(filtered_results_M_ge_m, results_M_lt_m) %>%
-    arrange(desc(M)) %>%
-    select(-valid)
+  filtered_results = bind_rows(results_M_ge_m, results_M_lt_m) %>%
+    arrange(desc(M))
   
   return(filtered_results)
 }
+
 ```
+
+
+
 
 ```{r}
 test = all_mc_ac(N = 50, m = 3, conf_level = 0.95)
