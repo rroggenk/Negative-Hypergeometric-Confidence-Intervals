@@ -1784,10 +1784,10 @@ cg_ac <- function(N, m, conf_level = 0.95) {
 # test_50_CG
 ```
 
-## Function to Find KB Acceptance Curves
+## Function to Find BK Acceptance Curves
 
 ```{r}
-kb_ac <- function(N, m, conf_level = 0.95) {
+bk_ac <- function(N, m, conf_level = 0.95) {
   # Gets all minimal cardinality acceptance curves
   results = all_mc_ac(N, m, conf_level)
   
@@ -1840,13 +1840,13 @@ kb_ac <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
-# test_20_KB = kb_ac(N = 20, m = 3, conf_level = 0.95)
-# test_20_KB
+# test_20_BK = bk_ac(N = 20, m = 3, conf_level = 0.95)
+# test_20_BK
 ```
 
 ```{r}
-# test_50_KB = kb_ac(N = 50, m = 3, conf_level = 0.95)
-# test_50_KB
+# test_50_BK = bk_ac(N = 50, m = 3, conf_level = 0.95)
+# test_50_BK
 ```
 
 ## Function to Find Confidence Intervals Bounds
@@ -1860,11 +1860,11 @@ minimal_cardinality_ci <- function(N, m, conf_level = 0.95, procedure = "MST") {
   else if (procedure == "CG") {
     results = cg_ac(N, m, conf_level)
   } 
-  else if (procedure == "KB") {
-    results = kb_ac(N, m, conf_level)
+  else if (procedure == "BK") {
+    results = bk_ac(N, m, conf_level)
   } 
   else {
-    stop("Invalid procedure. Choose from 'MST', 'CG', or 'KB'.")
+    stop("Invalid procedure. Choose from 'MST', 'CG', or 'BK'.")
   }
   
   # Initializes data frame that will be outputted 
@@ -1924,11 +1924,11 @@ minimal_cardinality_ci <- function(N, m, conf_level = 0.95, procedure = "MST") {
 ```
 
 ```{r}
-# test_20_CI_kb = minimal_cardinality_ci(N = 20, m = 3, conf_level = 0.95, procedure = "KB")
-# test_20_CI_kb
+# test_20_CI_bk = minimal_cardinality_ci(N = 20, m = 3, conf_level = 0.95, procedure = "BK")
+# test_20_CI_bk
 ```
 
 ```{r}
-# test_50_CI_kb = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedure = "KB")
-# test_50_CI_kb
+# test_50_CI_bk = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedure = "BK")
+# test_50_CI_bk
 ```
