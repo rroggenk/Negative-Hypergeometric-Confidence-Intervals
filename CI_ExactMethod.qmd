@@ -150,10 +150,11 @@ NGH_CI_Exact_Method <- function(m, x, N, conf_level = 0.95) {
   }
   
   else {
+    # Initilaizing lower and upper bound
     lower_bound = m
     upper_bound = N
     
-    # Find lower bound
+    # Find lower bound: iterating until the area to the left is greater than or equal 
     for (M in m:N) {
       area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
       
@@ -169,7 +170,7 @@ NGH_CI_Exact_Method <- function(m, x, N, conf_level = 0.95) {
       }
     }
   
-    # Find upper bound
+    # Find upper bound: iterating until the area to the right is greater than or equal 
     for (M in N:m) {
       area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
       
@@ -337,6 +338,7 @@ NGH_CI_Exact_Method(m, x, N, conf_level)
 # Coverage Probability for M
 
 ```{r}
+# Finding the confidence interals: same principle as function above, just reformatted output
 CI_cov_prob <- function(N, m, conf_level = 0.95) {
   target_probability = (1 - conf_level) / 2
   
@@ -552,13 +554,13 @@ test <- function(M, N, m, conf_level = 0.95) {
 # test(M = 12, N = 50, m = 3)
 # test(M = 13, N = 50, m = 3)
 # test(M = 14, N = 50, m = 3)
-test(M = 15, N = 50, m = 3)
-test(M = 16, N = 50, m = 3)
-test(M = 17, N = 50, m = 3)
-test(M = 18, N = 50, m = 3)
-test(M = 19, N = 50, m = 3)
-test(M = 20, N = 50, m = 3)
-test(M = 21, N = 50, m = 3)
+# test(M = 15, N = 50, m = 3)
+# test(M = 16, N = 50, m = 3)
+# test(M = 17, N = 50, m = 3)
+# test(M = 18, N = 50, m = 3)
+# test(M = 19, N = 50, m = 3)
+# test(M = 20, N = 50, m = 3)
+# test(M = 21, N = 50, m = 3)
 # test(M = 22, N = 50, m = 3)
 # test(M = 23, N = 50, m = 3)
 # test(M = 24, N = 50, m = 3)
@@ -591,13 +593,14 @@ test(M = 21, N = 50, m = 3)
 ```
 
 ```{r}
-test_CI = CI_cov_prob(N = 50, m = 3) 
-test_CI
+# test_CI = CI_cov_prob(N = 50, m = 3) 
+# test_CI
 ```
 
 # Minimal **Cardinality** Acceptance Curves
 
 ```{r}
+# Function that sums the ngh_pmf based on a min_x and max_x
 sum_ngh_pmf <- function(N, M, m, min_x, max_x) {
   sum_pmf = 0
   for (x in min_x:max_x) {
@@ -1552,22 +1555,28 @@ ggplot(data, aes(x = M, y = Coverage.Probability, group = X.s.Set, color = X.s.S
 
 ```{r}
 all_mc_ac <- function(N, m, conf_level = 0.95) {
+  # Initializing the data frame that the function will output 
   results = data.frame(M = integer(), 
                        a = integer(), 
                        b = integer(), 
                        cardinality = integer(), 
                        coverage_prob = numeric())
   
+  # Setting the initial min_a and min_b, always starts with 0-0
   min_a = 0
   min_b = 0
   
   for (M in N:0) {
+    # Initializing a data frame that temporarily stores results
     temp_results = data.frame(M = integer(), 
                               a = integer(), 
                               b = integer(), 
                               cardinality = integer(), 
                               coverage_prob = numeric())
-
+    
+    # Find all possible acceptance curves that have non-decreasing a and b
+    
+    # Speical End Cases: When M < m
     if (M < m) {
       a = N - M
       b = N - M
@@ -1580,8 +1589,13 @@ all_mc_ac <- function(N, m, conf_level = 0.95) {
                                                     coverage_prob = coverage_prob))
     } 
     else {
+      # Loops through the a first, making sure it only starts at min_a so that a is 
+      # non-decreasing, stops at a N-m
       for (a in min_a:(N - m)) {
+        # Loops through b: starting at the max of a and min_b to make sure that b >= a and 
+        # so that b is non-decreasing, stops at N-m
         for (b in max(a, min_b):(N - m)) {
+          # Calculates coverage probability, cardinality, and stores it in data frame
           coverage_prob = sum_ngh_pmf(N, M, m, a, b)
           cardinality = b - a + 1
           temp_results = rbind(temp_results, data.frame(M = M, 
@@ -1601,6 +1615,7 @@ all_mc_ac <- function(N, m, conf_level = 0.95) {
         slice_min(order_by = cardinality, with_ties = TRUE) %>%
         ungroup()
       
+      # Updates min_a and min_b for each iteration 
       if (nrow(temp_results) > 0) {
         min_a = max(min_a, min(temp_results$a))
         min_b = max(min_b, min(temp_results$b))
@@ -1621,6 +1636,7 @@ all_mc_ac <- function(N, m, conf_level = 0.95) {
   filtered_results = bind_rows(results_M_ge_m, results_M_lt_m) %>%
     arrange(desc(M))
   
+  # Adds a column of the x set
   filtered_results = filtered_results %>%
     mutate(x_set = paste(a, b, sep = "-"))
   
@@ -1642,8 +1658,10 @@ all_mc_ac <- function(N, m, conf_level = 0.95) {
 
 ```{r}
 mst_ac <- function(N, m, conf_level = 0.95) {
+  # Gets all minimal cardinality acceptance curves 
   results = all_mc_ac(N, m, conf_level)
   
+  # Initializes data frame that will be outputted 
   final_results = data.frame(M = integer(), 
                              a = integer(), 
                              b = integer(), 
@@ -1651,16 +1669,24 @@ mst_ac <- function(N, m, conf_level = 0.95) {
                              coverage_prob = numeric(), 
                              x_set = character())
   
+  # Initializes min_a and min_b, starting at 0-0
   min_a = 0
   min_b = 0
   
+  # Loops through with each M 
   for (current_M in N:0) {
+    # Only looks at acceptance curves for the current M 
     subset_results = results %>% 
       filter(M == current_M)
     
+    # If only one acceptance curve, then that is the acceptance curve  
     if (nrow(subset_results) == 1) {
       chosen_row = subset_results
     } 
+    
+    # If has more than one option, apply MST procedure
+    # Filters so a and b are non-decreasing, and then chooses the row with the highest 
+    # coverage probability 
     else {
       chosen_row = subset_results %>% 
         filter(a >= min_a, b >= min_b) %>% 
@@ -1668,6 +1694,7 @@ mst_ac <- function(N, m, conf_level = 0.95) {
         slice(1)
     }
     
+    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
       min_a = max(min_a, chosen_row$a)
       min_b = max(min_b, chosen_row$b)
@@ -1696,75 +1723,43 @@ mst_ac <- function(N, m, conf_level = 0.95) {
 
 ```{r}
 cg_ac <- function(N, m, conf_level = 0.95) {
-  results <- all_mc_ac(N, m, conf_level)
+  # Gets all minimal cardinality acceptance curves
+  results = all_mc_ac(N, m, conf_level)
   
-  final_results <- data.frame(M = integer(), 
+  # Initializes data frame that will be outputted 
+  final_results = data.frame(M = integer(), 
                               a = integer(), 
                               b = integer(), 
                               cardinality = integer(), 
                               coverage_prob = numeric(), 
                               x_set = character())
   
-  min_a <- 0
-  min_b <- 0
+  # Initializes min_a and min_b, starting at 0-0
+  min_a = 0
+  min_b = 0
   
+  # Loops through with each M
   for (current_M in N:0) {
-    subset_results <- results %>% 
+    # Only looks at acceptance curves for the current M 
+    subset_results = results %>% 
       filter(M == current_M)
     
+    # If only one acceptance curve, then that is the acceptance curve 
     if (nrow(subset_results) == 1) {
-      chosen_row <- subset_results
-    } else {
-      chosen_row <- subset_results %>% 
+      chosen_row = subset_results
+    } 
+    
+    # If has more than one option, apply CG procedure
+    # Filters so a and b are non-decreasing, and then chooses the row with the largest 
+    # possible a and b
+    else {
+      chosen_row = subset_results %>% 
         filter(a >= min_a, b >= min_b) %>% 
         arrange(a, b) %>% 
         slice(1)
     }
     
-    if (nrow(chosen_row) > 0) {
-      min_a <- max(min_a, chosen_row$a)
-      min_b <- max(min_b, chosen_row$b)
-      final_results <- rbind(final_results, chosen_row)
-    }
-  }
-  
-  final_results <- final_results %>%
-    arrange(desc(M))
-  
-  return(final_results)
-}
-```
-
-## Function to Find KB Acceptance Curves
-
-```{r}
-kb_ac <- function(N, m, conf_level = 0.95) {
-  results = all_mc_ac(N, m, conf_level)
-  
-  final_results = data.frame(M = integer(), 
-                             a = integer(), 
-                             b = integer(), 
-                             cardinality = integer(), 
-                             coverage_prob = numeric(), 
-                             x_set = character())
-  
-  min_a = 0
-  min_b = 0
-  
-  for (current_M in N:0) {
-    subset_results = results %>% 
-      filter(M == current_M)
-    
-    if (nrow(subset_results) == 1) {
-      chosen_row = subset_results
-    } 
-    else {
-      chosen_row = subset_results %>% 
-        filter(a >= min_a, b >= min_b) %>% 
-        arrange(desc(a), desc(b)) %>% 
-        slice(1)
-    }
-    
+    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
       min_a = max(min_a, chosen_row$a)
       min_b = max(min_b, chosen_row$b)
@@ -1779,27 +1774,119 @@ kb_ac <- function(N, m, conf_level = 0.95) {
 }
 ```
 
-## Function to Find MST Confidence Intervals Bounds
+```{r}
+# test_20_CG = cg_ac(N = 20, m = 3, conf_level = 0.95)
+# test_20_CG
+```
 
 ```{r}
-mst_ci <- function(N, m, conf_level = 0.95) {
-  results = mst_ac(N, m, conf_level)
+# test_50_CG = cg_ac(N = 50, m = 3, conf_level = 0.95)
+# test_50_CG
+```
+
+## Function to Find KB Acceptance Curves
+
+```{r}
+kb_ac <- function(N, m, conf_level = 0.95) {
+  # Gets all minimal cardinality acceptance curves
+  results = all_mc_ac(N, m, conf_level)
   
+  # Initializes data frame that will be outputted 
+  final_results = data.frame(M = integer(), 
+                             a = integer(), 
+                             b = integer(), 
+                             cardinality = integer(), 
+                             coverage_prob = numeric(), 
+                             x_set = character())
+  
+  # Initializes min_a and min_b, starting at 0-0
+  min_a = 0
+  min_b = 0
+  
+  # Loops through with each M
+  for (current_M in N:0) {
+    # Only looks at acceptance curves for the current M 
+    subset_results = results %>% 
+      filter(M == current_M)
+    
+    # If only one acceptance curve, then that is the acceptance curve 
+    if (nrow(subset_results) == 1) {
+      chosen_row = subset_results
+    } 
+    
+    # If has more than one option, apply MST procedure
+    # Filters so a and b are non-decreasing, and then chooses the row with the smallest 
+    # possible a and b
+    else {
+      chosen_row = subset_results %>% 
+        filter(a >= min_a, b >= min_b) %>% 
+        arrange(desc(a), desc(b)) %>% 
+        slice(1)
+    }
+    
+    # Updates min_a and min_b and then adds row to final outputted data frame 
+    if (nrow(chosen_row) > 0) {
+      min_a = max(min_a, chosen_row$a)
+      min_b = max(min_b, chosen_row$b)
+      final_results = rbind(final_results, chosen_row)
+    }
+  }
+  
+  final_results = final_results %>%
+    arrange(desc(M))
+  
+  return(final_results)
+}
+```
+
+```{r}
+# test_20_KB = kb_ac(N = 20, m = 3, conf_level = 0.95)
+# test_20_KB
+```
+
+```{r}
+# test_50_KB = kb_ac(N = 50, m = 3, conf_level = 0.95)
+# test_50_KB
+```
+
+## Function to Find Confidence Intervals Bounds
+
+```{r}
+minimal_cardinality_ci <- function(N, m, conf_level = 0.95, procedure = "MST") {
+  # Chooses which minimal cardinality procedure 
+  if (procedure == "MST") {
+    results = mst_ac(N, m, conf_level)
+  } 
+  else if (procedure == "CG") {
+    results = cg_ac(N, m, conf_level)
+  } 
+  else if (procedure == "KB") {
+    results = kb_ac(N, m, conf_level)
+  } 
+  else {
+    stop("Invalid procedure. Choose from 'MST', 'CG', or 'KB'.")
+  }
+  
+  # Initializes data frame that will be outputted 
   ci_results = data.frame(x = integer(), 
                           ci_lb = integer(), 
                           ci_ub = integer(), 
                           ci = character(),
                           stringsAsFactors = FALSE)
   
+  # Loops through each x 
   for (x in 0:N) {
+    # Finds first interval where x appears 
     first_occurrence = results %>% 
       filter(a <= x, x <= b) %>% 
       slice(1)
     
+    # Finds last interval where x appears 
     last_occurrence = results %>% 
       filter(a <= x, x <= b) %>% 
       slice(n())
     
+    # Finds the M of the corresponding above intervals and saves those as the CI bounds
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
       ci_ub = first_occurrence$M
       ci_lb = last_occurrence$M
@@ -1817,11 +1904,31 @@ mst_ci <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
-#test_20_CI = mst_ci(N = 20, m = 3, conf_level = 0.95)
-#test_20_CI
+# test_20_CI_mst = minimal_cardinality_ci(N = 20, m = 3, conf_level = 0.95, procedure = "MST")
+# test_20_CI_mst
 ```
 
 ```{r}
-#test_50_CI = mst_ci(N = 50, m = 3, conf_level = 0.95)
-#test_50_CI
+# test_50_CI_mst = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedure = "MST")
+# test_50_CI_mst
+```
+
+```{r}
+# test_20_CI_cg = minimal_cardinality_ci(N = 20, m = 3, conf_level = 0.95, procedure = "CG")
+# test_20_CI_cg
+```
+
+```{r}
+# test_50_CI_cg = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedure = "CG")
+# test_50_CI_cg
+```
+
+```{r}
+# test_20_CI_kb = minimal_cardinality_ci(N = 20, m = 3, conf_level = 0.95, procedure = "KB")
+# test_20_CI_kb
+```
+
+```{r}
+# test_50_CI_kb = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedure = "KB")
+# test_50_CI_kb
 ```
