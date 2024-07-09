@@ -1710,8 +1710,8 @@ mst_ac <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
-#test_20_MST = mst_ac(N = 20, m = 3, conf_level = 0.95)
-#test_20_MST
+# test_20_MST = mst_ac(N = 20, m = 3, conf_level = 0.95)
+# test_20_MST
 ```
 
 ```{r}
@@ -1931,4 +1931,95 @@ minimal_cardinality_ci <- function(N, m, conf_level = 0.95, procedure = "MST") {
 ```{r}
 # test_50_CI_bk = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedure = "BK")
 # test_50_CI_bk
+```
+
+# Blaker's Method 
+
+## Function to Find Acceptance Curves
+
+```{r}
+blaker_ac <- function(N, m, conf_level = 0.95) {
+  alpha = 1 - conf_level 
+  
+  results = data.frame(M = integer(), 
+                       x = integer(), 
+                       min_tail_prob = numeric(), 
+                       acceptance_set = character())
+  
+  for (M in N:0) {
+    if (M < m) {
+      x = N - M
+      results = rbind(results, data.frame(M = M, 
+                                          x = x,
+                                          min_tail_prob = NA,
+                                          acceptance_set = as.character(x)))
+    } 
+    else {
+      for (x in 0:N) {
+        area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
+        area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
+        min_tail_prob = min(area_left, area_right)
+        
+        results = rbind(results, data.frame(M = M, 
+                                            x = x,
+                                            min_tail_prob = min_tail_prob,
+                                            acceptance_set = NA))
+      }
+    }
+  }
+  
+  # Calculate the acceptance sets based on min_tail_prob
+  for (fixed_M in unique(results$M)) {
+    if (fixed_M >= m) {
+      acceptance_set = c()
+      for (fixed_x in 0:N) {
+        min_tail_prob_fixed_x = results %>% 
+          filter(M == fixed_M, x == fixed_x) %>% 
+          select(min_tail_prob) %>% 
+          pull()
+        
+        possible_xs = results %>% 
+          filter(M == fixed_M, min_tail_prob <= min_tail_prob_fixed_x) %>% 
+          select(x) %>% 
+          pull()
+        
+        prob_sum = sum(sapply(possible_xs, function(px) ngh_pmf(x = px, 
+                                                                N = N, 
+                                                                M = fixed_M, 
+                                                                m = m)))
+        
+        if (prob_sum > alpha) {
+          acceptance_set = c(acceptance_set, fixed_x)
+        }
+      }
+      
+      acceptance_set_str = paste(unique(acceptance_set), collapse = ",")
+      results = results %>% 
+        mutate(acceptance_set = ifelse(M == fixed_M, acceptance_set_str, acceptance_set))
+    }
+  }
+  
+  # Keep only the unique combinations of M and acceptance_set
+  final_results = results %>% 
+    select(M, acceptance_set) %>% 
+    distinct()
+  
+  return(final_results)
+}
+```
+
+```{r}
+# test_20_blaker = blaker_ac(N = 20, m = 3, conf_level = 0.95)
+# test_20_blaker
+```
+
+```{r}
+# test_50_blaker = blaker_ac(N = 50, m = 3, conf_level = 0.95)
+# test_50_blaker
+```
+
+## Function to Find Confidence Intervals 
+
+```{r}
+
 ```
