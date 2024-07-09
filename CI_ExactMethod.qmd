@@ -1,5 +1,5 @@
 ---
-title: "Confidence Intervals (Exact Method)"
+title: "NHG Confidence Intervals"
 author: "Rachel Roggenkemper"
 format: html
 editor: visual
