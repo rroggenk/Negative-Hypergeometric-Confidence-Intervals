@@ -2592,11 +2592,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb673-34"><a href="#cb673-34" aria-hidden="true" tabindex="-1"></a>    } </span>
 <span id="cb673-35"><a href="#cb673-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
 <span id="cb673-36"><a href="#cb673-36" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Loops through the a first, making sure it only starts at min_a so that a is </span></span>
-<span id="cb673-37"><a href="#cb673-37" aria-hidden="true" tabindex="-1"></a>      <span class="co"># non-decreasing, stops at a N-m</span></span>
-<span id="cb673-38"><a href="#cb673-38" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (a <span class="cf">in</span> min_a<span class="sc">:</span>(N <span class="sc">-</span> m)) {</span>
+<span id="cb673-37"><a href="#cb673-37" aria-hidden="true" tabindex="-1"></a>      <span class="co"># non-decreasing, stops at a N-M</span></span>
+<span id="cb673-38"><a href="#cb673-38" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (a <span class="cf">in</span> min_a<span class="sc">:</span>(N <span class="sc">-</span> M)) {</span>
 <span id="cb673-39"><a href="#cb673-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Loops through b: starting at the max of a and min_b to make sure that b &gt;= a and </span></span>
-<span id="cb673-40"><a href="#cb673-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># so that b is non-decreasing, stops at N-m</span></span>
-<span id="cb673-41"><a href="#cb673-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (b <span class="cf">in</span> <span class="fu">max</span>(a, min_b)<span class="sc">:</span>(N <span class="sc">-</span> m)) {</span>
+<span id="cb673-40"><a href="#cb673-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># so that b is non-decreasing, stops at N-M</span></span>
+<span id="cb673-41"><a href="#cb673-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (b <span class="cf">in</span> <span class="fu">max</span>(a, min_b)<span class="sc">:</span>(N <span class="sc">-</span> M)) {</span>
 <span id="cb673-42"><a href="#cb673-42" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Calculates coverage probability, cardinality, and stores it in data frame</span></span>
 <span id="cb673-43"><a href="#cb673-43" aria-hidden="true" tabindex="-1"></a>          coverage_prob <span class="ot">=</span> <span class="fu">sum_ngh_pmf</span>(N, M, m, a, b)</span>
 <span id="cb673-44"><a href="#cb673-44" aria-hidden="true" tabindex="-1"></a>          cardinality <span class="ot">=</span> b <span class="sc">-</span> a <span class="sc">+</span> <span class="dv">1</span></span>
@@ -2646,12 +2646,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb673-88"><a href="#cb673-88" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb674"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb674-1"><a href="#cb674-1" aria-hidden="true" tabindex="-1"></a><span class="co">#test_20 = all_mc_ac(N = 20, m = 3, conf_level = 0.95)</span></span>
-<span id="cb674-2"><a href="#cb674-2" aria-hidden="true" tabindex="-1"></a><span class="co">#test_20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb674"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb674-1"><a href="#cb674-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test_20 = all_mc_ac(N = 20, m = 3, conf_level = 0.95)</span></span>
+<span id="cb674-2"><a href="#cb674-2" aria-hidden="true" tabindex="-1"></a><span class="co"># test_20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb675"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb675-1"><a href="#cb675-1" aria-hidden="true" tabindex="-1"></a><span class="co">#test_50 = all_mc_ac(N = 50, m = 3, conf_level = 0.95)</span></span>
-<span id="cb675-2"><a href="#cb675-2" aria-hidden="true" tabindex="-1"></a><span class="co">#test_50</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb675"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb675-1"><a href="#cb675-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test_50 = all_mc_ac(N = 50, m = 3, conf_level = 0.95)</span></span>
+<span id="cb675-2"><a href="#cb675-2" aria-hidden="true" tabindex="-1"></a><span class="co"># test_50</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="function-to-find-mst-acceptance-curves" class="level2">
@@ -2709,8 +2709,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb676-50"><a href="#cb676-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb677"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb677-1"><a href="#cb677-1" aria-hidden="true" tabindex="-1"></a><span class="co">#test_20_MST = mst_ac(N = 20, m = 3, conf_level = 0.95)</span></span>
-<span id="cb677-2"><a href="#cb677-2" aria-hidden="true" tabindex="-1"></a><span class="co">#test_20_MST</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb677"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb677-1"><a href="#cb677-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test_20_MST = mst_ac(N = 20, m = 3, conf_level = 0.95)</span></span>
+<span id="cb677-2"><a href="#cb677-2" aria-hidden="true" tabindex="-1"></a><span class="co"># test_20_MST</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb678"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb678-1"><a href="#cb678-1" aria-hidden="true" tabindex="-1"></a><span class="co">#test_50_MST = mst_ac(N = 50, m = 3, conf_level = 0.95)</span></span>
@@ -2920,6 +2920,244 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb691"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb691-1"><a href="#cb691-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test_50_CI_bk = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedure = "BK")</span></span>
 <span id="cb691-2"><a href="#cb691-2" aria-hidden="true" tabindex="-1"></a><span class="co"># test_50_CI_bk</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+</section>
+<section id="blakers-method" class="level1">
+<h1>Blaker’s Method</h1>
+<section id="function-to-find-acceptance-curves" class="level2">
+<h2 class="anchored" data-anchor-id="function-to-find-acceptance-curves">Function to Find Acceptance Curves</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb692"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb692-1"><a href="#cb692-1" aria-hidden="true" tabindex="-1"></a><span class="co"># When finding all x's with min tail prob as small, including the fixed_x </span></span>
+<span id="cb692-2"><a href="#cb692-2" aria-hidden="true" tabindex="-1"></a>blaker_ac <span class="ot">&lt;-</span> <span class="cf">function</span>(N, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>) {</span>
+<span id="cb692-3"><a href="#cb692-3" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">=</span> <span class="dv">1</span> <span class="sc">-</span> conf_level </span>
+<span id="cb692-4"><a href="#cb692-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb692-5"><a href="#cb692-5" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">M =</span> <span class="fu">integer</span>(), </span>
+<span id="cb692-6"><a href="#cb692-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> <span class="fu">integer</span>(), </span>
+<span id="cb692-7"><a href="#cb692-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">min_tail_prob =</span> <span class="fu">numeric</span>(), </span>
+<span id="cb692-8"><a href="#cb692-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">acceptance_set =</span> <span class="fu">character</span>())</span>
+<span id="cb692-9"><a href="#cb692-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb692-10"><a href="#cb692-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (M <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>N) {</span>
+<span id="cb692-11"><a href="#cb692-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (M <span class="sc">&lt;</span> m) {</span>
+<span id="cb692-12"><a href="#cb692-12" aria-hidden="true" tabindex="-1"></a>      x <span class="ot">=</span> N <span class="sc">-</span> M</span>
+<span id="cb692-13"><a href="#cb692-13" aria-hidden="true" tabindex="-1"></a>      results <span class="ot">=</span> <span class="fu">rbind</span>(results, <span class="fu">data.frame</span>(<span class="at">M =</span> M, </span>
+<span id="cb692-14"><a href="#cb692-14" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">x =</span> x,</span>
+<span id="cb692-15"><a href="#cb692-15" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">min_tail_prob =</span> <span class="cn">NA</span>,</span>
+<span id="cb692-16"><a href="#cb692-16" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">acceptance_set =</span> <span class="fu">as.character</span>(x)))</span>
+<span id="cb692-17"><a href="#cb692-17" aria-hidden="true" tabindex="-1"></a>    } </span>
+<span id="cb692-18"><a href="#cb692-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb692-19"><a href="#cb692-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>(N <span class="sc">-</span> M)) {</span>
+<span id="cb692-20"><a href="#cb692-20" aria-hidden="true" tabindex="-1"></a>        area_left <span class="ot">=</span> <span class="fu">ngh_cdf</span>(<span class="at">x =</span> x, <span class="at">N =</span> N, <span class="at">M =</span> M, <span class="at">m =</span> m, <span class="at">lower_tail =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb692-21"><a href="#cb692-21" aria-hidden="true" tabindex="-1"></a>        area_right <span class="ot">=</span> <span class="fu">ngh_cdf</span>(<span class="at">x =</span> x <span class="sc">-</span> <span class="dv">1</span>, <span class="at">N =</span> N, <span class="at">M =</span> M, <span class="at">m =</span> m, <span class="at">lower_tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb692-22"><a href="#cb692-22" aria-hidden="true" tabindex="-1"></a>        min_tail_prob <span class="ot">=</span> <span class="fu">min</span>(area_left, area_right)</span>
+<span id="cb692-23"><a href="#cb692-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb692-24"><a href="#cb692-24" aria-hidden="true" tabindex="-1"></a>        results <span class="ot">=</span> <span class="fu">rbind</span>(results, <span class="fu">data.frame</span>(<span class="at">M =</span> M, </span>
+<span id="cb692-25"><a href="#cb692-25" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">x =</span> x,</span>
+<span id="cb692-26"><a href="#cb692-26" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">min_tail_prob =</span> min_tail_prob,</span>
+<span id="cb692-27"><a href="#cb692-27" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">acceptance_set =</span> <span class="cn">NA</span>))</span>
+<span id="cb692-28"><a href="#cb692-28" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb692-29"><a href="#cb692-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb692-30"><a href="#cb692-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb692-31"><a href="#cb692-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb692-32"><a href="#cb692-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the acceptance sets based on min_tail_prob</span></span>
+<span id="cb692-33"><a href="#cb692-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (fixed_M <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>N) {</span>
+<span id="cb692-34"><a href="#cb692-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (fixed_M <span class="sc">&gt;=</span> m) {</span>
+<span id="cb692-35"><a href="#cb692-35" aria-hidden="true" tabindex="-1"></a>      acceptance_set <span class="ot">=</span> <span class="fu">c</span>()</span>
+<span id="cb692-36"><a href="#cb692-36" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (fixed_x <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>(N <span class="sc">-</span> fixed_M)) {</span>
+<span id="cb692-37"><a href="#cb692-37" aria-hidden="true" tabindex="-1"></a>        min_tail_prob_fixed_x <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb692-38"><a href="#cb692-38" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(M <span class="sc">==</span> fixed_M <span class="sc">&amp;</span> x <span class="sc">==</span> fixed_x) <span class="sc">%&gt;%</span> </span>
+<span id="cb692-39"><a href="#cb692-39" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>(min_tail_prob) <span class="sc">%&gt;%</span> </span>
+<span id="cb692-40"><a href="#cb692-40" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pull</span>()</span>
+<span id="cb692-41"><a href="#cb692-41" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb692-42"><a href="#cb692-42" aria-hidden="true" tabindex="-1"></a>        possible_xs <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb692-43"><a href="#cb692-43" aria-hidden="true" tabindex="-1"></a>          <span class="co">#filter(M == fixed_M &amp; x != fixed_x &amp; min_tail_prob &lt;= min_tail_prob_fixed_x) %&gt;% </span></span>
+<span id="cb692-44"><a href="#cb692-44" aria-hidden="true" tabindex="-1"></a>          <span class="co"># if i use above line, would need a condition when fixed_M == N</span></span>
+<span id="cb692-45"><a href="#cb692-45" aria-hidden="true" tabindex="-1"></a>          <span class="fu">filter</span>(M <span class="sc">==</span> fixed_M <span class="sc">&amp;</span> min_tail_prob <span class="sc">&lt;=</span> min_tail_prob_fixed_x) <span class="sc">%&gt;%</span> </span>
+<span id="cb692-46"><a href="#cb692-46" aria-hidden="true" tabindex="-1"></a>          <span class="fu">select</span>(x) <span class="sc">%&gt;%</span> </span>
+<span id="cb692-47"><a href="#cb692-47" aria-hidden="true" tabindex="-1"></a>          <span class="fu">pull</span>()</span>
+<span id="cb692-48"><a href="#cb692-48" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb692-49"><a href="#cb692-49" aria-hidden="true" tabindex="-1"></a>        prob_sum <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(possible_xs, <span class="cf">function</span>(px) <span class="fu">ngh_pmf</span>(<span class="at">x =</span> px, </span>
+<span id="cb692-50"><a href="#cb692-50" aria-hidden="true" tabindex="-1"></a>                                                                       <span class="at">N =</span> N, </span>
+<span id="cb692-51"><a href="#cb692-51" aria-hidden="true" tabindex="-1"></a>                                                                       <span class="at">M =</span> fixed_M, </span>
+<span id="cb692-52"><a href="#cb692-52" aria-hidden="true" tabindex="-1"></a>                                                                       <span class="at">m =</span>m))))</span>
+<span id="cb692-53"><a href="#cb692-53" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb692-54"><a href="#cb692-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (prob_sum <span class="sc">&gt;</span> alpha) {</span>
+<span id="cb692-55"><a href="#cb692-55" aria-hidden="true" tabindex="-1"></a>          acceptance_set <span class="ot">=</span> <span class="fu">c</span>(acceptance_set, fixed_x)</span>
+<span id="cb692-56"><a href="#cb692-56" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb692-57"><a href="#cb692-57" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb692-58"><a href="#cb692-58" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb692-59"><a href="#cb692-59" aria-hidden="true" tabindex="-1"></a>      acceptance_set_str <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">unique</span>(acceptance_set), <span class="at">collapse =</span> <span class="st">","</span>)</span>
+<span id="cb692-60"><a href="#cb692-60" aria-hidden="true" tabindex="-1"></a>      results <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb692-61"><a href="#cb692-61" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">acceptance_set =</span> <span class="fu">ifelse</span>(M <span class="sc">==</span> fixed_M, </span>
+<span id="cb692-62"><a href="#cb692-62" aria-hidden="true" tabindex="-1"></a>                                       acceptance_set_str, </span>
+<span id="cb692-63"><a href="#cb692-63" aria-hidden="true" tabindex="-1"></a>                                       acceptance_set))</span>
+<span id="cb692-64"><a href="#cb692-64" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb692-65"><a href="#cb692-65" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb692-66"><a href="#cb692-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb692-67"><a href="#cb692-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Keep only the unique combinations of M and acceptance_set</span></span>
+<span id="cb692-68"><a href="#cb692-68" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb692-69"><a href="#cb692-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(M, acceptance_set) <span class="sc">%&gt;%</span> </span>
+<span id="cb692-70"><a href="#cb692-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb692-71"><a href="#cb692-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(M)</span>
+<span id="cb692-72"><a href="#cb692-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb692-73"><a href="#cb692-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_results)</span>
+<span id="cb692-74"><a href="#cb692-74" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="testing-1" class="level3">
+<h3 class="anchored" data-anchor-id="testing-1">Testing</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb693"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb693-1"><a href="#cb693-1" aria-hidden="true" tabindex="-1"></a><span class="fu">blaker_ac</span>(<span class="at">N =</span> <span class="dv">5</span>, <span class="at">m =</span> <span class="dv">2</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  M acceptance_set
+1 0              5
+2 1              4
+3 2        0,1,2,3
+4 3          0,1,2
+5 4            0,1
+6 5              0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb695"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb695-1"><a href="#cb695-1" aria-hidden="true" tabindex="-1"></a>test_20_blaker <span class="ot">=</span> <span class="fu">blaker_ac</span>(<span class="at">N =</span> <span class="dv">20</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb695-2"><a href="#cb695-2" aria-hidden="true" tabindex="-1"></a>test_20_blaker</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    M                    acceptance_set
+1   0                                20
+2   1                                19
+3   2                                18
+4   3   6,7,8,9,10,11,12,13,14,15,16,17
+5   4 2,3,4,5,6,7,8,9,10,11,12,13,14,15
+6   5     1,2,3,4,5,6,7,8,9,10,11,12,13
+7   6        1,2,3,4,5,6,7,8,9,10,11,12
+8   7            0,1,2,3,4,5,6,7,8,9,10
+9   8                 0,1,2,3,4,5,6,7,8
+10  9                   0,1,2,3,4,5,6,7
+11 10                     0,1,2,3,4,5,6
+12 11                       0,1,2,3,4,5
+13 12                       0,1,2,3,4,5
+14 13                         0,1,2,3,4
+15 14                           0,1,2,3
+16 15                           0,1,2,3
+17 16                             0,1,2
+18 17                             0,1,2
+19 18                               0,1
+20 19                               0,1
+21 20                                 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb697"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb697-1"><a href="#cb697-1" aria-hidden="true" tabindex="-1"></a>test_50_blaker <span class="ot">=</span> <span class="fu">blaker_ac</span>(<span class="at">N =</span> <span class="dv">50</span>, <span class="at">m =</span> <span class="dv">3</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>)</span>
+<span id="cb697-2"><a href="#cb697-2" aria-hidden="true" tabindex="-1"></a>test_50_blaker</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    M
+1   0
+2   1
+3   2
+4   3
+5   4
+6   5
+7   6
+8   7
+9   8
+10  9
+11 10
+12 11
+13 12
+14 13
+15 14
+16 15
+17 16
+18 17
+19 18
+20 19
+21 20
+22 21
+23 22
+24 23
+25 24
+26 25
+27 26
+28 27
+29 28
+30 29
+31 30
+32 31
+33 32
+34 33
+35 34
+36 35
+37 36
+38 37
+39 38
+40 39
+41 40
+42 41
+43 42
+44 43
+45 44
+46 45
+47 46
+48 47
+49 48
+50 49
+51 50
+                                                                                              acceptance_set
+1                                                                                                         50
+2                                                                                                         49
+3                                                                                                         48
+4               17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47
+5  8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43
+6          6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39
+7                  4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35
+8                            3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+9                                  3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29
+10                                           2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
+11                                                 2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
+12                                                     1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
+13                                                           1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+14                                                                 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+15                                                                    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+16                                                                    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+17                                                                        0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
+18                                                                           0,1,2,3,4,5,6,7,8,9,10,11,12,13
+19                                                                              0,1,2,3,4,5,6,7,8,9,10,11,12
+20                                                                                    0,1,2,3,4,5,6,7,8,9,10
+21                                                                                    0,1,2,3,4,5,6,7,8,9,10
+22                                                                                       0,1,2,3,4,5,6,7,8,9
+23                                                                                       0,1,2,3,4,5,6,7,8,9
+24                                                                                         0,1,2,3,4,5,6,7,8
+25                                                                                           0,1,2,3,4,5,6,7
+26                                                                                           0,1,2,3,4,5,6,7
+27                                                                                           0,1,2,3,4,5,6,7
+28                                                                                             0,1,2,3,4,5,6
+29                                                                                             0,1,2,3,4,5,6
+30                                                                                               0,1,2,3,4,5
+31                                                                                               0,1,2,3,4,5
+32                                                                                               0,1,2,3,4,5
+33                                                                                                 0,1,2,3,4
+34                                                                                                 0,1,2,3,4
+35                                                                                                 0,1,2,3,4
+36                                                                                                 0,1,2,3,4
+37                                                                                                   0,1,2,3
+38                                                                                                   0,1,2,3
+39                                                                                                   0,1,2,3
+40                                                                                                   0,1,2,3
+41                                                                                                     0,1,2
+42                                                                                                     0,1,2
+43                                                                                                     0,1,2
+44                                                                                                     0,1,2
+45                                                                                                     0,1,2
+46                                                                                                       0,1
+47                                                                                                       0,1
+48                                                                                                       0,1
+49                                                                                                       0,1
+50                                                                                                       0,1
+51                                                                                                         0</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="function-to-find-confidence-intervals" class="level2">
+<h2 class="anchored" data-anchor-id="function-to-find-confidence-intervals">Function to Find Confidence Intervals</h2>
 </section>
 </section>
 
