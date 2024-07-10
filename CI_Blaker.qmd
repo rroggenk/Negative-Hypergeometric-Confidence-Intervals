@@ -77,13 +77,16 @@ sum_ngh_pmf <- function(N, M, m, min_x, max_x) {
 blaker_ac <- function(N, m, conf_level = 0.95) {
   alpha = 1 - conf_level 
   
+  # Initializing data frame to store info through iterations
   results = data.frame(M = integer(), 
                        x = integer(), 
                        min_tail_prob = numeric(), 
                        acceptance_set = character())
   
-  # Calculate min_tail_prob for each M and x
+  # Calculates min_tail_prob for each M and x
+  # Iterating through each M
   for (M in 0:N) {
+    # Special case if M < m, x bounds are known so so min_tail_prob is needed 
     if (M < m) {
       x = N - M
       results = rbind(results, data.frame(M = M, 
@@ -92,11 +95,14 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
                                           acceptance_set = as.character(x)))
     } 
     else {
+      # Iterating through each x 
       for (x in 0:(N - M)) {
+        # Calculates min_tail_prob
         area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
         area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
         min_tail_prob = min(area_left, area_right)
         
+        # Stores min_tail_prob in a dataframe along with coresponding M and x
         results = rbind(results, data.frame(M = M, 
                                             x = x,
                                             min_tail_prob = min_tail_prob,
@@ -105,6 +111,7 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
     }
   }
   
+  # Initializes data frame for output 
   final_results = data.frame(M = integer(), 
                              acceptance_set = character(), 
                              a = integer(), 
@@ -115,10 +122,12 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
                              gap = logical())
   
   # Calculate the acceptance sets based on min_tail_prob
+  # Iterating through each M 
   for (fixed_M in 0:N) {
     acceptance_set = c()
     x_set = ""
     
+    # Special Case: if M < m, acceptance set is already known 
     if (fixed_M < m) {
       # Directly include x = N - M for M < m
       acceptance_set = as.character(N - fixed_M)
@@ -132,14 +141,18 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
       acceptance_set_str = acceptance_set
       x_set = paste(a, b, sep = "-")
     } 
+    
+    # When M >= m
     else {
-      # Process M >= m
+      # Iterating through each x 
       for (fixed_x in 0:(N - fixed_M)) {
+        # Finds the min_tail_prob for the fixed_M and fixed_x
         min_tail_prob_fixed_x = results %>% 
           filter(M == fixed_M & x == fixed_x) %>% 
           select(min_tail_prob) %>% 
           pull()
         
+        # Finds all x's with min_tail_prob as small as the fixed_x (includes fixed_x)
         possible_xs = results %>% 
           #filter(M == fixed_M & x != fixed_x & min_tail_prob <= min_tail_prob_fixed_x) %>% 
           # if i use above line, would need a condition when fixed_M == N
@@ -147,11 +160,13 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
           select(x) %>% 
           pull()
         
+        # Sums up the pmf of all x's with min-tail prob as small as fixed_x
         prob_sum = sum(unlist(lapply(possible_xs, function(px) ngh_pmf(x = px, 
                                                                        N = N, 
                                                                        M = fixed_M, 
                                                                        m = m))))
         
+        # If the sum of pmf is greater than alpha, add the fixed_x to the acceptance set 
         if (prob_sum > alpha) {
           acceptance_set = c(acceptance_set, fixed_x)
         }
@@ -160,6 +175,7 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
       acceptance_set = as.numeric(acceptance_set)
       acceptance_set_str = paste(unique(acceptance_set), collapse = ",")
       
+      # Calculating cardinality and coverage probability 
       a = min(acceptance_set)
       b = max(acceptance_set)
       cardinality = length(acceptance_set)
@@ -167,11 +183,14 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
                                                                              N = N, 
                                                                              M = fixed_M, 
                                                                              m = m))))
+      # gap is a boolean (TRUE / FALSE) of whether there is a gap present in acceptance set
       gap = any(diff(sort(acceptance_set)) > 1)
       
+      # If there is no gap, formatting x_set
       if (!gap) {
         x_set = paste(a, b, sep = "-")
       } 
+      # When there is a gap, formatting x_set 
       else {
         intervals = c()
         start = acceptance_set[1]
@@ -187,6 +206,7 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
       }
     }
     
+    # Adding final_results to the data frame to be outputted 
     final_results = rbind(final_results, 
                           data.frame(M = fixed_M, 
                                      acceptance_set = acceptance_set_str, 
