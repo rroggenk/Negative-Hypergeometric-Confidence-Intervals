@@ -256,15 +256,16 @@ coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_MLE(M, N
 # The group column assigns a unique group number whenever there is a change in min_x or max_x values
 # cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x
 coverage_df = coverage_df %>%
-  mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
+  mutate(group = factor(cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0))))
 
-ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group, color = group)) +
   geom_line() +
   geom_point() +
   labs(x = "M", y = "Coverage Probability of M") +
   geom_hline(yintercept = conf_level, color = "red") +
   ylim(0, 1) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
 ```{r}
@@ -279,15 +280,16 @@ coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_MLE(M, N
 # The group column assigns a unique group number whenever there is a change in min_x or max_x values
 # cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x
 coverage_df = coverage_df %>%
-  mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
+  mutate(group = factor(cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0))))
 
-ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group, color = group)) +
   geom_line() +
   geom_point() +
   labs(x = "M", y = "Coverage Probability of M") +
   geom_hline(yintercept = conf_level, color = "red") +
   ylim(0, 1) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
 # Coverage Probability for M (Unbiased)
@@ -363,15 +365,16 @@ coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_unbiased
 # The group column assigns a unique group number whenever there is a change in min_x or max_x values
 # cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x
 coverage_df = coverage_df %>%
-  mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
+  mutate(group = factor(cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0))))
 
-ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group, color = group)) +
   geom_line() +
   geom_point() +
   labs(x = "M", y = "Coverage Probability of M") +
   geom_hline(yintercept = conf_level, color = "red") +
   ylim(0, 1) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
 ```{r}
@@ -386,13 +389,14 @@ coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_unbiased
 # The group column assigns a unique group number whenever there is a change in min_x or max_x values
 # cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x
 coverage_df = coverage_df %>%
-  mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
+  mutate(group = factor(cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0))))
 
-ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group, color = group)) +
   geom_line() +
   geom_point() +
   labs(x = "M", y = "Coverage Probability of M") +
   geom_hline(yintercept = conf_level, color = "red") +
   ylim(0, 1) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
