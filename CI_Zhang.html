@@ -189,17 +189,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence Interval - MLE (4.2 - page 6)</span></span>
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>CI_M_MLE <span class="ot">&lt;-</span> <span class="cf">function</span>(m, x, N, conf_level) {</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  M_MLE <span class="ot">=</span> <span class="fu">M_MLE_function</span>(m, x, N)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  SE_MLE <span class="ot">=</span> <span class="fu">SE_MLE_function</span>(M_MLE, N, m)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  CI_lb <span class="ot">=</span> M_MLE <span class="sc">-</span> (z <span class="sc">*</span> SE_MLE)</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  CI_ub <span class="ot">=</span> M_MLE <span class="sc">+</span> (z <span class="sc">*</span> SE_MLE)</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  CL <span class="ot">=</span> (conf_level) <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">cat</span>(CL, <span class="st">"% Confidence Interval for M: ["</span>, CI_lb, <span class="st">","</span>, CI_ub, <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>))</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Speical End Cases: When x in N-m to N</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> ((x <span class="sc">&gt;=</span> (N <span class="sc">-</span> m)) <span class="sc">&amp;</span> (x <span class="sc">&lt;=</span> N)) {</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> N <span class="sc">-</span> x</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> N <span class="sc">-</span> x</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    M_MLE <span class="ot">=</span> <span class="fu">M_MLE_function</span>(m, x, N)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    SE_MLE <span class="ot">=</span> <span class="fu">SE_MLE_function</span>(M_MLE, N, m)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> M_MLE <span class="sc">-</span> (z <span class="sc">*</span> SE_MLE)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> M_MLE <span class="sc">+</span> (z <span class="sc">*</span> SE_MLE)</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  CL <span class="ot">=</span> (conf_level) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">cat</span>(CL, <span class="st">"% Confidence Interval for M: ["</span>, CI_lb, <span class="st">","</span>, CI_ub, <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>))</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">CI_M_MLE</span>(<span class="at">m =</span> <span class="dv">10</span>, <span class="at">x =</span> <span class="dv">30</span>, <span class="at">N =</span> <span class="dv">100</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -272,17 +281,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Confidence Interval - Unbiased (4.1 - page 6)</span></span>
 <span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>CI_M_unbiased <span class="ot">&lt;-</span> <span class="cf">function</span>(m, x, N, conf_level) {</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  M_unbiased <span class="ot">=</span> <span class="fu">M_unbiased_function</span>(m, x, N)</span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  SE_unbiased <span class="ot">=</span> <span class="fu">SE_unbiased_function</span>(M_unbiased, N, m)</span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>  CI_lb <span class="ot">=</span> M_unbiased <span class="sc">-</span> (z <span class="sc">*</span> SE_unbiased)</span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>  CI_ub <span class="ot">=</span> M_unbiased <span class="sc">+</span> (z <span class="sc">*</span> SE_unbiased)</span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>  CL <span class="ot">=</span> (conf_level) <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">cat</span>(CL, <span class="st">"% Confidence Interval for M: ["</span>, CI_lb, <span class="st">","</span>, CI_ub, <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>))</span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Speical End Cases: When x in N-m to N</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> ((x <span class="sc">&gt;=</span> (N <span class="sc">-</span> m)) <span class="sc">&amp;</span> (x <span class="sc">&lt;=</span> N)) {</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> N <span class="sc">-</span> x</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> N <span class="sc">-</span> x</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span>{</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    M_unbiased <span class="ot">=</span> <span class="fu">M_unbiased_function</span>(m, x, N)</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>    SE_unbiased <span class="ot">=</span> <span class="fu">SE_unbiased_function</span>(M_unbiased, N, m)</span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> M_unbiased <span class="sc">-</span> (z <span class="sc">*</span> SE_unbiased)</span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> M_unbiased <span class="sc">+</span> (z <span class="sc">*</span> SE_unbiased)</span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>  CL <span class="ot">=</span> (conf_level) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">cat</span>(CL, <span class="st">"% Confidence Interval for M: ["</span>, CI_lb, <span class="st">","</span>, CI_ub, <span class="st">"]</span><span class="sc">\n</span><span class="st">"</span>))</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">CI_M_unbiased</span>(<span class="at">m =</span> <span class="dv">10</span>, <span class="at">x =</span> <span class="dv">30</span>, <span class="at">N =</span> <span class="dv">100</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -336,22 +353,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span>(N), <span class="at">lower_bound =</span> <span class="cn">NA</span>, <span class="at">upper_bound =</span> <span class="cn">NA</span>)</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (xi <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>(N)) {</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    M_MLE <span class="ot">=</span> <span class="fu">M_MLE_function</span>(m, xi, N)</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    SE_MLE <span class="ot">=</span> <span class="fu">SE_MLE_function</span>(M_MLE, N, m)</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> M_MLE <span class="sc">-</span> (z <span class="sc">*</span> SE_MLE)</span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> M_MLE <span class="sc">+</span> (z <span class="sc">*</span> SE_MLE)</span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the results</span></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"lower_bound"</span>] <span class="ot">=</span> CI_lb</span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"upper_bound"</span>] <span class="ot">=</span> CI_ub</span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Speical End Cases: When x in N-m to N</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((xi <span class="sc">&gt;=</span> (N <span class="sc">-</span> m)) <span class="sc">&amp;</span> (xi <span class="sc">&lt;=</span> N)) {</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> N <span class="sc">-</span> xi</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> N <span class="sc">-</span> xi</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>      M_MLE <span class="ot">=</span> <span class="fu">M_MLE_function</span>(m, xi, N)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>      SE_MLE <span class="ot">=</span> <span class="fu">SE_MLE_function</span>(M_MLE, N, m)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>      z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>      CI_lb <span class="ot">=</span> M_MLE <span class="sc">-</span> (z <span class="sc">*</span> SE_MLE)</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>      CI_ub <span class="ot">=</span> M_MLE <span class="sc">+</span> (z <span class="sc">*</span> SE_MLE)</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the results</span></span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"lower_bound"</span>] <span class="ot">=</span> CI_lb</span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"upper_bound"</span>] <span class="ot">=</span> CI_ub</span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
+<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>coverage_prob_MLE <span class="ot">&lt;-</span> <span class="cf">function</span>(M, N, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>) {</span>
@@ -402,12 +425,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
 <span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 row containing missing values (`geom_line()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 rows containing missing values (`geom_point()`).</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -417,32 +434,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">50</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>conf_level <span class="ot">=</span> <span class="fl">0.95</span></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>M_values <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span>N</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(M_values, <span class="cf">function</span>(M) <span class="fu">coverage_prob_MLE</span>(M, N, m, conf_level)))</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a group column for consistent min_x and max_x</span></span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The group column assigns a unique group number whenever there is a change in min_x or max_x values</span></span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co"># cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x</span></span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> coverage_df <span class="sc">%&gt;%</span></span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">diff</span>(min_x) <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">diff</span>(max_x) <span class="sc">!=</span> <span class="dv">0</span>)))</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coverage_df, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> group)) <span class="sc">+</span></span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of M"</span>) <span class="sc">+</span></span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 row containing missing values (`geom_line()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 rows containing missing values (`geom_point()`).</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">50</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>conf_level <span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>M_values <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span>N</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(M_values, <span class="cf">function</span>(M) <span class="fu">coverage_prob_MLE</span>(M, N, m, conf_level)))</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a group column for consistent min_x and max_x</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The group column assigns a unique group number whenever there is a change in min_x or max_x values</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="co"># cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> coverage_df <span class="sc">%&gt;%</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">diff</span>(min_x) <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">diff</span>(max_x) <span class="sc">!=</span> <span class="dv">0</span>)))</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coverage_df, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of M"</span>) <span class="sc">+</span></span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -455,159 +466,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="coverage-probability-for-m-unbiased" class="level1">
 <h1>Coverage Probability for M (Unbiased)</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>CI_cov_prob_unbiased <span class="ot">&lt;-</span> <span class="cf">function</span>(N, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>) {</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span>(N), <span class="at">lower_bound =</span> <span class="cn">NA</span>, <span class="at">upper_bound =</span> <span class="cn">NA</span>)</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (xi <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>(N)) {</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    M_unbiased <span class="ot">=</span> <span class="fu">M_unbiased_function</span>(m, xi, N)</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    SE_unbiased <span class="ot">=</span> <span class="fu">SE_unbiased_function</span>(M_unbiased, N, m)</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> M_unbiased <span class="sc">-</span> (z <span class="sc">*</span> SE_unbiased)</span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> M_unbiased <span class="sc">+</span> (z <span class="sc">*</span> SE_unbiased)</span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the results</span></span>
-<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"lower_bound"</span>] <span class="ot">=</span> CI_lb</span>
-<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"upper_bound"</span>] <span class="ot">=</span> CI_ub</span>
-<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
-<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>CI_cov_prob_unbiased <span class="ot">&lt;-</span> <span class="cf">function</span>(N, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>) {</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span>(N), <span class="at">lower_bound =</span> <span class="cn">NA</span>, <span class="at">upper_bound =</span> <span class="cn">NA</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (xi <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>(N)) {</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Speical End Cases: When x in N-m to N</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((xi <span class="sc">&gt;=</span> (N <span class="sc">-</span> m)) <span class="sc">&amp;</span> (xi <span class="sc">&lt;=</span> N)) {</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    CI_lb <span class="ot">=</span> N <span class="sc">-</span> xi</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    CI_ub <span class="ot">=</span> N <span class="sc">-</span> xi</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>      M_unbiased <span class="ot">=</span> <span class="fu">M_unbiased_function</span>(m, xi, N)</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>      SE_unbiased <span class="ot">=</span> <span class="fu">SE_unbiased_function</span>(M_unbiased, N, m)</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>      z <span class="ot">=</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>      CI_lb <span class="ot">=</span> M_unbiased <span class="sc">-</span> (z <span class="sc">*</span> SE_unbiased)</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>      CI_ub <span class="ot">=</span> M_unbiased <span class="sc">+</span> (z <span class="sc">*</span> SE_unbiased)</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the results</span></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"lower_bound"</span>] <span class="ot">=</span> CI_lb</span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>    results[xi <span class="sc">+</span> <span class="dv">1</span>, <span class="st">"upper_bound"</span>] <span class="ot">=</span> CI_ub</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>coverage_prob_unbiased <span class="ot">&lt;-</span> <span class="cf">function</span>(M, N, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>) {</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if (M &lt; m || M &gt; N) {</span></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   stop("Invalid parameters: Ensure M &gt;= m, M &lt;= N")</span></span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   }</span></span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculates all confidence intervals </span></span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  ci_results <span class="ot">=</span> <span class="fu">CI_cov_prob_unbiased</span>(N, m, conf_level)</span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Finds all x's where M is in the confidence interval </span></span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  covered_x <span class="ot">=</span> ci_results <span class="sc">%&gt;%</span> </span>
-<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(lower_bound <span class="sc">&lt;=</span> M <span class="sc">&amp;</span> upper_bound <span class="sc">&gt;=</span> M) <span class="sc">%&gt;%</span> </span>
-<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(x)</span>
-<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(covered_x) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">M =</span> M, <span class="at">coverage_prob =</span> <span class="dv">0</span>, <span class="at">min_x =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max_x =</span> <span class="sc">-</span><span class="dv">1</span>))</span>
-<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Finds the min and max of covered x's to know which lines to connect in plot</span></span>
-<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>  min_x <span class="ot">=</span> <span class="fu">min</span>(covered_x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>  max_x <span class="ot">=</span> <span class="fu">max</span>(covered_x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sums the probabilities (pmf's) of all x's where M is in the CI </span></span>
-<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#total_prob = sum(sapply(covered_x, function(x) ngh_pmf(x, N, M, m)))</span></span>
-<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>  total_prob <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(covered_x, <span class="cf">function</span>(x) <span class="fu">ngh_pmf</span>(x, N, M, m))))</span>
-<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">M =</span> M, <span class="at">coverage_prob =</span> total_prob, <span class="at">min_x =</span> min_x, <span class="at">max_x =</span> max_x))</span>
-<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>coverage_prob_unbiased <span class="ot">&lt;-</span> <span class="cf">function</span>(M, N, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>) {</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if (M &lt; m || M &gt; N) {</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   stop("Invalid parameters: Ensure M &gt;= m, M &lt;= N")</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   }</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculates all confidence intervals </span></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  ci_results <span class="ot">=</span> <span class="fu">CI_cov_prob_unbiased</span>(N, m, conf_level)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Finds all x's where M is in the confidence interval </span></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  covered_x <span class="ot">=</span> ci_results <span class="sc">%&gt;%</span> </span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(lower_bound <span class="sc">&lt;=</span> M <span class="sc">&amp;</span> upper_bound <span class="sc">&gt;=</span> M) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(x)</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(covered_x) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">M =</span> M, <span class="at">coverage_prob =</span> <span class="dv">0</span>, <span class="at">min_x =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">max_x =</span> <span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Finds the min and max of covered x's to know which lines to connect in plot</span></span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>  min_x <span class="ot">=</span> <span class="fu">min</span>(covered_x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>  max_x <span class="ot">=</span> <span class="fu">max</span>(covered_x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sums the probabilities (pmf's) of all x's where M is in the CI </span></span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#total_prob = sum(sapply(covered_x, function(x) ngh_pmf(x, N, M, m)))</span></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>  total_prob <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">unlist</span>(<span class="fu">lapply</span>(covered_x, <span class="cf">function</span>(x) <span class="fu">ngh_pmf</span>(x, N, M, m))))</span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">M =</span> M, <span class="at">coverage_prob =</span> total_prob, <span class="at">min_x =</span> min_x, <span class="at">max_x =</span> max_x))</span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">20</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>conf_level <span class="ot">=</span> <span class="fl">0.95</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>M_values <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span>N</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(M_values, <span class="cf">function</span>(M) <span class="fu">coverage_prob_unbiased</span>(M, N, m, conf_level)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a group column for consistent min_x and max_x</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The group column assigns a unique group number whenever there is a change in min_x or max_x values</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> coverage_df <span class="sc">%&gt;%</span></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">diff</span>(min_x) <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">diff</span>(max_x) <span class="sc">!=</span> <span class="dv">0</span>)))</span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coverage_df, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> group)) <span class="sc">+</span></span>
-<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of M"</span>) <span class="sc">+</span></span>
-<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">20</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>conf_level <span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>M_values <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span>N</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(M_values, <span class="cf">function</span>(M) <span class="fu">coverage_prob_unbiased</span>(M, N, m, conf_level)))</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a group column for consistent min_x and max_x</span></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The group column assigns a unique group number whenever there is a change in min_x or max_x values</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="co"># cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x</span></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> coverage_df <span class="sc">%&gt;%</span></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">diff</span>(min_x) <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">diff</span>(max_x) <span class="sc">!=</span> <span class="dv">0</span>)))</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coverage_df, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of M"</span>) <span class="sc">+</span></span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -617,230 +552,26 @@ Warning in sqrt(part2): NaNs produced</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">50</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>conf_level <span class="ot">=</span> <span class="fl">0.95</span></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>M_values <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span>N</span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(M_values, <span class="cf">function</span>(M) <span class="fu">coverage_prob_unbiased</span>(M, N, m, conf_level)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced
-
-Warning in sqrt(part2): NaNs produced</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a group column for consistent min_x and max_x</span></span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The group column assigns a unique group number whenever there is a change in min_x or max_x values</span></span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x</span></span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> coverage_df <span class="sc">%&gt;%</span></span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">diff</span>(min_x) <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">diff</span>(max_x) <span class="sc">!=</span> <span class="dv">0</span>)))</span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coverage_df, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> group)) <span class="sc">+</span></span>
-<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of M"</span>) <span class="sc">+</span></span>
-<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">50</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>conf_level <span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>M_values <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span>N</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(M_values, <span class="cf">function</span>(M) <span class="fu">coverage_prob_unbiased</span>(M, N, m, conf_level)))</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a group column for consistent min_x and max_x</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The group column assigns a unique group number whenever there is a change in min_x or max_x values</span></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="co"># cumsum is used to create a cumulative sum that increments the group number whenever there is a change in min_x or max_x</span></span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>coverage_df <span class="ot">=</span> coverage_df <span class="sc">%&gt;%</span></span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">cumsum</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">diff</span>(min_x) <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">|</span> <span class="fu">diff</span>(max_x) <span class="sc">!=</span> <span class="dv">0</span>)))</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(coverage_df, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> group)) <span class="sc">+</span></span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of M"</span>) <span class="sc">+</span></span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

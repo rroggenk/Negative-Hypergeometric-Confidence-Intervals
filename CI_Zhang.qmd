@@ -81,13 +81,22 @@ SE_MLE_function <- function(M_MLE, N, m) {
 
 # Confidence Interval - MLE (4.2 - page 6)
 CI_M_MLE <- function(m, x, N, conf_level) {
-  M_MLE = M_MLE_function(m, x, N)
-  SE_MLE = SE_MLE_function(M_MLE, N, m)
+  # Speical End Cases: When x in N-m to N
+  if ((x >= (N - m)) & (x <= N)) {
+    CI_lb = N - x
+    CI_ub = N - x
+  }
   
-  z = qnorm(1 - ((1 - conf_level)/2))
-  
-  CI_lb = M_MLE - (z * SE_MLE)
-  CI_ub = M_MLE + (z * SE_MLE)
+  else {
+    M_MLE = M_MLE_function(m, x, N)
+    SE_MLE = SE_MLE_function(M_MLE, N, m)
+    
+    z = qnorm(1 - ((1 - conf_level)/2))
+    
+    CI_lb = M_MLE - (z * SE_MLE)
+    CI_ub = M_MLE + (z * SE_MLE)
+    
+  }
   
   CL = (conf_level) * 100
   return(cat(CL, "% Confidence Interval for M: [", CI_lb, ",", CI_ub, "]\n"))
@@ -137,14 +146,22 @@ SE_unbiased_function <- function(M_unbiased, N, m) {
 
 # Confidence Interval - Unbiased (4.1 - page 6)
 CI_M_unbiased <- function(m, x, N, conf_level) {
-  M_unbiased = M_unbiased_function(m, x, N)
-  SE_unbiased = SE_unbiased_function(M_unbiased, N, m)
+  # Speical End Cases: When x in N-m to N
+  if ((x >= (N - m)) & (x <= N)) {
+    CI_lb = N - x
+    CI_ub = N - x
+  }
   
-  z = qnorm(1 - ((1 - conf_level)/2))
-  
-  CI_lb = M_unbiased - (z * SE_unbiased)
-  CI_ub = M_unbiased + (z * SE_unbiased)
-  
+  else{
+    M_unbiased = M_unbiased_function(m, x, N)
+    SE_unbiased = SE_unbiased_function(M_unbiased, N, m)
+    
+    z = qnorm(1 - ((1 - conf_level)/2))
+    
+    CI_lb = M_unbiased - (z * SE_unbiased)
+    CI_ub = M_unbiased + (z * SE_unbiased)
+  }
+
   CL = (conf_level) * 100
   return(cat(CL, "% Confidence Interval for M: [", CI_lb, ",", CI_ub, "]\n"))
 }
@@ -174,15 +191,21 @@ CI_cov_prob_MLE <- function(N, m, conf_level = 0.95) {
   results = data.frame(x = 0:(N), lower_bound = NA, upper_bound = NA)
   
   for (xi in 0:(N)) {
-    M_MLE = M_MLE_function(m, xi, N)
-    SE_MLE = SE_MLE_function(M_MLE, N, m)
+    # Speical End Cases: When x in N-m to N
+    if ((xi >= (N - m)) & (xi <= N)) {
+    CI_lb = N - xi
+    CI_ub = N - xi
+    }
     
-    z = qnorm(1 - ((1 - conf_level)/2))
-    
-    CI_lb = M_MLE - (z * SE_MLE)
-    CI_ub = M_MLE + (z * SE_MLE)
-
-    
+    else {
+      M_MLE = M_MLE_function(m, xi, N)
+      SE_MLE = SE_MLE_function(M_MLE, N, m)
+      
+      z = qnorm(1 - ((1 - conf_level)/2))
+      
+      CI_lb = M_MLE - (z * SE_MLE)
+      CI_ub = M_MLE + (z * SE_MLE)
+    }
     # Store the results
     results[xi + 1, "lower_bound"] = CI_lb
     results[xi + 1, "upper_bound"] = CI_ub
@@ -274,13 +297,21 @@ CI_cov_prob_unbiased <- function(N, m, conf_level = 0.95) {
   results = data.frame(x = 0:(N), lower_bound = NA, upper_bound = NA)
   
   for (xi in 0:(N)) {
-    M_unbiased = M_unbiased_function(m, xi, N)
-    SE_unbiased = SE_unbiased_function(M_unbiased, N, m)
+    # Speical End Cases: When x in N-m to N
+    if ((xi >= (N - m)) & (xi <= N)) {
+    CI_lb = N - xi
+    CI_ub = N - xi
+    }
     
-    z = qnorm(1 - ((1 - conf_level)/2))
-    
-    CI_lb = M_unbiased - (z * SE_unbiased)
-    CI_ub = M_unbiased + (z * SE_unbiased)
+    else {
+      M_unbiased = M_unbiased_function(m, xi, N)
+      SE_unbiased = SE_unbiased_function(M_unbiased, N, m)
+      
+      z = qnorm(1 - ((1 - conf_level)/2))
+      
+      CI_lb = M_unbiased - (z * SE_unbiased)
+      CI_ub = M_unbiased + (z * SE_unbiased)
+    }
 
     # Store the results
     results[xi + 1, "lower_bound"] = CI_lb
