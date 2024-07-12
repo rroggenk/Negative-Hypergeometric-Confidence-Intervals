@@ -1179,6 +1179,21 @@ mst_ac <- function(N, m, conf_level = 0.95) {
 #test_50_MST
 ```
 
+```{r}
+data = mst_ac(N = 15, m = 3, conf_level = 0.95)
+
+conf_level= 0.95
+
+ggplot(data, aes(x = M, y = coverage_prob, group = x_set, color = x_set)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "M", y = "Coverage Probability of M") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  ylim(conf_level - 0.005, 1) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
 ## Function to Find CG Acceptance Curves
 
 ```{r}
