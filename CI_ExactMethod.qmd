@@ -436,7 +436,7 @@ coverage_prob <- function(M, N, m, conf_level = 0.95) {
 CI_cov_prob(N=15, m=3, conf_level=0.95)
 ```
 
-```{r}
+```{r, error = TRUE}
 N = 15
 m = 3
 conf_level = 0.95
@@ -485,7 +485,7 @@ ci_results <- ci_results %>%
 p <- p + geom_text(data = ci_results, aes(x = x, y = lower_bound - 0.02, label = ci_label), angle = 90, hjust = 0, vjust = 1, size = 3)
 
 # Print the plot
-print(p)s
+print(p)
 ```
 
 ```{r}
