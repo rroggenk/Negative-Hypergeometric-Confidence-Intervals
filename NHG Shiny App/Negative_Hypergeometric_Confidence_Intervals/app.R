@@ -18,13 +18,13 @@ ui <- fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      selectInput("parameter_of_interest", 
-                  "Parameter of Interest", 
+      selectInput(inputId = "parameter_of_interest", 
+                  label = "Parameter of Interest", 
                   choices = list("N: Total number of items" = "N", 
                                  "M: Number of successes in the population" = "M")),
       
-      selectInput("procedure", 
-                  "Procedure", 
+      selectInput(inputId = "procedure", 
+                  label = "Procedure", 
                   choices = c("Normal Approximation / Large Sample", 
                               "Analog to the Clopper-Pearson", 
                               "Modified Sterne", 
@@ -33,51 +33,39 @@ ui <- fluidPage(
                               "Blaker", 
                               "CMC")),
       
-      numericInput("confidence_level", 
-                   "Confidence Level (%)", 
+      numericInput(inputId = "confidence_level", 
+                   label = "Confidence Level (%)", 
                    value = 95, 
                    min = 0, 
                    max = 100, 
                    step = 1),
       
-      numericInput("m", 
-                   "Fixed number of successes to be observed (m)", 
+      numericInput(inputId = "m", 
+                   label = "Fixed number of successes to be observed (m)", 
                    value = 1, 
                    min = 1, 
                    step = 1),
       
       conditionalPanel(
         condition = "input.parameter_of_interest == 'N'",
-        numericInput("M", 
-                     "Number of successes in the population (M)", 
+        numericInput(inputId = "M", 
+                     label = "Number of successes in the population (M)", 
                      value = 0, 
                      min = 0, 
-                     step = 1),
-        
-        numericInput("N", 
-                     "Total number of items (N)", 
-                     value = 1, 
-                     min = 1, 
                      step = 1)
       ),
       
       conditionalPanel(
         condition = "input.parameter_of_interest == 'M'",
-        numericInput("N", 
-                     "Total number of items (N)", 
+        numericInput(inputId = "N", 
+                     label = "Total number of items (N)", 
                      value = 1, 
                      min = 1, 
-                     step = 1),
-        
-        numericInput("M", 
-                     "Number of successes in the population (M)", 
-                     value = 0, 
-                     min = 0, 
                      step = 1)
       ),
       
-      numericInput("x", 
-                   "Observed value of x (Number of failures observed before the mth success)", 
+      numericInput(inputId = "x", 
+                   label = "Observed value of x (Number of failures observed before the mth success)", 
                    value = 0, 
                    min = 0, 
                    step = 1),
