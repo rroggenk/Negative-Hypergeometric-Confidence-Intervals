@@ -1,0 +1,94 @@
+---
+title: "Blaker versus MST"
+author: "Rachel Roggenkemper"
+format: html
+editor: visual
+---
+
+```{r}
+library(extraDistr)
+library(tidyverse)
+
+source('functions.R', encoding = 'UTF-8')
+```
+
+```{r}
+# Function to compare CIs and their properties
+compare_cis <- function(N, m, conf_level) {
+  # Generate CIs using both methods
+  mst_ci <- minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "MST")
+  blaker_ci_res <- blaker_ci(N = N, m = m, conf_level = conf_level)
+  
+  # Merge the results for comparison
+  merged_cis <- merge(mst_ci, blaker_ci_res, by = "x", suffixes = c("_mst", "_blaker"))
+  
+  # Initialize results
+  same_ci <- 0
+  mst_smaller <- 0
+  blaker_smaller <- 0
+  cardinality_differences <- c()
+  
+  # Loop through and compare each CI
+  for (i in 1:nrow(merged_cis)) {
+    mst_lb <- merged_cis$ci_lb_mst[i]
+    mst_ub <- merged_cis$ci_ub_mst[i]
+    blaker_lb <- merged_cis$ci_lb_blaker[i]
+    blaker_ub <- merged_cis$ci_ub_blaker[i]
+    
+    if (mst_lb == blaker_lb && mst_ub == blaker_ub) {
+      same_ci <- same_ci + 1
+    } else {
+      mst_length <- mst_ub - mst_lb + 1
+      blaker_length <- blaker_ub - blaker_lb + 1
+      diff <- mst_length - blaker_length
+      cardinality_differences <- c(cardinality_differences, diff)
+      
+      if (mst_length < blaker_length) {
+        mst_smaller <- mst_smaller + 1
+      } else if (mst_length > blaker_length) {
+        blaker_smaller <- blaker_smaller + 1
+      }
+    }
+  }
+  
+  results <- list(
+    same_ci = same_ci,
+    mst_smaller = mst_smaller,
+    blaker_smaller = blaker_smaller,
+    cardinality_differences = cardinality_differences
+  )
+  
+  return(results)
+}
+
+# Define the parameters to test
+N_values <- c(25, 50, 100)
+m_values <- c(5, 10, 20)
+conf_levels <- c(0.90, 0.95, 0.99)
+
+# Create a dataframe to store the summary results
+summary_results <- data.frame(N = integer(), m = integer(), conf_level = numeric(),
+                              same_ci = integer(), mst_smaller = integer(), 
+                              blaker_smaller = integer(), avg_diff = numeric(), 
+                              max_diff = numeric(), min_diff = numeric())
+
+# Iterate over the parameters and compare the CIs
+for (N in N_values) {
+  for (m in m_values) {
+    for (conf_level in conf_levels) {
+      comparison <- compare_cis(N, m, conf_level)
+      avg_diff <- mean(comparison$cardinality_differences)
+      max_diff <- max(comparison$cardinality_differences)
+      min_diff <- min(comparison$cardinality_differences)
+      summary_results <- rbind(summary_results, data.frame(
+        N = N, m = m, conf_level = conf_level,
+        same_ci = comparison$same_ci, mst_smaller = comparison$mst_smaller,
+        blaker_smaller = comparison$blaker_smaller, avg_diff = avg_diff,
+        max_diff = max_diff, min_diff = min_diff
+      ))
+    }
+  }
+}
+
+print(summary_results)
+```

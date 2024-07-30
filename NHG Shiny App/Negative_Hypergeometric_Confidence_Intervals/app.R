@@ -8,6 +8,13 @@
 #
 
 library(shiny)
+library(tidyverse)
+library(extraDistr)
+
+
+source('functions.R', encoding = 'UTF-8')
+
+
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
