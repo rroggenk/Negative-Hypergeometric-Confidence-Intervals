@@ -38,7 +38,7 @@ average_length <- function(data_frame, lb_col_name, ub_col_name) {
 }
 ```
 
-# Note: Minimal Cardinality Procedures 
+# Note: Minimal Cardinality Procedures
 
 The average length is the same for the minimal cardinality procedures. This is because they are choosing choosing between acceptance sets of minimal cardinality (so the same minimal length). The only difference is between which minimal cardinality sets are being chosen, but the length of them is the same since they are minimal cardinality. Thus, the average length is the same for the minimal cardinality procedures.
 
@@ -46,7 +46,7 @@ Therefore, Modified Sterne (MST) is considered superior because they all have th
 
 # Plot of Expected and Average Length
 
-## First Initialize N, m, and confidence level! 
+## First Initialize N, m, and confidence level!
 
 ```{r}
 N = 50
@@ -232,5 +232,24 @@ ggplot(results, aes(x = M, y = ExpectedLength)) +
 ## CMC
 
 ```{r}
+data = cmc_ci(N = N, m = m, conf_level = conf_level)
+average_length(data, "ci_lb", "ci_ub")
 
+
+
+# Create a data frame to store the results
+results = data.frame(M = integer(), ExpectedLength = numeric())
+
+# Calculate expected length for each M
+for (M_i in m:N) {
+  exp_len = expected_length(data, "ci_lb", "ci_ub", N = N, M = M_i, m = m)
+  results = rbind(results, data.frame(M = M_i, ExpectedLength = exp_len))
+}
+
+# Plot using ggplot2
+ggplot(results, aes(x = M, y = ExpectedLength)) +
+  geom_point() +
+  geom_hline(yintercept = average_length(data, "ci_lb", "ci_ub"), color = "red") +
+  labs(x = "M", y = "Expected Length") +
+  theme_minimal()
 ```

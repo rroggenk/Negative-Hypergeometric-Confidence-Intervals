@@ -737,6 +737,134 @@ blaker_ci <- function(N, m, conf_level = 0.95) {
 #---------------------------------#
 ###################################
 
+cmc_ac <- function(N, m, conf_level = 0.95) {
+  # Initializing the data frame that the function will output 
+  results = data.frame(M = integer(), 
+                       a = integer(), 
+                       b = integer(), 
+                       cardinality = integer(), 
+                       coverage_prob = numeric())
+  
+  # Setting the initial min_a and min_b, always starts with 0-0
+  min_a = 0
+  min_b = 0
+  
+  for (M in N:0) {
+    # Initializing a data frame that temporarily stores results
+    temp_results = data.frame(M = integer(), 
+                              a = integer(), 
+                              b = integer(), 
+                              cardinality = integer(), 
+                              coverage_prob = numeric())
+    
+    # Find all possible acceptance curves that have non-decreasing a and b
+    
+    # Speical End Cases: When M < m
+    if (M < m) {
+      a = N - M
+      b = N - M
+      coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+      cardinality = b - a + 1
+      temp_results = rbind(temp_results, data.frame(M = M, 
+                                                    a = a, 
+                                                    b = b, 
+                                                    cardinality = cardinality, 
+                                                    coverage_prob = coverage_prob))
+    } 
+    else {
+      # Loops through the a first, making sure it only starts at min_a so that a is 
+      # non-decreasing, stops at a N-M
+      for (a in min_a:(N - M)) {
+        # Loops through b: starting at the max of a and min_b to make sure that b >= a and 
+        # so that b is non-decreasing, stops at N-M
+        for (b in max(a, min_b):(N - M)) {
+          # Calculates coverage probability, cardinality, and stores it in data frame
+          coverage_prob = sum_ngh_pmf(N, M, m, a, b)
+          cardinality = b - a + 1
+          temp_results = rbind(temp_results, data.frame(M = M, 
+                                                        a = a, 
+                                                        b = b, 
+                                                        cardinality = cardinality, 
+                                                        coverage_prob = coverage_prob))
+        }
+      }
+    }
+    
+    
+    # Filter out the sets with the coverage probability >= conf_level
+    # For each M, filters out to choose the acceptance curve with the highest a and the 
+    # lowest b (which is the same as the one with the lowest coverage prob that is still
+    # above the confidence level)
+    if (M >= m) {
+      temp_results = temp_results %>%
+        filter(coverage_prob >= conf_level) %>%
+        group_by(M) %>%
+        filter(a == max(a)) %>%
+        filter(b == min(b)) %>%
+        ungroup()
+      
+      # Updates min_a and min_b for each iteration
+      if (nrow(temp_results) > 0) {
+        min_a = max(min_a, min(temp_results$a))
+        min_b = max(min_b, min(temp_results$b))
+      }
+    }
+    
+    results = rbind(results, temp_results)
+  }
+  
+  # Arranges data by descreasing M
+  filtered_results = results %>%
+    arrange(desc(M))
+  
+  # Adds a column of the x set
+  filtered_results = filtered_results %>%
+    mutate(x_set = paste(a, b, sep = "-"))
+  
+  return(filtered_results)
+  
+}
+
+
+cmc_ci <- function(N, m, conf_level = 0.95) {
+  results = cmc_ac(N, m, conf_level)
+  
+  # Initializes data frame that will be outputted 
+  ci_results = data.frame(x = integer(), 
+                          ci_lb = integer(), 
+                          ci_ub = integer(), 
+                          ci = character(),
+                          stringsAsFactors = FALSE)
+  
+  # Loops through each x 
+  for (x in 0:N) {
+    # Finds first interval where x appears 
+    first_occurrence = results %>% 
+      filter(a <= x, x <= b) %>% 
+      slice(1)
+    
+    # Finds last interval where x appears 
+    last_occurrence = results %>% 
+      filter(a <= x, x <= b) %>% 
+      slice(n())
+    
+    # Finds the M of the corresponding above intervals and saves those as the CI bounds
+    if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
+      ci_ub = first_occurrence$M
+      ci_lb = last_occurrence$M
+      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      
+      ci_results = rbind(ci_results, data.frame(x = x, 
+                                                ci_lb = ci_lb, 
+                                                ci_ub = ci_ub, 
+                                                ci = ci))
+    }
+  }
+  
+  return(ci_results)
+}
+
+
 
 
 
