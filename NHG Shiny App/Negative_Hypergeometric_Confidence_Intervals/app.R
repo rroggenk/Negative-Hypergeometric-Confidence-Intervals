@@ -1,5 +1,6 @@
 # TO DO: 
-# make it so that for the inputs it only allows: M <= N, m<=M, and observed x <= N-m
+# edit input errors (does is automatically change input, then error message doesnt show)
+# maybe make error messages red and bigger?
 # make it so when the inputs are empty, it doenst crash, just has an error
 
 
@@ -53,7 +54,7 @@ ui <- fluidPage(
       
       numericInput(inputId = "m", 
                    label = "Fixed number of successes to be observed (m)", 
-                   value = 5, 
+                   value = 1, 
                    min = 1, 
                    step = 1),
       
@@ -62,7 +63,7 @@ ui <- fluidPage(
         numericInput(inputId = "M", 
                      label = "Number of successes in the population (M)", 
                      value = 10, 
-                     min = 0, 
+                     min = 1, 
                      step = 1)
       ),
       
@@ -77,7 +78,7 @@ ui <- fluidPage(
       
       numericInput(inputId = "x", 
                    label = "Observed value of x (Number of failures observed before the mth success)", 
-                   value = 5, 
+                   value = 1, 
                    min = 0, 
                    step = 1),
       
@@ -106,56 +107,94 @@ server <- function(input, output, session) {
   observe({
     # Validate confidence level
     if (input$confidence_level < 0 || input$confidence_level > 100) {
-      updateNumericInput(session, "confidence_level", value = 95)
+      #updateNumericInput(session, "confidence_level", value = 95)
       output$error_message <- renderText("Error: Confidence Level must be between 0 and 100.")
-    } else if (input$confidence_level != floor(input$confidence_level)) {
-      updateNumericInput(session, "confidence_level", value = 95)
+    } 
+    else if (input$confidence_level != floor(input$confidence_level)) {
+      #updateNumericInput(session, "confidence_level", value = 95)
       output$error_message <- renderText("Error: Confidence Level must be an integer.")
-    } else {
+    } 
+    else {
       output$error_message <- renderText("")
     }
-    
+  })
+  
+  observeEvent(input$m, {
     # Validate m
     if (input$m < 1) {
-      updateNumericInput(session, "m", value = 1)
+      #updateNumericInput(session, "m", value = 1)
       output$error_message <- renderText("Error: m must be an integer greater than or equal to 1.")
-    } else if (input$m != floor(input$m)) {
-      updateNumericInput(session, "m", value = 1)
+    } 
+    else if (input$m != floor(input$m)) {
+      #updateNumericInput(session, "m", value = 1)
       output$error_message <- renderText("Error: m must be an integer.")
-    } else {
+    } 
+    else if (input$m > input$M) {
+      #updateNumericInput(session, "m", value = input$M)
+      output$error_message <- renderText("Error: m must be less than or equal to M.")
+    } 
+    else {
       output$error_message <- renderText("")
     }
-    
+  })
+  
+  observeEvent(input$N, {
     # Validate N
     if (input$N < 1) {
-      updateNumericInput(session, "N", value = 1)
+      #updateNumericInput(session, "N", value = 20)
       output$error_message <- renderText("Error: N must be an integer greater than or equal to 1.")
-    } else if (input$N != floor(input$N)) {
-      updateNumericInput(session, "N", value = 1)
+    } 
+    else if (input$N != floor(input$N)) {
+      #updateNumericInput(session, "N", value = 20)
       output$error_message <- renderText("Error: N must be an integer.")
-    } else {
+    } 
+    else if (input$M > input$N) {
+      #updateNumericInput(session, "M", value = input$N)
+      output$error_message <- renderText("Error: M must be less than or equal to N.")
+    } 
+    else {
       output$error_message <- renderText("")
     }
-    
+  })
+  
+  observeEvent(input$M, {
     # Validate M
     if (input$M < 0) {
-      updateNumericInput(session, "M", value = 0)
+      #updateNumericInput(session, "M", value = 0)
       output$error_message <- renderText("Error: M must be an integer greater than or equal to 0.")
-    } else if (input$M != floor(input$M)) {
-      updateNumericInput(session, "M", value = 0)
+    } 
+    else if (input$M != floor(input$M)) {
+      #updateNumericInput(session, "M", value = 0)
       output$error_message <- renderText("Error: M must be an integer.")
-    } else {
+    } 
+    else if (input$M > input$N) {
+      #updateNumericInput(session, "M", value = input$N)
+      output$error_message <- renderText("Error: M must be less than or equal to N.")
+    } 
+    else if (input$m > input$M) {
+      #updateNumericInput(session, "m", value = input$M)
+      output$error_message <- renderText("Error: m must be less than or equal to M.")
+    } 
+    else {
       output$error_message <- renderText("")
     }
-    
+  })
+  
+  observeEvent(input$x, {
     # Validate x
     if (input$x < 0) {
-      updateNumericInput(session, "x", value = 0)
+      #updateNumericInput(session, "x", value = 1)
       output$error_message <- renderText("Error: x must be an integer greater than or equal to 0.")
-    } else if (input$x != floor(input$x)) {
-      updateNumericInput(session, "x", value = 0)
+    } 
+    else if (input$x != floor(input$x)) {
+      #updateNumericInput(session, "x", value = 1)
       output$error_message <- renderText("Error: x must be an integer.")
-    } else {
+    } 
+    else if (input$x > (input$N - input$M)) {
+      #updateNumericInput(session, "x", value = input$N - input$m)
+      output$error_message <- renderText("Error: Observed x must be less than or equal to N - m.")
+    } 
+    else {
       output$error_message <- renderText("")
     }
   })
@@ -227,8 +266,6 @@ server <- function(input, output, session) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
-
 
 
 
