@@ -234,6 +234,15 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
 # test_50_blaker
 ```
 
+```{r}
+# N = 200
+# m = 20
+# 
+# coverage_df = blaker_ac(N = N, m = m, conf_level = 0.95) %>%
+#   filter(M >= m)
+# mean(coverage_df$coverage_prob)
+```
+
 ## Function to Find Confidence Intervals
 
 ```{r}

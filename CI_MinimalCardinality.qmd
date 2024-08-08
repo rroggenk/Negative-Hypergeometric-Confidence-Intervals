@@ -1180,6 +1180,15 @@ mst_ac <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+# N = 200
+# m = 20
+# 
+# coverage_df = mst_ac(N = N, m = m, conf_level = 0.95) %>%
+#   filter(M >= m)
+# mean(coverage_df$coverage_prob)
+```
+
+```{r}
 data = mst_ac(N = 15, m = 3, conf_level = 0.95)
 
 conf_level= 0.95
@@ -1259,6 +1268,15 @@ cg_ac <- function(N, m, conf_level = 0.95) {
 # test_50_CG
 ```
 
+```{r}
+# N = 200
+# m = 20
+# 
+# coverage_df = cg_ac(N = N, m = m, conf_level = 0.95) %>%
+#   filter(M >= m)
+# mean(coverage_df$coverage_prob)
+```
+
 ## Function to Find BK Acceptance Curves
 
 ```{r}
@@ -1322,6 +1340,15 @@ bk_ac <- function(N, m, conf_level = 0.95) {
 ```{r}
 # test_50_BK = bk_ac(N = 50, m = 3, conf_level = 0.95)
 # test_50_BK
+```
+
+```{r}
+# N = 200
+# m = 20
+# 
+# coverage_df = bk_ac(N = N, m = m, conf_level = 0.95) %>%
+#   filter(M >= m)
+# mean(coverage_df$coverage_prob)
 ```
 
 ## Function to Find Confidence Intervals Bounds

@@ -245,6 +245,16 @@ coverage_prob_MLE <- function(M, N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+# N = 200
+# m = 3
+# conf_level = 0.95
+# M_values = m:N
+# 
+# coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_MLE(M, N, m, conf_level)))
+# mean(coverage_df$coverage_prob)
+```
+
+```{r}
 N = 20
 m = 3
 conf_level = 0.95
@@ -351,6 +361,16 @@ coverage_prob_unbiased <- function(M, N, m, conf_level = 0.95) {
   total_prob = sum(unlist(lapply(covered_x, function(x) ngh_pmf(x, N, M, m))))
   return(data.frame(M = M, coverage_prob = total_prob, min_x = min_x, max_x = max_x))
 }
+```
+
+```{r}
+# N = 200
+# m = 3
+# conf_level = 0.95
+# M_values = m:N
+# 
+# coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_unbiased(M, N, m, conf_level)))
+# mean(coverage_df$coverage_prob)
 ```
 
 ```{r}
