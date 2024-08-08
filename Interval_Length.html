@@ -154,8 +154,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="plot-of-expected-and-average-length" class="level1">
 <h1>Plot of Expected and Average Length</h1>
-<section id="first-initialize-n-m-and-confidence-level" class="level2">
-<h2 class="anchored" data-anchor-id="first-initialize-n-m-and-confidence-level">First Initialize N, m, and confidence level!</h2>
+<section id="first-choose-n-m-and-confidence-level" class="level2">
+<h2 class="anchored" data-anchor-id="first-choose-n-m-and-confidence-level">First choose N, m, and confidence level!</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">=</span> <span class="dv">50</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span></span>
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">M =</span> <span class="fu">integer</span>(), <span class="at">ExpectedLength =</span> <span class="fu">numeric</span>())</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate expected length for each M</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (M_i <span class="cf">in</span> m<span class="sc">:</span><span class="dv">50</span>) {</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (M_i <span class="cf">in</span> m<span class="sc">:</span>N) {</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  exp_len <span class="ot">=</span> <span class="fu">expected_length</span>(data, <span class="st">"lower_bound"</span>, <span class="st">"upper_bound"</span>, <span class="at">N =</span> N, <span class="at">M =</span> M_i, <span class="at">m =</span> m)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">rbind</span>(results, <span class="fu">data.frame</span>(<span class="at">M =</span> M_i, <span class="at">ExpectedLength =</span> exp_len))</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>}</span>
@@ -227,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 <section id="analog-to-clopper-pearson" class="level2">
-<h2 class="anchored" data-anchor-id="analog-to-clopper-pearson">Analog to Clopper Pearson</h2>
+<h2 class="anchored" data-anchor-id="analog-to-clopper-pearson">Analog to Clopper-Pearson</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">CI_cov_prob</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">average_length</span>(data, <span class="st">"lower_bound"</span>, <span class="st">"upper_bound"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -418,6 +418,105 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+</section>
+<section id="plot-of-expected-length" class="level1">
+<h1>Plot of Expected Length</h1>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the variables</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>conf_level <span class="ot">&lt;-</span> <span class="fl">0.95</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>Ns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">200</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>ms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">20</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty data frame to store all the results</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each combination of N and m</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (N <span class="cf">in</span> Ns) {</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (m <span class="cf">in</span> ms) {</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    methods <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Normal Approximation (MLE)"</span> <span class="ot">=</span> <span class="fu">CI_cov_prob_MLE</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level),</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Normal Approximation (Unbiased)"</span> <span class="ot">=</span> <span class="fu">CI_cov_prob_unbiased</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level),</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Analog to Clopper-Pearson"</span> <span class="ot">=</span> <span class="fu">CI_cov_prob</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level),</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>      <span class="st">"MST"</span> <span class="ot">=</span> <span class="fu">minimal_cardinality_ci</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level, <span class="at">procedure =</span> <span class="st">"MST"</span>),</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>      <span class="st">"CG"</span> <span class="ot">=</span> <span class="fu">minimal_cardinality_ci</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level, <span class="at">procedure =</span> <span class="st">"CG"</span>),</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>      <span class="st">"BK"</span> <span class="ot">=</span> <span class="fu">minimal_cardinality_ci</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level, <span class="at">procedure =</span> <span class="st">"BK"</span>),</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Blaker"</span> <span class="ot">=</span> <span class="fu">blaker_ci</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level),</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>      <span class="st">"CMC"</span> <span class="ot">=</span> <span class="fu">cmc_ci</span>(<span class="at">N =</span> N, <span class="at">m =</span> m, <span class="at">conf_level =</span> conf_level)</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (method_name <span class="cf">in</span> <span class="fu">names</span>(methods)) {</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>      data <span class="ot">&lt;-</span> methods[[method_name]]</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Determine the correct column names for bounds</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (method_name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Normal Approximation (MLE)"</span>, <span class="st">"Normal Approximation (Unbiased)"</span>, <span class="st">"Analog to Clopper-Pearson"</span>)) {</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        lb_col <span class="ot">&lt;-</span> <span class="st">"lower_bound"</span></span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>        ub_col <span class="ot">&lt;-</span> <span class="st">"upper_bound"</span></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>        lb_col <span class="ot">&lt;-</span> <span class="st">"ci_lb"</span></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>        ub_col <span class="ot">&lt;-</span> <span class="st">"ci_ub"</span></span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Check if the method returned valid data</span></span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">nrow</span>(data) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calculate expected length for each M</span></span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>        results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">M =</span> <span class="fu">integer</span>(), <span class="at">ExpectedLength =</span> <span class="fu">numeric</span>(), <span class="at">Method =</span> <span class="fu">character</span>(), <span class="at">N =</span> <span class="fu">integer</span>(), <span class="at">m =</span> <span class="fu">integer</span>())</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (M_i <span class="cf">in</span> m<span class="sc">:</span>N) {</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>          exp_len <span class="ot">&lt;-</span> <span class="fu">expected_length</span>(data, lb_col, ub_col, <span class="at">N =</span> N, <span class="at">M =</span> M_i, <span class="at">m =</span> m)</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Only add to results if exp_len is not empty or NULL</span></span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>          <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(exp_len) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(exp_len) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>            results <span class="ot">&lt;-</span> <span class="fu">rbind</span>(results, <span class="fu">data.frame</span>(<span class="at">M =</span> M_i, <span class="at">ExpectedLength =</span> exp_len, <span class="at">Method =</span> method_name, <span class="at">N =</span> N, <span class="at">m =</span> m))</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>          }</span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>        all_results <span class="ot">&lt;-</span> <span class="fu">rbind</span>(all_results, results)</span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Saved as CSV file b/c takes a while to run </span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(all_results, file.path(getwd(), "expected_length.csv"), row.names = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plot" class="level2">
+<h2 class="anchored" data-anchor-id="plot">Plot</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"expected_length.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 3663 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): Method
+dbl (4): M, ExpectedLength, N, m
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_results, <span class="fu">aes</span>(<span class="at">x =</span> M, <span class="at">y =</span> ExpectedLength, <span class="at">color =</span> Method)) <span class="sc">+</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(m <span class="sc">~</span> N, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span>  <span class="co"># Create the 2x2 plot with facets</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Expected Length"</span>, <span class="at">color =</span> <span class="st">"Method"</span>) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Interval_Length_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="plot-of-average-length" class="level1">
+<h1>Plot of Average Length</h1>
 </section>
 
 </main>

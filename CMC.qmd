@@ -244,7 +244,7 @@ ggplot(data, aes(x = M, y = coverage_prob, group = x_set, color = x_set)) +
   theme(legend.position = "none")
 ```
 
-# Plot of Rainbows 
+# Plot of Rainbows
 
 ```{r}
 rainbows <- function(N, m, conf_level = 0.95) {

@@ -2,6 +2,7 @@
 # edit input errors (does is automatically change input, then error message doesnt show)
 # maybe make error messages red and bigger?
 # make it so when the inputs are empty, it doenst crash, just has an error
+# add a submit button
 
 
 #
