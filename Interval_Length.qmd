@@ -328,18 +328,28 @@ Commented out b/c saved dataset as a .csv file so I don't have to re-run code ea
 Note: Should we include Normal Approximation methods in the plot? I was thinking no since the coverage sucks, so even since the expected length is good, it gives a false idea because coverage sucks.
 
 ```{r}
-all_results = read_csv("expected_length.csv")
+# Load the data
+all_results <- read_csv("expected_length.csv") %>%
+  filter(!(Method %in% c("Normal Approximation (MLE)", "Normal Approximation (Unbiased)")))
 
-distinct_colors = c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+# Define a distinct color palette
+distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
 
+# Custom labels for N and m
 N_labels <- c("50" = "N = 50", "200" = "N = 200")
 m_labels <- c("3" = "m = 3", "20" = "m = 20")
 
+# Combine N and m labels into a single factor for facetting
+all_results$facet_label <- factor(
+  paste("N =", all_results$N, ", m =", all_results$m),
+  levels = c("N = 50 , m = 3", "N = 200 , m = 3", "N = 50 , m = 20", "N = 200 , m = 20")
+)
+
+# Create the plot using facet_wrap for independent axes
 ggplot(all_results, aes(x = M, y = ExpectedLength, color = Method)) +
   geom_line(size = 1, alpha = 0.6) +  # Adjust line thickness and transparency
   scale_color_manual(values = distinct_colors) +  # Use the distinct color palette
-  facet_grid(m ~ N, scales = "free", 
-             labeller = labeller(N = N_labels, m = m_labels)) +  # Apply custom labels
+  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
   labs(x = "M", y = "Expected Length", color = "Method") +
   theme_minimal() +
   theme(
@@ -414,20 +424,29 @@ Commented out b/c saved dataset as a .csv file so I don't have to re-run code ea
 ```{r}
 # Saved as CSV file b/c takes a while to run 
 # write.csv(results, file.path(getwd(), "average_length.csv"), row.names = FALSE)
-
-results = read_csv("average_length_cov_prob.csv")
 ```
 
 ```{r}
-n_labels <- c("50" = "N = 50", "200" = "N = 200")
-m_labels <- c("3" = "m = 3", "20" = "m = 20")
+# Load the data
+results <- read_csv("average_length_cov_prob.csv")
 
+# Combine N and m labels into a single factor for facetting
+results$facet_label <- factor(
+  paste("N =", results$N, ", m =", results$m),
+  levels = c("N = 50 , m = 3", "N = 200 , m = 3", "N = 50 , m = 20", "N = 200 , m = 20")
+)
+
+# Define a distinct color palette
+distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+
+# Create the scatter plot using facet_wrap for independent axes
 ggplot(results, aes(x = AverageLength, y = AverageCovProb, color = Method)) +
-  geom_point(size = 3) +  # Adjust point size
+  geom_point(size = 3, alpha = 0.5) +  # Adjust point size and transparency
   geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
-  facet_grid(m ~ N, labeller = labeller(N = n_labels, m = m_labels)) + 
+  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
+  scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
   labs(x = "Average Length", y = "Average Coverage Probability", color = "Method") +
-  #theme_minimal() +
+  theme_minimal() +
   theme(
     legend.position = "bottom",
     strip.text = element_text(size = 12)  # Increase facet label size for clarity
