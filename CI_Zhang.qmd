@@ -420,3 +420,27 @@ ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group, color = group))
   theme_minimal() +
   theme(legend.position = "none")
 ```
+
+```{r}
+coverage_df = coverage_df %>%
+  filter(M >= 3 & M < 50)
+
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+  geom_line(color = "#bd8a12") +
+  geom_point(color = "#154533") +
+  labs(x = "M", y = "Coverage Probability", title = "Coverage Probability for Normal Approximation (NHG)") +
+  geom_hline(yintercept = conf_level, color = "red", linetype = "dashed") +
+  ylim(0, 1) +
+  scale_x_continuous(breaks = c(0, 10, 20, 30, 40, 50), limits = c(0, 50)) +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 0.95, 1), limits = c(0, 1)) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) 
+```
