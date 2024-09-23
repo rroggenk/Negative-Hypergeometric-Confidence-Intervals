@@ -293,12 +293,12 @@ N = 21778
 # Number of positive students
 M = 1293
 # Number of positives to observe in sampling
-m = 100
+m = 20
 
 # Create a vector representing the population
 population = c(rep(1, M), rep(0, N - M))  # 1 represents positive, 0 represents negative
 
-# Sample until we get 100 positives
+# Sample until we get 20 positives
 sample_positives = function(population, m) {
   positives_count = 0
   negatives_count = 0
@@ -322,13 +322,13 @@ result = sample_positives(population, m)
 total_samples = result$total_samples
 negatives_count = result$negatives_count
 
-cat("Total samples taken to get 100 positives: ", total_samples, "\n")
-cat("Number of negatives observed before getting 100 positives: ", negatives_count, "\n")
+cat("Total samples taken to get 20 positives: ", total_samples, "\n")
+cat("Number of negatives observed before getting 20 positives: ", negatives_count, "\n")
 ```
 
 ```{r}
-m = 100
-x = 1557
+m = 20
+x = 448
 N = 21778
 conf_level = 0.95
 
