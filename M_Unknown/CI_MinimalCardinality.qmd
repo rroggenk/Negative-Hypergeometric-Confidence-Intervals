@@ -725,7 +725,7 @@ sum_ngh_pmf(N = 50, M = 0, m = 3, min_x = 50, max_x = 50)
 ### Plot of All Possible Minimal Cardinality Acceptance Curves
 
 ```{r}
-url = "https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/main/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2050%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"
+url = "https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/refs/heads/main/M_Unknown/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2050%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"
 
 data = read.csv(url, header = TRUE)
 ```
@@ -993,7 +993,7 @@ sum_ngh_pmf(N = 20, M = 0, m = 3, min_x = 20, max_x = 20)
 ### Plot of All Possible Minimal Cardinality Acceptance Curves
 
 ```{r}
-url = "https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/main/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2020%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"
+url = "https://raw.githubusercontent.com/rroggenk/Negative-Hypergeometric-Confidence-Intervals/refs/heads/main/M_Unknown/Minimal%20Cardinality%20Acceptance%20Curves%20(N%20%3D%2020%2C%20m%20%3D%203%2C%20CL%20%3D%200.95).csv"
 
 data = read.csv(url, header = TRUE)
 ```

@@ -9,7 +9,7 @@ editor: visual
 library(extraDistr)
 library(tidyverse)
 
-source('functions.R', encoding = 'UTF-8')
+source('../functions.R', encoding = 'UTF-8')
 ```
 
 # Expected Length
