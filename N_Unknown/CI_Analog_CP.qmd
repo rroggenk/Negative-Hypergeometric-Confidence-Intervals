@@ -155,6 +155,10 @@ CI_Analog_CP_N_Unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ### Testing Function
 
 ```{r}
+CI_Analog_CP_N_Unknown(M = 10, m = 5)
+```
+
+```{r}
 CI_Analog_CP_N_Unknown(M = 21, m = 3)
 ```
 
