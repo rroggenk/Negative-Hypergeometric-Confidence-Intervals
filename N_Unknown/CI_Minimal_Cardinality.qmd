@@ -593,3 +593,22 @@ ggplot(plot, aes(x = N,
   theme_minimal() +
   theme(legend.position = "none")
 ```
+
+```{r}
+filtered_plot <- plot %>%
+  filter(x_set %in% all_ac_mc_M_10_m_4$x_set)
+
+conf_level= 0.95
+
+ggplot(filtered_plot, aes(x = N, 
+                 y = coverage_prob, 
+                 group = x_set, 
+                 color = x_set)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "N", y = "Coverage Probability of N") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  ylim(conf_level - 0.005, 1) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
