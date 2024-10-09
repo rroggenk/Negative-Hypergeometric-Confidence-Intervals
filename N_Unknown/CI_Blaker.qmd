@@ -1,0 +1,19 @@
+---
+title: "Blaker's Method (N Unknown)"
+author: "Rachel Roggenkemper"
+format: html
+editor: visual
+---
+
+```{r}
+library(extraDistr)
+library(tidyverse)
+
+source('../functions.R', encoding = 'UTF-8')
+```
+
+## Acceptance Curves (Function)
+
+```{r}
+
+```

@@ -1307,7 +1307,7 @@ bk_ac <- function(N, m, conf_level = 0.95) {
       chosen_row = subset_results
     } 
     
-    # If has more than one option, apply MST procedure
+    # If has more than one option, apply BK procedure
     # Filters so a and b are non-decreasing, and then chooses the row with the smallest 
     # possible a and b
     else {
