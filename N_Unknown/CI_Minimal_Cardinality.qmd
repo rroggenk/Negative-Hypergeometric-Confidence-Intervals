@@ -862,11 +862,13 @@ minimal_cardinality_ci_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 60,
 ```
 
 ```{r}
+# Takes about 30 seconds to run
 minimal_cardinality_ci_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 60, 
                                 procedure = "CG")
 ```
 
 ```{r}
+# Takes about 30 seconds to run
 minimal_cardinality_ci_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 60, 
                                 procedure = "BK")
 ```
