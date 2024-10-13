@@ -1411,8 +1411,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb295"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb295-1"><a href="#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
-<span id="cb295-2"><a href="#cb295-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"CG"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb295"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb295-1"><a href="#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
+<span id="cb295-2"><a href="#cb295-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
+<span id="cb295-3"><a href="#cb295-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"CG"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  x ci_lb ci_ub       ci
 1 0    10    17 [10, 17]
@@ -1426,8 +1427,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb297"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb297-1"><a href="#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
-<span id="cb297-2"><a href="#cb297-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"BK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb297"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb297-1"><a href="#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
+<span id="cb297-2"><a href="#cb297-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
+<span id="cb297-3"><a href="#cb297-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"BK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  x ci_lb ci_ub       ci
 1 0    10    16 [10, 16]
@@ -1439,6 +1441,117 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 7 6    17    46 [17, 46]
 8 7    17    53 [17, 53]
 9 8    19    59 [19, 59]</code></pre>
+</div>
+</div>
+</section>
+<section id="coverage-probability-plots" class="level2">
+<h2 class="anchored" data-anchor-id="coverage-probability-plots">Coverage Probability Plots</h2>
+<section id="mst" class="level3">
+<h3 class="anchored" data-anchor-id="mst">MST</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb299"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb299-1"><a href="#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_mst = mst_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
+<span id="cb299-2"><a href="#cb299-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_mst, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_mst.csv"), row.names = FALSE)</span></span>
+<span id="cb299-3"><a href="#cb299-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb299-4"><a href="#cb299-4" aria-hidden="true" tabindex="-1"></a>cov_prob_mst <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_mst.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 241 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): x_set
+dbl (5): N, a, b, cardinality, coverage_prob
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb301"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb301-1"><a href="#cb301-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb301-2"><a href="#cb301-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb301-3"><a href="#cb301-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_mst, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb301-4"><a href="#cb301-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb301-5"><a href="#cb301-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb301-6"><a href="#cb301-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
+<span id="cb301-7"><a href="#cb301-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb301-8"><a href="#cb301-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb301-9"><a href="#cb301-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb301-10"><a href="#cb301-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_Minimal_Cardinality_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="cg" class="level3">
+<h3 class="anchored" data-anchor-id="cg">CG</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb302"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb302-1"><a href="#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_cg = cg_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
+<span id="cb302-2"><a href="#cb302-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_cg, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_cg.csv"), row.names = FALSE)</span></span>
+<span id="cb302-3"><a href="#cb302-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb302-4"><a href="#cb302-4" aria-hidden="true" tabindex="-1"></a>cov_prob_cg <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_cg.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 241 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): x_set
+dbl (5): N, a, b, cardinality, coverage_prob
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb304"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb304-1"><a href="#cb304-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb304-2"><a href="#cb304-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb304-3"><a href="#cb304-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_cg, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb304-4"><a href="#cb304-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb304-5"><a href="#cb304-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb304-6"><a href="#cb304-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
+<span id="cb304-7"><a href="#cb304-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb304-8"><a href="#cb304-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb304-9"><a href="#cb304-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb304-10"><a href="#cb304-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_Minimal_Cardinality_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="bk" class="level2">
+<h2 class="anchored" data-anchor-id="bk">BK</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb305"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_bk = bk_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
+<span id="cb305-2"><a href="#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_bk, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_bk.csv"), row.names = FALSE)</span></span>
+<span id="cb305-3"><a href="#cb305-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb305-4"><a href="#cb305-4" aria-hidden="true" tabindex="-1"></a>cov_prob_bk <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_bk.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 185 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): x_set
+dbl (5): N, a, b, cardinality, coverage_prob
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb307"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb307-1"><a href="#cb307-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb307-2"><a href="#cb307-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-3"><a href="#cb307-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_bk, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb307-4"><a href="#cb307-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb307-5"><a href="#cb307-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb307-6"><a href="#cb307-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
+<span id="cb307-7"><a href="#cb307-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb307-8"><a href="#cb307-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb307-9"><a href="#cb307-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb307-10"><a href="#cb307-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_Minimal_Cardinality_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>

@@ -198,3 +198,23 @@ blaker_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250, procedure =
 ```{r}
 blaker_ci_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 60)
 ```
+
+## Coverage Probability Plot
+
+```{r}
+# cov_prob_blaker = blaker_ac_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 250)
+# write.csv(cov_prob_blaker, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_blaker.csv"), row.names = FALSE)
+
+cov_prob_blaker = read_csv("cov_prob_blaker.csv")
+
+conf_level= 0.95
+
+ggplot(cov_prob_blaker, aes(x = N, y = coverage_prob, group = x_set, color = x_set)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "N", y = "Coverage Probability of N") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  ylim(conf_level - 0.005, 1) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
