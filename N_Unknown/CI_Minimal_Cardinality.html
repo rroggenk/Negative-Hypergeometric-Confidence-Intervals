@@ -1108,64 +1108,117 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb283"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb283-1"><a href="#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot of All Minimal Cardinality Acceptance Curves (with trends shown pt 2)</span></span>
+<span id="cb283-2"><a href="#cb283-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-3"><a href="#cb283-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty data frame to store results</span></span>
+<span id="cb283-4"><a href="#cb283-4" aria-hidden="true" tabindex="-1"></a>filtered_plot2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb283-5"><a href="#cb283-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-6"><a href="#cb283-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each row in all_ac_mc_M_10_m_4</span></span>
+<span id="cb283-7"><a href="#cb283-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(all_ac_mc_M_10_m_4)) {</span>
+<span id="cb283-8"><a href="#cb283-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Get the current N and x_set</span></span>
+<span id="cb283-9"><a href="#cb283-9" aria-hidden="true" tabindex="-1"></a>  current_N <span class="ot">&lt;-</span> all_ac_mc_M_10_m_4<span class="sc">$</span>N[i]</span>
+<span id="cb283-10"><a href="#cb283-10" aria-hidden="true" tabindex="-1"></a>  current_x_set <span class="ot">&lt;-</span> all_ac_mc_M_10_m_4<span class="sc">$</span>x_set[i]</span>
+<span id="cb283-11"><a href="#cb283-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb283-12"><a href="#cb283-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter for N, N-1, and N+1 where the x_set matches</span></span>
+<span id="cb283-13"><a href="#cb283-13" aria-hidden="true" tabindex="-1"></a>  filtered_rows <span class="ot">&lt;-</span> plot <span class="sc">%&gt;%</span></span>
+<span id="cb283-14"><a href="#cb283-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(N <span class="sc">%in%</span> <span class="fu">c</span>(current_N, current_N <span class="sc">-</span> <span class="dv">1</span>, current_N <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">&amp;</span> x_set <span class="sc">==</span> current_x_set)</span>
+<span id="cb283-15"><a href="#cb283-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb283-16"><a href="#cb283-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Append the filtered rows to the final dataframe</span></span>
+<span id="cb283-17"><a href="#cb283-17" aria-hidden="true" tabindex="-1"></a>  filtered_plot2 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(filtered_plot, filtered_rows)</span>
+<span id="cb283-18"><a href="#cb283-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb283-19"><a href="#cb283-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-20"><a href="#cb283-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove any duplicate rows just in case</span></span>
+<span id="cb283-21"><a href="#cb283-21" aria-hidden="true" tabindex="-1"></a>filtered_plot2 <span class="ot">&lt;-</span> <span class="fu">distinct</span>(filtered_plot)</span>
+<span id="cb283-22"><a href="#cb283-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-23"><a href="#cb283-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-24"><a href="#cb283-24" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb283-25"><a href="#cb283-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-26"><a href="#cb283-26" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(filtered_plot2, <span class="fu">aes</span>(<span class="at">x =</span> N, </span>
+<span id="cb283-27"><a href="#cb283-27" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> coverage_prob, </span>
+<span id="cb283-28"><a href="#cb283-28" aria-hidden="true" tabindex="-1"></a>                 <span class="at">group =</span> x_set, </span>
+<span id="cb283-29"><a href="#cb283-29" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb283-30"><a href="#cb283-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb283-31"><a href="#cb283-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb283-32"><a href="#cb283-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
+<span id="cb283-33"><a href="#cb283-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb283-34"><a href="#cb283-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb283-35"><a href="#cb283-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb283-36"><a href="#cb283-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 552 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 552 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_Minimal_Cardinality_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="mst-acceptance-curves-function" class="level2">
 <h2 class="anchored" data-anchor-id="mst-acceptance-curves-function">MST Acceptance Curves (Function)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb283"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb283-1"><a href="#cb283-1" aria-hidden="true" tabindex="-1"></a>mst_ac_N_unknown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>) {</span>
-<span id="cb283-2"><a href="#cb283-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Gets all minimal cardinality acceptance curves </span></span>
-<span id="cb283-3"><a href="#cb283-3" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">all_mc_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
-<span id="cb283-4"><a href="#cb283-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb283-5"><a href="#cb283-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes data frame that will be outputted </span></span>
-<span id="cb283-6"><a href="#cb283-6" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">N =</span> <span class="fu">integer</span>(), </span>
-<span id="cb283-7"><a href="#cb283-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">a =</span> <span class="fu">integer</span>(), </span>
-<span id="cb283-8"><a href="#cb283-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">b =</span> <span class="fu">integer</span>(), </span>
-<span id="cb283-9"><a href="#cb283-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cardinality =</span> <span class="fu">integer</span>(), </span>
-<span id="cb283-10"><a href="#cb283-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">coverage_prob =</span> <span class="fu">numeric</span>(), </span>
-<span id="cb283-11"><a href="#cb283-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x_set =</span> <span class="fu">character</span>())</span>
-<span id="cb283-12"><a href="#cb283-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb283-13"><a href="#cb283-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes min_a and min_b, starting at 0-0</span></span>
-<span id="cb283-14"><a href="#cb283-14" aria-hidden="true" tabindex="-1"></a>  min_a <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb283-15"><a href="#cb283-15" aria-hidden="true" tabindex="-1"></a>  min_b <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb283-16"><a href="#cb283-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb283-17"><a href="#cb283-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loops through with each N </span></span>
-<span id="cb283-18"><a href="#cb283-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (current_N <span class="cf">in</span> M<span class="sc">:</span>max_N) {</span>
-<span id="cb283-19"><a href="#cb283-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Only looks at acceptance curves for the current N</span></span>
-<span id="cb283-20"><a href="#cb283-20" aria-hidden="true" tabindex="-1"></a>    subset_results <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
-<span id="cb283-21"><a href="#cb283-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(N <span class="sc">==</span> current_N)</span>
-<span id="cb283-22"><a href="#cb283-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb283-23"><a href="#cb283-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If only one acceptance curve, then that is the acceptance curve  </span></span>
-<span id="cb283-24"><a href="#cb283-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(subset_results) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb283-25"><a href="#cb283-25" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results</span>
-<span id="cb283-26"><a href="#cb283-26" aria-hidden="true" tabindex="-1"></a>    } </span>
-<span id="cb283-27"><a href="#cb283-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb283-28"><a href="#cb283-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If has more than one option, apply MST procedure</span></span>
-<span id="cb283-29"><a href="#cb283-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filters so a and b are non-decreasing, and then chooses the row with the highest </span></span>
-<span id="cb283-30"><a href="#cb283-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># coverage probability </span></span>
-<span id="cb283-31"><a href="#cb283-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb283-32"><a href="#cb283-32" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results <span class="sc">%&gt;%</span> </span>
-<span id="cb283-33"><a href="#cb283-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(a <span class="sc">&gt;=</span> min_a, b <span class="sc">&gt;=</span> min_b) <span class="sc">%&gt;%</span> </span>
-<span id="cb283-34"><a href="#cb283-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">arrange</span>(<span class="fu">desc</span>(coverage_prob), <span class="fu">desc</span>(a), <span class="fu">desc</span>(b)) <span class="sc">%&gt;%</span> </span>
-<span id="cb283-35"><a href="#cb283-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">slice</span>(<span class="dv">1</span>)</span>
-<span id="cb283-36"><a href="#cb283-36" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb283-37"><a href="#cb283-37" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb283-38"><a href="#cb283-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Updates min_a and min_b and then adds row to final outputted data frame </span></span>
-<span id="cb283-39"><a href="#cb283-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(chosen_row) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb283-40"><a href="#cb283-40" aria-hidden="true" tabindex="-1"></a>      min_a <span class="ot">=</span> <span class="fu">max</span>(min_a, chosen_row<span class="sc">$</span>a)</span>
-<span id="cb283-41"><a href="#cb283-41" aria-hidden="true" tabindex="-1"></a>      min_b <span class="ot">=</span> <span class="fu">max</span>(min_b, chosen_row<span class="sc">$</span>b)</span>
-<span id="cb283-42"><a href="#cb283-42" aria-hidden="true" tabindex="-1"></a>      final_results <span class="ot">=</span> <span class="fu">rbind</span>(final_results, chosen_row)</span>
-<span id="cb283-43"><a href="#cb283-43" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb283-44"><a href="#cb283-44" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb283-45"><a href="#cb283-45" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb283-46"><a href="#cb283-46" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> final_results <span class="sc">%&gt;%</span></span>
-<span id="cb283-47"><a href="#cb283-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(N)</span>
-<span id="cb283-48"><a href="#cb283-48" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb283-49"><a href="#cb283-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_results)</span>
-<span id="cb283-50"><a href="#cb283-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb286"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb286-1"><a href="#cb286-1" aria-hidden="true" tabindex="-1"></a>mst_ac_N_unknown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>) {</span>
+<span id="cb286-2"><a href="#cb286-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Gets all minimal cardinality acceptance curves </span></span>
+<span id="cb286-3"><a href="#cb286-3" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">all_mc_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
+<span id="cb286-4"><a href="#cb286-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb286-5"><a href="#cb286-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes data frame that will be outputted </span></span>
+<span id="cb286-6"><a href="#cb286-6" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">N =</span> <span class="fu">integer</span>(), </span>
+<span id="cb286-7"><a href="#cb286-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">a =</span> <span class="fu">integer</span>(), </span>
+<span id="cb286-8"><a href="#cb286-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">b =</span> <span class="fu">integer</span>(), </span>
+<span id="cb286-9"><a href="#cb286-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cardinality =</span> <span class="fu">integer</span>(), </span>
+<span id="cb286-10"><a href="#cb286-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">coverage_prob =</span> <span class="fu">numeric</span>(), </span>
+<span id="cb286-11"><a href="#cb286-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x_set =</span> <span class="fu">character</span>())</span>
+<span id="cb286-12"><a href="#cb286-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb286-13"><a href="#cb286-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes min_a and min_b, starting at 0-0</span></span>
+<span id="cb286-14"><a href="#cb286-14" aria-hidden="true" tabindex="-1"></a>  min_a <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb286-15"><a href="#cb286-15" aria-hidden="true" tabindex="-1"></a>  min_b <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb286-16"><a href="#cb286-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb286-17"><a href="#cb286-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loops through with each N </span></span>
+<span id="cb286-18"><a href="#cb286-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (current_N <span class="cf">in</span> M<span class="sc">:</span>max_N) {</span>
+<span id="cb286-19"><a href="#cb286-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Only looks at acceptance curves for the current N</span></span>
+<span id="cb286-20"><a href="#cb286-20" aria-hidden="true" tabindex="-1"></a>    subset_results <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb286-21"><a href="#cb286-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(N <span class="sc">==</span> current_N)</span>
+<span id="cb286-22"><a href="#cb286-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb286-23"><a href="#cb286-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If only one acceptance curve, then that is the acceptance curve  </span></span>
+<span id="cb286-24"><a href="#cb286-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(subset_results) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb286-25"><a href="#cb286-25" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results</span>
+<span id="cb286-26"><a href="#cb286-26" aria-hidden="true" tabindex="-1"></a>    } </span>
+<span id="cb286-27"><a href="#cb286-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb286-28"><a href="#cb286-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If has more than one option, apply MST procedure</span></span>
+<span id="cb286-29"><a href="#cb286-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filters so a and b are non-decreasing, and then chooses the row with the highest </span></span>
+<span id="cb286-30"><a href="#cb286-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># coverage probability </span></span>
+<span id="cb286-31"><a href="#cb286-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb286-32"><a href="#cb286-32" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results <span class="sc">%&gt;%</span> </span>
+<span id="cb286-33"><a href="#cb286-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(a <span class="sc">&gt;=</span> min_a, b <span class="sc">&gt;=</span> min_b) <span class="sc">%&gt;%</span> </span>
+<span id="cb286-34"><a href="#cb286-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">arrange</span>(<span class="fu">desc</span>(coverage_prob), <span class="fu">desc</span>(a), <span class="fu">desc</span>(b)) <span class="sc">%&gt;%</span> </span>
+<span id="cb286-35"><a href="#cb286-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">slice</span>(<span class="dv">1</span>)</span>
+<span id="cb286-36"><a href="#cb286-36" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb286-37"><a href="#cb286-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb286-38"><a href="#cb286-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Updates min_a and min_b and then adds row to final outputted data frame </span></span>
+<span id="cb286-39"><a href="#cb286-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(chosen_row) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb286-40"><a href="#cb286-40" aria-hidden="true" tabindex="-1"></a>      min_a <span class="ot">=</span> <span class="fu">max</span>(min_a, chosen_row<span class="sc">$</span>a)</span>
+<span id="cb286-41"><a href="#cb286-41" aria-hidden="true" tabindex="-1"></a>      min_b <span class="ot">=</span> <span class="fu">max</span>(min_b, chosen_row<span class="sc">$</span>b)</span>
+<span id="cb286-42"><a href="#cb286-42" aria-hidden="true" tabindex="-1"></a>      final_results <span class="ot">=</span> <span class="fu">rbind</span>(final_results, chosen_row)</span>
+<span id="cb286-43"><a href="#cb286-43" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb286-44"><a href="#cb286-44" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb286-45"><a href="#cb286-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb286-46"><a href="#cb286-46" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> final_results <span class="sc">%&gt;%</span></span>
+<span id="cb286-47"><a href="#cb286-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(N)</span>
+<span id="cb286-48"><a href="#cb286-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb286-49"><a href="#cb286-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_results)</span>
+<span id="cb286-50"><a href="#cb286-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb284"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb284-1"><a href="#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mst_ac_N_unknown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb287"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb287-1"><a href="#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mst_ac_N_unknown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 31 × 6
        N     a     b cardinality coverage_prob x_set
@@ -1187,81 +1240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="cg-acceptance-curves-function" class="level2">
 <h2 class="anchored" data-anchor-id="cg-acceptance-curves-function">CG Acceptance Curves (Function)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb286"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb286-1"><a href="#cb286-1" aria-hidden="true" tabindex="-1"></a>cg_ac_N_unknown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>) {</span>
-<span id="cb286-2"><a href="#cb286-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Gets all minimal cardinality acceptance curves</span></span>
-<span id="cb286-3"><a href="#cb286-3" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">all_mc_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
-<span id="cb286-4"><a href="#cb286-4" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb286-5"><a href="#cb286-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes data frame that will be outputted </span></span>
-<span id="cb286-6"><a href="#cb286-6" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">N =</span> <span class="fu">integer</span>(), </span>
-<span id="cb286-7"><a href="#cb286-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">a =</span> <span class="fu">integer</span>(), </span>
-<span id="cb286-8"><a href="#cb286-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">b =</span> <span class="fu">integer</span>(), </span>
-<span id="cb286-9"><a href="#cb286-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cardinality =</span> <span class="fu">integer</span>(), </span>
-<span id="cb286-10"><a href="#cb286-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">coverage_prob =</span> <span class="fu">numeric</span>(), </span>
-<span id="cb286-11"><a href="#cb286-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x_set =</span> <span class="fu">character</span>())</span>
-<span id="cb286-12"><a href="#cb286-12" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb286-13"><a href="#cb286-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes min_a and min_b, starting at 0-0</span></span>
-<span id="cb286-14"><a href="#cb286-14" aria-hidden="true" tabindex="-1"></a>  min_a <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb286-15"><a href="#cb286-15" aria-hidden="true" tabindex="-1"></a>  min_b <span class="ot">=</span> <span class="dv">0</span></span>
-<span id="cb286-16"><a href="#cb286-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb286-17"><a href="#cb286-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loops through with each N</span></span>
-<span id="cb286-18"><a href="#cb286-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (current_N <span class="cf">in</span> M<span class="sc">:</span>max_N) {</span>
-<span id="cb286-19"><a href="#cb286-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Only looks at acceptance curves for the current M </span></span>
-<span id="cb286-20"><a href="#cb286-20" aria-hidden="true" tabindex="-1"></a>    subset_results <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
-<span id="cb286-21"><a href="#cb286-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(N <span class="sc">==</span> current_N)</span>
-<span id="cb286-22"><a href="#cb286-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb286-23"><a href="#cb286-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If only one acceptance curve, then that is the acceptance curve </span></span>
-<span id="cb286-24"><a href="#cb286-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(subset_results) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb286-25"><a href="#cb286-25" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results</span>
-<span id="cb286-26"><a href="#cb286-26" aria-hidden="true" tabindex="-1"></a>    } </span>
-<span id="cb286-27"><a href="#cb286-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb286-28"><a href="#cb286-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If has more than one option, apply CG procedure</span></span>
-<span id="cb286-29"><a href="#cb286-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filters so a and b are non-decreasing, and then chooses the row with the smallest </span></span>
-<span id="cb286-30"><a href="#cb286-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># possible a and b</span></span>
-<span id="cb286-31"><a href="#cb286-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb286-32"><a href="#cb286-32" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results <span class="sc">%&gt;%</span> </span>
-<span id="cb286-33"><a href="#cb286-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(a <span class="sc">&gt;=</span> min_a, b <span class="sc">&gt;=</span> min_b) <span class="sc">%&gt;%</span> </span>
-<span id="cb286-34"><a href="#cb286-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">arrange</span>(a, b) <span class="sc">%&gt;%</span> </span>
-<span id="cb286-35"><a href="#cb286-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">slice</span>(<span class="dv">1</span>)</span>
-<span id="cb286-36"><a href="#cb286-36" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb286-37"><a href="#cb286-37" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb286-38"><a href="#cb286-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Updates min_a and min_b and then adds row to final outputted data frame </span></span>
-<span id="cb286-39"><a href="#cb286-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(chosen_row) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb286-40"><a href="#cb286-40" aria-hidden="true" tabindex="-1"></a>      min_a <span class="ot">=</span> <span class="fu">max</span>(min_a, chosen_row<span class="sc">$</span>a)</span>
-<span id="cb286-41"><a href="#cb286-41" aria-hidden="true" tabindex="-1"></a>      min_b <span class="ot">=</span> <span class="fu">max</span>(min_b, chosen_row<span class="sc">$</span>b)</span>
-<span id="cb286-42"><a href="#cb286-42" aria-hidden="true" tabindex="-1"></a>      final_results <span class="ot">=</span> <span class="fu">rbind</span>(final_results, chosen_row)</span>
-<span id="cb286-43"><a href="#cb286-43" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb286-44"><a href="#cb286-44" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb286-45"><a href="#cb286-45" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb286-46"><a href="#cb286-46" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> final_results <span class="sc">%&gt;%</span></span>
-<span id="cb286-47"><a href="#cb286-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(N)</span>
-<span id="cb286-48"><a href="#cb286-48" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb286-49"><a href="#cb286-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_results)</span>
-<span id="cb286-50"><a href="#cb286-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb287"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb287-1"><a href="#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cg_ac_N_unknown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 31 × 6
-       N     a     b cardinality coverage_prob x_set
-   &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;
- 1    10     0     0           1         1     0-0  
- 2    11     0     1           2         1     0-1  
- 3    12     0     2           3         1     0-2  
- 4    13     0     3           4         1     0-3  
- 5    14     0     4           5         1     0-4  
- 6    15     0     4           5         0.958 0-4  
- 7    16     0     5           6         0.974 0-5  
- 8    17     0     6           7         0.983 0-6  
- 9    18     1     7           7         0.959 1-7  
-10    19     1     8           8         0.971 1-8  
-# ℹ 21 more rows</code></pre>
-</div>
-</div>
-</section>
-<section id="bk-acceptance-curves-function" class="level2">
-<h2 class="anchored" data-anchor-id="bk-acceptance-curves-function">BK Acceptance Curves (Function)</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb289"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb289-1"><a href="#cb289-1" aria-hidden="true" tabindex="-1"></a>bk_ac_N_unknown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>) {</span>
+<div class="sourceCode cell-code" id="cb289"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb289-1"><a href="#cb289-1" aria-hidden="true" tabindex="-1"></a>cg_ac_N_unknown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>) {</span>
 <span id="cb289-2"><a href="#cb289-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Gets all minimal cardinality acceptance curves</span></span>
 <span id="cb289-3"><a href="#cb289-3" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">all_mc_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
 <span id="cb289-4"><a href="#cb289-4" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -1288,13 +1267,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb289-25"><a href="#cb289-25" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results</span>
 <span id="cb289-26"><a href="#cb289-26" aria-hidden="true" tabindex="-1"></a>    } </span>
 <span id="cb289-27"><a href="#cb289-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb289-28"><a href="#cb289-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If has more than one option, apply BK procedure</span></span>
-<span id="cb289-29"><a href="#cb289-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filters so a and b are non-decreasing, and then chooses the row with the largest </span></span>
+<span id="cb289-28"><a href="#cb289-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If has more than one option, apply CG procedure</span></span>
+<span id="cb289-29"><a href="#cb289-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filters so a and b are non-decreasing, and then chooses the row with the smallest </span></span>
 <span id="cb289-30"><a href="#cb289-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># possible a and b</span></span>
 <span id="cb289-31"><a href="#cb289-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
 <span id="cb289-32"><a href="#cb289-32" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results <span class="sc">%&gt;%</span> </span>
 <span id="cb289-33"><a href="#cb289-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(a <span class="sc">&gt;=</span> min_a, b <span class="sc">&gt;=</span> min_b) <span class="sc">%&gt;%</span> </span>
-<span id="cb289-34"><a href="#cb289-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">arrange</span>(<span class="fu">desc</span>(a), <span class="fu">desc</span>(b)) <span class="sc">%&gt;%</span> </span>
+<span id="cb289-34"><a href="#cb289-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">arrange</span>(a, b) <span class="sc">%&gt;%</span> </span>
 <span id="cb289-35"><a href="#cb289-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">slice</span>(<span class="dv">1</span>)</span>
 <span id="cb289-36"><a href="#cb289-36" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb289-37"><a href="#cb289-37" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -1313,7 +1292,81 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb289-50"><a href="#cb289-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb290"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb290-1"><a href="#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bk_ac_N_unknown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb290"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb290-1"><a href="#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cg_ac_N_unknown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 31 × 6
+       N     a     b cardinality coverage_prob x_set
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;
+ 1    10     0     0           1         1     0-0  
+ 2    11     0     1           2         1     0-1  
+ 3    12     0     2           3         1     0-2  
+ 4    13     0     3           4         1     0-3  
+ 5    14     0     4           5         1     0-4  
+ 6    15     0     4           5         0.958 0-4  
+ 7    16     0     5           6         0.974 0-5  
+ 8    17     0     6           7         0.983 0-6  
+ 9    18     1     7           7         0.959 1-7  
+10    19     1     8           8         0.971 1-8  
+# ℹ 21 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="bk-acceptance-curves-function" class="level2">
+<h2 class="anchored" data-anchor-id="bk-acceptance-curves-function">BK Acceptance Curves (Function)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb292"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb292-1"><a href="#cb292-1" aria-hidden="true" tabindex="-1"></a>bk_ac_N_unknown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>) {</span>
+<span id="cb292-2"><a href="#cb292-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Gets all minimal cardinality acceptance curves</span></span>
+<span id="cb292-3"><a href="#cb292-3" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">=</span> <span class="fu">all_mc_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
+<span id="cb292-4"><a href="#cb292-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb292-5"><a href="#cb292-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes data frame that will be outputted </span></span>
+<span id="cb292-6"><a href="#cb292-6" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">N =</span> <span class="fu">integer</span>(), </span>
+<span id="cb292-7"><a href="#cb292-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">a =</span> <span class="fu">integer</span>(), </span>
+<span id="cb292-8"><a href="#cb292-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">b =</span> <span class="fu">integer</span>(), </span>
+<span id="cb292-9"><a href="#cb292-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cardinality =</span> <span class="fu">integer</span>(), </span>
+<span id="cb292-10"><a href="#cb292-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">coverage_prob =</span> <span class="fu">numeric</span>(), </span>
+<span id="cb292-11"><a href="#cb292-11" aria-hidden="true" tabindex="-1"></a>                             <span class="at">x_set =</span> <span class="fu">character</span>())</span>
+<span id="cb292-12"><a href="#cb292-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb292-13"><a href="#cb292-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes min_a and min_b, starting at 0-0</span></span>
+<span id="cb292-14"><a href="#cb292-14" aria-hidden="true" tabindex="-1"></a>  min_a <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb292-15"><a href="#cb292-15" aria-hidden="true" tabindex="-1"></a>  min_b <span class="ot">=</span> <span class="dv">0</span></span>
+<span id="cb292-16"><a href="#cb292-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb292-17"><a href="#cb292-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loops through with each N</span></span>
+<span id="cb292-18"><a href="#cb292-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (current_N <span class="cf">in</span> M<span class="sc">:</span>max_N) {</span>
+<span id="cb292-19"><a href="#cb292-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Only looks at acceptance curves for the current M </span></span>
+<span id="cb292-20"><a href="#cb292-20" aria-hidden="true" tabindex="-1"></a>    subset_results <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb292-21"><a href="#cb292-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(N <span class="sc">==</span> current_N)</span>
+<span id="cb292-22"><a href="#cb292-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb292-23"><a href="#cb292-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If only one acceptance curve, then that is the acceptance curve </span></span>
+<span id="cb292-24"><a href="#cb292-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(subset_results) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb292-25"><a href="#cb292-25" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results</span>
+<span id="cb292-26"><a href="#cb292-26" aria-hidden="true" tabindex="-1"></a>    } </span>
+<span id="cb292-27"><a href="#cb292-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb292-28"><a href="#cb292-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If has more than one option, apply BK procedure</span></span>
+<span id="cb292-29"><a href="#cb292-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filters so a and b are non-decreasing, and then chooses the row with the largest </span></span>
+<span id="cb292-30"><a href="#cb292-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># possible a and b</span></span>
+<span id="cb292-31"><a href="#cb292-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb292-32"><a href="#cb292-32" aria-hidden="true" tabindex="-1"></a>      chosen_row <span class="ot">=</span> subset_results <span class="sc">%&gt;%</span> </span>
+<span id="cb292-33"><a href="#cb292-33" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(a <span class="sc">&gt;=</span> min_a, b <span class="sc">&gt;=</span> min_b) <span class="sc">%&gt;%</span> </span>
+<span id="cb292-34"><a href="#cb292-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">arrange</span>(<span class="fu">desc</span>(a), <span class="fu">desc</span>(b)) <span class="sc">%&gt;%</span> </span>
+<span id="cb292-35"><a href="#cb292-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">slice</span>(<span class="dv">1</span>)</span>
+<span id="cb292-36"><a href="#cb292-36" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb292-37"><a href="#cb292-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb292-38"><a href="#cb292-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Updates min_a and min_b and then adds row to final outputted data frame </span></span>
+<span id="cb292-39"><a href="#cb292-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(chosen_row) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb292-40"><a href="#cb292-40" aria-hidden="true" tabindex="-1"></a>      min_a <span class="ot">=</span> <span class="fu">max</span>(min_a, chosen_row<span class="sc">$</span>a)</span>
+<span id="cb292-41"><a href="#cb292-41" aria-hidden="true" tabindex="-1"></a>      min_b <span class="ot">=</span> <span class="fu">max</span>(min_b, chosen_row<span class="sc">$</span>b)</span>
+<span id="cb292-42"><a href="#cb292-42" aria-hidden="true" tabindex="-1"></a>      final_results <span class="ot">=</span> <span class="fu">rbind</span>(final_results, chosen_row)</span>
+<span id="cb292-43"><a href="#cb292-43" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb292-44"><a href="#cb292-44" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb292-45"><a href="#cb292-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb292-46"><a href="#cb292-46" aria-hidden="true" tabindex="-1"></a>  final_results <span class="ot">=</span> final_results <span class="sc">%&gt;%</span></span>
+<span id="cb292-47"><a href="#cb292-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(N)</span>
+<span id="cb292-48"><a href="#cb292-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb292-49"><a href="#cb292-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_results)</span>
+<span id="cb292-50"><a href="#cb292-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb293"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb293-1"><a href="#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bk_ac_N_unknown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 31 × 6
        N     a     b cardinality coverage_prob x_set
@@ -1335,69 +1388,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="confidence-intervals-bounds-function" class="level2">
 <h2 class="anchored" data-anchor-id="confidence-intervals-bounds-function">Confidence Intervals Bounds (Function)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb292"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb292-1"><a href="#cb292-1" aria-hidden="true" tabindex="-1"></a>minimal_cardinality_ci_N_unkown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>, </span>
-<span id="cb292-2"><a href="#cb292-2" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">procedure =</span> <span class="st">"MST"</span>) {</span>
-<span id="cb292-3"><a href="#cb292-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Chooses which minimal cardinality procedure </span></span>
-<span id="cb292-4"><a href="#cb292-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (procedure <span class="sc">==</span> <span class="st">"MST"</span>) {</span>
-<span id="cb292-5"><a href="#cb292-5" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">=</span> <span class="fu">mst_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
-<span id="cb292-6"><a href="#cb292-6" aria-hidden="true" tabindex="-1"></a>  } </span>
-<span id="cb292-7"><a href="#cb292-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (procedure <span class="sc">==</span> <span class="st">"CG"</span>) {</span>
-<span id="cb292-8"><a href="#cb292-8" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">=</span> <span class="fu">cg_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
-<span id="cb292-9"><a href="#cb292-9" aria-hidden="true" tabindex="-1"></a>  } </span>
-<span id="cb292-10"><a href="#cb292-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (procedure <span class="sc">==</span> <span class="st">"BK"</span>) {</span>
-<span id="cb292-11"><a href="#cb292-11" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">=</span> <span class="fu">bk_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
-<span id="cb292-12"><a href="#cb292-12" aria-hidden="true" tabindex="-1"></a>  } </span>
-<span id="cb292-13"><a href="#cb292-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
-<span id="cb292-14"><a href="#cb292-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Invalid procedure. Choose from 'MST', 'CG', or 'BK'."</span>)</span>
-<span id="cb292-15"><a href="#cb292-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb292-16"><a href="#cb292-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb292-17"><a href="#cb292-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes data frame that will be outputted </span></span>
-<span id="cb292-18"><a href="#cb292-18" aria-hidden="true" tabindex="-1"></a>  ci_results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">integer</span>(), </span>
-<span id="cb292-19"><a href="#cb292-19" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ci_lb =</span> <span class="fu">integer</span>(), </span>
-<span id="cb292-20"><a href="#cb292-20" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ci_ub =</span> <span class="fu">integer</span>(), </span>
-<span id="cb292-21"><a href="#cb292-21" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ci =</span> <span class="fu">character</span>(),</span>
-<span id="cb292-22"><a href="#cb292-22" aria-hidden="true" tabindex="-1"></a>                          <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb292-23"><a href="#cb292-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb292-24"><a href="#cb292-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Find the second-highest "a"</span></span>
-<span id="cb292-25"><a href="#cb292-25" aria-hidden="true" tabindex="-1"></a>  unique_a_values <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(results<span class="sc">$</span>a), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb292-26"><a href="#cb292-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(unique_a_values) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb292-27"><a href="#cb292-27" aria-hidden="true" tabindex="-1"></a>    max_x <span class="ot">&lt;-</span> unique_a_values[<span class="dv">2</span>]  <span class="co"># Second-highest value</span></span>
-<span id="cb292-28"><a href="#cb292-28" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb292-29"><a href="#cb292-29" aria-hidden="true" tabindex="-1"></a>    max_x <span class="ot">&lt;-</span> unique_a_values[<span class="dv">1</span>]  <span class="co"># Fallback if only one value exists</span></span>
-<span id="cb292-30"><a href="#cb292-30" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb292-31"><a href="#cb292-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb292-32"><a href="#cb292-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loops through each x </span></span>
-<span id="cb292-33"><a href="#cb292-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_x) {</span>
-<span id="cb292-34"><a href="#cb292-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Finds first interval where x appears </span></span>
-<span id="cb292-35"><a href="#cb292-35" aria-hidden="true" tabindex="-1"></a>    first_occurrence <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
-<span id="cb292-36"><a href="#cb292-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(a <span class="sc">&lt;=</span> x, x <span class="sc">&lt;=</span> b) <span class="sc">%&gt;%</span> </span>
-<span id="cb292-37"><a href="#cb292-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slice</span>(<span class="dv">1</span>)</span>
-<span id="cb292-38"><a href="#cb292-38" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb292-39"><a href="#cb292-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Finds last interval where x appears </span></span>
-<span id="cb292-40"><a href="#cb292-40" aria-hidden="true" tabindex="-1"></a>    last_occurrence <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
-<span id="cb292-41"><a href="#cb292-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(a <span class="sc">&lt;=</span> x, x <span class="sc">&lt;=</span> b) <span class="sc">%&gt;%</span> </span>
-<span id="cb292-42"><a href="#cb292-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slice</span>(<span class="fu">n</span>())</span>
-<span id="cb292-43"><a href="#cb292-43" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb292-44"><a href="#cb292-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Finds the N of the corresponding above intervals and saves those as the CI bounds</span></span>
-<span id="cb292-45"><a href="#cb292-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(first_occurrence) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(last_occurrence) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb292-46"><a href="#cb292-46" aria-hidden="true" tabindex="-1"></a>      ci_lb <span class="ot">=</span> first_occurrence<span class="sc">$</span>N</span>
-<span id="cb292-47"><a href="#cb292-47" aria-hidden="true" tabindex="-1"></a>      ci_ub <span class="ot">=</span> last_occurrence<span class="sc">$</span>N</span>
-<span id="cb292-48"><a href="#cb292-48" aria-hidden="true" tabindex="-1"></a>      ci <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">"["</span>, ci_lb, <span class="st">", "</span>, ci_ub, <span class="st">"]"</span>)</span>
-<span id="cb292-49"><a href="#cb292-49" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb292-50"><a href="#cb292-50" aria-hidden="true" tabindex="-1"></a>      ci_results <span class="ot">=</span> <span class="fu">rbind</span>(ci_results, <span class="fu">data.frame</span>(<span class="at">x =</span> x, </span>
-<span id="cb292-51"><a href="#cb292-51" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">ci_lb =</span> ci_lb, </span>
-<span id="cb292-52"><a href="#cb292-52" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">ci_ub =</span> ci_ub, </span>
-<span id="cb292-53"><a href="#cb292-53" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">ci =</span> ci))</span>
-<span id="cb292-54"><a href="#cb292-54" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb292-55"><a href="#cb292-55" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb292-56"><a href="#cb292-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb292-57"><a href="#cb292-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ci_results)</span>
-<span id="cb292-58"><a href="#cb292-58" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb295"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb295-1"><a href="#cb295-1" aria-hidden="true" tabindex="-1"></a>minimal_cardinality_ci_N_unkown <span class="ot">&lt;-</span> <span class="cf">function</span>(M, m, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">1000</span>, </span>
+<span id="cb295-2"><a href="#cb295-2" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">procedure =</span> <span class="st">"MST"</span>) {</span>
+<span id="cb295-3"><a href="#cb295-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Chooses which minimal cardinality procedure </span></span>
+<span id="cb295-4"><a href="#cb295-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (procedure <span class="sc">==</span> <span class="st">"MST"</span>) {</span>
+<span id="cb295-5"><a href="#cb295-5" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">=</span> <span class="fu">mst_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
+<span id="cb295-6"><a href="#cb295-6" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb295-7"><a href="#cb295-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (procedure <span class="sc">==</span> <span class="st">"CG"</span>) {</span>
+<span id="cb295-8"><a href="#cb295-8" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">=</span> <span class="fu">cg_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
+<span id="cb295-9"><a href="#cb295-9" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb295-10"><a href="#cb295-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (procedure <span class="sc">==</span> <span class="st">"BK"</span>) {</span>
+<span id="cb295-11"><a href="#cb295-11" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">=</span> <span class="fu">bk_ac_N_unknown</span>(M, m, conf_level, max_N)</span>
+<span id="cb295-12"><a href="#cb295-12" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb295-13"><a href="#cb295-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
+<span id="cb295-14"><a href="#cb295-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Invalid procedure. Choose from 'MST', 'CG', or 'BK'."</span>)</span>
+<span id="cb295-15"><a href="#cb295-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb295-16"><a href="#cb295-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb295-17"><a href="#cb295-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializes data frame that will be outputted </span></span>
+<span id="cb295-18"><a href="#cb295-18" aria-hidden="true" tabindex="-1"></a>  ci_results <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">integer</span>(), </span>
+<span id="cb295-19"><a href="#cb295-19" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ci_lb =</span> <span class="fu">integer</span>(), </span>
+<span id="cb295-20"><a href="#cb295-20" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ci_ub =</span> <span class="fu">integer</span>(), </span>
+<span id="cb295-21"><a href="#cb295-21" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ci =</span> <span class="fu">character</span>(),</span>
+<span id="cb295-22"><a href="#cb295-22" aria-hidden="true" tabindex="-1"></a>                          <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb295-23"><a href="#cb295-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb295-24"><a href="#cb295-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Find the second-highest "a"</span></span>
+<span id="cb295-25"><a href="#cb295-25" aria-hidden="true" tabindex="-1"></a>  unique_a_values <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(results<span class="sc">$</span>a), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb295-26"><a href="#cb295-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(unique_a_values) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb295-27"><a href="#cb295-27" aria-hidden="true" tabindex="-1"></a>    max_x <span class="ot">&lt;-</span> unique_a_values[<span class="dv">2</span>]  <span class="co"># Second-highest value</span></span>
+<span id="cb295-28"><a href="#cb295-28" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb295-29"><a href="#cb295-29" aria-hidden="true" tabindex="-1"></a>    max_x <span class="ot">&lt;-</span> unique_a_values[<span class="dv">1</span>]  <span class="co"># Fallback if only one value exists</span></span>
+<span id="cb295-30"><a href="#cb295-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb295-31"><a href="#cb295-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb295-32"><a href="#cb295-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Loops through each x </span></span>
+<span id="cb295-33"><a href="#cb295-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>max_x) {</span>
+<span id="cb295-34"><a href="#cb295-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Finds first interval where x appears </span></span>
+<span id="cb295-35"><a href="#cb295-35" aria-hidden="true" tabindex="-1"></a>    first_occurrence <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb295-36"><a href="#cb295-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(a <span class="sc">&lt;=</span> x, x <span class="sc">&lt;=</span> b) <span class="sc">%&gt;%</span> </span>
+<span id="cb295-37"><a href="#cb295-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slice</span>(<span class="dv">1</span>)</span>
+<span id="cb295-38"><a href="#cb295-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb295-39"><a href="#cb295-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Finds last interval where x appears </span></span>
+<span id="cb295-40"><a href="#cb295-40" aria-hidden="true" tabindex="-1"></a>    last_occurrence <span class="ot">=</span> results <span class="sc">%&gt;%</span> </span>
+<span id="cb295-41"><a href="#cb295-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(a <span class="sc">&lt;=</span> x, x <span class="sc">&lt;=</span> b) <span class="sc">%&gt;%</span> </span>
+<span id="cb295-42"><a href="#cb295-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">slice</span>(<span class="fu">n</span>())</span>
+<span id="cb295-43"><a href="#cb295-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb295-44"><a href="#cb295-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Finds the N of the corresponding above intervals and saves those as the CI bounds</span></span>
+<span id="cb295-45"><a href="#cb295-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(first_occurrence) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="fu">nrow</span>(last_occurrence) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb295-46"><a href="#cb295-46" aria-hidden="true" tabindex="-1"></a>      ci_lb <span class="ot">=</span> first_occurrence<span class="sc">$</span>N</span>
+<span id="cb295-47"><a href="#cb295-47" aria-hidden="true" tabindex="-1"></a>      ci_ub <span class="ot">=</span> last_occurrence<span class="sc">$</span>N</span>
+<span id="cb295-48"><a href="#cb295-48" aria-hidden="true" tabindex="-1"></a>      ci <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">"["</span>, ci_lb, <span class="st">", "</span>, ci_ub, <span class="st">"]"</span>)</span>
+<span id="cb295-49"><a href="#cb295-49" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb295-50"><a href="#cb295-50" aria-hidden="true" tabindex="-1"></a>      ci_results <span class="ot">=</span> <span class="fu">rbind</span>(ci_results, <span class="fu">data.frame</span>(<span class="at">x =</span> x, </span>
+<span id="cb295-51"><a href="#cb295-51" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">ci_lb =</span> ci_lb, </span>
+<span id="cb295-52"><a href="#cb295-52" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">ci_ub =</span> ci_ub, </span>
+<span id="cb295-53"><a href="#cb295-53" aria-hidden="true" tabindex="-1"></a>                                                <span class="at">ci =</span> ci))</span>
+<span id="cb295-54"><a href="#cb295-54" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb295-55"><a href="#cb295-55" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb295-56"><a href="#cb295-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb295-57"><a href="#cb295-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ci_results)</span>
+<span id="cb295-58"><a href="#cb295-58" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb293"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb293-1"><a href="#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
-<span id="cb293-2"><a href="#cb293-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
-<span id="cb293-3"><a href="#cb293-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"MST"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb296"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb296-1"><a href="#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
+<span id="cb296-2"><a href="#cb296-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
+<span id="cb296-3"><a href="#cb296-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"MST"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  x ci_lb ci_ub       ci
 1 0    10    17 [10, 17]
@@ -1411,9 +1464,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb295"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb295-1"><a href="#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
-<span id="cb295-2"><a href="#cb295-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
-<span id="cb295-3"><a href="#cb295-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"CG"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb298"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb298-1"><a href="#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
+<span id="cb298-2"><a href="#cb298-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
+<span id="cb298-3"><a href="#cb298-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"CG"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  x ci_lb ci_ub       ci
 1 0    10    17 [10, 17]
@@ -1427,9 +1480,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb297"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb297-1"><a href="#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
-<span id="cb297-2"><a href="#cb297-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
-<span id="cb297-3"><a href="#cb297-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"BK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb300"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb300-1"><a href="#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Takes about 30 seconds to run</span></span>
+<span id="cb300-2"><a href="#cb300-2" aria-hidden="true" tabindex="-1"></a><span class="fu">minimal_cardinality_ci_N_unkown</span>(<span class="at">M =</span> <span class="dv">10</span>, <span class="at">m =</span> <span class="dv">5</span>, <span class="at">conf_level =</span> <span class="fl">0.95</span>, <span class="at">max_N =</span> <span class="dv">60</span>, </span>
+<span id="cb300-3"><a href="#cb300-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">procedure =</span> <span class="st">"BK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  x ci_lb ci_ub       ci
 1 0    10    16 [10, 16]
@@ -1449,46 +1502,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="mst" class="level3">
 <h3 class="anchored" data-anchor-id="mst">MST</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb299"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb299-1"><a href="#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_mst = mst_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
-<span id="cb299-2"><a href="#cb299-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_mst, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_mst.csv"), row.names = FALSE)</span></span>
-<span id="cb299-3"><a href="#cb299-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb299-4"><a href="#cb299-4" aria-hidden="true" tabindex="-1"></a>cov_prob_mst <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_mst.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 241 Columns: 6
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (1): x_set
-dbl (5): N, a, b, cardinality, coverage_prob
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb301"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb301-1"><a href="#cb301-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
-<span id="cb301-2"><a href="#cb301-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb301-3"><a href="#cb301-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_mst, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
-<span id="cb301-4"><a href="#cb301-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb301-5"><a href="#cb301-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb301-6"><a href="#cb301-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
-<span id="cb301-7"><a href="#cb301-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb301-8"><a href="#cb301-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb301-9"><a href="#cb301-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb301-10"><a href="#cb301-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="CI_Minimal_Cardinality_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="cg" class="level3">
-<h3 class="anchored" data-anchor-id="cg">CG</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb302"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb302-1"><a href="#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_cg = cg_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
-<span id="cb302-2"><a href="#cb302-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_cg, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_cg.csv"), row.names = FALSE)</span></span>
+<div class="sourceCode cell-code" id="cb302"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb302-1"><a href="#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_mst = mst_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
+<span id="cb302-2"><a href="#cb302-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_mst, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_mst.csv"), row.names = FALSE)</span></span>
 <span id="cb302-3"><a href="#cb302-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb302-4"><a href="#cb302-4" aria-hidden="true" tabindex="-1"></a>cov_prob_cg <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_cg.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb302-4"><a href="#cb302-4" aria-hidden="true" tabindex="-1"></a>cov_prob_mst <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_mst.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 241 Columns: 6
 ── Column specification ────────────────────────────────────────────────────────
@@ -1501,7 +1518,7 @@ dbl (5): N, a, b, cardinality, coverage_prob
 </div>
 <div class="sourceCode cell-code" id="cb304"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb304-1"><a href="#cb304-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
 <span id="cb304-2"><a href="#cb304-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb304-3"><a href="#cb304-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_cg, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb304-3"><a href="#cb304-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_mst, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
 <span id="cb304-4"><a href="#cb304-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb304-5"><a href="#cb304-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb304-6"><a href="#cb304-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
@@ -1518,16 +1535,15 @@ dbl (5): N, a, b, cardinality, coverage_prob
 </div>
 </div>
 </section>
-</section>
-<section id="bk" class="level2">
-<h2 class="anchored" data-anchor-id="bk">BK</h2>
+<section id="cg" class="level3">
+<h3 class="anchored" data-anchor-id="cg">CG</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb305"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_bk = bk_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
-<span id="cb305-2"><a href="#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_bk, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_bk.csv"), row.names = FALSE)</span></span>
+<div class="sourceCode cell-code" id="cb305"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb305-1"><a href="#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_cg = cg_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
+<span id="cb305-2"><a href="#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_cg, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_cg.csv"), row.names = FALSE)</span></span>
 <span id="cb305-3"><a href="#cb305-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb305-4"><a href="#cb305-4" aria-hidden="true" tabindex="-1"></a>cov_prob_bk <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_bk.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb305-4"><a href="#cb305-4" aria-hidden="true" tabindex="-1"></a>cov_prob_cg <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_cg.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 185 Columns: 6
+<pre><code>Rows: 241 Columns: 6
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
 chr (1): x_set
@@ -1538,7 +1554,7 @@ dbl (5): N, a, b, cardinality, coverage_prob
 </div>
 <div class="sourceCode cell-code" id="cb307"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb307-1"><a href="#cb307-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
 <span id="cb307-2"><a href="#cb307-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb307-3"><a href="#cb307-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_bk, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb307-3"><a href="#cb307-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_cg, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
 <span id="cb307-4"><a href="#cb307-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb307-5"><a href="#cb307-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb307-6"><a href="#cb307-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
@@ -1550,6 +1566,43 @@ dbl (5): N, a, b, cardinality, coverage_prob
 <div>
 <figure class="figure">
 <p><img src="CI_Minimal_Cardinality_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="bk" class="level2">
+<h2 class="anchored" data-anchor-id="bk">BK</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb308"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb308-1"><a href="#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cov_prob_bk = bk_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)</span></span>
+<span id="cb308-2"><a href="#cb308-2" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(cov_prob_bk, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/N_Unknown", "cov_prob_bk.csv"), row.names = FALSE)</span></span>
+<span id="cb308-3"><a href="#cb308-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-4"><a href="#cb308-4" aria-hidden="true" tabindex="-1"></a>cov_prob_bk <span class="ot">=</span> <span class="fu">read_csv</span>(<span class="st">"cov_prob_bk.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 185 Columns: 6
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): x_set
+dbl (5): N, a, b, cardinality, coverage_prob
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb310"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb310-1"><a href="#cb310-1" aria-hidden="true" tabindex="-1"></a>conf_level<span class="ot">=</span> <span class="fl">0.95</span></span>
+<span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-3"><a href="#cb310-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cov_prob_bk, <span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> coverage_prob, <span class="at">group =</span> x_set, <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb310-4"><a href="#cb310-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb310-5"><a href="#cb310-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb310-6"><a href="#cb310-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"N"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability of N"</span>) <span class="sc">+</span></span>
+<span id="cb310-7"><a href="#cb310-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb310-8"><a href="#cb310-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb310-9"><a href="#cb310-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb310-10"><a href="#cb310-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_Minimal_Cardinality_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
