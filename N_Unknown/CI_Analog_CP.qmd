@@ -246,25 +246,39 @@ ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
 ## Plot for interplay between a cpf and resulting intervals
 
 ```{r}
+CI_Analog_CP_N_Unknown(M = 10, m = 7, conf_level = 0.95)
+```
+
+```{r}
+max_N = 250
+M = 10
+m = 7
+conf_level = 0.95
+N_values = M:100
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown(M, N, m, conf_level, max_N)))
+
+# Create a group column for consistent min_x and max_x
+# The group column assigns a unique group number whenever there is a change in min_x or max_x values
+# cumsum is used to create a cumulative sum that increments the group number whenever there is a
+# change in min_x or max_x
+coverage_df = coverage_df %>%
+  mutate(group = cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0)))
+
+
 ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
   geom_line() +
   geom_point() +
   labs(x = "N", y = "Coverage Probability of N") +
   geom_hline(yintercept = conf_level, color = "red") +
-  scale_x_continuous(limits = c(21, 50)) +  
+  scale_x_continuous(limits = c(21, 100)) +  
   scale_y_continuous(limits = c(conf_level - 0.005, 1)) +  
   theme_minimal()
 
 ```
 
 ```{r}
-max_N = 1000
-M = 21
-m = 3
-conf_level = 0.95
-N_values = M:250
-
-ci_results = CI_Analog_CP_N_Unknown(N, m, conf_level) %>%
+ci_results = CI_Analog_CP_N_Unknown(M, m, conf_level) %>%
   filter(x <= 12)
 
 y_axis = seq(from = 0.94, by = -0.01, length.out = 13)
