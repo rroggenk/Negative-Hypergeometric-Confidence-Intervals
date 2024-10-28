@@ -602,21 +602,24 @@ filtered_plot <- plot %>%
 
 conf_level= 0.95
 
-ggplot(filtered_plot, aes(x = N, 
-                 y = coverage_prob, 
-                 group = x_set, 
-                 color = x_set)) +
-  geom_line() +
-  geom_point() +
+ggplot() +
+  geom_line(data = filtered_plot, aes(x = N, 
+                                       y = coverage_prob, 
+                                       group = x_set, 
+                                       color = x_set)) +
+  geom_point(data = all_ac_mc_M_10_m_4, aes(x = N, 
+                                            y = coverage_prob, 
+                                            group = x_set, 
+                                            color = x_set)) +
   labs(x = "N", y = "Coverage Probability of N") +
   geom_hline(yintercept = conf_level, color = "red") +
-  ylim(conf_level - 0.005, 1) +
+  coord_cartesian(ylim = c(conf_level - 0.005, 1)) +
   theme_minimal() +
   theme(legend.position = "none")
 ```
 
 ```{r}
-# Plot of All Minimal Cardinality Acceptance Curves (with trends shown pt 2)
+# Plot of All Minimal Cardinality Acceptance Curves (with trends shown for +1 / -1)
 
 # Initialize an empty data frame to store results
 filtered_plot2 <- data.frame()
@@ -632,24 +635,26 @@ for (i in 1:nrow(all_ac_mc_M_10_m_4)) {
     filter(N %in% c(current_N, current_N - 1, current_N + 1) & x_set == current_x_set)
   
   # Append the filtered rows to the final dataframe
-  filtered_plot2 <- bind_rows(filtered_plot, filtered_rows)
+  filtered_plot2 <- bind_rows(filtered_plot2, filtered_rows)
 }
 
 # Remove any duplicate rows just in case
-filtered_plot2 <- distinct(filtered_plot)
+filtered_plot2 <- distinct(filtered_plot2)
 
+conf_level = 0.95
 
-conf_level= 0.95
-
-ggplot(filtered_plot2, aes(x = N, 
-                 y = coverage_prob, 
-                 group = x_set, 
-                 color = x_set)) +
-  geom_line() +
-  geom_point() +
+ggplot() +
+  geom_line(data = filtered_plot2, aes(x = N, 
+                                       y = coverage_prob, 
+                                       group = x_set, 
+                                       color = x_set)) +
+  geom_point(data = all_ac_mc_M_10_m_4, aes(x = N, 
+                                            y = coverage_prob, 
+                                            group = x_set, 
+                                            color = x_set)) +
   labs(x = "N", y = "Coverage Probability of N") +
   geom_hline(yintercept = conf_level, color = "red") +
-  ylim(conf_level - 0.005, 1) +
+  coord_cartesian(ylim = c(conf_level - 0.005, 1)) +
   theme_minimal() +
   theme(legend.position = "none")
 ```
