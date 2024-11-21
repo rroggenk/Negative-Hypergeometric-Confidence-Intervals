@@ -620,6 +620,7 @@ ggplot() +
 
 ```{r}
 # Plot of All Minimal Cardinality Acceptance Curves (with trends shown for +1 / -1)
+# USE THIS PLOT
 
 # Initialize an empty data frame to store results
 filtered_plot2 <- data.frame()
