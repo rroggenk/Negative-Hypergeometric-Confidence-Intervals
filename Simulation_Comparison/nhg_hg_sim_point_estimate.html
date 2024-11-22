@@ -124,58 +124,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="function-to-simulate-point-estimates" class="level1">
-<h1>Function to Simulate Point Estimates</h1>
+<section id="simulate-point-estimates-fix-n-m-m" class="level1">
+<h1>Simulate Point Estimates (fix N, M, m)</h1>
+<section id="function" class="level2">
+<h2 class="anchored" data-anchor-id="function">Function</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>simulate_point_estimate <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, true_N, true_M, m) {</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>simulate_point_estimate_m <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, true_N, true_M, m) {</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializing results data frame</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sim =</span> <span class="dv">1</span><span class="sc">:</span>simulations,</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_N_HG =</span> <span class="fu">numeric</span>(simulations),</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_M_HG =</span> <span class="fu">numeric</span>(simulations),</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_N_NHG =</span> <span class="fu">numeric</span>(simulations),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_M_NHG =</span> <span class="fu">numeric</span>(simulations),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n_NHG =</span> <span class="fu">numeric</span>(simulations)) </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simulation loop</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>simulations) {</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from Negative Hypergeometric</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    x_NHG <span class="ot">&lt;-</span> <span class="fu">r_ngh</span>(<span class="dv">1</span>, true_N, true_M, m)  <span class="co"># Number of failures before m successes</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    n_NHG <span class="ot">&lt;-</span> m <span class="sc">+</span> x_NHG  <span class="co"># Total number of items sampled</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from Hypergeometric</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    m_HG <span class="ot">&lt;-</span> <span class="fu">rhyper</span>(<span class="dv">1</span>, true_M, true_N <span class="sc">-</span> true_M, n_NHG)  <span class="co"># Number of successes observed</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Point estimates for Hypergeometric (handle cases where m_HG = 0 or NA)</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(m_HG) <span class="sc">||</span> m_HG <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>      est_N_HG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>      est_M_HG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>      est_N_HG <span class="ot">&lt;-</span> (true_M <span class="sc">*</span> n_NHG) <span class="sc">/</span> m_HG</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>      est_M_HG <span class="ot">&lt;-</span> (true_N <span class="sc">*</span> m_HG) <span class="sc">/</span> n_NHG</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Point estimates for Negative Hypergeometric</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    est_N_NHG <span class="ot">&lt;-</span> (true_M <span class="sc">*</span> n_NHG) <span class="sc">/</span> m</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    est_M_NHG <span class="ot">&lt;-</span> (true_N <span class="sc">*</span> m) <span class="sc">/</span> n_NHG</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store results</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    results[i, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(i, est_N_HG, est_M_HG, est_N_NHG, est_M_NHG, n_NHG)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate MSE for estimates</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  mse_N_HG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_N_HG <span class="sc">-</span> true_N)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  mse_M_HG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_M_HG <span class="sc">-</span> true_M)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  mse_N_NHG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_N_NHG <span class="sc">-</span> true_N)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  mse_M_NHG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_M_NHG <span class="sc">-</span> true_M)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return results as a list</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE_Hypergeometric =</span> <span class="fu">list</span>(<span class="at">N =</span> mse_N_HG, <span class="at">M =</span> mse_M_HG),</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE_Negative_Hypergeometric =</span> <span class="fu">list</span>(<span class="at">N =</span> mse_N_NHG, <span class="at">M =</span> mse_M_NHG)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_M_NHG =</span> <span class="fu">numeric</span>(simulations)) </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simulation loop</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>simulations) {</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from Negative Hypergeometric</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    x_NHG <span class="ot">&lt;-</span> <span class="fu">r_ngh</span>(<span class="dv">1</span>, true_N, true_M, m)  <span class="co"># Number of failures before m successes</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    n_NHG <span class="ot">&lt;-</span> m <span class="sc">+</span> x_NHG  <span class="co"># Total number of items sampled</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from Hypergeometric</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    m_HG <span class="ot">&lt;-</span> <span class="fu">rhyper</span>(<span class="dv">1</span>, true_M, true_N <span class="sc">-</span> true_M, n_NHG)  <span class="co"># Number of successes observed</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Point estimates for Hypergeometric (handle cases where m_HG = 0 or NA)</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(m_HG) <span class="sc">||</span> m_HG <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      est_N_HG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>      est_M_HG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>      est_N_HG <span class="ot">&lt;-</span> (true_M <span class="sc">*</span> n_NHG) <span class="sc">/</span> m_HG</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>      est_M_HG <span class="ot">&lt;-</span> (true_N <span class="sc">*</span> m_HG) <span class="sc">/</span> n_NHG</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Point estimates for Negative Hypergeometric</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    est_N_NHG <span class="ot">&lt;-</span> (true_M <span class="sc">*</span> n_NHG) <span class="sc">/</span> m</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    est_M_NHG <span class="ot">&lt;-</span> (true_N <span class="sc">*</span> m) <span class="sc">/</span> n_NHG</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store results</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    results[i, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(i, est_N_HG, est_M_HG, est_N_NHG, est_M_NHG)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate MSE for estimates</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  mse_N_HG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_N_HG <span class="sc">-</span> true_N)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  mse_M_HG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_M_HG <span class="sc">-</span> true_M)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  mse_N_NHG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_N_NHG <span class="sc">-</span> true_N)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  mse_M_NHG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_M_NHG <span class="sc">-</span> true_M)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return results as a list</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE_Hypergeometric =</span> <span class="fu">list</span>(<span class="at">N =</span> mse_N_HG, <span class="at">M =</span> mse_M_HG),</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE_Negative_Hypergeometric =</span> <span class="fu">list</span>(<span class="at">N =</span> mse_N_NHG, <span class="at">M =</span> mse_M_NHG)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 <section id="testing-function" class="level2">
 <h2 class="anchored" data-anchor-id="testing-function">Testing Function</h2>
 <div class="cell">
@@ -185,7 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>true_M <span class="ot">=</span> <span class="dv">25</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">5</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, true_N, true_M, m)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate_m</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, true_N, true_M, m)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">MSE for Hypergeometric estimates:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -246,7 +248,7 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  true_M <span class="ot">&lt;-</span> parameters<span class="sc">$</span>M[i]</span>
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> parameters<span class="sc">$</span>m[i]</span>
 <span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, </span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate_m</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, </span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_N =</span> true_N, </span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_M =</span> true_M, </span>
 <span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">m =</span> m)</span>
@@ -289,7 +291,7 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  true_M <span class="ot">&lt;-</span> parameters<span class="sc">$</span>M[i]</span>
 <span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> parameters<span class="sc">$</span>m[i]</span>
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, </span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate_m</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, </span>
 <span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_N =</span> true_N, </span>
 <span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_M =</span> true_M, </span>
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">m =</span> m)</span>
@@ -391,9 +393,8 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 </ul>
 </section>
 </section>
-</section>
-<section id="visualizing-results" class="level1">
-<h1>Visualizing Results</h1>
+<section id="visualizing-results" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-results">Visualizing Results</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>combined_results <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results_df, results_df_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -533,6 +534,430 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="simulate-point-estimates-fix-n-m-n" class="level1">
+<h1>Simulate Point Estimates (fix N, M, n)</h1>
+<section id="function-1" class="level2">
+<h2 class="anchored" data-anchor-id="function-1">Function</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>simulate_point_estimate_n <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, true_N, true_M, n) {</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initializing results data frame</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">sim =</span> <span class="dv">1</span><span class="sc">:</span>simulations,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_N_HG =</span> <span class="fu">numeric</span>(simulations),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_M_HG =</span> <span class="fu">numeric</span>(simulations),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_N_NHG =</span> <span class="fu">numeric</span>(simulations),</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">est_M_NHG =</span> <span class="fu">numeric</span>(simulations))</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simulation loop</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>simulations) {</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from Hypergeometric</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    m_HG <span class="ot">&lt;-</span> <span class="fu">rhyper</span>(<span class="dv">1</span>, true_M, true_N <span class="sc">-</span> true_M, n)  <span class="co"># Number of successes observed</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from Negative Hypergeometric</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    x_NHG <span class="ot">&lt;-</span> <span class="fu">r_ngh</span>(<span class="dv">1</span>, true_N, true_M, m_HG)  <span class="co"># Number of failures before m successes</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    n_NHG <span class="ot">&lt;-</span> x_NHG <span class="sc">+</span> m_HG</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Point estimates for Hypergeometric (handle cases where m_HG = 0 or NA)</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(m_HG) <span class="sc">||</span> m_HG <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>      est_N_HG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>      est_M_HG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>      est_N_HG <span class="ot">&lt;-</span> (true_M <span class="sc">*</span> n) <span class="sc">/</span> m_HG</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>      est_M_HG <span class="ot">&lt;-</span> (true_N <span class="sc">*</span> m_HG) <span class="sc">/</span> n</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Point estimates for Negative Hypergeometric</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.na</span>(x_NHG) <span class="sc">||</span> x_NHG <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>      est_N_NHG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>      est_M_NHG <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>      est_N_NHG <span class="ot">&lt;-</span> (true_M <span class="sc">*</span> n_NHG) <span class="sc">/</span> m_HG</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>      est_M_NHG <span class="ot">&lt;-</span> (true_N <span class="sc">*</span> m_HG) <span class="sc">/</span> n_NHG</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store results</span></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>    results[i, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(i, est_N_HG, est_M_HG, est_N_NHG, est_M_NHG)</span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate MSE for estimates</span></span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>  mse_N_HG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_N_HG <span class="sc">-</span> true_N)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>  mse_M_HG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_M_HG <span class="sc">-</span> true_M)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>  mse_N_NHG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_N_NHG <span class="sc">-</span> true_N)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>  mse_M_NHG <span class="ot">&lt;-</span> <span class="fu">mean</span>((results<span class="sc">$</span>est_M_NHG <span class="sc">-</span> true_M)<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return results as a list</span></span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(</span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE_Hypergeometric =</span> <span class="fu">list</span>(<span class="at">N =</span> mse_N_HG, <span class="at">M =</span> mse_M_HG),</span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">MSE_Negative_Hypergeometric =</span> <span class="fu">list</span>(<span class="at">N =</span> mse_N_NHG, <span class="at">M =</span> mse_M_NHG)</span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="testing-function-1" class="level2">
+<h2 class="anchored" data-anchor-id="testing-function-1">Testing Function</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">814</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>true_N <span class="ot">=</span> <span class="dv">100</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>true_M <span class="ot">=</span> <span class="dv">25</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate_n</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, true_N, true_M, n)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">MSE for Hypergeometric estimates:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+MSE for Hypergeometric estimates:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"N: %.4f</span><span class="sc">\n</span><span class="st">"</span>, results<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>N))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>N: 1286.9449</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"M: %.4f</span><span class="sc">\n</span><span class="st">"</span>, results<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>M))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>M: 293.2803</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">MSE for Negative Hypergeometric estimates:</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+MSE for Negative Hypergeometric estimates:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"N: %.4f</span><span class="sc">\n</span><span class="st">"</span>, results<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>N))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>N: 5289.3376</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"M: %.4f</span><span class="sc">\n</span><span class="st">"</span>, results<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>M: 168.3685</code></pre>
+</div>
+</div>
+</section>
+<section id="simulating-combinations-of-n-m-and-n" class="level2">
+<h2 class="anchored" data-anchor-id="simulating-combinations-of-n-m-and-n">Simulating Combinations of N, M, and n</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">814</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> <span class="fu">c</span>(</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">100</span>, <span class="dv">12</span>),  </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">500</span>, <span class="dv">15</span>),  </span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">1000</span>, <span class="dv">15</span>) </span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">M =</span> <span class="fu">c</span>(</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">25</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="dv">50</span>, <span class="dv">4</span>), <span class="fu">rep</span>(<span class="dv">75</span>, <span class="dv">5</span>),      </span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">100</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">250</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">400</span>, <span class="dv">5</span>),   </span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="dv">250</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">500</span>, <span class="dv">5</span>), <span class="fu">rep</span>(<span class="dv">750</span>, <span class="dv">5</span>)   </span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">c</span>(</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">25</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">25</span>, <span class="dv">40</span>,   </span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>    <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">75</span>,  </span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>    <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">75</span>  </span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>results_df_3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(parameters)) {</span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>  true_N <span class="ot">&lt;-</span> parameters<span class="sc">$</span>N[i]</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>  true_M <span class="ot">&lt;-</span> parameters<span class="sc">$</span>M[i]</span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> parameters<span class="sc">$</span>n[i]</span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate_n</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, </span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_N =</span> true_N, </span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_M =</span> true_M, </span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">n =</span> n)</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>  results_df_3 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>    results_df_3,</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">N =</span> true_N,</span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">M =</span> true_M,</span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> n,</span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_HG_N =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>N,</span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_NHG_N =</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>N,</span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">Diff_MSE_N =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>N <span class="sc">-</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>N,</span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_HG_M =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>M,</span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_NHG_M =</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">Diff_MSE_M =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>M <span class="sc">-</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">M_over_N =</span> true_M <span class="sc">/</span> true_N,</span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">m_over_M =</span> m <span class="sc">/</span> true_M</span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">814</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>num_combinations <span class="ot">&lt;-</span> <span class="dv">50</span>  </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>parameters <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">100</span>, <span class="dv">2000</span>, <span class="at">by =</span> <span class="dv">100</span>), num_combinations, <span class="at">replace =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">M =</span> <span class="cn">NA</span>, </span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="cn">NA</span>   </span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>parameters<span class="sc">$</span>M <span class="ot">&lt;-</span> <span class="fu">sapply</span>(parameters<span class="sc">$</span>N, <span class="cf">function</span>(N) <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">10</span>, N, <span class="at">by =</span> <span class="dv">10</span>), <span class="dv">1</span>))  </span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>parameters<span class="sc">$</span>n <span class="ot">&lt;-</span> <span class="fu">sapply</span>(parameters<span class="sc">$</span>M, <span class="cf">function</span>(M) <span class="fu">sample</span>(<span class="fu">seq</span>(<span class="dv">5</span>, M<span class="sc">/</span><span class="dv">2</span>, <span class="at">by =</span> <span class="dv">1</span>), <span class="dv">1</span>))   </span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>results_df_4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(parameters)) {</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  true_N <span class="ot">&lt;-</span> parameters<span class="sc">$</span>N[i]</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  true_M <span class="ot">&lt;-</span> parameters<span class="sc">$</span>M[i]</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> parameters<span class="sc">$</span>n[i]</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">simulate_point_estimate_n</span>(<span class="at">simulations =</span> <span class="dv">1000</span>, </span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_N =</span> true_N, </span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">true_M =</span> true_M, </span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">n =</span> n)</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>  results_df_4 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>    results_df_4,</span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">N =</span> true_N,</span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">M =</span> true_M,</span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> n,</span>
+<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_HG_N =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>N,</span>
+<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_NHG_N =</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>N,</span>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">Diff_MSE_N =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>N <span class="sc">-</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>N,</span>
+<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_HG_M =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>M,</span>
+<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_NHG_M =</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
+<span id="cb42-36"><a href="#cb42-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">Diff_MSE_M =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>M <span class="sc">-</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
+<span id="cb42-37"><a href="#cb42-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">M_over_N =</span> true_M <span class="sc">/</span> true_N,</span>
+<span id="cb42-38"><a href="#cb42-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">m_over_M =</span> m <span class="sc">/</span> true_M</span>
+<span id="cb42-39"><a href="#cb42-39" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb42-40"><a href="#cb42-40" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb42-41"><a href="#cb42-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>combined_results_2 <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results_df_3, results_df_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(combined_results_2, <span class="fu">file.path</span>(<span class="st">"/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison"</span>, <span class="st">"comp_3.csv"</span>), <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note: Difference (MSE) = HG - NHG</p>
+<ul>
+<li><p>Diff &gt; 0 (positive) = HG &gt; NHG = NHG performs better (lower MSE)</p></li>
+<li><p>Diff &lt; 0 (negative) = HG &lt; NHG = HG performs better (lower MSE)</p></li>
+</ul>
+<section id="observations-and-trends-1" class="level3">
+<h3 class="anchored" data-anchor-id="observations-and-trends-1">Observations and Trends</h3>
+<section id="performance-of-nhg-vs.-hg-for-n" class="level4">
+<h4 class="anchored" data-anchor-id="performance-of-nhg-vs.-hg-for-n"><strong>Performance of NHG vs.&nbsp;HG for (N)</strong>:</h4>
+<ol type="1">
+<li><strong>NHG Performs Better ((</strong>Diff_MSE_N &gt; 0)):
+<ul>
+<li>NHG tends to have lower MSE (positive differences) for (N) when:
+<ul>
+<li>(M / N) (ratio of successes to population size) is <strong>low</strong> (e.g., below 0.3). This occurs when the population contains a small fraction of successes, and NHG captures sparsity better.</li>
+<li>(m / M) (ratio of observed successes to total successes) is <strong>low</strong> (e.g., below 0.2). Smaller observed samples tend to favor NHG.</li>
+</ul></li>
+<li>The minimum (M / N = 0.025) and (m / M = 0.028) show NHG excels in extremely sparse populations.</li>
+</ul></li>
+<li><strong>HG Performs Better ((</strong>Diff_MSE_N &lt; 0)):
+<ul>
+<li>HG performs better for (N) when:
+<ul>
+<li>(M / N) is <strong>high</strong> (e.g., above 0.5). This suggests a denser population of successes, where HG benefits from its fixed sample size.</li>
+<li>(m / M) is <strong>high</strong> (e.g., above 0.4). Larger observed samples reduce variability, which HG leverages effectively.</li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="performance-of-nhg-vs.-hg-for-m" class="level4">
+<h4 class="anchored" data-anchor-id="performance-of-nhg-vs.-hg-for-m"><strong>Performance of NHG vs.&nbsp;HG for (M)</strong>:</h4>
+<ol type="1">
+<li><strong>NHG Performs Better ((</strong>Diff_MSE_M &gt; 0)):
+<ul>
+<li>NHG has lower MSE (positive differences) for (M) when:
+<ul>
+<li>The ratio (m / M) is <strong>low</strong> (e.g., below 0.2). Smaller observed successes relative to total successes favor NHG’s fixed success framework.</li>
+<li>This aligns with cases where (N) is large and (M / N) is small, making the population sparse.</li>
+</ul></li>
+</ul></li>
+<li><strong>HG Performs Better ((</strong>Diff_MSE_M &lt; 0)):
+<ul>
+<li>HG performs better for (M) when:
+<ul>
+<li>The ratio (m / M) approaches or exceeds 0.5. This means a significant portion of the successes in the population are observed, and HG benefits from the fixed sample size.</li>
+<li>(M / N) is moderate to high (e.g., above 0.3), suggesting denser populations.</li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="general-trends" class="level4">
+<h4 class="anchored" data-anchor-id="general-trends"><strong>General Trends</strong>:</h4>
+<ul>
+<li><strong>Impact of (M / N)</strong>:
+<ul>
+<li>NHG performs better when (M / N) is small, suggesting NHG is more effective for sparse populations.</li>
+<li>HG outperforms NHG when (M / N) increases, especially as it approaches 1.</li>
+</ul></li>
+<li><strong>Impact of (m / M)</strong>:
+<ul>
+<li>NHG has an advantage for lower values of (m / M) (below 0.2), where fewer successes are observed.</li>
+<li>HG tends to excel as (m / M) increases, especially when (m / M &gt; 0.4).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="summary-interpretation-1" class="level3">
+<h3 class="anchored" data-anchor-id="summary-interpretation-1">Summary Interpretation</h3>
+<ul>
+<li><strong>NHG excels</strong> in situations where:
+<ul>
+<li>The population is sparse ((M / N) is low).</li>
+<li>The number of observed successes is small relative to the total successes ((m / M) is low).</li>
+</ul></li>
+<li><strong>HG excels</strong> when:
+<ul>
+<li>The population is dense ((M / N) is high).</li>
+<li>The number of observed successes is large relative to the total successes ((m / M) is high).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="visualizing-results-1" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-results-1">Visualizing Results</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 1: Diff_MSE_N vs. M/N</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> M_over_N, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by M/N"</span>,</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"M / N (Success Fraction in Population)"</span>,</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_N (HG - NHG)"</span>,</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> M_over_N, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by M/N"</span>,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"M / N (Success Fraction in Population)"</span>,</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_N (HG - NHG)"</span>,</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-19-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2: Diff_MSE_N vs. m/M</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by m/M"</span>,</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_N (HG - NHG)"</span>,</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by m/M"</span>,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_N (HG - NHG)"</span>,</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-20-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 3: Diff_MSE_M vs. M/N</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> M_over_N, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (M): NHG vs. HG by M/N"</span>,</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"M / N (Success Fraction in Population)"</span>,</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_M (HG - NHG)"</span>,</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> M_over_N, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (M): NHG vs. HG by M/N"</span>,</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"M / N (Success Fraction in Population)"</span>,</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_M (HG - NHG)"</span>,</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-21-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 4: Diff_MSE_M vs. m/M</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (M): NHG vs. HG by m/M"</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_M (HG - NHG)"</span>,</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (M): NHG vs. HG by m/M"</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_M (HG - NHG)"</span>,</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nhg_hg_sim_point_estimate_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 
 </main>

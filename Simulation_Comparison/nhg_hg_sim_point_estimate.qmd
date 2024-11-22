@@ -32,20 +32,21 @@ r_ngh <- function(num_obs, N, M, m) {
 }
 ```
 
-# Function to Simulate Point Estimates
+# Simulate Point Estimates (fix N, M, m)
+
+## Function
 
 ```{r}
-#| label: point estimate simulation function 
+#| label: point estimate simulation function (m)
 
-simulate_point_estimate <- function(simulations = 1000, true_N, true_M, m) {
+simulate_point_estimate_m <- function(simulations = 1000, true_N, true_M, m) {
   
   # Initializing results data frame
   results <- data.frame(sim = 1:simulations,
                         est_N_HG = numeric(simulations),
                         est_M_HG = numeric(simulations),
                         est_N_NHG = numeric(simulations),
-                        est_M_NHG = numeric(simulations),
-                        n_NHG = numeric(simulations)) 
+                        est_M_NHG = numeric(simulations)) 
 
   # Simulation loop
   for (i in 1:simulations) {
@@ -70,7 +71,7 @@ simulate_point_estimate <- function(simulations = 1000, true_N, true_M, m) {
     est_M_NHG <- (true_N * m) / n_NHG
 
     # Store results
-    results[i, ] <- c(i, est_N_HG, est_M_HG, est_N_NHG, est_M_NHG, n_NHG)
+    results[i, ] <- c(i, est_N_HG, est_M_HG, est_N_NHG, est_M_NHG)
   }
 
   # Calculate MSE for estimates
@@ -90,7 +91,7 @@ simulate_point_estimate <- function(simulations = 1000, true_N, true_M, m) {
 ## Testing Function
 
 ```{r}
-#| label: testing function 
+#| label: testing function (m)
 
 set.seed(814)
 
@@ -98,7 +99,7 @@ true_N = 100
 true_M = 25
 m = 5
 
-results <- simulate_point_estimate(simulations = 1000, true_N, true_M, m)
+results <- simulate_point_estimate_m(simulations = 1000, true_N, true_M, m)
 
 cat("\nMSE for Hypergeometric estimates:\n")
 cat(sprintf("N: %.4f\n", results$MSE_Hypergeometric$N))
@@ -143,7 +144,7 @@ for (i in 1:nrow(parameters)) {
   true_M <- parameters$M[i]
   m <- parameters$m[i]
   
-  result <- simulate_point_estimate(simulations = 1000, 
+  result <- simulate_point_estimate_m(simulations = 1000, 
                                     true_N = true_N, 
                                     true_M = true_M, 
                                     m = m)
@@ -190,7 +191,7 @@ for (i in 1:nrow(parameters)) {
   true_M <- parameters$M[i]
   m <- parameters$m[i]
   
-  result <- simulate_point_estimate(simulations = 1000, 
+  result <- simulate_point_estimate_m(simulations = 1000, 
                                     true_N = true_N, 
                                     true_M = true_M, 
                                     m = m)
@@ -264,10 +265,10 @@ Note: Difference (MSE) = HG - NHG
 -   **HG excels** when:
     -   The population has a higher density of successes ((M / N) large), and the observed successes ((m / M)) are closer to the total successes.
 
-# Visualizing Results
+## Visualizing Results
 
 ```{r}
-#| label: combining above results into one dataset 
+#| label: combining above results into one dataset (m)
 
 combined_results <- bind_rows(results_df, results_df_2)
 ```
@@ -359,6 +360,353 @@ ggplot(combined_results, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))
   ) 
 
 ggplot(combined_results, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  labs(
+    title = "Difference in MSE (M): NHG vs. HG by m/M",
+    x = "m / M (Observed Success Fraction)",
+    y = "Diff_MSE_M (HG - NHG)",
+    color = "N"
+  ) 
+```
+
+# Simulate Point Estimates (fix N, M, n)
+
+## Function
+
+```{r}
+#| label: point estimate simulation function (n)
+
+simulate_point_estimate_n <- function(simulations = 1000, true_N, true_M, n) {
+  
+  # Initializing results data frame
+  results <- data.frame(sim = 1:simulations,
+                        est_N_HG = numeric(simulations),
+                        est_M_HG = numeric(simulations),
+                        est_N_NHG = numeric(simulations),
+                        est_M_NHG = numeric(simulations))
+
+  # Simulation loop
+  for (i in 1:simulations) {
+    # Sample from Hypergeometric
+    m_HG <- rhyper(1, true_M, true_N - true_M, n)  # Number of successes observed
+    
+    # Sample from Negative Hypergeometric
+    x_NHG <- r_ngh(1, true_N, true_M, m_HG)  # Number of failures before m successes
+    n_NHG <- x_NHG + m_HG
+
+    # Point estimates for Hypergeometric (handle cases where m_HG = 0 or NA)
+    if (is.na(m_HG) || m_HG == 0) {
+      est_N_HG <- NA
+      est_M_HG <- NA
+    } else {
+      est_N_HG <- (true_M * n) / m_HG
+      est_M_HG <- (true_N * m_HG) / n
+    }
+
+    # Point estimates for Negative Hypergeometric
+    if (is.na(x_NHG) || x_NHG == 0) {
+      est_N_NHG <- NA
+      est_M_NHG <- NA
+    } else {
+      est_N_NHG <- (true_M * n_NHG) / m_HG
+      est_M_NHG <- (true_N * m_HG) / n_NHG
+    }
+
+    # Store results
+    results[i, ] <- c(i, est_N_HG, est_M_HG, est_N_NHG, est_M_NHG)
+  }
+
+  # Calculate MSE for estimates
+  mse_N_HG <- mean((results$est_N_HG - true_N)^2, na.rm = TRUE)
+  mse_M_HG <- mean((results$est_M_HG - true_M)^2, na.rm = TRUE)
+  mse_N_NHG <- mean((results$est_N_NHG - true_N)^2, na.rm = TRUE)
+  mse_M_NHG <- mean((results$est_M_NHG - true_M)^2, na.rm = TRUE)
+
+  # Return results as a list
+  return(list(
+    MSE_Hypergeometric = list(N = mse_N_HG, M = mse_M_HG),
+    MSE_Negative_Hypergeometric = list(N = mse_N_NHG, M = mse_M_NHG)
+  ))
+}
+```
+
+## Testing Function
+
+```{r}
+#| label: testing function (n)
+
+set.seed(814)
+
+true_N = 100
+true_M = 25
+n = 5
+
+results <- simulate_point_estimate_n(simulations = 1000, true_N, true_M, n)
+
+cat("\nMSE for Hypergeometric estimates:\n")
+cat(sprintf("N: %.4f\n", results$MSE_Hypergeometric$N))
+cat(sprintf("M: %.4f\n", results$MSE_Hypergeometric$M))
+
+cat("\nMSE for Negative Hypergeometric estimates:\n")
+cat(sprintf("N: %.4f\n", results$MSE_Negative_Hypergeometric$N))
+cat(sprintf("M: %.4f\n", results$MSE_Negative_Hypergeometric$M))
+```
+
+## Simulating Combinations of N, M, and n
+
+```{r}
+#| label: simulating multiple combinations of N, M, and n
+#| warning: false
+
+set.seed(814)
+
+parameters <- data.frame(
+  N = c(
+    rep(100, 12),  
+    rep(500, 15),  
+    rep(1000, 15) 
+  ),
+  M = c(
+    rep(25, 3), rep(50, 4), rep(75, 5),      
+    rep(100, 5), rep(250, 5), rep(400, 5),   
+    rep(250, 5), rep(500, 5), rep(750, 5)   
+  ),
+  n = c(
+    5, 10, 15, 5, 10, 15, 25, 5, 10, 15, 25, 40,   
+    5, 10, 25, 40, 50, 10, 20, 30, 40, 50, 10, 20, 50, 60, 75,  
+    5, 10, 25, 40, 50, 10, 20, 30, 40, 50, 10, 20, 50, 60, 75  
+  )
+)
+
+
+results_df_3 <- data.frame()
+
+for (i in 1:nrow(parameters)) {
+  true_N <- parameters$N[i]
+  true_M <- parameters$M[i]
+  n <- parameters$n[i]
+  
+  result <- simulate_point_estimate_n(simulations = 1000, 
+                                    true_N = true_N, 
+                                    true_M = true_M, 
+                                    n = n)
+  
+  results_df_3 <- rbind(
+    results_df_3,
+    data.frame(
+      N = true_N,
+      M = true_M,
+      n = n,
+      MSE_HG_N = result$MSE_Hypergeometric$N,
+      MSE_NHG_N = result$MSE_Negative_Hypergeometric$N,
+      Diff_MSE_N = result$MSE_Hypergeometric$N - result$MSE_Negative_Hypergeometric$N,
+      MSE_HG_M = result$MSE_Hypergeometric$M,
+      MSE_NHG_M = result$MSE_Negative_Hypergeometric$M,
+      Diff_MSE_M = result$MSE_Hypergeometric$M - result$MSE_Negative_Hypergeometric$M,
+      M_over_N = true_M / true_N,
+      m_over_M = m / true_M
+    )
+  )
+}
+```
+
+```{r}
+#| label: simulating random combinations of N, M, and n
+#| warning: false
+
+set.seed(814)
+
+num_combinations <- 50  
+parameters <- data.frame(
+  N = sample(seq(100, 2000, by = 100), num_combinations, replace = TRUE), 
+  M = NA, 
+  n = NA   
+)
+
+parameters$M <- sapply(parameters$N, function(N) sample(seq(10, N, by = 10), 1))  
+parameters$n <- sapply(parameters$M, function(M) sample(seq(5, M/2, by = 1), 1))   
+
+results_df_4 <- data.frame()
+
+for (i in 1:nrow(parameters)) {
+  true_N <- parameters$N[i]
+  true_M <- parameters$M[i]
+  n <- parameters$n[i]
+  
+  result <- simulate_point_estimate_n(simulations = 1000, 
+                                    true_N = true_N, 
+                                    true_M = true_M, 
+                                    n = n)
+  
+  results_df_4 <- rbind(
+    results_df_4,
+    data.frame(
+      N = true_N,
+      M = true_M,
+      n = n,
+      MSE_HG_N = result$MSE_Hypergeometric$N,
+      MSE_NHG_N = result$MSE_Negative_Hypergeometric$N,
+      Diff_MSE_N = result$MSE_Hypergeometric$N - result$MSE_Negative_Hypergeometric$N,
+      MSE_HG_M = result$MSE_Hypergeometric$M,
+      MSE_NHG_M = result$MSE_Negative_Hypergeometric$M,
+      Diff_MSE_M = result$MSE_Hypergeometric$M - result$MSE_Negative_Hypergeometric$M,
+      M_over_N = true_M / true_N,
+      m_over_M = m / true_M
+    )
+  )
+}
+```
+
+```{r}
+#| label: combining above results into one dataset (n)
+
+combined_results_2 <- bind_rows(results_df_3, results_df_4)
+```
+
+```{r}
+#| eval: false
+
+write.csv(combined_results_2, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison", "comp_3.csv"), row.names = FALSE)
+```
+
+Note: Difference (MSE) = HG - NHG
+
+-   Diff \> 0 (positive) = HG \> NHG = NHG performs better (lower MSE)
+
+-   Diff \< 0 (negative) = HG \< NHG = HG performs better (lower MSE)
+
+### Observations and Trends
+
+#### **Performance of NHG vs. HG for (N)**:
+
+1.  **NHG Performs Better ((**Diff_MSE_N \> 0)):
+    -   NHG tends to have lower MSE (positive differences) for (N) when:
+        -   (M / N) (ratio of successes to population size) is **low** (e.g., below 0.3). This occurs when the population contains a small fraction of successes, and NHG captures sparsity better.
+        -   (m / M) (ratio of observed successes to total successes) is **low** (e.g., below 0.2). Smaller observed samples tend to favor NHG.
+    -   The minimum (M / N = 0.025) and (m / M = 0.028) show NHG excels in extremely sparse populations.
+2.  **HG Performs Better ((**Diff_MSE_N \< 0)):
+    -   HG performs better for (N) when:
+        -   (M / N) is **high** (e.g., above 0.5). This suggests a denser population of successes, where HG benefits from its fixed sample size.
+        -   (m / M) is **high** (e.g., above 0.4). Larger observed samples reduce variability, which HG leverages effectively.
+
+#### **Performance of NHG vs. HG for (M)**:
+
+1.  **NHG Performs Better ((**Diff_MSE_M \> 0)):
+    -   NHG has lower MSE (positive differences) for (M) when:
+        -   The ratio (m / M) is **low** (e.g., below 0.2). Smaller observed successes relative to total successes favor NHG’s fixed success framework.
+        -   This aligns with cases where (N) is large and (M / N) is small, making the population sparse.
+2.  **HG Performs Better ((**Diff_MSE_M \< 0)):
+    -   HG performs better for (M) when:
+        -   The ratio (m / M) approaches or exceeds 0.5. This means a significant portion of the successes in the population are observed, and HG benefits from the fixed sample size.
+        -   (M / N) is moderate to high (e.g., above 0.3), suggesting denser populations.
+
+#### **General Trends**:
+
+-   **Impact of (M / N)**:
+    -   NHG performs better when (M / N) is small, suggesting NHG is more effective for sparse populations.
+    -   HG outperforms NHG when (M / N) increases, especially as it approaches 1.
+-   **Impact of (m / M)**:
+    -   NHG has an advantage for lower values of (m / M) (below 0.2), where fewer successes are observed.
+    -   HG tends to excel as (m / M) increases, especially when (m / M \> 0.4).
+
+### Summary Interpretation
+
+-   **NHG excels** in situations where:
+    -   The population is sparse ((M / N) is low).
+    -   The number of observed successes is small relative to the total successes ((m / M) is low).
+-   **HG excels** when:
+    -   The population is dense ((M / N) is high).
+    -   The number of observed successes is large relative to the total successes ((m / M) is high).
+
+## Visualizing Results
+
+```{r}
+#| warning: false
+
+# Plot 1: Diff_MSE_N vs. M/N
+ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_N, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "Difference in MSE (N): NHG vs. HG by M/N",
+    x = "M / N (Success Fraction in Population)",
+    y = "Diff_MSE_N (HG - NHG)",
+    color = "N"
+  ) 
+
+ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_N, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  labs(
+    title = "Difference in MSE (N): NHG vs. HG by M/N",
+    x = "M / N (Success Fraction in Population)",
+    y = "Diff_MSE_N (HG - NHG)",
+    color = "N"
+  ) 
+```
+
+```{r}
+#| warning: false
+
+# Plot 2: Diff_MSE_N vs. m/M
+ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_N, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "Difference in MSE (N): NHG vs. HG by m/M",
+    x = "m / M (Observed Success Fraction)",
+    y = "Diff_MSE_N (HG - NHG)",
+    color = "N"
+  ) 
+
+ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_N, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  labs(
+    title = "Difference in MSE (N): NHG vs. HG by m/M",
+    x = "m / M (Observed Success Fraction)",
+    y = "Diff_MSE_N (HG - NHG)",
+    color = "N"
+  ) 
+```
+
+```{r}
+#| warning: false
+
+# Plot 3: Diff_MSE_M vs. M/N
+ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_M, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "Difference in MSE (M): NHG vs. HG by M/N",
+    x = "M / N (Success Fraction in Population)",
+    y = "Diff_MSE_M (HG - NHG)",
+    color = "N"
+  )
+
+ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_M, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  labs(
+    title = "Difference in MSE (M): NHG vs. HG by M/N",
+    x = "M / N (Success Fraction in Population)",
+    y = "Diff_MSE_M (HG - NHG)",
+    color = "N"
+  )
+```
+
+```{r}
+#| warning: false
+
+# Plot 4: Diff_MSE_M vs. m/M
+ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "Difference in MSE (M): NHG vs. HG by m/M",
+    x = "m / M (Observed Success Fraction)",
+    y = "Diff_MSE_M (HG - NHG)",
+    color = "N"
+  ) 
+
+ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))) +
   geom_point(alpha = 0.6) +
   labs(
     title = "Difference in MSE (M): NHG vs. HG by m/M",
