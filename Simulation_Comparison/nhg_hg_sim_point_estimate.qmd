@@ -504,7 +504,7 @@ for (i in 1:nrow(parameters)) {
       MSE_NHG_M = result$MSE_Negative_Hypergeometric$M,
       Diff_MSE_M = result$MSE_Hypergeometric$M - result$MSE_Negative_Hypergeometric$M,
       M_over_N = true_M / true_N,
-      m_over_M = m / true_M
+      n_over_N = n / true_N
     )
   )
 }
@@ -551,7 +551,7 @@ for (i in 1:nrow(parameters)) {
       MSE_NHG_M = result$MSE_Negative_Hypergeometric$M,
       Diff_MSE_M = result$MSE_Hypergeometric$M - result$MSE_Negative_Hypergeometric$M,
       M_over_N = true_M / true_N,
-      m_over_M = m / true_M
+      n_over_N = n / true_N
     )
   )
 }
@@ -580,43 +580,42 @@ Note: Difference (MSE) = HG - NHG
 #### **Performance of NHG vs. HG for (N)**:
 
 1.  **NHG Performs Better ((**Diff_MSE_N \> 0)):
-    -   NHG tends to have lower MSE (positive differences) for (N) when:
-        -   (M / N) (ratio of successes to population size) is **low** (e.g., below 0.3). This occurs when the population contains a small fraction of successes, and NHG captures sparsity better.
-        -   (m / M) (ratio of observed successes to total successes) is **low** (e.g., below 0.2). Smaller observed samples tend to favor NHG.
-    -   The minimum (M / N = 0.025) and (m / M = 0.028) show NHG excels in extremely sparse populations.
+    -   NHG achieves lower MSE for (N) (positive differences) when:
+        -   **(M / N) is small** (e.g., (\< 0.3)), suggesting a sparse population of successes. Sparse populations favor NHG due to its fixed-success sampling mechanism.
+        -   **(n / N) is small** (e.g., (\< 0.1)), meaning the sample size is small relative to the total population. NHG handles smaller sample sizes better.
 2.  **HG Performs Better ((**Diff_MSE_N \< 0)):
-    -   HG performs better for (N) when:
-        -   (M / N) is **high** (e.g., above 0.5). This suggests a denser population of successes, where HG benefits from its fixed sample size.
-        -   (m / M) is **high** (e.g., above 0.4). Larger observed samples reduce variability, which HG leverages effectively.
+    -   HG performs better when:
+        -   **(M / N) is moderate to high** (e.g., (\> 0.5)), indicating denser populations of successes. This aligns with HG's fixed-sample-size design.
+        -   **(n / N) is moderate to high** (e.g., (\> 0.1)), meaning larger samples are drawn relative to the population size.
 
 #### **Performance of NHG vs. HG for (M)**:
 
 1.  **NHG Performs Better ((**Diff_MSE_M \> 0)):
-    -   NHG has lower MSE (positive differences) for (M) when:
-        -   The ratio (m / M) is **low** (e.g., below 0.2). Smaller observed successes relative to total successes favor NHG’s fixed success framework.
-        -   This aligns with cases where (N) is large and (M / N) is small, making the population sparse.
+    -   NHG achieves lower MSE for (M) when:
+        -   **(M / N) is small** (e.g., (\< 0.3)), consistent with sparsity favoring NHG.
+        -   **(n / N) is small** (e.g., (\< 0.1)), reinforcing NHG's robustness in smaller sample scenarios.
 2.  **HG Performs Better ((**Diff_MSE_M \< 0)):
-    -   HG performs better for (M) when:
-        -   The ratio (m / M) approaches or exceeds 0.5. This means a significant portion of the successes in the population are observed, and HG benefits from the fixed sample size.
-        -   (M / N) is moderate to high (e.g., above 0.3), suggesting denser populations.
+    -   HG performs better when:
+        -   **(M / N) is high** (e.g., (\> 0.5)), indicating denser populations.
+        -   **(n / N) is high** (e.g., (\> 0.1)), where HG benefits from its larger fixed sample sizes.
 
 #### **General Trends**:
 
 -   **Impact of (M / N)**:
-    -   NHG performs better when (M / N) is small, suggesting NHG is more effective for sparse populations.
-    -   HG outperforms NHG when (M / N) increases, especially as it approaches 1.
--   **Impact of (m / M)**:
-    -   NHG has an advantage for lower values of (m / M) (below 0.2), where fewer successes are observed.
-    -   HG tends to excel as (m / M) increases, especially when (m / M \> 0.4).
+    -   NHG tends to perform better as (M / N) decreases, aligning with scenarios of sparsity.
+    -   HG excels as (M / N) increases, particularly when the success density is high ((M / N \> 0.5)).
+-   **Impact of (n / N)**:
+    -   NHG outperforms HG when (n / N) is small, reflecting its effectiveness in scenarios with limited sampling.
+    -   HG surpasses NHG when (n / N) increases, benefiting from its stable performance in larger fixed sample sizes.
 
 ### Summary Interpretation
 
--   **NHG excels** in situations where:
-    -   The population is sparse ((M / N) is low).
-    -   The number of observed successes is small relative to the total successes ((m / M) is low).
--   **HG excels** when:
-    -   The population is dense ((M / N) is high).
-    -   The number of observed successes is large relative to the total successes ((m / M) is high).
+-   **NHG Excels**:
+    -   Sparse populations: (M / N) is small.
+    -   Small samples: (n / N) is small.
+-   **HG Excels**:
+    -   Dense populations: (M / N) is large.
+    -   Larger samples: (n / N) is moderate to large.
 
 ## Visualizing Results
 
@@ -647,22 +646,22 @@ ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_N, color = as.factor(N
 ```{r}
 #| warning: false
 
-# Plot 2: Diff_MSE_N vs. m/M
-ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_N, color = as.factor(N))) +
+# Plot 2: Diff_MSE_N vs. n/N
+ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_N, color = as.factor(N))) +
   geom_point(alpha = 0.6) +
   geom_smooth(method = "loess", se = FALSE) +
   labs(
-    title = "Difference in MSE (N): NHG vs. HG by m/M",
-    x = "m / M (Observed Success Fraction)",
+    title = "Difference in MSE (N): NHG vs. HG by n/N",
+    x = "n / N (Sample Size Fraction)",
     y = "Diff_MSE_N (HG - NHG)",
     color = "N"
   ) 
 
-ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_N, color = as.factor(N))) +
+ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_N, color = as.factor(N))) +
   geom_point(alpha = 0.6) +
   labs(
-    title = "Difference in MSE (N): NHG vs. HG by m/M",
-    x = "m / M (Observed Success Fraction)",
+    title = "Difference in MSE (N): NHG vs. HG by n/N",
+    x = "n / N (Sample Size Fraction)",
     y = "Diff_MSE_N (HG - NHG)",
     color = "N"
   ) 
@@ -695,22 +694,22 @@ ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_M, color = as.factor(N
 ```{r}
 #| warning: false
 
-# Plot 4: Diff_MSE_M vs. m/M
-ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))) +
+# Plot 4: Diff_MSE_M vs. n/N
+ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_M, color = as.factor(N))) +
   geom_point(alpha = 0.6) +
   geom_smooth(method = "loess", se = FALSE) +
   labs(
     title = "Difference in MSE (M): NHG vs. HG by m/M",
-    x = "m / M (Observed Success Fraction)",
+    x = "n / N (Sample Size Fraction)",
     y = "Diff_MSE_M (HG - NHG)",
     color = "N"
   ) 
 
-ggplot(combined_results_2, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))) +
+ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_M, color = as.factor(N))) +
   geom_point(alpha = 0.6) +
   labs(
-    title = "Difference in MSE (M): NHG vs. HG by m/M",
-    x = "m / M (Observed Success Fraction)",
+    title = "Difference in MSE (M): NHG vs. HG by n/N",
+    x = "n / N (Sample Size Fraction)",
     y = "Diff_MSE_M (HG - NHG)",
     color = "N"
   ) 

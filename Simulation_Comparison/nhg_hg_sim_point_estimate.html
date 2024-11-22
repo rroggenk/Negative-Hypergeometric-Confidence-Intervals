@@ -683,7 +683,7 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_NHG_M =</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
 <span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">Diff_MSE_M =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>M <span class="sc">-</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
 <span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">M_over_N =</span> true_M <span class="sc">/</span> true_N,</span>
-<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">m_over_M =</span> m <span class="sc">/</span> true_M</span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_over_N =</span> n <span class="sc">/</span> true_N</span>
 <span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -726,7 +726,7 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">MSE_NHG_M =</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
 <span id="cb42-36"><a href="#cb42-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">Diff_MSE_M =</span> result<span class="sc">$</span>MSE_Hypergeometric<span class="sc">$</span>M <span class="sc">-</span> result<span class="sc">$</span>MSE_Negative_Hypergeometric<span class="sc">$</span>M,</span>
 <span id="cb42-37"><a href="#cb42-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">M_over_N =</span> true_M <span class="sc">/</span> true_N,</span>
-<span id="cb42-38"><a href="#cb42-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">m_over_M =</span> m <span class="sc">/</span> true_M</span>
+<span id="cb42-38"><a href="#cb42-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_over_N =</span> n <span class="sc">/</span> true_N</span>
 <span id="cb42-39"><a href="#cb42-39" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb42-40"><a href="#cb42-40" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb42-41"><a href="#cb42-41" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -749,19 +749,18 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <ol type="1">
 <li><strong>NHG Performs Better ((</strong>Diff_MSE_N &gt; 0)):
 <ul>
-<li>NHG tends to have lower MSE (positive differences) for (N) when:
+<li>NHG achieves lower MSE for (N) (positive differences) when:
 <ul>
-<li>(M / N) (ratio of successes to population size) is <strong>low</strong> (e.g., below 0.3). This occurs when the population contains a small fraction of successes, and NHG captures sparsity better.</li>
-<li>(m / M) (ratio of observed successes to total successes) is <strong>low</strong> (e.g., below 0.2). Smaller observed samples tend to favor NHG.</li>
+<li><strong>(M / N) is small</strong> (e.g., (&lt; 0.3)), suggesting a sparse population of successes. Sparse populations favor NHG due to its fixed-success sampling mechanism.</li>
+<li><strong>(n / N) is small</strong> (e.g., (&lt; 0.1)), meaning the sample size is small relative to the total population. NHG handles smaller sample sizes better.</li>
 </ul></li>
-<li>The minimum (M / N = 0.025) and (m / M = 0.028) show NHG excels in extremely sparse populations.</li>
 </ul></li>
 <li><strong>HG Performs Better ((</strong>Diff_MSE_N &lt; 0)):
 <ul>
-<li>HG performs better for (N) when:
+<li>HG performs better when:
 <ul>
-<li>(M / N) is <strong>high</strong> (e.g., above 0.5). This suggests a denser population of successes, where HG benefits from its fixed sample size.</li>
-<li>(m / M) is <strong>high</strong> (e.g., above 0.4). Larger observed samples reduce variability, which HG leverages effectively.</li>
+<li><strong>(M / N) is moderate to high</strong> (e.g., (&gt; 0.5)), indicating denser populations of successes. This aligns with HG’s fixed-sample-size design.</li>
+<li><strong>(n / N) is moderate to high</strong> (e.g., (&gt; 0.1)), meaning larger samples are drawn relative to the population size.</li>
 </ul></li>
 </ul></li>
 </ol>
@@ -771,18 +770,18 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <ol type="1">
 <li><strong>NHG Performs Better ((</strong>Diff_MSE_M &gt; 0)):
 <ul>
-<li>NHG has lower MSE (positive differences) for (M) when:
+<li>NHG achieves lower MSE for (M) when:
 <ul>
-<li>The ratio (m / M) is <strong>low</strong> (e.g., below 0.2). Smaller observed successes relative to total successes favor NHG’s fixed success framework.</li>
-<li>This aligns with cases where (N) is large and (M / N) is small, making the population sparse.</li>
+<li><strong>(M / N) is small</strong> (e.g., (&lt; 0.3)), consistent with sparsity favoring NHG.</li>
+<li><strong>(n / N) is small</strong> (e.g., (&lt; 0.1)), reinforcing NHG’s robustness in smaller sample scenarios.</li>
 </ul></li>
 </ul></li>
 <li><strong>HG Performs Better ((</strong>Diff_MSE_M &lt; 0)):
 <ul>
-<li>HG performs better for (M) when:
+<li>HG performs better when:
 <ul>
-<li>The ratio (m / M) approaches or exceeds 0.5. This means a significant portion of the successes in the population are observed, and HG benefits from the fixed sample size.</li>
-<li>(M / N) is moderate to high (e.g., above 0.3), suggesting denser populations.</li>
+<li><strong>(M / N) is high</strong> (e.g., (&gt; 0.5)), indicating denser populations.</li>
+<li><strong>(n / N) is high</strong> (e.g., (&gt; 0.1)), where HG benefits from its larger fixed sample sizes.</li>
 </ul></li>
 </ul></li>
 </ol>
@@ -792,13 +791,13 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <ul>
 <li><strong>Impact of (M / N)</strong>:
 <ul>
-<li>NHG performs better when (M / N) is small, suggesting NHG is more effective for sparse populations.</li>
-<li>HG outperforms NHG when (M / N) increases, especially as it approaches 1.</li>
+<li>NHG tends to perform better as (M / N) decreases, aligning with scenarios of sparsity.</li>
+<li>HG excels as (M / N) increases, particularly when the success density is high ((M / N &gt; 0.5)).</li>
 </ul></li>
-<li><strong>Impact of (m / M)</strong>:
+<li><strong>Impact of (n / N)</strong>:
 <ul>
-<li>NHG has an advantage for lower values of (m / M) (below 0.2), where fewer successes are observed.</li>
-<li>HG tends to excel as (m / M) increases, especially when (m / M &gt; 0.4).</li>
+<li>NHG outperforms HG when (n / N) is small, reflecting its effectiveness in scenarios with limited sampling.</li>
+<li>HG surpasses NHG when (n / N) increases, benefiting from its stable performance in larger fixed sample sizes.</li>
 </ul></li>
 </ul>
 </section>
@@ -806,15 +805,15 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 <section id="summary-interpretation-1" class="level3">
 <h3 class="anchored" data-anchor-id="summary-interpretation-1">Summary Interpretation</h3>
 <ul>
-<li><strong>NHG excels</strong> in situations where:
+<li><strong>NHG Excels</strong>:
 <ul>
-<li>The population is sparse ((M / N) is low).</li>
-<li>The number of observed successes is small relative to the total successes ((m / M) is low).</li>
+<li>Sparse populations: (M / N) is small.</li>
+<li>Small samples: (n / N) is small.</li>
 </ul></li>
-<li><strong>HG excels</strong> when:
+<li><strong>HG Excels</strong>:
 <ul>
-<li>The population is dense ((M / N) is high).</li>
-<li>The number of observed successes is large relative to the total successes ((m / M) is high).</li>
+<li>Dense populations: (M / N) is large.</li>
+<li>Larger samples: (n / N) is moderate to large.</li>
 </ul></li>
 </ul>
 </section>
@@ -856,13 +855,13 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2: Diff_MSE_N vs. m/M</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2: Diff_MSE_N vs. n/N</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> n_over_N, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by m/M"</span>,</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by n/N"</span>,</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"n / N (Sample Size Fraction)"</span>,</span>
 <span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_N (HG - NHG)"</span>,</span>
 <span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
 <span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -873,11 +872,11 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> n_over_N, <span class="at">y =</span> Diff_MSE_N, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by m/M"</span>,</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (N): NHG vs. HG by n/N"</span>,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"n / N (Sample Size Fraction)"</span>,</span>
 <span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_N (HG - NHG)"</span>,</span>
 <span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
 <span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -924,13 +923,13 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 4: Diff_MSE_M vs. m/M</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 4: Diff_MSE_M vs. n/N</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> n_over_N, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"loess"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (M): NHG vs. HG by m/M"</span>,</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"n / N (Sample Size Fraction)"</span>,</span>
 <span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_M (HG - NHG)"</span>,</span>
 <span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
 <span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -941,11 +940,11 @@ MSE for Negative Hypergeometric estimates:</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> m_over_M, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(combined_results_2, <span class="fu">aes</span>(<span class="at">x =</span> n_over_N, <span class="at">y =</span> Diff_MSE_M, <span class="at">color =</span> <span class="fu">as.factor</span>(N))) <span class="sc">+</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (M): NHG vs. HG by m/M"</span>,</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"m / M (Observed Success Fraction)"</span>,</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference in MSE (M): NHG vs. HG by n/N"</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"n / N (Sample Size Fraction)"</span>,</span>
 <span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Diff_MSE_M (HG - NHG)"</span>,</span>
 <span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"N"</span></span>
 <span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
