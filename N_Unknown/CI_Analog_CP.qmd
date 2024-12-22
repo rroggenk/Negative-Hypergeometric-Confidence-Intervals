@@ -246,15 +246,15 @@ ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
 ## Plot for interplay between a cpf and resulting intervals
 
 ```{r}
-CI_Analog_CP_N_Unknown(M = 10, m = 7, conf_level = 0.95)
+CI_Analog_CP_N_Unknown(M = 40, m = 5, conf_level = 0.80)
 ```
 
 ```{r}
 max_N = 250
-M = 10
-m = 7
-conf_level = 0.95
-N_values = M:100
+M = 40
+m = 5
+conf_level = 0.80
+N_values = M:165
 
 coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown(M, N, m, conf_level, max_N)))
 
@@ -271,17 +271,17 @@ ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
   geom_point() +
   labs(x = "N", y = "Coverage Probability of N") +
   geom_hline(yintercept = conf_level, color = "red") +
-  scale_x_continuous(limits = c(21, 100)) +  
+  scale_x_continuous(limits = c(40, 165)) +  
   scale_y_continuous(limits = c(conf_level - 0.005, 1)) +  
   theme_minimal()
 
 ```
 
 ```{r}
-ci_results = CI_Analog_CP_N_Unknown(M, m, conf_level) %>%
-  filter(x <= 12)
+ci_results = CI_Analog_CP_N_Unknown(M, m, conf_level)  %>%
+  filter(x <= 6)
 
-y_axis = seq(from = 0.94, by = -0.01, length.out = 13)
+y_axis = seq(from = 0.78, by = -0.02, length.out = 7)
 
 ci_results$y_axis = y_axis
 
@@ -291,10 +291,11 @@ ci_results$y_axis = y_axis
 ggplot() +
   geom_line(data = coverage_df, aes(x = N, y = coverage_prob, group = group)) +
   geom_point(data = coverage_df, aes(x = N, y = coverage_prob, group = group)) +
-  labs(x = "M", y = "Coverage Probability") +
+  labs(x = "N", y = "Coverage Probability") +
   geom_hline(yintercept = conf_level, color = "red", linetype = "dashed") +
-  scale_y_continuous(breaks = c(0.95, 1), limits = c(0.815, 1.015)) +
-  scale_x_continuous(breaks = 3:15, limits = c(2.8, 15.1)) +
+  scale_y_continuous(breaks = c(0.80, 1), limits = c(0.65, 1.015)) +
+  scale_x_continuous(breaks = c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160),
+                     limits = c(39, 162.1)) +
   theme_minimal() +
   theme(
     panel.grid.major = element_blank(),
@@ -304,6 +305,62 @@ ggplot() +
     axis.ticks.length = unit(2, "mm"),
     axis.text.x = element_text(margin = margin(t = 5)),
     axis.text.y = element_text(margin = margin(r = 5))) +
+  annotate("text", 
+           x = 39, 
+           y = 1.014,
+           label = paste0("0-0"), 
+           angle = 0, hjust = 0.5, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 44.9, 
+           y = 0.97,
+           label = paste0("0-1"), 
+           angle = -75, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 48.7, 
+           y = 0.965,
+           label = paste0("0-2"), 
+           angle = -75, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 53, 
+           y = 0.955,
+           label = paste0("0-3"), 
+           angle = -75, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 58, 
+           y = 0.948,
+           label = paste0("0-4"), 
+           angle = -70, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 62.5, 
+           y = 0.948,
+           label = paste0("0-5"), 
+           angle = -65, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 61, 
+           y = 0.825,
+           label = paste0("1-5"), 
+           angle = 0, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 66.5, 
+           y = 0.87,
+           label = paste0("1-6"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 71.5, 
+           y = 0.89,
+           label = paste0("1-7"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 76.7, 
+           y = 0.905,
+           label = paste0("1-8"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 80, 
+           y = 0.923,
+           label = paste0("1-9"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  # group 12: label 2-9
   geom_errorbarh(data = ci_results, 
                 aes(y = y_axis, xmin = lower_bound, xmax = upper_bound), width = 0.2)
 ```
