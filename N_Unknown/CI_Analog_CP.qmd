@@ -254,7 +254,7 @@ max_N = 250
 M = 40
 m = 5
 conf_level = 0.80
-N_values = M:165
+N_values = M:167
 
 coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown(M, N, m, conf_level, max_N)))
 
@@ -271,7 +271,7 @@ ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
   geom_point() +
   labs(x = "N", y = "Coverage Probability of N") +
   geom_hline(yintercept = conf_level, color = "red") +
-  scale_x_continuous(limits = c(40, 165)) +  
+  scale_x_continuous(limits = c(40, 167)) +  
   scale_y_continuous(limits = c(conf_level - 0.005, 1)) +  
   theme_minimal()
 
@@ -294,8 +294,9 @@ ggplot() +
   labs(x = "N", y = "Coverage Probability") +
   geom_hline(yintercept = conf_level, color = "red", linetype = "dashed") +
   scale_y_continuous(breaks = c(0.80, 1), limits = c(0.65, 1.015)) +
-  scale_x_continuous(breaks = c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160),
-                     limits = c(39, 162.1)) +
+  scale_x_continuous(breaks = 
+                       c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170),
+                     limits = c(39, 170.1)) +
   theme_minimal() +
   theme(
     panel.grid.major = element_blank(),
@@ -360,7 +361,125 @@ ggplot() +
            y = 0.923,
            label = paste0("1-9"), 
            angle = -45, hjust = 0, vjust = 1, size = 3) +
-  # group 12: label 2-9
+  annotate("text", 
+           x = 82.5, 
+           y = 0.845,
+           label = paste0("2-9"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 87, 
+           y = 0.868,
+           label = paste0("2-10"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 92.5, 
+           y = 0.88,
+           label = paste0("2-11"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 96.5, 
+           y = 0.895,
+           label = paste0("2-12"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 97.5, 
+           y = 0.83,
+           label = paste0("3-12"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 101.5, 
+           y = 0.852,
+           label = paste0("3-13"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 106.5, 
+           y = 0.868,
+           label = paste0("3-14"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 111, 
+           y = 0.88,
+           label = paste0("3-15"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 114, 
+           y = 0.825,
+           label = paste0("4-15"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 117, 
+           y = 0.845,
+           label = paste0("4-16"), 
+           angle = -25, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 122, 
+           y = 0.857,
+           label = paste0("4-17"), 
+           angle = -25, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 127, 
+           y = 0.868,
+           label = paste0("4-18"), 
+           angle = -25, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 131.5, 
+           y = 0.838,
+           label = paste0("5-19"), 
+           angle = -20, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 137, 
+           y = 0.85,
+           label = paste0("5-20"), 
+           angle = -20, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 143, 
+           y = 0.86,
+           label = paste0("5-21"), 
+           angle = -20, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 147, 
+           y = 0.833,
+           label = paste0("6-22"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 152.5, 
+           y = 0.8435,
+           label = paste0("6-23"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 158, 
+           y = 0.853,
+           label = paste0("6-24"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 163, 
+           y = 0.83,
+           label = paste0("7-25"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
   geom_errorbarh(data = ci_results, 
-                aes(y = y_axis, xmin = lower_bound, xmax = upper_bound), width = 0.2)
+                aes(y = y_axis, xmin = lower_bound, xmax = upper_bound)) +
+  geom_label(aes(x = 49.75, y = 0.785, label = "CI(0)"), 
+             color = "black", fill = "white", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 59.25, y = 0.765, label = "CI(1)"), 
+             color = "black", fill = "white", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 69.75, y = 0.745, label = "CI(2)"), 
+             color = "black", fill = "white", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 79.75, y = 0.725, label = "CI(3)"), 
+             color = "black", fill = "white", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 90.75, y = 0.705, label = "CI(4)"), 
+             color = "black", fill = "white", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 101.25, y = 0.685, label = "CI(5)"), 
+             color = "black", fill = "white", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 111.75, y = 0.665, label = "CI(6)"), 
+             color = "black", fill = "white", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1)
+
+# geom_label: x = (lb + ub - size) / 2
+# size = 2.5
 ```
