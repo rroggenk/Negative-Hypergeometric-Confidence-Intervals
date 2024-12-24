@@ -81,6 +81,32 @@ ggplot(data, aes(x = x, y = y)) +
   ylab("Density")
 ```
 
+```{r}
+m = 3
+x = 4
+N = 50
+M = 21
+
+data = data.frame(x = seq(0, 50))
+data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+ggplot(data, aes(x = x, y = y)) +
+  geom_line() +
+  geom_vline(xintercept = x, color = "red") +
+  #ggtitle(paste("NGH: M =", M)) +
+  xlab("x") +
+  ylab("Probability") +
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) 
+```
+
 ### Lower Bound
 
 ```{r}
@@ -106,6 +132,32 @@ area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
 area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
 print(paste("Area to the left of n =", m + x, "is:", area_left))
 #print(paste("Area to the right of n =", m + x, "is:", area_right))
+```
+
+```{r}
+m = 3
+x = 4
+N = 50
+M = 6
+
+data = data.frame(x = seq(0, 50))
+data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+ggplot(data, aes(x = x, y = y)) +
+  geom_line() +
+  geom_vline(xintercept = x, color = "red") +
+  #ggtitle(paste("NGH: M =", M)) +
+  xlab("x") +
+  ylab("Probability") +
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) 
 ```
 
 ### Upper Bound
@@ -135,6 +187,34 @@ area_left = ngh_cdf(x = x, N = N, M = M, m = m, lower_tail = TRUE)
 area_right = ngh_cdf(x = x - 1, N = N, M = M, m = m, lower_tail = FALSE)
 #print(paste("Area to the left of n =", m + x, "is:", area_left))
 print(paste("Area to the right of n =", m + x, "is:", area_right))
+```
+
+```{r}
+m = 3
+x = 4
+N = 50
+M = 37
+
+data = data.frame(x = seq(0, 50))
+data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+# data$y = ngh_pmf(x = (data$x - m), N = N, M = M, m = m)
+ggplot(data, aes(x = x, y = y)) +
+  geom_line() +
+  geom_vline(xintercept = x, color = "red") +
+  #ggtitle(paste("NGH: M =", M)) +
+  xlab("x") +
+  ylab("Probability") +
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) +
+  scale_x_continuous(limits = c(0, 10), breaks = c(0, 5, 10))
 ```
 
 ## Confidence Interval Function

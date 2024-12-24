@@ -292,14 +292,22 @@ coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_MLE(M, N
 coverage_df = coverage_df %>%
   mutate(group = factor(cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0))))
 
-ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group, color = group)) +
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
   geom_line() +
   geom_point() +
-  labs(x = "M", y = "Coverage Probability of M") +
+  labs(x = "M", y = "Coverage Probability") +
   geom_hline(yintercept = conf_level, color = "red") +
-  ylim(0, 1) +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 0.95, 1), limits = c(0, 1)) +
   theme_minimal() +
-  theme(legend.position = "none")
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) 
 ```
 
 # Coverage Probability for M (Unbiased)
@@ -411,14 +419,22 @@ coverage_df = do.call(rbind, lapply(M_values, function(M) coverage_prob_unbiased
 coverage_df = coverage_df %>%
   mutate(group = factor(cumsum(c(1, diff(min_x) != 0 | diff(max_x) != 0))))
 
-ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group, color = group)) +
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
   geom_line() +
   geom_point() +
-  labs(x = "M", y = "Coverage Probability of M") +
+  labs(x = "M", y = "Coverage Probability") +
   geom_hline(yintercept = conf_level, color = "red") +
-  ylim(0, 1) +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 0.95, 1), limits = c(0, 1)) +
   theme_minimal() +
-  theme(legend.position = "none")
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) 
 ```
 
 ```{r}

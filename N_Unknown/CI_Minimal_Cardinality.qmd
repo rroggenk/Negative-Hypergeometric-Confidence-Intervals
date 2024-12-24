@@ -490,14 +490,14 @@ all_mc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ### Plot of All Possible Minimal Cardinality Acceptance Curves
 
 ```{r}
-all_ac_mc_M_10_m_4 = all_mc_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
-all_ac_mc_M_10_m_4
+all_ac_mc_M_10_m_5 = all_mc_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
+all_ac_mc_M_10_m_5
 ```
 
 ```{r}
 conf_level= 0.95
 
-ggplot(all_ac_mc_M_10_m_4, aes(x = N, 
+ggplot(all_ac_mc_M_10_m_5, aes(x = N, 
                                y = coverage_prob, 
                                group = x_set, 
                                color = x_set)) +
@@ -598,7 +598,7 @@ ggplot(plot, aes(x = N,
 ```{r}
 # Plot of All Minimal Cardinality Acceptance Curves (with trends shown)
 filtered_plot <- plot %>%
-  filter(x_set %in% all_ac_mc_M_10_m_4$x_set)
+  filter(x_set %in% all_ac_mc_M_10_m_5$x_set)
 
 conf_level= 0.95
 
@@ -607,7 +607,7 @@ ggplot() +
                                        y = coverage_prob, 
                                        group = x_set, 
                                        color = x_set)) +
-  geom_point(data = all_ac_mc_M_10_m_4, aes(x = N, 
+  geom_point(data = all_ac_mc_M_10_m_5, aes(x = N, 
                                             y = coverage_prob, 
                                             group = x_set, 
                                             color = x_set)) +
@@ -625,11 +625,11 @@ ggplot() +
 # Initialize an empty data frame to store results
 filtered_plot2 <- data.frame()
 
-# Loop through each row in all_ac_mc_M_10_m_4
-for (i in 1:nrow(all_ac_mc_M_10_m_4)) {
+# Loop through each row in all_ac_mc_M_10_m_5
+for (i in 1:nrow(all_ac_mc_M_10_m_5)) {
   # Get the current N and x_set
-  current_N <- all_ac_mc_M_10_m_4$N[i]
-  current_x_set <- all_ac_mc_M_10_m_4$x_set[i]
+  current_N <- all_ac_mc_M_10_m_5$N[i]
+  current_x_set <- all_ac_mc_M_10_m_5$x_set[i]
   
   # Filter for N, N-1, and N+1 where the x_set matches
   filtered_rows <- plot %>%
@@ -649,15 +649,59 @@ ggplot() +
                                        y = coverage_prob, 
                                        group = x_set, 
                                        color = x_set)) +
-  geom_point(data = all_ac_mc_M_10_m_4, aes(x = N, 
+  geom_point(data = all_ac_mc_M_10_m_5, aes(x = N, 
                                             y = coverage_prob, 
                                             group = x_set, 
                                             color = x_set)) +
-  labs(x = "N", y = "Coverage Probability of N") +
+  labs(x = "N", y = "Coverage Probability") +
   geom_hline(yintercept = conf_level, color = "red") +
   coord_cartesian(ylim = c(conf_level - 0.005, 1)) +
+  scale_y_continuous(breaks = c(0.95, 1)) +
+  #scale_color_viridis_d(option = "D") + 
   theme_minimal() +
-  theme(legend.position = "none")
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)))
+```
+
+```{r}
+custom_colors <- c(
+  "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d", "#666666", 
+  "#0173b2", "#de8f05", "#029e73", "#d55e00", "#cc78bc", "#ca9161", "#fbafe4", "#949494", 
+  "#56b4e9", "#f0e442", "#0072b2", "#f4a582", "#8da0cb", "#fc8d62", "#66c2a5", "#e78ac3", 
+  "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3", "#c51b7d", "#8c510a", "#01665e", "#542788"
+)
+
+ggplot() +
+  geom_line(data = filtered_plot2, aes(x = N, 
+                                       y = coverage_prob, 
+                                       group = x_set, 
+                                       color = x_set)) +
+  geom_point(data = all_ac_mc_M_10_m_5, aes(x = N, 
+                                            y = coverage_prob, 
+                                            group = x_set, 
+                                            color = x_set)) +
+  labs(x = "N", y = "Coverage Probability") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  coord_cartesian(ylim = c(conf_level - 0.005, 1)) +
+  scale_y_continuous(breaks = c(0.95, 1)) +
+  scale_color_manual(values = custom_colors) + 
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)))
 ```
 
 ## MST Acceptance Curves (Function)

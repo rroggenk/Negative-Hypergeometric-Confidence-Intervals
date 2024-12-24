@@ -236,11 +236,19 @@ coverage_df = coverage_df %>%
 ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
   geom_line() +
   geom_point() +
-  labs(x = "N", y = "Coverage Probability of N") +
+  labs(x = "N", y = "Coverage Probability") +
   geom_hline(yintercept = conf_level, color = "red") +
-  # ylim(0, 1) +
-  ylim(conf_level - 0.005, 1) +
-  theme_minimal()
+  scale_y_continuous(breaks = c(0.95, 1), limits = c(conf_level - 0.005, 1)) +
+  scale_x_continuous(breaks = seq(25, 250, by = 25)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)))
 ```
 
 ## Plot for interplay between a cpf and resulting intervals
@@ -274,7 +282,6 @@ ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
   scale_x_continuous(limits = c(40, 167)) +  
   scale_y_continuous(limits = c(conf_level - 0.005, 1)) +  
   theme_minimal()
-
 ```
 
 ```{r}
