@@ -333,3 +333,25 @@ ggplot(data, aes(x = M, y = coverage_prob, group = x_set, color = x_set)) +
   theme_minimal() +
   theme(legend.position = "none")
 ```
+
+```{r}
+data = blaker_ac(N = 50, m = 3, conf_level = 0.95)
+conf_level= 0.95
+
+ggplot(data, aes(x = M, y = coverage_prob, group = x_set)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "M", y = "Coverage Probability") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  scale_y_continuous(breaks = c(0.95, 1), limits = c(conf_level - 0.005, 1)) +
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) 
+```
