@@ -225,13 +225,217 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+blaker_ac_vec <- function(N, m, conf_level = 0.95) {
+  alpha <- 1 - conf_level
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # 1) FIRST PASS: Build 'results' with (M, x, min_tail_prob, pmf_x, acceptance_set)
+  #    in a more vectorized way.
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  results <- data.frame(
+    M              = integer(),
+    x              = integer(),
+    min_tail_prob  = numeric(),
+    pmf_x          = numeric(),   # we'll store PMF here to avoid repeated calls later
+    acceptance_set = character()
+  )
+  
+  for (M_val in seq.int(0, N)) {
+    
+    # If M_val < m, there's exactly one x = N - M_val, with no min_tail_prob needed
+    if (M_val < m) {
+      x_val <- N - M_val
+      # Append a single row
+      results <- rbind(
+        results,
+        data.frame(
+          M              = M_val,
+          x              = x_val,
+          min_tail_prob  = NA,   # as in your original code
+          pmf_x          = NA,   # won't be used if M_val < m
+          acceptance_set = as.character(x_val)
+        )
+      )
+      
+    } else {
+      # M_val >= m => we consider x from 0 to (N - M_val)
+      x_seq <- seq.int(0, N - M_val)
+      
+      # Vectorized calls to ngh_cdf() for "left" and "right" tails:
+      area_left_vec <- sapply(
+        x_seq,
+        function(xx) ngh_cdf(x = xx,    N = N, M = M_val, m = m, lower_tail = TRUE )
+      )
+      area_right_vec <- sapply(
+        x_seq,
+        function(xx) ngh_cdf(x = xx - 1, N = N, M = M_val, m = m, lower_tail = FALSE)
+      )
+      
+      # Vector of min_tail_prob
+      min_tail_prob_vec <- pmin(area_left_vec, area_right_vec)
+      
+      # Precompute PMF for each x as well
+      pmf_vec <- sapply(
+        x_seq,
+        function(xx) ngh_pmf(x = xx, N = N, M = M_val, m = m)
+      )
+      
+      # Build a temporary data frame for all x in [0, N - M_val]
+      tmp_df <- data.frame(
+        M              = M_val,
+        x              = x_seq,
+        min_tail_prob  = min_tail_prob_vec,
+        pmf_x          = pmf_vec,
+        acceptance_set = NA_character_
+      )
+      
+      # Bind once per M_val
+      results <- rbind(results, tmp_df)
+    }
+  }
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # 2) SECOND PASS: Build final_results.
+  #    We do exactly what your original code did, but we skip repeated PMF calls,
+  #    because 'results' already has 'pmf_x'.
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  final_results <- data.frame(
+    M               = integer(),
+    acceptance_set  = character(),
+    a               = integer(),
+    b               = integer(),
+    cardinality     = integer(),
+    coverage_prob   = numeric(),
+    x_set           = character(),
+    gap             = logical()
+  )
+  
+  # We iterate from M=0 up to M=N, same as your code
+  for (fixed_M in seq.int(0, N)) {
+    
+    acceptance_set <- c()
+    x_set_str      <- ""
+    
+    if (fixed_M < m) {
+      # The acceptance set is exactly { N - M }
+      acceptance_set_num <- N - fixed_M
+      
+      a_val         <- acceptance_set_num
+      b_val         <- acceptance_set_num
+      cardinality   <- 1
+      coverage_prob <- 0  # same as your code
+      gap_val       <- FALSE
+      acceptance_set_str <- as.character(acceptance_set_num)
+      x_set_str     <- paste(a_val, b_val, sep = "-")
+      
+    } else {
+      # M >= m
+      # Subset 'results' to the rows for this M
+      sub_df <- results %>% filter(M == fixed_M)
+      
+      # For each x in [0, N - M], run the original logic
+      # "for (fixed_x in 0:(N - fixed_M)) { ... }"
+      x_seq <- seq.int(0, N - fixed_M)
+      
+      for (fixed_x in x_seq) {
+        # min_tail_prob for this x
+        min_tail_prob_fixed_x <- sub_df$min_tail_prob[sub_df$x == fixed_x]
+        
+        # All x' with min_tail_prob <= min_tail_prob_fixed_x
+        # (the original code calls 'results %>% filter(...)', we do it here in memory)
+        possible_xs_df <- sub_df[sub_df$min_tail_prob <= min_tail_prob_fixed_x, ]
+        
+        # Sum pmf_x for these x'
+        prob_sum <- sum(possible_xs_df$pmf_x, na.rm = TRUE)
+        
+        # If prob_sum > alpha, we add 'fixed_x' to acceptance_set
+        if (prob_sum > alpha) {
+          acceptance_set <- c(acceptance_set, fixed_x)
+        }
+      }
+      
+      acceptance_set <- unique(as.numeric(acceptance_set))  # just in case
+      acceptance_set_str <- paste(acceptance_set, collapse = ",")
+      
+      # Calculate coverage_prob by summing precomputed pmf_x
+      # Only for those x in acceptance_set
+      coverage_prob <- 0
+      if (length(acceptance_set) > 0) {
+        # We'll match again on sub_df$x
+        coverage_prob <- sum(
+          sub_df$pmf_x[sub_df$x %in% acceptance_set],
+          na.rm = TRUE
+        )
+      }
+      
+      # Build a, b, cardinality
+      a_val       <- min(acceptance_set)
+      b_val       <- max(acceptance_set)
+      cardinality <- length(acceptance_set)
+      
+      # Check for a "gap"
+      gap_val <- any(diff(sort(acceptance_set)) > 1)
+      
+      # Construct x_set
+      if (!gap_val) {
+        # No gap => single interval
+        x_set_str <- paste(a_val, b_val, sep = "-")
+      } else {
+        # There is a gap => multiple intervals
+        acceptance_set_sorted <- sort(acceptance_set)
+        intervals <- c()
+        start_int <- acceptance_set_sorted[1]
+        
+        for (i in seq.int(2, length(acceptance_set_sorted))) {
+          if (acceptance_set_sorted[i] != acceptance_set_sorted[i - 1] + 1) {
+            intervals <- c(intervals, paste(start_int, acceptance_set_sorted[i - 1], sep = "-"))
+            start_int <- acceptance_set_sorted[i]
+          }
+        }
+        # Add the last interval
+        intervals <- c(intervals, paste(start_int, acceptance_set_sorted[length(acceptance_set_sorted)], sep = "-"))
+        x_set_str <- paste(intervals, collapse = ", ")
+      }
+    }
+    
+    # Append to final_results
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        M               = fixed_M,
+        acceptance_set  = acceptance_set_str,
+        a               = a_val,
+        b               = b_val,
+        cardinality     = cardinality,
+        coverage_prob   = coverage_prob,
+        x_set           = x_set_str,
+        gap             = gap_val
+      )
+    )
+  }
+  
+  # Finally, arrange in descending order of M
+  final_results <- final_results %>%
+    arrange(desc(M))
+  
+  return(final_results)
+}
+```
+
+```{r}
 # test_20_blaker = blaker_ac(N = 20, m = 3, conf_level = 0.95)
 # test_20_blaker
+# 
+# test_20_blaker_vec = blaker_ac_vec(N = 20, m = 3, conf_level = 0.95)
+# test_20_blaker_vec
 ```
 
 ```{r}
 # test_50_blaker = blaker_ac(N = 50, m = 3, conf_level = 0.95)
 # test_50_blaker
+# 
+# test_50_blaker_vec = blaker_ac_vec(N = 50, m = 3, conf_level = 0.95)
+# test_50_blaker_vec
 ```
 
 ```{r}
@@ -239,6 +443,15 @@ blaker_ac <- function(N, m, conf_level = 0.95) {
 # m = 20
 # 
 # coverage_df = blaker_ac(N = N, m = m, conf_level = 0.95) %>%
+#   filter(M >= m)
+# mean(coverage_df$coverage_prob)
+
+
+
+# N = 200
+# m = 20
+# 
+# coverage_df = blaker_ac_vec(N = N, m = m, conf_level = 0.95) %>%
 #   filter(M >= m)
 # mean(coverage_df$coverage_prob)
 ```

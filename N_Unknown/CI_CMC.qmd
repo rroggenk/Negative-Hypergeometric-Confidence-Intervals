@@ -89,7 +89,95 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
 ```
 
 ```{r}
+cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
+  # Initialize the final results
+  results <- data.frame(
+    N              = integer(),
+    a              = integer(),
+    b              = integer(),
+    cardinality    = integer(),
+    coverage_prob  = numeric()
+  )
+  
+  # Start with these constraints
+  min_a <- 0
+  min_b <- 0
+  max_x <- max_N - M
+  
+  # Loop over N from M up to max_N
+  for (N_val in seq.int(M, max_N)) {
+    # Build all (a, b) pairs (with b >= a) in a single step
+    ab_grid <- expand.grid(
+      a = seq.int(min_a, max_x),
+      b = seq.int(min_b, max_x)
+    ) %>%
+      filter(b >= a)
+    
+    # Compute coverage probability in a vectorized manner
+    if (nrow(ab_grid) > 0) {
+      coverage_vec <- mapply(
+        FUN = function(a_val, b_val) {
+          sum_ngh_pmf(N_val, M, m, a_val, b_val)
+        },
+        ab_grid$a,
+        ab_grid$b
+      )
+      
+      temp_results <- data.frame(
+        N             = N_val,
+        a             = ab_grid$a,
+        b             = ab_grid$b,
+        cardinality   = ab_grid$b - ab_grid$a + 1,
+        coverage_prob = coverage_vec
+      )
+    } else {
+      # If there's no valid (a,b) pair, skip
+      temp_results <- data.frame(
+        N             = integer(),
+        a             = integer(),
+        b             = integer(),
+        cardinality   = integer(),
+        coverage_prob = numeric()
+      )
+    }
+    
+    # Filter out sets with coverage_prob >= conf_level
+    # Then pick the acceptance curve with the highest 'a' and the lowest 'b'
+    temp_results <- temp_results %>%
+      filter(coverage_prob >= conf_level) %>%
+      group_by(N) %>%
+      filter(a == max(a)) %>%
+      filter(b == min(b)) %>%
+      ungroup()
+    
+    # Update min_a, min_b if we found any valid intervals
+    if (nrow(temp_results) > 0) {
+      min_a <- max(min_a, min(temp_results$a))
+      min_b <- max(min_b, min(temp_results$b))
+    }
+    
+    # Append to main results
+    results <- rbind(results, temp_results)
+  }
+  
+  # Arrange by N in ascending order
+  filtered_results <- results %>%
+    arrange(N)
+  
+  # Add x_set column "a-b"
+  filtered_results <- filtered_results %>%
+    mutate(x_set = paste(a, b, sep = "-"))
+  
+  return(filtered_results)
+}
+```
+
+```{r}
 cmc_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
+```
+
+```{r}
+cmc_ac_N_unknown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 40)
 ```
 
 ## Confidence Intervals Bounds (Function)
@@ -164,9 +252,19 @@ ggplot(cov_prob_cmc, aes(x = N, y = coverage_prob, group = x_set, color = x_set)
   ylim(conf_level - 0.005, 1) +
   theme_minimal() +
   theme(legend.position = "none")
+
+ggplot(cov_prob_cmc, aes(x = N, y = coverage_prob, group = x_set, color = x_set)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "N", y = "Coverage Probability of N") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  xlim(10, 39) +
+  ylim(conf_level - 0.005, 1) +
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
-## Plot of Rainbows 
+## Plot of Rainbows
 
 ```{r}
 rainbows_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
@@ -299,6 +397,86 @@ data = rainbows_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 39) %>%
 conf_level= 0.95
 
 ggplot(data, aes(x = N, y = coverage_prob)) +
+  # Add lines connecting all points, grouped by x_set and colored by a
+  geom_line(aes(group = x_set, color = as.factor(a))) +
+  # Add stars for CMC = TRUE points
+  geom_point(data = filter(data, CMC == TRUE), 
+             aes(shape = as.factor(CMC), color = as.factor(a)), size = 3) +
+  labs(x = "N", y = "Coverage Probability") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  scale_x_continuous(breaks = c(10, 20, 30, 40)) +
+  scale_y_continuous(breaks = c(0.95, 1)) +
+  scale_shape_manual(values = c("TRUE" = 8), guide = "none") + 
+  scale_color_manual(values = c("0" = "#0072B2",
+                                "1" = "#E69F00",
+                                "2" = "#CC79A7",
+                                "3" = "#009E73",
+                                "4" = "#9400D3",
+                                "5" = "#F0E442",
+                                "6" = "#56B4E9"),
+                     labels = c("0" = "RB(0)", 
+                                "1" = "RB(1)", 
+                                "2" = "RB(2)", 
+                                "3" = "RB(3)", 
+                                "4" = "RB(4)",
+                                "5" = "RB(5)",
+                                "6" = "RB(6)"),
+                     guide = guide_legend(title = NULL)) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    legend.position = "right"
+  )
+```
+
+```{r}
+data = rainbows_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 39) %>%
+  group_by(N) %>%
+  mutate(CMC = ifelse(a == max(a) & b == min(b[a == max(a)]), TRUE, FALSE)) %>%
+  ungroup() %>%
+  mutate(x_set = paste(a, b, sep = "-"))
+
+conf_level= 0.95
+
+
+
+CMC <- data %>%
+  filter(CMC == TRUE)
+
+
+
+# Initialize an empty data frame to store results
+filtered_plot <- data.frame()
+
+# Loop through each row in all_ac_mc_M_10_m_5
+for (i in 1:nrow(CMC)) {
+  # Get the current N and x_set
+  current_N <- CMC$N[i]
+  current_x_set <- CMC$x_set[i]
+  current_a <- CMC$a[i]
+  current_b <- CMC$b[i]
+  
+  # Filter for N, N-1, and N+1 where the x_set matches
+  filtered_rows <- data %>%
+    filter((N >= current_N - 2 & N <= current_N + 2) & (a == current_a) & 
+             (b >= current_b - 1 & b <= current_b + 1))
+  
+  # Append the filtered rows to the final dataframe
+  filtered_plot <- bind_rows(filtered_plot, filtered_rows)
+}
+
+# Remove any duplicate rows just in case
+filtered_plot <- distinct(filtered_plot)
+
+
+
+ggplot(filtered_plot, aes(x = N, y = coverage_prob)) +
   # Add lines connecting all points, grouped by x_set and colored by a
   geom_line(aes(group = x_set, color = as.factor(a))) +
   # Add stars for CMC = TRUE points

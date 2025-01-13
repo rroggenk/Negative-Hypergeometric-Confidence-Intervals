@@ -137,7 +137,153 @@ blaker_ac_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250) {
 ```
 
 ```{r}
+blaker_ac_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
+  alpha <- 1 - conf_level
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # 1) FIRST PASS: Build a data frame 'results' with:
+  #    (N, x, min_tail_prob, pmf_x)
+  #    Instead of looping repeatedly with rbind, we:
+  #    - Create combinations for N in [M, max_N] and x in [0, N - M].
+  #    - Compute min_tail_prob and pmf_x in a vectorized fashion.
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  N_values <- seq.int(M, max_N)
+  
+  # Build all (N, x) pairs in one go
+  combos <- do.call(
+    rbind,
+    lapply(N_values, function(N_val) {
+      data.frame(
+        N = N_val,
+        x = seq.int(0, N_val - M)
+      )
+    })
+  )
+  
+  # Compute min_tail_prob for each (N, x) pair
+  # and also store pmf_x to avoid repeated calls later.
+  # We'll do this in two steps for clarity.
+  combos <- combos %>%
+    rowwise() %>%
+    mutate(
+      area_left  = ngh_cdf(x, N, M, m, lower_tail = TRUE),
+      area_right = ngh_cdf(x - 1, N, M, m, lower_tail = FALSE),
+      min_tail_prob = min(area_left, area_right),
+      pmf_x         = ngh_pmf(x, N, M, m)
+    ) %>%
+    ungroup()
+  
+  # We'll keep the "acceptance_set" column as NA here (to match your original structure)
+  # though it's not used until the second pass.
+  results <- combos %>%
+    mutate(acceptance_set = NA_character_) %>%
+    select(N, x, min_tail_prob, pmf_x, acceptance_set)
+  
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # 2) SECOND PASS: Build 'final_results' by scanning each fixed N
+  #    and determining acceptance sets. The logic is unchanged.
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  final_results <- data.frame(
+    N              = integer(),
+    acceptance_set = character(),
+    a              = integer(),
+    b              = integer(),
+    cardinality    = integer(),
+    coverage_prob  = numeric(),
+    x_set          = character(),
+    gap            = logical()
+  )
+  
+  for (fixed_N in seq.int(M, max_N)) {
+    # Acceptance set for this N
+    acceptance_set <- integer(0)
+    
+    # Subset results for this N just once
+    sub_df <- results %>% filter(N == fixed_N)
+    
+    # For each x in [0, fixed_N - M], check the condition
+    x_seq <- seq.int(0, fixed_N - M)
+    for (fixed_x in x_seq) {
+      # min_tail_prob for x
+      min_tp_fx <- sub_df$min_tail_prob[sub_df$x == fixed_x]
+      
+      # All x's with min_tail_prob <= min_tail_prob_fixed_x
+      possible_xs <- sub_df$x[sub_df$min_tail_prob <= min_tp_fx]
+      
+      # Sum up the pmf of all these x's
+      pmf_sum <- sum(sub_df$pmf_x[sub_df$x %in% possible_xs])
+      
+      # If sum of pmf is > alpha, include fixed_x in acceptance set
+      if (pmf_sum > alpha) {
+        acceptance_set <- c(acceptance_set, fixed_x)
+      }
+    }
+    
+    # Convert to numeric (unique), build acceptance_set string
+    acceptance_set <- sort(unique(as.numeric(acceptance_set)))
+    acceptance_set_str <- paste(acceptance_set, collapse = ",")
+    
+    # a, b, cardinality
+    a_val         <- min(acceptance_set)
+    b_val         <- max(acceptance_set)
+    cardinality   <- length(acceptance_set)
+    
+    # Coverage probability: sum pmf_x for x in acceptance_set
+    coverage_prob <- sum(sub_df$pmf_x[sub_df$x %in% acceptance_set])
+    
+    # Check if there is a gap
+    gap_val <- any(diff(acceptance_set) > 1)
+    
+    # Build x_set (interval notation)
+    x_set_str <- ""
+    if (!gap_val) {
+      # No gap => single interval
+      x_set_str <- paste(a_val, b_val, sep = "-")
+    } else {
+      # Gap => multiple intervals
+      intervals <- c()
+      start_int <- acceptance_set[1]
+      for (i in seq.int(2, length(acceptance_set))) {
+        if (acceptance_set[i] != acceptance_set[i - 1] + 1) {
+          intervals <- c(intervals, paste(start_int, acceptance_set[i - 1], sep = "-"))
+          start_int <- acceptance_set[i]
+        }
+      }
+      # Add last interval
+      intervals <- c(intervals, paste(start_int, acceptance_set[length(acceptance_set)], sep = "-"))
+      x_set_str <- paste(intervals, collapse = ", ")
+    }
+    
+    # Add row to final_results
+    final_results <- rbind(
+      final_results,
+      data.frame(
+        N               = fixed_N,
+        acceptance_set  = acceptance_set_str,
+        a               = a_val,
+        b               = b_val,
+        cardinality     = cardinality,
+        coverage_prob   = coverage_prob,
+        x_set           = x_set_str,
+        gap             = gap_val
+      )
+    )
+  }
+  
+  final_results <- final_results %>%
+    arrange(N)
+  
+  return(final_results)
+}
+```
+
+```{r}
 blaker_ac_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
+```
+
+```{r}
+blaker_ac_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 40)
 ```
 
 ## Confidence Intervals Bounds (Function)

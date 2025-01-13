@@ -1105,13 +1105,133 @@ all_mc_ac <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+all_mc_ac_vec <- function(N, m, conf_level = 0.95) {
+  # Initialize the final results
+  results <- data.frame(
+    M              = integer(),
+    a              = integer(),
+    b              = integer(),
+    cardinality    = integer(),
+    coverage_prob  = numeric()
+  )
+  
+  # Start with these constraints
+  min_a <- 0
+  min_b <- 0
+  
+  # Loop over M from N down to 0
+  for (M_val in seq(N, 0, by = -1)) {
+    
+    # We'll build temp_results for the current M_val
+    temp_results <- data.frame(
+      M              = integer(),
+      a              = integer(),
+      b              = integer(),
+      cardinality    = integer(),
+      coverage_prob  = numeric()
+    )
+    
+    # Special End Case: When M < m
+    if (M_val < m) {
+      a_val <- N - M_val
+      b_val <- N - M_val
+      
+      coverage_prob <- sum_ngh_pmf(N, M_val, m, a_val, b_val)
+      cardinality   <- b_val - a_val + 1
+      
+      temp_results <- rbind(
+        temp_results,
+        data.frame(
+          M              = M_val,
+          a              = a_val,
+          b              = b_val,
+          cardinality    = cardinality,
+          coverage_prob  = coverage_prob
+        )
+      )
+      
+    } else {
+      # If M >= m, we build all (a,b) pairs with:
+      #   a in [min_a, N - M_val]
+      #   b in [min_b, N - M_val]
+      #   b >= a
+      # Then compute coverage in a vectorized fashion.
+      
+      ab_grid <- expand.grid(
+        a = seq.int(min_a, N - M_val),
+        b = seq.int(min_b, N - M_val)
+      ) %>%
+        filter(b >= a)
+      
+      # If there are no (a,b) pairs, skip
+      if (nrow(ab_grid) > 0) {
+        coverage_vec <- mapply(
+          FUN = function(a_val, b_val) {
+            sum_ngh_pmf(N, M_val, m, a_val, b_val)
+          },
+          ab_grid$a,
+          ab_grid$b
+        )
+        
+        temp_results <- data.frame(
+          M              = M_val,
+          a              = ab_grid$a,
+          b              = ab_grid$b,
+          cardinality    = ab_grid$b - ab_grid$a + 1,
+          coverage_prob  = coverage_vec
+        )
+      }
+    }
+    
+    # If M_val >= m, we apply the coverage/confidence filter
+    if (M_val >= m) {
+      temp_results <- temp_results %>%
+        filter(coverage_prob >= conf_level) %>%
+        group_by(M) %>%
+        slice_min(order_by = cardinality, with_ties = TRUE) %>%
+        ungroup()
+      
+      # Update min_a, min_b if we found valid intervals
+      if (nrow(temp_results) > 0) {
+        min_a <- max(min_a, min(temp_results$a))
+        min_b <- max(min_b, min(temp_results$b))
+      }
+    }
+    
+    # Append current iteration’s data to the final results
+    results <- rbind(results, temp_results)
+  }
+  
+  # Separate results into M >= m and M < m
+  results_M_ge_m <- results %>% filter(M >= m)
+  results_M_lt_m <- results %>% filter(M < m)
+  
+  # Combine and order
+  filtered_results <- bind_rows(results_M_ge_m, results_M_lt_m) %>%
+    arrange(desc(M))
+  
+  # Add x_set column
+  filtered_results <- filtered_results %>%
+    mutate(x_set = paste(a, b, sep = "-"))
+  
+  return(filtered_results)
+}
+```
+
+```{r}
 # test_20 = all_mc_ac(N = 20, m = 3, conf_level = 0.95)
 # test_20
+# 
+# test_20_vec = all_mc_ac_vec(N = 20, m = 3, conf_level = 0.95)
+# test_20_vec
 ```
 
 ```{r}
 # test_50 = all_mc_ac(N = 50, m = 3, conf_level = 0.95)
 # test_50
+# 
+# test_50_vec = all_mc_ac_vec(N = 50, m = 3, conf_level = 0.95)
+# test_50_vec
 ```
 
 ## Function to Find MST Acceptance Curves
@@ -1435,7 +1555,7 @@ test_50_CI_bk = minimal_cardinality_ci(N = 50, m = 3, conf_level = 0.95, procedu
 test_50_CI_bk
 ```
 
-## Plot of All Minimal Cardinality Curves 
+## Plot of All Minimal Cardinality Curves
 
 ```{r}
 all_ac_mc_N_50_m_3 = all_mc_ac(N = 50, m = 3, conf_level = 0.95)
