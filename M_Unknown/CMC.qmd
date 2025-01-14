@@ -327,13 +327,52 @@ cmc_ci <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+cmc_ci_vec <- function(N, m, conf_level = 0.95) {
+  results <- cmc_ac_vec(N, m, conf_level)
+  
+  x_values <- seq.int(0, N)
+  row_list <- vector("list", length(x_values))
+  
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
+    
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
+    
+    if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
+      ci_ub <- first_occurrence$M
+      ci_lb <- last_occurrence$M
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
+      
+      row_list[[i]] <- data.frame(
+        x     = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci    = ci_str,
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+  
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
+  return(ci_results)
+}
+```
+
+```{r}
 test_20_CI = cmc_ci(N = 20, m = 3, conf_level = 0.95)
 test_20_CI
+
+test_20_CI_vec = cmc_ci_vec(N = 20, m = 3, conf_level = 0.95)
+test_20_CI_vec
 ```
 
 ```{r}
 test_50_CI = cmc_ci(N = 50, m = 3, conf_level = 0.95)
 test_50_CI
+
+test_50_CI_vec = cmc_ci_vec(N = 50, m = 3, conf_level = 0.95)
+test_50_CI_vec
 ```
 
 # Plot of Coverage Probability

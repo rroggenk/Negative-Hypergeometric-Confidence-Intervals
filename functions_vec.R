@@ -1000,12 +1000,12 @@ CI_Analog_CP_N_Unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 
 
-coverage_prob_ACP_N_unknown <- function(M, N, m, conf_level = 0.95, max_N = 1000) {
+coverage_prob_ACP_N_unknown_vec <- function(M, N, m, conf_level = 0.95, max_N = 1000) {
   found_N_in_last_CI <- TRUE
   
   # Keep increasing max_N until N is no longer in the last CI
   while (found_N_in_last_CI) {
-    ci_results <- CI_Analog_CP_N_Unknown(M, m, conf_level, max_N)
+    ci_results <- CI_Analog_CP_N_Unknown_vec(M, m, conf_level, max_N)
     last_x_ci <- ci_results[nrow(ci_results), ]
     
     if (N >= last_x_ci$lower_bound && N <= last_x_ci$upper_bound) {
@@ -1016,7 +1016,7 @@ coverage_prob_ACP_N_unknown <- function(M, N, m, conf_level = 0.95, max_N = 1000
   }
   
   # Then compute final coverage probability
-  ci_results <- CI_Analog_CP_N_Unknown(M, m, conf_level, max_N)
+  ci_results <- CI_Analog_CP_N_Unknown_vec(M, m, conf_level, max_N)
   
   covered_x <- ci_results %>%
     dplyr::filter(lower_bound <= N & upper_bound >= N) %>%

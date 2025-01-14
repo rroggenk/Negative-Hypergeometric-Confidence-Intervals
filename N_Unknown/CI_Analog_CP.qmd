@@ -152,14 +152,83 @@ CI_Analog_CP_N_Unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 }
 ```
 
+```{r}
+CI_Analog_CP_N_Unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  target_probability <- (1 - conf_level) / 2
+  max_x <- max_N - M
+  
+  x_values <- seq.int(0, max_x)
+  lower_bounds <- rep(NA, length(x_values))
+  upper_bounds <- rep(NA, length(x_values))
+  
+  previous_upper_bound <- 0
+  
+  for (i in seq_along(x_values)) {
+    xi <- x_values[i]
+    
+    # Initialize lower_bound
+    lb <- M + xi
+    # Find lower bound
+    for (N_val in seq.int(M + xi, M + max_x)) {
+      area_right <- ngh_cdf(x = xi - 1, N = N_val, M = M, m = m, lower_tail = FALSE)
+      
+      if (isTRUE(all.equal(area_right, target_probability)) || (area_right > target_probability)) {
+        lb <- N_val
+        break
+      }
+    }
+    
+    # Initialize upper_bound
+    ub <- lb
+    # Find upper bound
+    for (N_val in seq.int(lb, M + max_x)) {
+      area_left <- ngh_cdf(x = xi, N = N_val, M = M, m = m, lower_tail = TRUE)
+      
+      if (isTRUE(all.equal(area_left, target_probability))) {
+        ub <- N_val
+        break
+      } else if (area_left < target_probability) {
+        ub <- N_val - 1
+        break
+      }
+    }
+    
+    # Stop if the upper bound starts decreasing
+    if (ub < previous_upper_bound) {
+      # Mark the rest as NA and break
+      break
+    }
+    previous_upper_bound <- ub
+    
+    lower_bounds[i] <- lb
+    upper_bounds[i] <- ub
+  }
+  
+  # Build final results
+  results <- data.frame(
+    x = x_values,
+    lower_bound = lower_bounds,
+    upper_bound = upper_bounds
+  )
+  
+  # Filter out rows where upper_bound is NA
+  results <- results[!is.na(results$upper_bound), ]
+  return(results)
+}
+```
+
 ### Testing Function
 
 ```{r}
 CI_Analog_CP_N_Unknown(M = 10, m = 5)
+
+CI_Analog_CP_N_Unknown_vec(M = 10, m = 5)
 ```
 
 ```{r}
 CI_Analog_CP_N_Unknown(M = 21, m = 3)
+
+CI_Analog_CP_N_Unknown_vec(M = 21, m = 3)
 ```
 
 ## Coverage Probability Function
@@ -208,10 +277,50 @@ coverage_prob_ACP_N_unknown <- function(M, N, m, conf_level = 0.95, max_N = 1000
 }
 ```
 
+```{r}
+coverage_prob_ACP_N_unknown_vec <- function(M, N, m, conf_level = 0.95, max_N = 1000) {
+  found_N_in_last_CI <- TRUE
+  
+  # Keep increasing max_N until N is no longer in the last CI
+  while (found_N_in_last_CI) {
+    ci_results <- CI_Analog_CP_N_Unknown_vec(M, m, conf_level, max_N)
+    last_x_ci <- ci_results[nrow(ci_results), ]
+    
+    if (N >= last_x_ci$lower_bound && N <= last_x_ci$upper_bound) {
+      max_N <- max_N + 100
+    } else {
+      found_N_in_last_CI <- FALSE
+    }
+  }
+  
+  # Then compute final coverage probability
+  ci_results <- CI_Analog_CP_N_Unknown_vec(M, m, conf_level, max_N)
+  
+  covered_x <- ci_results %>%
+    dplyr::filter(lower_bound <= N & upper_bound >= N) %>%
+    dplyr::pull(x)
+  
+  if (length(covered_x) == 0) {
+    return(data.frame(N = N, coverage_prob = NA, min_x = NA, max_x = NA))
+  }
+  
+  min_x <- min(covered_x)
+  max_x <- max(covered_x)
+  
+  total_prob <- sum(
+    sapply(covered_x, function(x_val) ngh_pmf(x_val, N, M, m))
+  )
+  
+  return(data.frame(N = N, coverage_prob = total_prob, min_x = min_x, max_x = max_x))
+}
+```
+
 ### Testing: M = 21, m = 3, Confidence Level = 0.95
 
 ```{r}
 coverage_prob_ACP_N_unknown(M = 21, N = 50, m = 3, conf_level = 0.95, max_N = 1000)
+
+coverage_prob_ACP_N_unknown_vec(M = 21, N = 50, m = 3, conf_level = 0.95, max_N = 1000)
 ```
 
 ```{r}

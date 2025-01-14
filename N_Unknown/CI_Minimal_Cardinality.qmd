@@ -842,7 +842,46 @@ mst_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
+mst_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
+  
+  row_list <- vector("list", length = (max_N - M + 1))
+  idx <- 1
+  
+  min_a <- 0
+  min_b <- 0
+  
+  for (current_N in seq.int(M, max_N)) {
+    subset_results <- results %>% filter(N == current_N)
+    
+    if (nrow(subset_results) == 1) {
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(desc(coverage_prob), desc(a), desc(b)) %>%
+        slice(1)
+    }
+    
+    if (nrow(chosen_row) > 0) {
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
+    }
+  }
+  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(N)
+  return(final_results)
+}
+```
+
+```{r}
 mst_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
+
+mst_ac_N_unknown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 40)
 ```
 
 ## CG Acceptance Curves (Function)
@@ -901,7 +940,46 @@ cg_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
+cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
+  
+  row_list <- vector("list", length = (max_N - M + 1))
+  idx <- 1
+  
+  min_a <- 0
+  min_b <- 0
+  
+  for (current_N in seq.int(M, max_N)) {
+    subset_results <- results %>% filter(N == current_N)
+    
+    if (nrow(subset_results) == 1) {
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(a, b) %>%
+        slice(1)
+    }
+    
+    if (nrow(chosen_row) > 0) {
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
+    }
+  }
+  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(N)
+  return(final_results)
+}
+```
+
+```{r}
 cg_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
+
+cg_ac_N_unknown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 40)
 ```
 
 ## BK Acceptance Curves (Function)
@@ -960,7 +1038,46 @@ bk_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
+bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
+  
+  row_list <- vector("list", length = (max_N - M + 1))
+  idx <- 1
+  
+  min_a <- 0
+  min_b <- 0
+  
+  for (current_N in seq.int(M, max_N)) {
+    subset_results <- results %>% filter(N == current_N)
+    
+    if (nrow(subset_results) == 1) {
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(desc(a), desc(b)) %>%
+        slice(1)
+    }
+    
+    if (nrow(chosen_row) > 0) {
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
+    }
+  }
+  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(N)
+  return(final_results)
+}
+```
+
+```{r}
 bk_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
+
+bk_ac_N_unknown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 40)
 ```
 
 ## Confidence Intervals Bounds (Function)
@@ -1027,8 +1144,60 @@ minimal_cardinality_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 100
 ```
 
 ```{r}
+minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 1000, 
+                                                procedure = "MST") {
+  # Choose the procedure
+  if (procedure == "MST") {
+    results <- mst_ac_N_unknown_vec(M, m, conf_level, max_N)
+  } else if (procedure == "CG") {
+    results <- cg_ac_N_unknown_vec(M, m, conf_level, max_N)
+  } else if (procedure == "BK") {
+    results <- bk_ac_N_unknown_vec(M, m, conf_level, max_N)
+  } else {
+    stop("Invalid procedure. Choose from 'MST', 'CG', or 'BK'.")
+  }
+  
+  # Determine max_x from the second-highest 'a'
+  unique_a_values <- sort(unique(results$a), decreasing = TRUE)
+  max_x <- if (length(unique_a_values) > 1) unique_a_values[2] else unique_a_values[1]
+  
+  x_values <- seq.int(0, max_x)
+  row_list <- vector("list", length(x_values))
+  
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
+    
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
+    
+    if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
+      ci_lb <- first_occurrence$N
+      ci_ub <- last_occurrence$N
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
+      
+      row_list[[i]] <- data.frame(
+        x = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci = ci_str,
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+  
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
+  return(ci_results)
+}
+```
+
+```{r}
 # Takes about 30 seconds to run
 minimal_cardinality_ci_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 60, 
+                                procedure = "MST")
+```
+
+```{r}
+minimal_cardinality_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 60, 
                                 procedure = "MST")
 ```
 
@@ -1039,8 +1208,18 @@ minimal_cardinality_ci_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 60,
 ```
 
 ```{r}
+minimal_cardinality_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 60, 
+                                procedure = "CG")
+```
+
+```{r}
 # Takes about 30 seconds to run
 minimal_cardinality_ci_N_unkown(M = 10, m = 5, conf_level = 0.95, max_N = 60, 
+                                procedure = "BK")
+```
+
+```{r}
+minimal_cardinality_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 60, 
                                 procedure = "BK")
 ```
 
