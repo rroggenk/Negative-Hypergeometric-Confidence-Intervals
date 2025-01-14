@@ -216,13 +216,60 @@ CI_cov_prob_MLE <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+CI_cov_prob_MLE_vec <- function(N, m, conf_level = 0.95) {
+  
+  # Create a vector of all possible x in [0, N].
+  x_seq <- 0:N
+  
+  # Pre-allocate vectors for lower and upper bounds.
+  lower_bounds <- numeric(length(x_seq))
+  upper_bounds <- numeric(length(x_seq))
+  
+  # Precompute z outside the loop (same for all x).
+  z <- qnorm(1 - (1 - conf_level) / 2)
+  
+  # Loop once over x_seq, filling in bounds.
+  for (i in seq_along(x_seq)) {
+    xi <- x_seq[i]
+    
+    # Special End Cases
+    if (xi >= (N - m) && xi <= N) {
+      # If x is in [N - m, N], set lb = ub = N - x
+      lower_bounds[i] <- N - xi
+      upper_bounds[i] <- N - xi
+    } else {
+      M_MLE_val <- M_MLE_function(m, xi, N)
+      SE_MLE_val <- SE_MLE_function(M_MLE_val, N, m)
+      
+      lower_bounds[i] <- M_MLE_val - (z * SE_MLE_val)
+      upper_bounds[i] <- M_MLE_val + (z * SE_MLE_val)
+    }
+  }
+  
+  # Build and return the result data frame
+  results <- data.frame(
+    x            = x_seq,
+    lower_bound  = lower_bounds,
+    upper_bound  = upper_bounds
+  )
+  
+  return(results)
+}
+```
+
+```{r}
+# CI_cov_prob_MLE(N = 10, m = 3, conf_level = 0.95)
+# CI_cov_prob_MLE_vec(N = 10, m = 3, conf_level = 0.95)
+```
+
+```{r}
 coverage_prob_MLE <- function(M, N, m, conf_level = 0.95) {
   # if (M < m || M > N) {
   #   stop("Invalid parameters: Ensure M >= m, M <= N")
   #   }
   
   # Calculates all confidence intervals 
-  ci_results = CI_cov_prob_MLE(N, m, conf_level)
+  ci_results = CI_cov_prob_MLE_vec(N, m, conf_level)
   
   # Finds all x's where M is in the confidence interval 
   covered_x = ci_results %>% 
@@ -343,13 +390,59 @@ CI_cov_prob_unbiased <- function(N, m, conf_level = 0.95) {
 ```
 
 ```{r}
+CI_cov_prob_unbiased_vec <- function(N, m, conf_level = 0.95) {
+  
+  # Create a vector of x in [0, N].
+  x_seq <- 0:N
+  
+  # Pre-allocate vectors for lower and upper bounds.
+  lower_bounds <- numeric(length(x_seq))
+  upper_bounds <- numeric(length(x_seq))
+  
+  # Precompute z once.
+  z <- qnorm(1 - (1 - conf_level) / 2)
+  
+  # Loop once over x_seq
+  for (i in seq_along(x_seq)) {
+    xi <- x_seq[i]
+    
+    # Special End Cases
+    if (xi >= (N - m) && xi <= N) {
+      lower_bounds[i] <- N - xi
+      upper_bounds[i] <- N - xi
+    } else {
+      M_unb_val <- M_unbiased_function(m, xi, N)
+      SE_unb_val <- SE_unbiased_function(M_unb_val, N, m)
+      
+      lower_bounds[i] <- M_unb_val - (z * SE_unb_val)
+      upper_bounds[i] <- M_unb_val + (z * SE_unb_val)
+    }
+  }
+  
+  # Build the final data frame
+  results <- data.frame(
+    x            = x_seq,
+    lower_bound  = lower_bounds,
+    upper_bound  = upper_bounds
+  )
+  
+  return(results)
+}
+```
+
+```{r}
+# CI_cov_prob_unbiased(N = 10, m = 3, conf_level = 0.95)
+# CI_cov_prob_unbiased_vec(N = 10, m = 3, conf_level = 0.95)
+```
+
+```{r}
 coverage_prob_unbiased <- function(M, N, m, conf_level = 0.95) {
   # if (M < m || M > N) {
   #   stop("Invalid parameters: Ensure M >= m, M <= N")
   #   }
   
   # Calculates all confidence intervals 
-  ci_results = CI_cov_prob_unbiased(N, m, conf_level)
+  ci_results = CI_cov_prob_unbiased_vec(N, m, conf_level)
   
   # Finds all x's where M is in the confidence interval 
   covered_x = ci_results %>% 

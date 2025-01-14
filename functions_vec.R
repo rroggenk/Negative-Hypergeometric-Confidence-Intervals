@@ -30,11 +30,9 @@ ngh_cdf = function(x, N, M, m, lower_tail = TRUE) {
 
 
 sum_ngh_pmf <- function(N, M, m, min_x, max_x) {
-  sum_pmf = 0
-  for (x in min_x:max_x) {
-    sum_pmf = sum_pmf + ngh_pmf(x, N, M, m)
-  }
-  return(sum_pmf)
+  x_seq <- seq.int(min_x, max_x)
+  pmf_values <- sapply(x_seq, function(xx) ngh_pmf(xx, N, M, m))
+  return(sum(pmf_values))
 }
 
 
@@ -66,29 +64,42 @@ SE_MLE_function <- function(M_MLE, N, m) {
 }
 
 
-CI_cov_prob_MLE <- function(N, m, conf_level = 0.95) {
-  results = data.frame(x = 0:(N), lower_bound = NA, upper_bound = NA)
+CI_cov_prob_MLE_vec <- function(N, m, conf_level = 0.95) {
   
-  for (xi in 0:(N)) {
-    # Speical End Cases: When x in N-m to N
-    if ((xi >= (N - m)) & (xi <= N)) {
-      CI_lb = N - xi
-      CI_ub = N - xi
-    }
+  # Create a vector of all possible x in [0, N].
+  x_seq <- 0:N
+  
+  # Pre-allocate vectors for lower and upper bounds.
+  lower_bounds <- numeric(length(x_seq))
+  upper_bounds <- numeric(length(x_seq))
+  
+  # Precompute z outside the loop (same for all x).
+  z <- qnorm(1 - (1 - conf_level) / 2)
+  
+  # Loop once over x_seq, filling in bounds.
+  for (i in seq_along(x_seq)) {
+    xi <- x_seq[i]
     
-    else {
-      M_MLE = M_MLE_function(m, xi, N)
-      SE_MLE = SE_MLE_function(M_MLE, N, m)
+    # Special End Cases
+    if (xi >= (N - m) && xi <= N) {
+      # If x is in [N - m, N], set lb = ub = N - x
+      lower_bounds[i] <- N - xi
+      upper_bounds[i] <- N - xi
+    } else {
+      M_MLE_val <- M_MLE_function(m, xi, N)
+      SE_MLE_val <- SE_MLE_function(M_MLE_val, N, m)
       
-      z = qnorm(1 - ((1 - conf_level)/2))
-      
-      CI_lb = M_MLE - (z * SE_MLE)
-      CI_ub = M_MLE + (z * SE_MLE)
+      lower_bounds[i] <- M_MLE_val - (z * SE_MLE_val)
+      upper_bounds[i] <- M_MLE_val + (z * SE_MLE_val)
     }
-    # Store the results
-    results[xi + 1, "lower_bound"] = CI_lb
-    results[xi + 1, "upper_bound"] = CI_ub
   }
+  
+  # Build and return the result data frame
+  results <- data.frame(
+    x            = x_seq,
+    lower_bound  = lower_bounds,
+    upper_bound  = upper_bounds
+  )
   
   return(results)
 }
@@ -115,30 +126,41 @@ SE_unbiased_function <- function(M_unbiased, N, m) {
 }
 
 
-CI_cov_prob_unbiased <- function(N, m, conf_level = 0.95) {
-  results = data.frame(x = 0:(N), lower_bound = NA, upper_bound = NA)
+CI_cov_prob_unbiased_vec <- function(N, m, conf_level = 0.95) {
   
-  for (xi in 0:(N)) {
-    # Speical End Cases: When x in N-m to N
-    if ((xi >= (N - m)) & (xi <= N)) {
-      CI_lb = N - xi
-      CI_ub = N - xi
-    }
+  # Create a vector of x in [0, N].
+  x_seq <- 0:N
+  
+  # Pre-allocate vectors for lower and upper bounds.
+  lower_bounds <- numeric(length(x_seq))
+  upper_bounds <- numeric(length(x_seq))
+  
+  # Precompute z once.
+  z <- qnorm(1 - (1 - conf_level) / 2)
+  
+  # Loop once over x_seq
+  for (i in seq_along(x_seq)) {
+    xi <- x_seq[i]
     
-    else {
-      M_unbiased = M_unbiased_function(m, xi, N)
-      SE_unbiased = SE_unbiased_function(M_unbiased, N, m)
+    # Special End Cases
+    if (xi >= (N - m) && xi <= N) {
+      lower_bounds[i] <- N - xi
+      upper_bounds[i] <- N - xi
+    } else {
+      M_unb_val <- M_unbiased_function(m, xi, N)
+      SE_unb_val <- SE_unbiased_function(M_unb_val, N, m)
       
-      z = qnorm(1 - ((1 - conf_level)/2))
-      
-      CI_lb = M_unbiased - (z * SE_unbiased)
-      CI_ub = M_unbiased + (z * SE_unbiased)
+      lower_bounds[i] <- M_unb_val - (z * SE_unb_val)
+      upper_bounds[i] <- M_unb_val + (z * SE_unb_val)
     }
-    
-    # Store the results
-    results[xi + 1, "lower_bound"] = CI_lb
-    results[xi + 1, "upper_bound"] = CI_ub
   }
+  
+  # Build the final data frame
+  results <- data.frame(
+    x            = x_seq,
+    lower_bound  = lower_bounds,
+    upper_bound  = upper_bounds
+  )
   
   return(results)
 }
@@ -151,62 +173,58 @@ CI_cov_prob_unbiased <- function(N, m, conf_level = 0.95) {
 #---------------------------------#
 ###################################
 
-CI_cov_prob <- function(N, m, conf_level = 0.95) {
-  target_probability = (1 - conf_level) / 2
+CI_cov_prob_vec <- function(N, m, conf_level = 0.95) {
+  target_probability <- (1 - conf_level) / 2
   
-  #results = data.frame(x = 0:(N - m), lower_bound = NA, upper_bound = NA)
-  results = data.frame(x = 0:(N), lower_bound = NA, upper_bound = NA)
+  # Pre-allocate storage
+  x_values      <- seq.int(0, N)
+  lower_bounds  <- numeric(length(x_values))
+  upper_bounds  <- numeric(length(x_values))
   
-  #for (xi in 0:(N - m)) {
-  for (xi in 0:(N)) {
-    # Speical End Cases: When x in N-m to N
-    if ((xi >= (N - m)) & (xi <= N)) {
-      lower_bound = N - xi
-      upper_bound = N - xi
-    }
+  # Loop once over all x
+  for (i in seq_along(x_values)) {
+    xi <- x_values[i]
     
-    else {
-      lower_bound = m
-      upper_bound = N
+    if (xi >= (N - m) && xi <= N) {
+      # Special case
+      lower_bounds[i] <- N - xi
+      upper_bounds[i] <- N - xi
+    } else {
+      # Defaults
+      lb <- m
+      ub <- N
       
       # Find lower bound
-      for (M in m:N) {
-        area_left = ngh_cdf(x = xi, N = N, M = M, m = m, lower_tail = TRUE)
-        
-        #if (area_left == target_probability) {
-        if (isTRUE(all.equal(area_left, target_probability))) {
-          lower_bound = M
-          break
-        }
-        
-        else if (area_left > target_probability) {
-          lower_bound = M
+      for (M_val in seq.int(m, N)) {
+        area_left <- ngh_cdf(x = xi, N = N, M = M_val, m = m, lower_tail = TRUE)
+        if (isTRUE(all.equal(area_left, target_probability)) ||
+            (area_left > target_probability)) {
+          lb <- M_val
           break
         }
       }
       
       # Find upper bound
-      for (M in N:m) {
-        area_right = ngh_cdf(x = xi - 1, N = N, M = M, m = m, lower_tail = FALSE)
-        
-        #if (area_right == target_probability) {
-        if (isTRUE(all.equal(area_right, target_probability))) {
-          upper_bound = M
-          break
-        }
-        
-        else if (area_right > target_probability) {
-          upper_bound = M
+      for (M_val in seq.int(N, m, by = -1)) {
+        area_right <- ngh_cdf(x = xi - 1, N = N, M = M_val, m = m, lower_tail = FALSE)
+        if (isTRUE(all.equal(area_right, target_probability)) ||
+            (area_right > target_probability)) {
+          ub <- M_val
           break
         }
       }
+      
+      lower_bounds[i] <- lb
+      upper_bounds[i] <- ub
     }
-    
-    # Store the results
-    results[xi + 1, "lower_bound"] = lower_bound
-    results[xi + 1, "upper_bound"] = upper_bound
   }
   
+  # Build the final data frame
+  results <- data.frame(
+    x           = x_values,
+    lower_bound = lower_bounds,
+    upper_bound = upper_bounds
+  )
   return(results)
 }
 
@@ -332,54 +350,47 @@ all_mc_ac_vec <- function(N, m, conf_level = 0.95) {
 
 
 minimal_cardinality_ci_vec <- function(N, m, conf_level = 0.95, procedure = "MST") {
-  # Chooses which minimal cardinality procedure 
+  # Choose which minimal cardinality procedure
   if (procedure == "MST") {
-    results = mst_ac_vec(N, m, conf_level)
-  } 
-  else if (procedure == "CG") {
-    results = cg_ac_vec(N, m, conf_level)
-  } 
-  else if (procedure == "BK") {
-    results = bk_ac_vec(N, m, conf_level)
-  } 
-  else {
+    results <- mst_ac_vec(N, m, conf_level)
+  } else if (procedure == "CG") {
+    results <- cg_ac_vec(N, m, conf_level)
+  } else if (procedure == "BK") {
+    results <- bk_ac_vec(N, m, conf_level)
+  } else {
     stop("Invalid procedure. Choose from 'MST', 'CG', or 'BK'.")
   }
   
-  # Initializes data frame that will be outputted 
-  ci_results = data.frame(x = integer(), 
-                          ci_lb = integer(), 
-                          ci_ub = integer(), 
-                          ci = character(),
-                          stringsAsFactors = FALSE)
+  # We'll store rows in a list, then bind them once at the end
+  x_values <- seq.int(0, N)
+  row_list <- vector("list", length(x_values))
   
-  # Loops through each x 
-  for (x in 0:N) {
-    # Finds first interval where x appears 
-    first_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(1)
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
     
-    # Finds last interval where x appears 
-    last_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(n())
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
     
-    # Finds the M of the corresponding above intervals and saves those as the CI bounds
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
-      ci_ub = first_occurrence$M
-      ci_lb = last_occurrence$M
-      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      ci_ub <- first_occurrence$M
+      ci_lb <- last_occurrence$M
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
       
-      ci_results = rbind(ci_results, data.frame(x = x, 
-                                                ci_lb = ci_lb, 
-                                                ci_ub = ci_ub, 
-                                                ci = ci))
+      row_list[[i]] <- data.frame(
+        x     = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci    = ci_str,
+        stringsAsFactors = FALSE
+      )
     }
   }
   
+  # Combine all non-NULL rows
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
   return(ci_results)
 }
+
 
 
 
@@ -390,55 +401,43 @@ minimal_cardinality_ci_vec <- function(N, m, conf_level = 0.95, procedure = "MST
 ###################################
 
 mst_ac_vec <- function(N, m, conf_level = 0.95) {
-  # Gets all minimal cardinality acceptance curves 
-  results = all_mc_ac_vec(N, m, conf_level)
+  results <- all_mc_ac_vec(N, m, conf_level)
   
-  # Initializes data frame that will be outputted 
-  final_results = data.frame(M = integer(), 
-                             a = integer(), 
-                             b = integer(), 
-                             cardinality = integer(), 
-                             coverage_prob = numeric(), 
-                             x_set = character())
+  # We'll collect rows in a list
+  row_list <- vector("list", length = N + 1)
+  idx <- 1
   
-  # Initializes min_a and min_b, starting at 0-0
-  min_a = 0
-  min_b = 0
+  min_a <- 0
+  min_b <- 0
   
-  # Loops through with each M 
-  for (current_M in N:0) {
-    # Only looks at acceptance curves for the current M 
-    subset_results = results %>% 
-      filter(M == current_M)
+  for (current_M in seq.int(N, 0, by = -1)) {
+    subset_results <- results %>% filter(M == current_M)
     
-    # If only one acceptance curve, then that is the acceptance curve  
     if (nrow(subset_results) == 1) {
-      chosen_row = subset_results
-    } 
-    
-    # If has more than one option, apply MST procedure
-    # Filters so a and b are non-decreasing, and then chooses the row with the highest 
-    # coverage probability 
-    else {
-      chosen_row = subset_results %>% 
-        filter(a >= min_a, b >= min_b) %>% 
-        arrange(desc(coverage_prob), desc(a), desc(b)) %>% 
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(desc(coverage_prob), desc(a), desc(b)) %>%
         slice(1)
     }
     
-    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
-      min_a = max(min_a, chosen_row$a)
-      min_b = max(min_b, chosen_row$b)
-      final_results = rbind(final_results, chosen_row)
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
     }
   }
   
-  final_results = final_results %>%
-    arrange(desc(M))
+  # Combine chosen rows
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(desc(M))
   
   return(final_results)
 }
+
 
 
 
@@ -449,55 +448,40 @@ mst_ac_vec <- function(N, m, conf_level = 0.95) {
 ###################################
 
 cg_ac_vec <- function(N, m, conf_level = 0.95) {
-  # Gets all minimal cardinality acceptance curves
-  results = all_mc_ac_vec(N, m, conf_level)
+  results <- all_mc_ac_vec(N, m, conf_level)
   
-  # Initializes data frame that will be outputted 
-  final_results = data.frame(M = integer(), 
-                             a = integer(), 
-                             b = integer(), 
-                             cardinality = integer(), 
-                             coverage_prob = numeric(), 
-                             x_set = character())
+  row_list <- vector("list", length = N + 1)
+  idx <- 1
   
-  # Initializes min_a and min_b, starting at 0-0
-  min_a = 0
-  min_b = 0
+  min_a <- 0
+  min_b <- 0
   
-  # Loops through with each M
-  for (current_M in N:0) {
-    # Only looks at acceptance curves for the current M 
-    subset_results = results %>% 
-      filter(M == current_M)
+  for (current_M in seq.int(N, 0, by = -1)) {
+    subset_results <- results %>% filter(M == current_M)
     
-    # If only one acceptance curve, then that is the acceptance curve 
     if (nrow(subset_results) == 1) {
-      chosen_row = subset_results
-    } 
-    
-    # If has more than one option, apply CG procedure
-    # Filters so a and b are non-decreasing, and then chooses the row with the largest 
-    # possible a and b
-    else {
-      chosen_row = subset_results %>% 
-        filter(a >= min_a, b >= min_b) %>% 
-        arrange(a, b) %>% 
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(a, b) %>%
         slice(1)
     }
     
-    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
-      min_a = max(min_a, chosen_row$a)
-      min_b = max(min_b, chosen_row$b)
-      final_results = rbind(final_results, chosen_row)
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
     }
   }
   
-  final_results = final_results %>%
-    arrange(desc(M))
-  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(desc(M))
   return(final_results)
 }
+
 
 
 ###################################
@@ -507,55 +491,40 @@ cg_ac_vec <- function(N, m, conf_level = 0.95) {
 ###################################
 
 bk_ac_vec <- function(N, m, conf_level = 0.95) {
-  # Gets all minimal cardinality acceptance curves
-  results = all_mc_ac_vec(N, m, conf_level)
+  results <- all_mc_ac_vec(N, m, conf_level)
   
-  # Initializes data frame that will be outputted 
-  final_results = data.frame(M = integer(), 
-                             a = integer(), 
-                             b = integer(), 
-                             cardinality = integer(), 
-                             coverage_prob = numeric(), 
-                             x_set = character())
+  row_list <- vector("list", length = N + 1)
+  idx <- 1
   
-  # Initializes min_a and min_b, starting at 0-0
-  min_a = 0
-  min_b = 0
+  min_a <- 0
+  min_b <- 0
   
-  # Loops through with each M
-  for (current_M in N:0) {
-    # Only looks at acceptance curves for the current M 
-    subset_results = results %>% 
-      filter(M == current_M)
+  for (current_M in seq.int(N, 0, by = -1)) {
+    subset_results <- results %>% filter(M == current_M)
     
-    # If only one acceptance curve, then that is the acceptance curve 
     if (nrow(subset_results) == 1) {
-      chosen_row = subset_results
-    } 
-    
-    # If has more than one option, apply MST procedure
-    # Filters so a and b are non-decreasing, and then chooses the row with the smallest 
-    # possible a and b
-    else {
-      chosen_row = subset_results %>% 
-        filter(a >= min_a, b >= min_b) %>% 
-        arrange(desc(a), desc(b)) %>% 
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(desc(a), desc(b)) %>%
         slice(1)
     }
     
-    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
-      min_a = max(min_a, chosen_row$a)
-      min_b = max(min_b, chosen_row$b)
-      final_results = rbind(final_results, chosen_row)
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
     }
   }
   
-  final_results = final_results %>%
-    arrange(desc(M))
-  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(desc(M))
   return(final_results)
 }
+
 
 
 
@@ -763,47 +732,41 @@ blaker_ac_vec <- function(N, m, conf_level = 0.95) {
 
 
 blaker_ci_vec <- function(N, m, conf_level = 0.95) {
-  results = blaker_ac_vec(N, m, conf_level)
+  results <- blaker_ac_vec(N, m, conf_level)
   
-  # Check if there are any gaps
+  # If there's any gap, just return the message
   if (any(results$gap)) {
     return("Gaps present in acceptance sets")
   }
   
-  # Initializes data frame that will be outputted 
-  ci_results = data.frame(x = integer(), 
-                          ci_lb = integer(), 
-                          ci_ub = integer(), 
-                          ci = character(),
-                          stringsAsFactors = FALSE)
+  x_values <- seq.int(0, N)
+  row_list <- vector("list", length(x_values))
   
-  # Loops through each x 
-  for (x in 0:N) {
-    # Finds first interval where x appears 
-    first_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(1)
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
     
-    # Finds last interval where x appears 
-    last_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(n())
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
     
-    # Finds the M of the corresponding above intervals and saves those as the CI bounds
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
-      ci_ub = first_occurrence$M
-      ci_lb = last_occurrence$M
-      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      ci_ub <- first_occurrence$M
+      ci_lb <- last_occurrence$M
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
       
-      ci_results = rbind(ci_results, data.frame(x = x, 
-                                                ci_lb = ci_lb, 
-                                                ci_ub = ci_ub, 
-                                                ci = ci))
+      row_list[[i]] <- data.frame(
+        x     = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci    = ci_str,
+        stringsAsFactors = FALSE
+      )
     }
   }
   
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
   return(ci_results)
 }
+
 
 
 
@@ -927,42 +890,36 @@ cmc_ac_vec <- function(N, m, conf_level = 0.95) {
 
 
 cmc_ci_vec <- function(N, m, conf_level = 0.95) {
-  results = cmc_ac_vec(N, m, conf_level)
+  results <- cmc_ac_vec(N, m, conf_level)
   
-  # Initializes data frame that will be outputted 
-  ci_results = data.frame(x = integer(), 
-                          ci_lb = integer(), 
-                          ci_ub = integer(), 
-                          ci = character(),
-                          stringsAsFactors = FALSE)
+  x_values <- seq.int(0, N)
+  row_list <- vector("list", length(x_values))
   
-  # Loops through each x 
-  for (x in 0:N) {
-    # Finds first interval where x appears 
-    first_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(1)
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
     
-    # Finds last interval where x appears 
-    last_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(n())
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
     
-    # Finds the M of the corresponding above intervals and saves those as the CI bounds
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
-      ci_ub = first_occurrence$M
-      ci_lb = last_occurrence$M
-      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      ci_ub <- first_occurrence$M
+      ci_lb <- last_occurrence$M
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
       
-      ci_results = rbind(ci_results, data.frame(x = x, 
-                                                ci_lb = ci_lb, 
-                                                ci_ub = ci_ub, 
-                                                ci = ci))
+      row_list[[i]] <- data.frame(
+        x     = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci    = ci_str,
+        stringsAsFactors = FALSE
+      )
     }
   }
   
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
   return(ci_results)
 }
+
 
 
 
@@ -978,106 +935,107 @@ cmc_ci_vec <- function(N, m, conf_level = 0.95) {
 #---------------------------------#
 ###################################
 
-CI_Analog_CP_N_Unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  target_probability = (1 - conf_level) / 2
-  max_x = max_N - M
+CI_Analog_CP_N_Unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  target_probability <- (1 - conf_level) / 2
+  max_x <- max_N - M
   
-  results = data.frame(x = 0:max_x, lower_bound = NA, upper_bound = NA)
-  previous_upper_bound = 0
+  x_values <- seq.int(0, max_x)
+  lower_bounds <- rep(NA, length(x_values))
+  upper_bounds <- rep(NA, length(x_values))
   
-  for (xi in 0:max_x) {
+  previous_upper_bound <- 0
+  
+  for (i in seq_along(x_values)) {
+    xi <- x_values[i]
     
-    lower_bound = M + xi
+    # Initialize lower_bound
+    lb <- M + xi
     # Find lower bound
-    for (N in (M + xi):(M + max_x)) {
-      area_right = ngh_cdf(x = xi - 1, N = N, M = M, m = m, lower_tail = FALSE)
+    for (N_val in seq.int(M + xi, M + max_x)) {
+      area_right <- ngh_cdf(x = xi - 1, N = N_val, M = M, m = m, lower_tail = FALSE)
       
-      if (isTRUE(all.equal(area_right, target_probability))) {
-        lower_bound = N
-        break
-      } 
-      else if (area_right > target_probability) {
-        lower_bound = N
+      if (isTRUE(all.equal(area_right, target_probability)) || (area_right > target_probability)) {
+        lb <- N_val
         break
       }
     }
     
-    upper_bound = lower_bound
+    # Initialize upper_bound
+    ub <- lb
     # Find upper bound
-    for (N in (lower_bound):(M + max_x)) {  
-      area_left = ngh_cdf(x = xi, N = N, M = M, m = m, lower_tail = TRUE)
+    for (N_val in seq.int(lb, M + max_x)) {
+      area_left <- ngh_cdf(x = xi, N = N_val, M = M, m = m, lower_tail = TRUE)
       
       if (isTRUE(all.equal(area_left, target_probability))) {
-        upper_bound = N
+        ub <- N_val
         break
-      } 
-      else if (area_left < target_probability) {
-        upper_bound = N - 1  
+      } else if (area_left < target_probability) {
+        ub <- N_val - 1
         break
       }
     }
     
-    # Stop the iteration if the upper bound starts decreasing (because of max_N)
-    if (upper_bound < previous_upper_bound) {
+    # Stop if the upper bound starts decreasing
+    if (ub < previous_upper_bound) {
+      # Mark the rest as NA and break
       break
     }
+    previous_upper_bound <- ub
     
-    # Update the previous upper bound for the next iteration
-    previous_upper_bound = upper_bound
-    
-    # Store the results
-    results[xi + 1, "lower_bound"] = lower_bound
-    results[xi + 1, "upper_bound"] = upper_bound
+    lower_bounds[i] <- lb
+    upper_bounds[i] <- ub
   }
   
-  # Filter out any rows where the upper bound is invalid
-  results <- results[!is.na(results$upper_bound), ]
+  # Build final results
+  results <- data.frame(
+    x = x_values,
+    lower_bound = lower_bounds,
+    upper_bound = upper_bounds
+  )
   
+  # Filter out rows where upper_bound is NA
+  results <- results[!is.na(results$upper_bound), ]
   return(results)
 }
+
 
 
 coverage_prob_ACP_N_unknown <- function(M, N, m, conf_level = 0.95, max_N = 1000) {
   found_N_in_last_CI <- TRUE
   
+  # Keep increasing max_N until N is no longer in the last CI
   while (found_N_in_last_CI) {
-    # Calculates all confidence intervals 
     ci_results <- CI_Analog_CP_N_Unknown(M, m, conf_level, max_N)
-    
-    # Get the confidence interval of the last x
     last_x_ci <- ci_results[nrow(ci_results), ]
     
-    # Check if N is within the last x's confidence interval
-    if (N >= last_x_ci$lower_bound & N <= last_x_ci$upper_bound) {
-      # If N is still in the CI, increase max_N and try again
+    if (N >= last_x_ci$lower_bound && N <= last_x_ci$upper_bound) {
       max_N <- max_N + 100
     } else {
-      # Stop increasing if N is not in the last x's CI anymore
       found_N_in_last_CI <- FALSE
     }
   }
   
-  # Once max_N is large enough, continue with the original calculation
+  # Then compute final coverage probability
   ci_results <- CI_Analog_CP_N_Unknown(M, m, conf_level, max_N)
   
-  # Finds all x's where N is in the confidence interval 
   covered_x <- ci_results %>%
-    filter(lower_bound <= N & upper_bound >= N) %>%
-    pull(x)
+    dplyr::filter(lower_bound <= N & upper_bound >= N) %>%
+    dplyr::pull(x)
   
   if (length(covered_x) == 0) {
     return(data.frame(N = N, coverage_prob = NA, min_x = NA, max_x = NA))
   }
   
-  # Finds the min and max of covered x's to know which lines to connect in plot
-  min_x <- min(covered_x, na.rm = TRUE)
-  max_x <- max(covered_x, na.rm = TRUE)
+  min_x <- min(covered_x)
+  max_x <- max(covered_x)
   
-  # Sums the probabilities (pmf's) of all x's where N is in the CI 
-  total_prob <- sum(unlist(lapply(covered_x, function(x) ngh_pmf(x, N, M, m))))
+  total_prob <- sum(
+    sapply(covered_x, function(x_val) ngh_pmf(x_val, N, M, m))
+  )
   
   return(data.frame(N = N, coverage_prob = total_prob, min_x = min_x, max_x = max_x))
 }
+
 
 
 
@@ -1169,63 +1127,50 @@ all_mc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 
 minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 1000, 
-                                            procedure = "MST") {
-  # Chooses which minimal cardinality procedure 
+                                                procedure = "MST") {
+  # Choose the procedure
   if (procedure == "MST") {
-    results = mst_ac_N_unknown_vec(M, m, conf_level, max_N)
-  } 
-  else if (procedure == "CG") {
-    results = cg_ac_N_unknown_vec(M, m, conf_level, max_N)
-  } 
-  else if (procedure == "BK") {
-    results = bk_ac_N_unknown_vec(M, m, conf_level, max_N)
-  } 
-  else {
+    results <- mst_ac_N_unknown_vec(M, m, conf_level, max_N)
+  } else if (procedure == "CG") {
+    results <- cg_ac_N_unknown_vec(M, m, conf_level, max_N)
+  } else if (procedure == "BK") {
+    results <- bk_ac_N_unknown_vec(M, m, conf_level, max_N)
+  } else {
     stop("Invalid procedure. Choose from 'MST', 'CG', or 'BK'.")
   }
   
-  # Initializes data frame that will be outputted 
-  ci_results = data.frame(x = integer(), 
-                          ci_lb = integer(), 
-                          ci_ub = integer(), 
-                          ci = character(),
-                          stringsAsFactors = FALSE)
-  
-  # Find the second-highest "a"
+  # Determine max_x from the second-highest 'a'
   unique_a_values <- sort(unique(results$a), decreasing = TRUE)
-  if (length(unique_a_values) > 1) {
-    max_x <- unique_a_values[2]  # Second-highest value
-  } else {
-    max_x <- unique_a_values[1]  # Fallback if only one value exists
-  }
+  max_x <- if (length(unique_a_values) > 1) unique_a_values[2] else unique_a_values[1]
   
-  # Loops through each x 
-  for (x in 0:max_x) {
-    # Finds first interval where x appears 
-    first_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(1)
+  x_values <- seq.int(0, max_x)
+  row_list <- vector("list", length(x_values))
+  
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
     
-    # Finds last interval where x appears 
-    last_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(n())
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
     
-    # Finds the N of the corresponding above intervals and saves those as the CI bounds
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
-      ci_lb = first_occurrence$N
-      ci_ub = last_occurrence$N
-      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      ci_lb <- first_occurrence$N
+      ci_ub <- last_occurrence$N
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
       
-      ci_results = rbind(ci_results, data.frame(x = x, 
-                                                ci_lb = ci_lb, 
-                                                ci_ub = ci_ub, 
-                                                ci = ci))
+      row_list[[i]] <- data.frame(
+        x = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci = ci_str,
+        stringsAsFactors = FALSE
+      )
     }
   }
   
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
   return(ci_results)
 }
+
 
 
 ###################################
@@ -1235,55 +1180,40 @@ minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N =
 ###################################
 
 mst_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # Gets all minimal cardinality acceptance curves 
-  results = all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
+  results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
   
-  # Initializes data frame that will be outputted 
-  final_results = data.frame(N = integer(), 
-                             a = integer(), 
-                             b = integer(), 
-                             cardinality = integer(), 
-                             coverage_prob = numeric(), 
-                             x_set = character())
+  row_list <- vector("list", length = (max_N - M + 1))
+  idx <- 1
   
-  # Initializes min_a and min_b, starting at 0-0
-  min_a = 0
-  min_b = 0
+  min_a <- 0
+  min_b <- 0
   
-  # Loops through with each N 
-  for (current_N in M:max_N) {
-    # Only looks at acceptance curves for the current N
-    subset_results = results %>% 
-      filter(N == current_N)
+  for (current_N in seq.int(M, max_N)) {
+    subset_results <- results %>% filter(N == current_N)
     
-    # If only one acceptance curve, then that is the acceptance curve  
     if (nrow(subset_results) == 1) {
-      chosen_row = subset_results
-    } 
-    
-    # If has more than one option, apply MST procedure
-    # Filters so a and b are non-decreasing, and then chooses the row with the highest 
-    # coverage probability 
-    else {
-      chosen_row = subset_results %>% 
-        filter(a >= min_a, b >= min_b) %>% 
-        arrange(desc(coverage_prob), desc(a), desc(b)) %>% 
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(desc(coverage_prob), desc(a), desc(b)) %>%
         slice(1)
     }
     
-    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
-      min_a = max(min_a, chosen_row$a)
-      min_b = max(min_b, chosen_row$b)
-      final_results = rbind(final_results, chosen_row)
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
     }
   }
   
-  final_results = final_results %>%
-    arrange(N)
-  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(N)
   return(final_results)
 }
+
 
 
 ###################################
@@ -1293,55 +1223,40 @@ mst_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ###################################
 
 cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # Gets all minimal cardinality acceptance curves
-  results = all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
+  results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
   
-  # Initializes data frame that will be outputted 
-  final_results = data.frame(N = integer(), 
-                             a = integer(), 
-                             b = integer(), 
-                             cardinality = integer(), 
-                             coverage_prob = numeric(), 
-                             x_set = character())
+  row_list <- vector("list", length = (max_N - M + 1))
+  idx <- 1
   
-  # Initializes min_a and min_b, starting at 0-0
-  min_a = 0
-  min_b = 0
+  min_a <- 0
+  min_b <- 0
   
-  # Loops through with each N
-  for (current_N in M:max_N) {
-    # Only looks at acceptance curves for the current M 
-    subset_results = results %>% 
-      filter(N == current_N)
+  for (current_N in seq.int(M, max_N)) {
+    subset_results <- results %>% filter(N == current_N)
     
-    # If only one acceptance curve, then that is the acceptance curve 
     if (nrow(subset_results) == 1) {
-      chosen_row = subset_results
-    } 
-    
-    # If has more than one option, apply CG procedure
-    # Filters so a and b are non-decreasing, and then chooses the row with the smallest 
-    # possible a and b
-    else {
-      chosen_row = subset_results %>% 
-        filter(a >= min_a, b >= min_b) %>% 
-        arrange(a, b) %>% 
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(a, b) %>%
         slice(1)
     }
     
-    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
-      min_a = max(min_a, chosen_row$a)
-      min_b = max(min_b, chosen_row$b)
-      final_results = rbind(final_results, chosen_row)
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
     }
   }
   
-  final_results = final_results %>%
-    arrange(N)
-  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(N)
   return(final_results)
 }
+
 
 
 ###################################
@@ -1351,55 +1266,40 @@ cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ###################################
 
 bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # Gets all minimal cardinality acceptance curves
-  results = all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
+  results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
   
-  # Initializes data frame that will be outputted 
-  final_results = data.frame(N = integer(), 
-                             a = integer(), 
-                             b = integer(), 
-                             cardinality = integer(), 
-                             coverage_prob = numeric(), 
-                             x_set = character())
+  row_list <- vector("list", length = (max_N - M + 1))
+  idx <- 1
   
-  # Initializes min_a and min_b, starting at 0-0
-  min_a = 0
-  min_b = 0
+  min_a <- 0
+  min_b <- 0
   
-  # Loops through with each N
-  for (current_N in M:max_N) {
-    # Only looks at acceptance curves for the current M 
-    subset_results = results %>% 
-      filter(N == current_N)
+  for (current_N in seq.int(M, max_N)) {
+    subset_results <- results %>% filter(N == current_N)
     
-    # If only one acceptance curve, then that is the acceptance curve 
     if (nrow(subset_results) == 1) {
-      chosen_row = subset_results
-    } 
-    
-    # If has more than one option, apply BK procedure
-    # Filters so a and b are non-decreasing, and then chooses the row with the largest 
-    # possible a and b
-    else {
-      chosen_row = subset_results %>% 
-        filter(a >= min_a, b >= min_b) %>% 
-        arrange(desc(a), desc(b)) %>% 
+      chosen_row <- subset_results
+    } else {
+      chosen_row <- subset_results %>%
+        filter(a >= min_a, b >= min_b) %>%
+        arrange(desc(a), desc(b)) %>%
         slice(1)
     }
     
-    # Updates min_a and min_b and then adds row to final outputted data frame 
     if (nrow(chosen_row) > 0) {
-      min_a = max(min_a, chosen_row$a)
-      min_b = max(min_b, chosen_row$b)
-      final_results = rbind(final_results, chosen_row)
+      min_a <- max(min_a, chosen_row$a)
+      min_b <- max(min_b, chosen_row$b)
+      
+      row_list[[idx]] <- chosen_row
+      idx <- idx + 1
     }
   }
   
-  final_results = final_results %>%
-    arrange(N)
-  
+  final_results <- do.call(rbind, row_list[1:(idx - 1)])
+  final_results <- final_results %>% arrange(N)
   return(final_results)
 }
+
 
 
 
@@ -1551,55 +1451,44 @@ blaker_ac_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
 
 
 blaker_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250, procedure = "MST") {
-  results = blaker_ac_N_unkown_vec(M, m, conf_level)
+  results <- blaker_ac_N_unkown_vec(M, m, conf_level)
   
-  # Check if there are any gaps
+  # If there's any gap, just return
   if (any(results$gap)) {
     return("Gaps present in acceptance sets")
   }
   
-  # Initializes data frame that will be outputted 
-  ci_results = data.frame(x = integer(), 
-                          ci_lb = integer(), 
-                          ci_ub = integer(), 
-                          ci = character(),
-                          stringsAsFactors = FALSE)
-  
-  # Find the second-highest "a"
   unique_a_values <- sort(unique(results$a), decreasing = TRUE)
-  if (length(unique_a_values) > 1) {
-    max_x <- unique_a_values[2]  # Second-highest value
-  } else {
-    max_x <- unique_a_values[1]  # Fallback if only one value exists
-  }
+  max_x <- if (length(unique_a_values) > 1) unique_a_values[2] else unique_a_values[1]
   
-  # Loops through each x 
-  for (x in 0:max_x) {
-    # Finds first interval where x appears 
-    first_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(1)
+  x_values <- seq.int(0, max_x)
+  row_list <- vector("list", length(x_values))
+  
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
     
-    # Finds last interval where x appears 
-    last_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(n())
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
     
-    # Finds the N of the corresponding above intervals and saves those as the CI bounds
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
-      ci_lb = first_occurrence$N
-      ci_ub = last_occurrence$N
-      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      ci_lb <- first_occurrence$N
+      ci_ub <- last_occurrence$N
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
       
-      ci_results = rbind(ci_results, data.frame(x = x, 
-                                                ci_lb = ci_lb, 
-                                                ci_ub = ci_ub, 
-                                                ci = ci))
+      row_list[[i]] <- data.frame(
+        x = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci = ci_str,
+        stringsAsFactors = FALSE
+      )
     }
   }
   
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
   return(ci_results)
 }
+
 
 
 
@@ -1693,50 +1582,39 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
 
 
 cmc_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250, procedure = "MST") {
-  results = cmc_ac_N_unknown_vec(M, m, conf_level, max_N)
+  results <- cmc_ac_N_unknown_vec(M, m, conf_level, max_N)
   
-  # Initializes data frame that will be outputted 
-  ci_results = data.frame(x = integer(), 
-                          ci_lb = integer(), 
-                          ci_ub = integer(), 
-                          ci = character(),
-                          stringsAsFactors = FALSE)
-  
-  # Find the second-highest "a"
   unique_a_values <- sort(unique(results$a), decreasing = TRUE)
-  if (length(unique_a_values) > 1) {
-    max_x <- unique_a_values[2]  # Second-highest value
-  } else {
-    max_x <- unique_a_values[1]  # Fallback if only one value exists
-  }
+  max_x <- if (length(unique_a_values) > 1) unique_a_values[2] else unique_a_values[1]
   
-  # Loops through each x 
-  for (x in 0:max_x) {
-    # Finds first interval where x appears 
-    first_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(1)
+  x_values <- seq.int(0, max_x)
+  row_list <- vector("list", length(x_values))
+  
+  for (i in seq_along(x_values)) {
+    x_val <- x_values[i]
     
-    # Finds last interval where x appears 
-    last_occurrence = results %>% 
-      filter(a <= x, x <= b) %>% 
-      slice(n())
+    first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
+    last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
     
-    # Finds the N of the corresponding above intervals and saves those as the CI bounds
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
-      ci_lb = first_occurrence$N
-      ci_ub = last_occurrence$N
-      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      ci_lb <- first_occurrence$N
+      ci_ub <- last_occurrence$N
+      ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
       
-      ci_results = rbind(ci_results, data.frame(x = x, 
-                                                ci_lb = ci_lb, 
-                                                ci_ub = ci_ub, 
-                                                ci = ci))
+      row_list[[i]] <- data.frame(
+        x = x_val,
+        ci_lb = ci_lb,
+        ci_ub = ci_ub,
+        ci = ci_str,
+        stringsAsFactors = FALSE
+      )
     }
   }
   
+  ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
   return(ci_results)
 }
+
 
 
 
