@@ -1265,7 +1265,7 @@ ggplot(cov_prob_cg, aes(x = N, y = coverage_prob, group = x_set, color = x_set))
   theme(legend.position = "none")
 ```
 
-## BK
+### BK
 
 ```{r}
 # cov_prob_bk = bk_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 250)

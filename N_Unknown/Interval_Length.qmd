@@ -16,30 +16,55 @@ source('../functions_vec.R', encoding = 'UTF-8')
 # Expected Length
 
 ```{r}
-# expected_length <- function(data_frame, lb_col_name, ub_col_name, N, M, m, max_N = 250) {
-#   max_x = max_N - M
-#   sum = 0
-#   for (xi in 0:max_x) {
-#     length = data_frame[[ub_col_name]][data_frame$x == xi] -
-#       data_frame[[lb_col_name]][data_frame$x == xi] + 1
-#     prob = ngh_pmf(x = xi, N = N, M = M, m = m)
-#     indiv = length * prob
-#     sum = sum + indiv
-#   }
-#   return(sum)
-# }
-
-expected_length <- function(data_frame, lb_col_name, ub_col_name, N, M, m, max_N = 250) {
-  sum = 0
-  for (xi in data_frame$x) {  # Loop through all x values in data_frame$x
-    length = data_frame[[ub_col_name]][data_frame$x == xi] -
-             data_frame[[lb_col_name]][data_frame$x == xi] + 1
-    prob = ngh_pmf(x = xi, N = N, M = M, m = m)
-    indiv = length * prob
-    sum = sum + indiv
+expected_length_N_unknown <- function(data_frame, 
+                                      lb_col_name, 
+                                      ub_col_name, 
+                                      M,  # fixed M
+                                      m,  # fixed m
+                                      N_max  # largest N value you want to calculate
+                                      ) {
+  # Create an empty data frame to store results
+  results <- data.frame(N = integer(), ExpectedLength = numeric())
+  
+  # Loop through each N value from M to N_max
+  for (current_N in M:N_max) {
+    sum_expected_length <- 0
+    
+    # Determine the range of x values to consider
+    x_max <- min(max(data_frame$x), current_N - M)
+    
+    for (xi in 0:x_max) {
+      # Calculate the interval length for this x
+      length <- data_frame[[ub_col_name]][data_frame$x == xi] - 
+                data_frame[[lb_col_name]][data_frame$x == xi] + 1
+      
+      # Calculate the probability using the Negative Hypergeometric PMF
+      prob <- ngh_pmf(x = xi, N = current_N, M = M, m = m)
+      
+      # Accumulate the expected length
+      sum_expected_length <- sum_expected_length + (length * prob)
+    }
+    
+    # Store the result in the results data frame
+    results <- rbind(results, data.frame(N = current_N, ExpectedLength = sum_expected_length))
   }
-  return(sum)
+  
+  return(results)
 }
+```
+
+```{r}
+test <- minimal_cardinality_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 100, 
+                                procedure = "CG")
+
+ex_length <- expected_length_N_unknown(data_frame = test, 
+                                      lb_col_name = "ci_lb", 
+                                      ub_col_name = "ci_ub", 
+                                      M = 10,  # fixed M
+                                      m = 5,  # fixed m
+                                      N_max = 20  # largest N value you want to calculate
+                                      )
+ex_length
 ```
 
 # Average Length
