@@ -464,7 +464,7 @@ all_mc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
     # Filter out the sets with the smallest cardinality and coverage probability >= conf_level 
     temp_results = temp_results %>%
-      filter(coverage_prob >= conf_level) %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       group_by(N) %>%
       slice_min(order_by = cardinality, with_ties = TRUE) %>%
       ungroup()
@@ -473,7 +473,7 @@ all_mc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
     if (nrow(temp_results) > 0) {
       min_a = max(min_a, min(temp_results$a))
       min_b = max(min_b, min(temp_results$b))
-      
+
       # Store the results from this iteration
       results <- rbind(results, temp_results)
     }
@@ -485,6 +485,10 @@ all_mc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
   
   return(filtered_results)
 }
+```
+
+```{r}
+all_mc_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 47)
 ```
 
 ```{r}
@@ -546,7 +550,7 @@ all_mc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
     # Keep only those with coverage >= conf_level
     # and pick the row(s) with the smallest cardinality.
     temp_results <- temp_results %>%
-      dplyr::filter(coverage_prob >= conf_level) %>%
+      dplyr::filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       dplyr::group_by(N) %>%
       dplyr::slice_min(order_by = cardinality, with_ties = TRUE) %>%
       dplyr::ungroup()

@@ -9,65 +9,135 @@ editor: visual
 library(extraDistr)
 library(tidyverse)
 
-# source('../functions.R', encoding = 'UTF-8')
+#source('../functions.R', encoding = 'UTF-8')
 source('../functions_vec.R', encoding = 'UTF-8')
 ```
 
-# Expected Length
+# Expected Length Function
 
 ```{r}
+# expected_length_N_unknown <- function(data_frame, 
+#                                       lb_col_name, 
+#                                       ub_col_name, 
+#                                       M,  # fixed M
+#                                       m,  # fixed m
+#                                       N_max  # largest N value you want to calculate
+#                                       ) {
+#   # Create an empty data frame to store results
+#   results <- data.frame(N = integer(), ExpectedLength = numeric())
+#   
+#   # Loop through each N value from M to N_max
+#   for (current_N in M:N_max) {
+#     sum_expected_length <- 0
+#     
+#     # Determine the range of x values to consider
+#     x_max <- min(max(data_frame$x), current_N - M)
+#     
+#     for (xi in 0:x_max) {
+#       # Calculate the interval length for this x
+#       length <- data_frame[[ub_col_name]][data_frame$x == xi] - 
+#                 data_frame[[lb_col_name]][data_frame$x == xi] + 1
+#       
+#       # Calculate the probability using the Negative Hypergeometric PMF
+#       prob <- ngh_pmf(x = xi, N = current_N, M = M, m = m)
+#       
+#       # Accumulate the expected length
+#       sum_expected_length <- sum_expected_length + (length * prob)
+#     }
+#     
+#     # Store the result in the results data frame
+#     results <- rbind(results, data.frame(N = current_N, ExpectedLength = sum_expected_length))
+#   }
+#   
+#   return(results)
+# }
+```
+
+```{r}
+#| label: optimized version of above 
+
 expected_length_N_unknown <- function(data_frame, 
                                       lb_col_name, 
                                       ub_col_name, 
                                       M,  # fixed M
                                       m,  # fixed m
                                       N_max  # largest N value you want to calculate
-                                      ) {
-  # Create an empty data frame to store results
-  results <- data.frame(N = integer(), ExpectedLength = numeric())
+) {
+  # 1) Extract x from the data_frame and ensure it's unique + sorted 
+  #    (assuming data_frame has one row per x)
+  df_small <- data_frame[, c("x", lb_col_name, ub_col_name)]
+  df_small <- df_small[order(df_small$x), ]
   
-  # Loop through each N value from M to N_max
-  for (current_N in M:N_max) {
-    sum_expected_length <- 0
+  # 2) Precompute the interval lengths for each x.
+  #    length(x) = ub - lb + 1
+  lengths_vec <- df_small[[ub_col_name]] - df_small[[lb_col_name]] + 1
+  
+  # 3) We'll iterate over N from M to N_max, computing expected length.
+  N_values <- seq.int(M, N_max)
+  
+  # Pre-allocate a numeric vector for storing expected length for each N.
+  exp_len_vec <- numeric(length(N_values))
+  
+  # 4) For each N, figure out the max x we can use:
+  #    x_max = min(max(df_small$x), N - M)
+  #    Then sum over x in [0, x_max] of (lengths[x] * ngh_pmf(x, N, M, m)).
+  max_x_all <- max(df_small$x)
+  
+  for (i in seq_along(N_values)) {
+    current_N <- N_values[i]
     
-    # Determine the range of x values to consider
-    x_max <- min(max(data_frame$x), current_N - M)
-    
-    for (xi in 0:x_max) {
-      # Calculate the interval length for this x
-      length <- data_frame[[ub_col_name]][data_frame$x == xi] - 
-                data_frame[[lb_col_name]][data_frame$x == xi] + 1
-      
-      # Calculate the probability using the Negative Hypergeometric PMF
-      prob <- ngh_pmf(x = xi, N = current_N, M = M, m = m)
-      
-      # Accumulate the expected length
-      sum_expected_length <- sum_expected_length + (length * prob)
+    # Determine x_max for current N
+    x_max <- min(max_x_all, current_N - M)
+    if (x_max < 0) {
+      # If x_max < 0, no valid x => expected length is 0
+      exp_len_vec[i] <- 0
+      next
     }
     
-    # Store the result in the results data frame
-    results <- rbind(results, data.frame(N = current_N, ExpectedLength = sum_expected_length))
+    # Identify which rows of df_small correspond to x in [0, x_max].
+    # Because df_small$x is sorted, we can do a direct index.
+    valid_indices <- which(df_small$x <= x_max)
+    
+    # Corresponding x values
+    x_sub <- df_small$x[valid_indices]
+    # Corresponding lengths
+    lengths_sub <- lengths_vec[valid_indices]
+    
+    # Compute PMF for each x_sub
+    pmf_vec <- sapply(x_sub, function(xx) {
+      ngh_pmf(x = xx, N = current_N, M = M, m = m)
+    })
+    
+    # Sum up length * pmf
+    exp_len_vec[i] <- sum(lengths_sub * pmf_vec)
   }
+  
+  # 5) Build the final results data frame
+  results <- data.frame(
+    N = N_values,
+    ExpectedLength = exp_len_vec
+  )
   
   return(results)
 }
+
 ```
 
 ```{r}
-test <- minimal_cardinality_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 100, 
-                                procedure = "CG")
-
-ex_length <- expected_length_N_unknown(data_frame = test, 
-                                      lb_col_name = "ci_lb", 
-                                      ub_col_name = "ci_ub", 
-                                      M = 10,  # fixed M
-                                      m = 5,  # fixed m
-                                      N_max = 20  # largest N value you want to calculate
-                                      )
-ex_length
+# test <- minimal_cardinality_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 100, 
+#                                 procedure = "CG")
+# 
+# ex_length <- expected_length_N_unknown(data_frame = test, 
+#                                       lb_col_name = "ci_lb", 
+#                                       ub_col_name = "ci_ub", 
+#                                       M = 10,  # fixed M
+#                                       m = 5,  # fixed m
+#                                       N_max = 20  # largest N value you want to calculate
+#                                       )
+# ex_length
 ```
 
-# Average Length
+# Average Length Function
 
 ```{r}
 average_length <- function(data_frame, lb_col_name, ub_col_name) {
@@ -85,359 +155,517 @@ Therefore, Modified Sterne (MST) is considered superior because they all have th
 
 # Plots of Expected and Average Length
 
-## First choose M, m, and confidence level!
+## Plot of Expected Length
+
+### Data Preparation
 
 ```{r}
-M = 10
+
+```
+
+### Plot
+
+```{r}
+
+```
+
+## Plot of Average Length and Average Coverage Probability
+
+### Data Preparation
+
+Note: Got max_N by plugging in M, m, and conf_level to get confidence intervals and keep increasing max_N til I get intervals for x: 0 to 25 and make sure max_N big enough so coverage_prob_ACP_N_unknown_vec() output isn't NA (plug in largest N_value to test).
+
+#### Analog to Clopper Pearson
+
+##### M = 25, m = 5
+
+```{r}
+#| eval: false
+
+M = 25
 m = 5
-max_N = 1000
 conf_level = 0.95
-```
-
-## Analog to Clopper-Pearson
-
-```{r}
-data = CI_Analog_CP_N_Unknown(M = M, m = m, conf_level = conf_level, max_N = max_N)
-average_length(data, "lower_bound", "upper_bound")
-
-# Create a data frame to store the results
-results = data.frame(N = integer(), ExpectedLength = numeric())
-
-# Calculate expected length for each N
-for (N_i in M:max_N) {
-  exp_len = expected_length(data, "lower_bound", "upper_bound", N = N_i, M = M, m = m, 
-                            max_N = max_N)
-  results = rbind(results, data.frame(N = N_i, ExpectedLength = exp_len))
-}
-
-# Plot using ggplot2
-ggplot(results, aes(x = N, y = ExpectedLength)) +
-  geom_point() +
-  geom_hline(yintercept = average_length(data, "lower_bound", "upper_bound"), color = "red") +
-  labs(x = "N", y = "Expected Length") +
-  theme_minimal()
-```
-
-## MST
-
-```{r}
-data = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
-                                           max_N = max_N, procedure = "MST")
-average_length(data, "lower_bound", "upper_bound")
-
-# Create a data frame to store the results
-results = data.frame(N = integer(), ExpectedLength = numeric())
-
-# Calculate expected length for each N
-for (N_i in M:max_N) {
-  exp_len = expected_length(data, "lower_bound", "upper_bound", N = N_i, M = M, m = m, 
-                            max_N = max_N)
-  results = rbind(results, data.frame(N = N_i, ExpectedLength = exp_len))
-}
-
-# Plot using ggplot2
-ggplot(results, aes(x = N, y = ExpectedLength)) +
-  geom_point() +
-  geom_hline(yintercept = average_length(data, "lower_bound", "upper_bound"), color = "red") +
-  labs(x = "N", y = "Expected Length") +
-  theme_minimal()
-```
-
-## CG
-
-```{r}
-data = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "CG")
-average_length(data, "ci_lb", "ci_ub")
-
-
-
-# Create a data frame to store the results
-results = data.frame(M = integer(), ExpectedLength = numeric())
-
-# Calculate expected length for each M
-for (M_i in m:N) {
-  exp_len = expected_length(data, "ci_lb", "ci_ub", N = N, M = M_i, m = m)
-  results = rbind(results, data.frame(M = M_i, ExpectedLength = exp_len))
-}
-
-# Plot using ggplot2
-ggplot(results, aes(x = M, y = ExpectedLength)) +
-  geom_point() +
-  geom_hline(yintercept = average_length(data, "ci_lb", "ci_ub"), color = "red") +
-  labs(x = "M", y = "Expected Length") +
-  theme_minimal()
-```
-
-## BK
-
-```{r}
-data = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "BK")
-average_length(data, "ci_lb", "ci_ub")
-
-
-
-# Create a data frame to store the results
-results = data.frame(M = integer(), ExpectedLength = numeric())
-
-# Calculate expected length for each M
-for (M_i in m:N) {
-  exp_len = expected_length(data, "ci_lb", "ci_ub", N = N, M = M_i, m = m)
-  results = rbind(results, data.frame(M = M_i, ExpectedLength = exp_len))
-}
-
-# Plot using ggplot2
-ggplot(results, aes(x = M, y = ExpectedLength)) +
-  geom_point() +
-  geom_hline(yintercept = average_length(data, "ci_lb", "ci_ub"), color = "red") +
-  labs(x = "M", y = "Expected Length") +
-  theme_minimal()
-```
-
-## Blaker
-
-```{r}
-data = blaker_ci(N = N, m = m, conf_level = conf_level)
-average_length(data, "ci_lb", "ci_ub")
-
-
-
-# Create a data frame to store the results
-results = data.frame(M = integer(), ExpectedLength = numeric())
-
-# Calculate expected length for each M
-for (M_i in m:N) {
-  exp_len = expected_length(data, "ci_lb", "ci_ub", N = N, M = M_i, m = m)
-  results = rbind(results, data.frame(M = M_i, ExpectedLength = exp_len))
-}
-
-# Plot using ggplot2
-ggplot(results, aes(x = M, y = ExpectedLength)) +
-  geom_point() +
-  geom_hline(yintercept = average_length(data, "ci_lb", "ci_ub"), color = "red") +
-  labs(x = "M", y = "Expected Length") +
-  theme_minimal()
-```
-
-## CMC
-
-```{r}
-data = cmc_ci(N = N, m = m, conf_level = conf_level)
-average_length(data, "ci_lb", "ci_ub")
-
-
-
-# Create a data frame to store the results
-results = data.frame(M = integer(), ExpectedLength = numeric())
-
-# Calculate expected length for each M
-for (M_i in m:N) {
-  exp_len = expected_length(data, "ci_lb", "ci_ub", N = N, M = M_i, m = m)
-  results = rbind(results, data.frame(M = M_i, ExpectedLength = exp_len))
-}
-
-# Plot using ggplot2
-ggplot(results, aes(x = M, y = ExpectedLength)) +
-  geom_point() +
-  geom_hline(yintercept = average_length(data, "ci_lb", "ci_ub"), color = "red") +
-  labs(x = "M", y = "Expected Length") +
-  theme_minimal()
-```
-
-# Plot of Expected Length
-
-## Data Preparation
-
-Commented out b/c saved dataset as a .csv file so I don't have to re-run code each time
-
-```{r}
-# # Initialize the variables
-# conf_level <- 0.95
-# Ns <- c(50, 200)
-# ms <- c(3, 20)
-# 
-# # Initialize an empty data frame to store all the results
-# all_results <- data.frame()
-# 
-# # Loop through each combination of N and m
-# for (N in Ns) {
-#   for (m in ms) {
-#     
-#     methods <- list(
-#       "Normal Approximation (MLE)" = CI_cov_prob_MLE(N = N, m = m, conf_level = conf_level),
-#       "Normal Approximation (Unbiased)" = CI_cov_prob_unbiased(N = N, m = m, conf_level = conf_level),
-#       "Analog to Clopper-Pearson" = CI_cov_prob(N = N, m = m, conf_level = conf_level),
-#       "MST" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "MST"),
-#       "CG" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "CG"),
-#       "BK" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "BK"),
-#       "Blaker" = blaker_ci(N = N, m = m, conf_level = conf_level),
-#       "CMC" = cmc_ci(N = N, m = m, conf_level = conf_level)
-#     )
-#     
-#     for (method_name in names(methods)) {
-#       data <- methods[[method_name]]
-#       
-#       # Determine the correct column names for bounds
-#       if (method_name %in% c("Normal Approximation (MLE)", "Normal Approximation (Unbiased)", "Analog to Clopper-Pearson")) {
-#         lb_col <- "lower_bound"
-#         ub_col <- "upper_bound"
-#       } else {
-#         lb_col <- "ci_lb"
-#         ub_col <- "ci_ub"
-#       }
-#       
-#       # Check if the method returned valid data
-#       if (nrow(data) > 0) {
-#         
-#         # Calculate expected length for each M
-#         results <- data.frame(M = integer(), ExpectedLength = numeric(), Method = character(), N = integer(), m = integer())
-#         
-#         for (M_i in m:N) {
-#           exp_len <- expected_length(data, lb_col, ub_col, N = N, M = M_i, m = m)
-#           
-#           # Only add to results if exp_len is not empty or NULL
-#           if (!is.null(exp_len) && length(exp_len) > 0) {
-#             results <- rbind(results, data.frame(M = M_i, ExpectedLength = exp_len, Method = method_name, N = N, m = m))
-#           }
-#         }
-#         
-#         all_results <- rbind(all_results, results)
-#       }
-#     }
-#   }
-# }
+max_N = 425
+N_values = M:200
 ```
 
 ```{r}
-# Saved as CSV file b/c takes a while to run 
-# write.csv(all_results, file.path(getwd(), "expected_length.csv"), row.names = FALSE)
-```
+#| eval: false
 
-## Plot
+Sys.time()
 
-Note: Should we include Normal Approximation methods in the plot? I was thinking no since the coverage sucks, so even since the expected length is good, it gives a false idea because coverage sucks.
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
 
-```{r}
-# Load the data
-all_results <- read_csv("expected_length.csv") %>%
-  filter(!(Method %in% c("Normal Approximation (MLE)", "Normal Approximation (Unbiased)")))
+average_length(data_frame = CI, lb_col_name = "lower_bound", ub_col_name = "upper_bound")
 
-# Define a distinct color palette
-distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
-
-# Custom labels for N and m
-N_labels <- c("50" = "N = 50", "200" = "N = 200")
-m_labels <- c("3" = "m = 3", "20" = "m = 20")
-
-# Combine N and m labels into a single factor for facetting
-all_results$facet_label <- factor(
-  paste("N =", all_results$N, ", m =", all_results$m),
-  levels = c("N = 50 , m = 3", "N = 200 , m = 3", "N = 50 , m = 20", "N = 200 , m = 20")
-)
-
-# Create the plot using facet_wrap for independent axes
-ggplot(all_results, aes(x = M, y = ExpectedLength, color = Method)) +
-  geom_line(size = 1, alpha = 0.6) +  # Adjust line thickness and transparency
-  scale_color_manual(values = distinct_colors) +  # Use the distinct color palette
-  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
-  labs(x = "M", y = "Expected Length", color = "Method") +
-  theme_minimal() +
-  theme(
-    legend.position = "bottom",
-    strip.text = element_text(size = 12),  # Increase facet label size for clarity
-    panel.spacing = unit(1, "lines"),  # Increase spacing between panels for clarity
-    axis.title.y = element_text(margin = margin(r = 10)),  # Add margin to y-axis label
-    axis.title.x = element_text(margin = margin(t = 10))   # Add margin to x-axis label
-  )
-```
-
-# Plot of Average Length
-
-Note: Should we include Normal Approximation methods in the plot? I was thinking no since the coverage sucks, so even since the expected length is good, it gives a false idea because coverage sucks.
-
-Commented out b/c saved dataset as a .csv file so I don't have to re-run code each time
-
-```{r}
-# # Define the combinations of N and m
-# combinations <- list(
-#   list(N = 50, m = 3),
-#   list(N = 200, m = 3),
-#   list(N = 50, m = 20),
-#   list(N = 200, m = 20)
-# )
-# 
-# # Define the confidence level
-# conf_level <- 0.95
-# 
-# # Placeholder to store the results
-# results <- data.frame()
-# 
-# # Loop through each combination
-# for (comb in combinations) {
-#   N <- comb$N
-#   m <- comb$m
-#   
-#   # Collect data for each method
-#   data_MLE <- CI_cov_prob_MLE(N = N, m = m, conf_level = conf_level)
-#   data_unbiased <- CI_cov_prob_unbiased(N = N, m = m, conf_level = conf_level)
-#   data_CP <- CI_cov_prob(N = N, m = m, conf_level = conf_level)
-#   data_MST <- minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "MST")
-#   data_CG <- minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "CG")
-#   data_BK <- minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "BK")
-#   data_blaker <- blaker_ci(N = N, m = m, conf_level = conf_level)
-#   data_cmc <- cmc_ci(N = N, m = m, conf_level = conf_level)
-#   
-#   # Calculate average length for each method
-#   avg_length_MLE <- average_length(data_MLE, "lower_bound", "upper_bound")
-#   avg_length_unbiased <- average_length(data_unbiased, "lower_bound", "upper_bound")
-#   avg_length_CP <- average_length(data_CP, "lower_bound", "upper_bound")
-#   avg_length_MST <- average_length(data_MST, "ci_lb", "ci_ub")
-#   avg_length_CG <- average_length(data_CG, "ci_lb", "ci_ub")
-#   avg_length_BK <- average_length(data_BK, "ci_lb", "ci_ub")
-#   avg_length_blaker <- average_length(data_blaker, "ci_lb", "ci_ub")
-#   avg_length_cmc <- average_length(data_cmc, "ci_lb", "ci_ub")
-#   
-#   # Combine the results
-#   comb_results <- data.frame(
-#     Method = c("MLE", "Unbiased", "Analog to Clopper-Pearson", "MST", "CG", "BK", "Blaker", "CMC"),
-#     N = N,
-#     m = m,
-#     AverageLength = c(avg_length_MLE, avg_length_unbiased, avg_length_CP, avg_length_MST, 
-#                       avg_length_CG, avg_length_BK, avg_length_blaker, avg_length_cmc)
-#   )
-#   
-#   # Append to the results dataframe
-#   results <- rbind(results, comb_results)
-# }
+Sys.time()
 ```
 
 ```{r}
-# Saved as CSV file b/c takes a while to run 
-# write.csv(results, file.path(getwd(), "average_length.csv"), row.names = FALSE)
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+##### M = 25, m = 15
+
+```{r}
+#| eval: false
+
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
 ```
 
 ```{r}
-# Load the data
-results <- read_csv("average_length_cov_prob.csv")
+#| eval: false
 
-# Combine N and m labels into a single factor for facetting
-results$facet_label <- factor(
-  paste("N =", results$N, ", m =", results$m),
-  levels = c("N = 50 , m = 3", "N = 200 , m = 3", "N = 50 , m = 20", "N = 200 , m = 20")
-)
+Sys.time()
 
-# Define a distinct color palette
-distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
 
-# Create the scatter plot using facet_wrap for independent axes
-ggplot(results, aes(x = AverageLength, y = AverageCovProb, color = Method)) +
-  geom_point(size = 3, alpha = 0.5) +  # Adjust point size and transparency
-  geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
-  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
-  scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
-  labs(x = "Average Length", y = "Average Coverage Probability", color = "Method") +
-  theme_minimal() +
-  theme(
-    legend.position = "bottom",
-    strip.text = element_text(size = 12)  # Increase facet label size for clarity
-  )
+average_length(data_frame = CI, lb_col_name = "lower_bound", ub_col_name = "upper_bound")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+##### M = 50, m = 5
+
+```{r}
+#| eval: false
+
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 870
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "lower_bound", ub_col_name = "upper_bound")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+##### M = 50, m = 15
+
+```{r}
+#| eval: false
+
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 210
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "lower_bound", ub_col_name = "upper_bound")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+#### MST
+
+##### M = 25, m = 5
+
+```{r}
+#| eval: false
+
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 425
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) mst_ac_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+##### M = 25, m = 15
+
+```{r}
+#| eval: false
+
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "lower_bound", ub_col_name = "upper_bound")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+##### M = 50, m = 5
+
+```{r}
+#| eval: false
+
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 870
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "lower_bound", ub_col_name = "upper_bound")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+##### M = 50, m = 15
+
+```{r}
+#| eval: false
+
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 210
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "lower_bound", ub_col_name = "upper_bound")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+coverage_df = do.call(rbind, lapply(N_values, function(N) coverage_prob_ACP_N_unknown_vec(M, N, m, conf_level, max_N)))
+mean(coverage_df$coverage_prob)
+
+Sys.time()
+```
+
+#### CG
+
+#### BK
+
+#### Blaker
+
+##### M = 25, m = 5
+
+```{r}
+#| eval: false
+
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 425
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+blaker_ac_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
+##### M = 25, m = 15
+
+```{r}
+#| eval: false
+
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+blaker_ac_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
+##### M = 50, m = 5
+
+```{r}
+#| eval: false
+
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 870
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+blaker_ac_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
+##### M = 50, m = 15
+
+```{r}
+#| eval: false
+
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 210
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+blaker_ac_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
+#### CMC
+
+### Plot
+
+```{r}
+
+```
+
+M = 25, m = 5
+
+-   x: 0 to 25
+
+-   N: 25 to 200
+
+M = 25, m = 15
+
+-   x: 0 to 25
+
+-   N: 25 to 200
+
+M = 50, m = 5
+
+-   x: 0 to 25
+
+-   N: 50 to 200
+
+M = 50, m = 15
+
+-   x: 0 to 25
+
+-   N: 50 to 200
+
+```{r}
+# cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 50) 
+
+# blaker_ac_N_unkown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 205) %>%
+#   filter(N<=200) %>%
+#   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+```
+
+```{r}
+# cmc_ci_N_unkown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 425)
 ```

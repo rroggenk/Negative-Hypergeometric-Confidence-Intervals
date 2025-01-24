@@ -289,8 +289,8 @@ blaker_ac_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 40)
 ## Confidence Intervals Bounds (Function)
 
 ```{r}
-blaker_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250, procedure = "MST") {
-  results = blaker_ac_N_unkown(M, m, conf_level)
+blaker_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250) {
+  results = blaker_ac_N_unkown(M, m, conf_level, max_N)
   
   # Check if there are any gaps
   if (any(results$gap)) {
@@ -342,8 +342,8 @@ blaker_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250, procedure =
 ```
 
 ```{r}
-blaker_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250, procedure = "MST") {
-  results <- blaker_ac_N_unkown_vec(M, m, conf_level)
+blaker_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
+  results <- blaker_ac_N_unkown_vec(M, m, conf_level, max_N)
   
   # If there's any gap, just return
   if (any(results$gap)) {

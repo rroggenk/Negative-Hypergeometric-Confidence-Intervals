@@ -61,7 +61,7 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
     # lowest b (which is the same as the one with the lowest coverage prob that is still
     # above the confidence level)
     temp_results = temp_results %>%
-      filter(coverage_prob >= conf_level) %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       group_by(N) %>%
       filter(a == max(a)) %>%
       filter(b == min(b)) %>%
@@ -144,7 +144,7 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
     # Filter out sets with coverage_prob >= conf_level
     # Then pick the acceptance curve with the highest 'a' and the lowest 'b'
     temp_results <- temp_results %>%
-      filter(coverage_prob >= conf_level) %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       group_by(N) %>%
       filter(a == max(a)) %>%
       filter(b == min(b)) %>%

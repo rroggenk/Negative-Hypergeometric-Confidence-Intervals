@@ -274,7 +274,7 @@ all_mc_ac <- function(N, m, conf_level = 0.95) {
     # Filter out the sets with the smallest cardinality and coverage probability >= conf_level 
     if (M >= m) {
       temp_results = temp_results %>%
-        filter(coverage_prob >= conf_level) %>%
+        filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
         group_by(M) %>%
         slice_min(order_by = cardinality, with_ties = TRUE) %>%
         ungroup()
@@ -803,7 +803,7 @@ cmc_ac <- function(N, m, conf_level = 0.95) {
     # above the confidence level)
     if (M >= m) {
       temp_results = temp_results %>%
-        filter(coverage_prob >= conf_level) %>%
+        filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
         group_by(M) %>%
         filter(a == max(a)) %>%
         filter(b == min(b)) %>%
@@ -1033,7 +1033,7 @@ all_mc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
     
     # Filter out the sets with the smallest cardinality and coverage probability >= conf_level 
     temp_results = temp_results %>%
-      filter(coverage_prob >= conf_level) %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       group_by(N) %>%
       slice_min(order_by = cardinality, with_ties = TRUE) %>%
       ungroup()
@@ -1418,8 +1418,8 @@ blaker_ac_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250) {
 }
 
 
-blaker_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250, procedure = "MST") {
-  results = blaker_ac_N_unkown(M, m, conf_level)
+blaker_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250) {
+  results = blaker_ac_N_unkown(M, m, conf_level, max_N)
   
   # Check if there are any gaps
   if (any(results$gap)) {
@@ -1523,7 +1523,7 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
     # lowest b (which is the same as the one with the lowest coverage prob that is still
     # above the confidence level)
     temp_results = temp_results %>%
-      filter(coverage_prob >= conf_level) %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       group_by(N) %>%
       filter(a == max(a)) %>%
       filter(b == min(b)) %>%

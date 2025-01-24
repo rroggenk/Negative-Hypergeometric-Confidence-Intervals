@@ -317,7 +317,7 @@ all_mc_ac_vec <- function(N, m, conf_level = 0.95) {
     # If M_val >= m, we apply the coverage/confidence filter
     if (M_val >= m) {
       temp_results <- temp_results %>%
-        filter(coverage_prob >= conf_level) %>%
+        filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
         group_by(M) %>%
         slice_min(order_by = cardinality, with_ties = TRUE) %>%
         ungroup()
@@ -860,7 +860,7 @@ cmc_ac_vec <- function(N, m, conf_level = 0.95) {
     # in your description).
     if (M_val >= m && nrow(temp_results) > 0) {
       temp_results <- temp_results %>%
-        filter(coverage_prob >= conf_level) %>%
+        filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
         group_by(M) %>%
         filter(a == max(a)) %>%
         filter(b == min(b)) %>%
@@ -1103,7 +1103,7 @@ all_mc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
     # Keep only those with coverage >= conf_level
     # and pick the row(s) with the smallest cardinality.
     temp_results <- temp_results %>%
-      dplyr::filter(coverage_prob >= conf_level) %>%
+      dplyr::filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       dplyr::group_by(N) %>%
       dplyr::slice_min(order_by = cardinality, with_ties = TRUE) %>%
       dplyr::ungroup()
@@ -1450,8 +1450,8 @@ blaker_ac_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
 }
 
 
-blaker_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250, procedure = "MST") {
-  results <- blaker_ac_N_unkown_vec(M, m, conf_level)
+blaker_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
+  results <- blaker_ac_N_unkown_vec(M, m, conf_level, max_N)
   
   # If there's any gap, just return
   if (any(results$gap)) {
@@ -1553,7 +1553,7 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
     # Filter out sets with coverage_prob >= conf_level
     # Then pick the acceptance curve with the highest 'a' and the lowest 'b'
     temp_results <- temp_results %>%
-      filter(coverage_prob >= conf_level) %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
       group_by(N) %>%
       filter(a == max(a)) %>%
       filter(b == min(b)) %>%
