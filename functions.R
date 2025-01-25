@@ -994,63 +994,125 @@ coverage_prob_ACP_N_unknown <- function(M, N, m, conf_level = 0.95, max_N = 1000
 ###################################
 
 all_mc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # Initializing the data frame that the function will output 
+  # Output data frame
   results = data.frame(N = integer(), 
                        a = integer(), 
                        b = integer(), 
                        cardinality = integer(), 
                        coverage_prob = numeric())
   
-  # Setting the initial min_a and min_b, always starts with 0-0
-  min_a = 0
-  min_b = 0
+  # The largest possible b
   max_x = max_N - M
   
+  # Start a,b at (0,0)
+  min_a = 0
+  min_b = 0
+  
+  # Track the minimal cardinality found so far, if any
+  prev_cardinality = 0
+  
   for (N in M:max_N) {
-    # Initializing a data frame that temporarily stores results
+    # cat("N: ", N, "\n")
+    
+    # Temporary results for this N
     temp_results = data.frame(N = integer(), 
                               a = integer(), 
                               b = integer(), 
                               cardinality = integer(), 
                               coverage_prob = numeric())
     
-    # Loops through the a first, making sure it only starts at min_a so that a is 
-    # non-decreasing, stops at a max_x
+    # Flags for the "stop once coverage dips below conf_level"
+    found_min_card_for_thisN <- FALSE
+    min_card_for_thisN       <- NA
+    
+    done_a <- FALSE
+    
     for (a in min_a:max_x) {
-      # Loops through b: starting at the max of a and min_b to make sure that b >= a and 
-      # so that b is non-decreasing, stops at max_x
+      if (done_a) break
+      
+      done_b <- FALSE
+      
       for (b in max(a, min_b):max_x) {
-        # Calculates coverage probability, cardinality, and stores it in data frame
-        coverage_prob = sum_ngh_pmf(N, M, m, a, b)
-        cardinality = b - a + 1
-        temp_results = rbind(temp_results, data.frame(N = N, 
-                                                      a = a, 
-                                                      b = b, 
-                                                      cardinality = cardinality, 
-                                                      coverage_prob = coverage_prob))
-      }
-    }
+        if (done_b) break
+        
+        coverage_prob <- sum_ngh_pmf(N, M, m, a, b)
+        cardinality   <- b - a + 1
+        
+        # cat("a: ", a, ", b: ", b,
+        #     ", card: ", cardinality,
+        #     ", coverage: ", coverage_prob, "\n")
+        
+        # 1) If coverage >= conf_level and we haven't found the minimal-card yet,
+        #    record that we've just found the minimal cardinality for this N.
+        if (!found_min_card_for_thisN && coverage_prob >= conf_level) {
+          found_min_card_for_thisN <- TRUE
+          min_card_for_thisN       <- cardinality
+          
+          # cat(">> Found minimal cardinality for this N =", 
+          #     min_card_for_thisN, 
+          #     "with coverage =", coverage_prob, "\n")
+        }
+        
+        # 2) If we've already found the minimal-card for this N,
+        #    and this row has that same cardinality,
+        #    but coverage dips below conf_level, we break.
+        else if (found_min_card_for_thisN &&
+                 cardinality == min_card_for_thisN &&
+                 coverage_prob < conf_level) {
+          
+          # cat(">> BREAK condition triggered.",
+          #     "Same cardinality =", min_card_for_thisN,
+          #     "but coverage dipped below", conf_level, 
+          #     "(", coverage_prob, ")\n")
+          
+          done_b <- TRUE
+          done_a <- TRUE
+          break
+        }
+        
+        # Store in temp_results (for final filtering)
+        temp_results <- rbind(temp_results, 
+                              data.frame(N = N,
+                                         a = a, 
+                                         b = b, 
+                                         cardinality = cardinality, 
+                                         coverage_prob = coverage_prob))
+        
+      } # end b loop
+    } # end a loop
     
-    # Filter out the sets with the smallest cardinality and coverage probability >= conf_level 
-    temp_results = temp_results %>%
-      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
-      group_by(N) %>%
-      slice_min(order_by = cardinality, with_ties = TRUE) %>%
-      ungroup()
+    # Filter out sets with coverage >= conf_level, 
+    # coverage in [0,1], 
+    # cardinality >= prev_cardinality,
+    # and then pick minimal cardinality sets
+    temp_results <- temp_results %>%
+      dplyr::filter(
+        coverage_prob >= conf_level,
+        coverage_prob <= 1,
+        coverage_prob >= 0,
+        cardinality >= prev_cardinality
+      ) %>%
+      dplyr::group_by(N) %>%
+      dplyr::slice_min(order_by = cardinality, with_ties = TRUE) %>%
+      dplyr::ungroup()
     
-    # Updates min_a and min_b for each iteration 
+    # If valid rows remain, update tracking
     if (nrow(temp_results) > 0) {
+      # Keep a and b non-decreasing across N
       min_a = max(min_a, min(temp_results$a))
       min_b = max(min_b, min(temp_results$b))
       
-      # Store the results from this iteration
+      # The largest cardinality among these minimal-card sets
+      prev_cardinality = max(temp_results$cardinality)
+      
+      # Append to the final results
       results <- rbind(results, temp_results)
     }
-  }
+  } # end N loop
   
-  # Adds a column of the x set
-  filtered_results = results %>%
-    mutate(x_set = paste(a, b, sep = "-"))
+  # Add a "x_set" column
+  filtered_results <- results %>%
+    dplyr::mutate(x_set = paste(a, b, sep = "-"))
   
   return(filtered_results)
 }
@@ -1491,6 +1553,8 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
   max_x = max_N - M
   
   for (N in M:max_N) {
+    # cat("N: ", N, "\n")
+    
     # Initializing a data frame that temporarily stores results
     temp_results = data.frame(N = integer(), 
                               a = integer(), 
@@ -1502,7 +1566,7 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
     
     # Loops through the a first, making sure it only starts at min_a so that a is 
     # non-decreasing, stops at a max_x
-    for (a in min_a:max_x) {
+    for (a in min_a:(min_a+1)) {
       # Loops through b: starting at the max of a and min_b to make sure that b >= a and 
       # so that b is non-decreasing, stops at max_x
       for (b in max(a, min_b):max_x) {
@@ -1514,6 +1578,9 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
                                                       b = b, 
                                                       cardinality = cardinality, 
                                                       coverage_prob = coverage_prob))
+        # cat("a: ", a, ", b: ", b,
+        #     ", card: ", cardinality,
+        #     ", coverage: ", coverage_prob, "\n")
       }
     }
     
@@ -1522,12 +1589,17 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
     # For each N, filters out to choose the acceptance curve with the highest a and the 
     # lowest b (which is the same as the one with the lowest coverage prob that is still
     # above the confidence level)
-    temp_results = temp_results %>%
-      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
-      group_by(N) %>%
-      filter(a == max(a)) %>%
-      filter(b == min(b)) %>%
-      ungroup()
+    temp_results <- temp_results %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1)
+    
+    # If no rows left, skip the group_by part
+    if (nrow(temp_results) > 0) {
+      temp_results <- temp_results %>%
+        group_by(N) %>%
+        filter(a == max(a)) %>%
+        filter(b == min(b)) %>%
+        ungroup()
+    }
     
     # Updates min_a and min_b for each iteration
     if (nrow(temp_results) > 0) {

@@ -326,7 +326,7 @@ Sys.time()
 ##### M = 25, m = 5
 
 ```{r}
-#| eval: false
+#| eval: true
 
 M = 25
 m = 5
@@ -336,12 +336,12 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
-                                          max_N = max_N) %>%
+                                          max_N = max_N, procedure = "MST") %>%
   filter(x <= 25)
 
 average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
@@ -350,7 +350,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
@@ -363,7 +363,7 @@ Sys.time()
 ##### M = 25, m = 15
 
 ```{r}
-#| eval: false
+#| eval: true
 
 M = 25
 m = 15
@@ -373,7 +373,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
@@ -386,7 +386,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
@@ -399,7 +399,7 @@ Sys.time()
 ##### M = 50, m = 5
 
 ```{r}
-#| eval: false
+#| eval: true
 
 M = 50
 m = 5
@@ -409,7 +409,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
@@ -422,7 +422,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
@@ -435,7 +435,7 @@ Sys.time()
 ##### M = 50, m = 15
 
 ```{r}
-#| eval: false
+#| eval: true
 
 M = 50
 m = 15
@@ -445,7 +445,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
@@ -458,7 +458,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 
 Sys.time()
 
@@ -659,13 +659,14 @@ M = 50, m = 15
 -   N: 50 to 200
 
 ```{r}
-# cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 50) 
+minimal_cardinality_ci_N_unkown_vec(M = 25, m = 5, conf_level = 0.95, 
+                                          max_N = 500, procedure = "MST")
 
-# blaker_ac_N_unkown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 205) %>%
-#   filter(N<=200) %>%
-#   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+#cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 50)
 ```
 
 ```{r}
-# cmc_ci_N_unkown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 425)
+mst_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 500)
+
+#cmc_ci_N_unkown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 425)
 ```

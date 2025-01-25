@@ -1046,84 +1046,158 @@ coverage_prob_ACP_N_unknown_vec <- function(M, N, m, conf_level = 0.95, max_N = 
 ###################################
 
 all_mc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # Initialize the output data frame
-  results <- data.frame(
-    N              = integer(),
-    a              = integer(),
-    b              = integer(),
-    cardinality    = integer(),
-    coverage_prob  = numeric()
-  )
   
-  # Start points for a and b
+  # Output data frame
+  results <- data.frame(N = integer(), 
+                        a = integer(), 
+                        b = integer(), 
+                        cardinality = integer(), 
+                        coverage_prob = numeric())
+  
+  max_x <- max_N - M
+  
+  # Start (a, b) at (0,0)
   min_a <- 0
   min_b <- 0
   
-  # We'll not allow a or b to exceed max_x
-  max_x <- max_N - M
+  # Track the minimal cardinality found so far across iterations
+  prev_cardinality <- 0
   
-  # Iterate over N
-  for (N in M:max_N) {
+  # Loop over N
+  for (N_current in M:max_N) {
     
-    # Create all possible (a, b) pairs subject to
-    #   a >= min_a, b >= min_b, and b >= a, up to max_x
-    ab_grid <- expand.grid(
-      a = seq.int(min_a, max_x),
-      b = seq.int(min_b, max_x)
-    ) %>%
-      dplyr::filter(b >= a)
+    # -----------------------------------------------------------------
+    # 1) Construct all candidate (a, b) pairs in the same range
+    #    that the for-loops would explore.
+    #    We only consider a in [min_a, max_x].
+    #    Then for each a, b in [max(a, min_b), max_x].
+    # -----------------------------------------------------------------
+    a_seq <- seq.int(min_a, max_x)
     
-    # If there's nothing to evaluate, skip
-    if (nrow(ab_grid) == 0) {
+    # For each a, figure out the b-range [max(a, min_b), max_x].
+    # We'll build a data frame of all (a, b) in ascending order of a, then b.
+    grid_list <- lapply(a_seq, function(a) {
+      b_start <- max(a, min_b)
+      if (b_start > max_x) {
+        # no valid b
+        return(NULL)
+      } else {
+        b_vals <- seq.int(b_start, max_x)
+        data.frame(a = rep(a, length(b_vals)),
+                   b = b_vals,
+                   stringsAsFactors = FALSE)
+      }
+    })
+    
+    # Combine all into one data frame
+    grid_df <- do.call(rbind, grid_list)
+    if (is.null(grid_df) || nrow(grid_df) == 0) {
+      # No (a, b) pairs to process for this N
       next
     }
     
-    # Compute coverage probabilities in a vectorized manner
-    # (mapply effectively loops internally, but is often faster 
-    #  than writing an explicit R loop. If sum_ngh_pmf() 
-    #  supports vectorization, you can replace mapply with a 
-    #  direct call to sum_ngh_pmf(N, M, m, ab_grid$a, ab_grid$b).)
-    coverage <- mapply(
-      function(a_val, b_val) {
-        sum_ngh_pmf(N, M, m, a_val, b_val)
-      },
-      ab_grid$a,
-      ab_grid$b
-    )
+    # Sort by a ascending, then b ascending (should already be in that order)
+    # but we can ensure by:
+    #   grid_df <- grid_df[order(grid_df$a, grid_df$b), ]
     
-    # Add cardinality (b - a + 1) and coverage to ab_grid
+    # -----------------------------------------------------------------
+    # 2) Compute coverage for all (a, b) in a single vectorized call,
+    #    *if* sum_ngh_pmf can handle vectors. If not, this is effectively
+    #    just a for-loop inside sum_ngh_pmf. 
+    # -----------------------------------------------------------------
+    # Suppose sum_ngh_pmf can take vector arguments:
+    # coverage_vec <- sum_ngh_pmf(N_current, M, m, grid_df$a, grid_df$b)
+    # If not, we do an mapply:
+    coverage_vec <- mapply(function(a, b) {
+      sum_ngh_pmf(N_current, M, m, a, b)
+    }, grid_df$a, grid_df$b)
+    
+    # Card = b - a + 1
+    card_vec <- (grid_df$b - grid_df$a + 1)
+    
+    # -----------------------------------------------------------------
+    # 3) Now we emulate the logic of the nested loops, including:
+    #    - Found minimal card => if coverage dips for same card => break
+    #
+    # We'll do a single pass over the rows in order.
+    # We'll store results until we break.
+    # -----------------------------------------------------------------
+    found_min_card_for_thisN <- FALSE
+    min_card_for_thisN       <- NA
+    out_idx <- integer(0)  # row indices we keep
+    
+    for (i in seq_len(nrow(grid_df))) {
+      cov_i <- coverage_vec[i]
+      card_i <- card_vec[i]
+      
+      # If coverage >= conf_level and minimal card not found yet
+      if (!found_min_card_for_thisN && cov_i >= conf_level) {
+        found_min_card_for_thisN <- TRUE
+        min_card_for_thisN       <- card_i
+      }
+      # If we already found minimal-card, same card, but coverage dips => break
+      else if (found_min_card_for_thisN &&
+               card_i == min_card_for_thisN &&
+               cov_i < conf_level) {
+        # break from the loop
+        break
+      }
+      
+      # Keep this row
+      out_idx <- c(out_idx, i)
+    }
+    
+    # If we collected no rows, then no sense continuing
+    if (!length(out_idx)) {
+      next
+    }
+    
+    # Build a data frame from the kept rows
     temp_results <- data.frame(
-      N             = N,
-      a             = ab_grid$a,
-      b             = ab_grid$b,
-      cardinality   = ab_grid$b - ab_grid$a + 1,
-      coverage_prob = coverage
+      N             = rep(N_current, length(out_idx)),
+      a             = grid_df$a[out_idx],
+      b             = grid_df$b[out_idx],
+      cardinality   = card_vec[out_idx],
+      coverage_prob = coverage_vec[out_idx],
+      stringsAsFactors = FALSE
     )
     
-    # Keep only those with coverage >= conf_level
-    # and pick the row(s) with the smallest cardinality.
+    # -----------------------------------------------------------------
+    # 4) Filter down to coverage >= conf_level, coverage in [0,1],
+    #    cardinality >= prev_cardinality, then pick minimal cardinality sets
+    # -----------------------------------------------------------------
     temp_results <- temp_results %>%
-      dplyr::filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
+      dplyr::filter(
+        coverage_prob >= conf_level,
+        coverage_prob >= 0,
+        coverage_prob <= 1,
+        cardinality >= prev_cardinality
+      ) %>%
       dplyr::group_by(N) %>%
       dplyr::slice_min(order_by = cardinality, with_ties = TRUE) %>%
       dplyr::ungroup()
     
-    # If we found any valid (a, b) intervals, update min_a and min_b
-    # and append to results
+    # If valid rows remain, update tracking
     if (nrow(temp_results) > 0) {
+      # Keep a and b non-decreasing across N
       min_a <- max(min_a, min(temp_results$a))
       min_b <- max(min_b, min(temp_results$b))
       
-      results <- dplyr::bind_rows(results, temp_results)
+      # Update the largest cardinality among these minimal-card sets
+      prev_cardinality <- max(temp_results$cardinality)
+      
+      # Append to the final results
+      results <- rbind(results, temp_results)
     }
-  }
+  } # end for (N_current)
   
-  # Add a column "x_set" that shows "a-b"
+  # Add an "x_set" column
   filtered_results <- results %>%
-    mutate(x_set = paste(a, b, sep = "-"))
+    dplyr::mutate(x_set = paste(a, b, sep = "-"))
   
   return(filtered_results)
 }
+
 
 
 minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 1000, 
@@ -1517,7 +1591,7 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
   for (N_val in seq.int(M, max_N)) {
     # Build all (a, b) pairs (with b >= a) in a single step
     ab_grid <- expand.grid(
-      a = seq.int(min_a, max_x),
+      a = seq.int(min_a, min_a+1),
       b = seq.int(min_b, max_x)
     ) %>%
       filter(b >= a)
@@ -1553,11 +1627,16 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
     # Filter out sets with coverage_prob >= conf_level
     # Then pick the acceptance curve with the highest 'a' and the lowest 'b'
     temp_results <- temp_results %>%
-      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1) %>%
-      group_by(N) %>%
-      filter(a == max(a)) %>%
-      filter(b == min(b)) %>%
-      ungroup()
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1)
+    
+    # If no rows left, skip the group_by part
+    if (nrow(temp_results) > 0) {
+      temp_results <- temp_results %>%
+        group_by(N) %>%
+        filter(a == max(a)) %>%
+        filter(b == min(b)) %>%
+        ungroup()
+    }
     
     # Update min_a, min_b if we found any valid intervals
     if (nrow(temp_results) > 0) {
