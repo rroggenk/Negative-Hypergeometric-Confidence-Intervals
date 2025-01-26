@@ -1046,131 +1046,110 @@ coverage_prob_ACP_N_unknown_vec <- function(M, N, m, conf_level = 0.95, max_N = 
 ###################################
 
 all_mc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  
   # Output data frame
-  results <- data.frame(N = integer(), 
-                        a = integer(), 
-                        b = integer(), 
-                        cardinality = integer(), 
-                        coverage_prob = numeric())
+  results <- data.frame(
+    N              = integer(), 
+    a              = integer(), 
+    b              = integer(), 
+    cardinality    = integer(), 
+    coverage_prob  = numeric()
+  )
   
+  # The largest possible b
   max_x <- max_N - M
   
-  # Start (a, b) at (0,0)
+  # Start a,b at (0,0)
   min_a <- 0
   min_b <- 0
   
-  # Track the minimal cardinality found so far across iterations
+  # Track the minimal cardinality found so far
   prev_cardinality <- 0
   
   # Loop over N
-  for (N_current in M:max_N) {
+  for (N_val in seq.int(M, max_N)) {
+    # We'll store rows for the current N in a list
+    temp_list <- list()
+    list_idx  <- 1
     
-    # -----------------------------------------------------------------
-    # 1) Construct all candidate (a, b) pairs in the same range
-    #    that the for-loops would explore.
-    #    We only consider a in [min_a, max_x].
-    #    Then for each a, b in [max(a, min_b), max_x].
-    # -----------------------------------------------------------------
-    a_seq <- seq.int(min_a, max_x)
-    
-    # For each a, figure out the b-range [max(a, min_b), max_x].
-    # We'll build a data frame of all (a, b) in ascending order of a, then b.
-    grid_list <- lapply(a_seq, function(a) {
-      b_start <- max(a, min_b)
-      if (b_start > max_x) {
-        # no valid b
-        return(NULL)
-      } else {
-        b_vals <- seq.int(b_start, max_x)
-        data.frame(a = rep(a, length(b_vals)),
-                   b = b_vals,
-                   stringsAsFactors = FALSE)
-      }
-    })
-    
-    # Combine all into one data frame
-    grid_df <- do.call(rbind, grid_list)
-    if (is.null(grid_df) || nrow(grid_df) == 0) {
-      # No (a, b) pairs to process for this N
-      next
-    }
-    
-    # Sort by a ascending, then b ascending (should already be in that order)
-    # but we can ensure by:
-    #   grid_df <- grid_df[order(grid_df$a, grid_df$b), ]
-    
-    # -----------------------------------------------------------------
-    # 2) Compute coverage for all (a, b) in a single vectorized call,
-    #    *if* sum_ngh_pmf can handle vectors. If not, this is effectively
-    #    just a for-loop inside sum_ngh_pmf. 
-    # -----------------------------------------------------------------
-    # Suppose sum_ngh_pmf can take vector arguments:
-    # coverage_vec <- sum_ngh_pmf(N_current, M, m, grid_df$a, grid_df$b)
-    # If not, we do an mapply:
-    coverage_vec <- mapply(function(a, b) {
-      sum_ngh_pmf(N_current, M, m, a, b)
-    }, grid_df$a, grid_df$b)
-    
-    # Card = b - a + 1
-    card_vec <- (grid_df$b - grid_df$a + 1)
-    
-    # -----------------------------------------------------------------
-    # 3) Now we emulate the logic of the nested loops, including:
-    #    - Found minimal card => if coverage dips for same card => break
-    #
-    # We'll do a single pass over the rows in order.
-    # We'll store results until we break.
-    # -----------------------------------------------------------------
     found_min_card_for_thisN <- FALSE
     min_card_for_thisN       <- NA
-    out_idx <- integer(0)  # row indices we keep
     
-    for (i in seq_len(nrow(grid_df))) {
-      cov_i <- coverage_vec[i]
-      card_i <- card_vec[i]
+    done_a <- FALSE
+    
+    # Build all (a, b) pairs, but preserve the ascending (a, b) order 
+    # to match your original nested loops exactly.
+    ab_grid <- expand.grid(
+      a = seq.int(min_a, max_x),
+      b = seq.int(min_b, max_x)
+    ) %>%
+      filter(b >= a) %>%
+      arrange(a, b)
+    
+    # We'll do a single for-loop over rows in sorted order, 
+    # but replicate the break logic from the original nested loops.
+    i <- 1
+    while (i <= nrow(ab_grid) && !done_a) {
+      a_val <- ab_grid$a[i]
+      b_val <- ab_grid$b[i]
       
-      # If coverage >= conf_level and minimal card not found yet
-      if (!found_min_card_for_thisN && cov_i >= conf_level) {
+      # If we jumped to a new 'a' but have already 'done_a', break
+      # We replicate the logic that if done_b was triggered, we also break out of the 'a' loop.
+      # We detect if we've advanced beyond the initial 'a_val'.
+      # Because the original code resets 'b' each time 'a' increments,
+      # we need to check whether 'b' < a => if so, we keep going.
+      
+      coverage_prob <- sum_ngh_pmf(N_val, M, m, a_val, b_val)
+      cardinality   <- b_val - a_val + 1
+      
+      # 1) If coverage >= conf_level and we haven't found the minimal-card yet,
+      #    record that we've found the minimal cardinality for this N.
+      if (!found_min_card_for_thisN && coverage_prob >= conf_level) {
         found_min_card_for_thisN <- TRUE
-        min_card_for_thisN       <- card_i
+        min_card_for_thisN       <- cardinality
       }
-      # If we already found minimal-card, same card, but coverage dips => break
+      # 2) If we've already found the minimal-card for this N and this row
+      #    has that same cardinality, but coverage dips below conf_level, we break.
       else if (found_min_card_for_thisN &&
-               card_i == min_card_for_thisN &&
-               cov_i < conf_level) {
-        # break from the loop
-        break
+               cardinality == min_card_for_thisN &&
+               coverage_prob < conf_level) {
+        # Trigger the break out of the 'b' loop and 'a' loop
+        done_a <- TRUE
       }
       
-      # Keep this row
-      out_idx <- c(out_idx, i)
+      # Accumulate this row into our temp_list
+      temp_list[[list_idx]] <- data.frame(
+        N             = N_val,
+        a             = a_val, 
+        b             = b_val, 
+        cardinality   = cardinality, 
+        coverage_prob = coverage_prob
+      )
+      list_idx <- list_idx + 1
+      
+      i <- i + 1
     }
     
-    # If we collected no rows, then no sense continuing
-    if (!length(out_idx)) {
-      next
+    # Combine all rows for this N
+    if (list_idx > 1) {
+      temp_results <- do.call(rbind, temp_list)
+    } else {
+      # No rows? then skip
+      temp_results <- data.frame(
+        N             = integer(), 
+        a             = integer(), 
+        b             = integer(), 
+        cardinality   = integer(), 
+        coverage_prob = numeric()
+      )
     }
     
-    # Build a data frame from the kept rows
-    temp_results <- data.frame(
-      N             = rep(N_current, length(out_idx)),
-      a             = grid_df$a[out_idx],
-      b             = grid_df$b[out_idx],
-      cardinality   = card_vec[out_idx],
-      coverage_prob = coverage_vec[out_idx],
-      stringsAsFactors = FALSE
-    )
-    
-    # -----------------------------------------------------------------
-    # 4) Filter down to coverage >= conf_level, coverage in [0,1],
-    #    cardinality >= prev_cardinality, then pick minimal cardinality sets
-    # -----------------------------------------------------------------
+    # Filter out sets with coverage >= conf_level, coverage in [0,1],
+    # cardinality >= prev_cardinality, then pick minimal cardinality sets.
     temp_results <- temp_results %>%
       dplyr::filter(
         coverage_prob >= conf_level,
-        coverage_prob >= 0,
         coverage_prob <= 1,
+        coverage_prob >= 0,
         cardinality >= prev_cardinality
       ) %>%
       dplyr::group_by(N) %>%
@@ -1179,19 +1158,18 @@ all_mc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
     
     # If valid rows remain, update tracking
     if (nrow(temp_results) > 0) {
-      # Keep a and b non-decreasing across N
       min_a <- max(min_a, min(temp_results$a))
       min_b <- max(min_b, min(temp_results$b))
       
-      # Update the largest cardinality among these minimal-card sets
+      # The largest cardinality among these minimal-card sets
       prev_cardinality <- max(temp_results$cardinality)
       
       # Append to the final results
       results <- rbind(results, temp_results)
     }
-  } # end for (N_current)
+  }
   
-  # Add an "x_set" column
+  # Add a "x_set" column
   filtered_results <- results %>%
     dplyr::mutate(x_set = paste(a, b, sep = "-"))
   
@@ -1200,7 +1178,7 @@ all_mc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 
 
-minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 1000, 
+minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 1000,
                                                 procedure = "MST") {
   # Choose the procedure
   if (procedure == "MST") {
@@ -1212,25 +1190,25 @@ minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N =
   } else {
     stop("Invalid procedure. Choose from 'MST', 'CG', or 'BK'.")
   }
-  
+
   # Determine max_x from the second-highest 'a'
   unique_a_values <- sort(unique(results$a), decreasing = TRUE)
   max_x <- if (length(unique_a_values) > 1) unique_a_values[2] else unique_a_values[1]
-  
+
   x_values <- seq.int(0, max_x)
   row_list <- vector("list", length(x_values))
-  
+
   for (i in seq_along(x_values)) {
     x_val <- x_values[i]
-    
+
     first_occurrence <- results %>% filter(a <= x_val, x_val <= b) %>% slice(1)
     last_occurrence  <- results %>% filter(a <= x_val, x_val <= b) %>% slice(n())
-    
+
     if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
       ci_lb <- first_occurrence$N
       ci_ub <- last_occurrence$N
       ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
-      
+
       row_list[[i]] <- data.frame(
         x = x_val,
         ci_lb = ci_lb,
@@ -1240,7 +1218,7 @@ minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N =
       )
     }
   }
-  
+
   ci_results <- do.call(rbind, row_list[!sapply(row_list, is.null)])
   return(ci_results)
 }
@@ -1255,16 +1233,16 @@ minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N =
 
 mst_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
   results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
-  
+
   row_list <- vector("list", length = (max_N - M + 1))
   idx <- 1
-  
+
   min_a <- 0
   min_b <- 0
-  
+
   for (current_N in seq.int(M, max_N)) {
     subset_results <- results %>% filter(N == current_N)
-    
+
     if (nrow(subset_results) == 1) {
       chosen_row <- subset_results
     } else {
@@ -1273,16 +1251,16 @@ mst_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
         arrange(desc(coverage_prob), desc(a), desc(b)) %>%
         slice(1)
     }
-    
+
     if (nrow(chosen_row) > 0) {
       min_a <- max(min_a, chosen_row$a)
       min_b <- max(min_b, chosen_row$b)
-      
+
       row_list[[idx]] <- chosen_row
       idx <- idx + 1
     }
   }
-  
+
   final_results <- do.call(rbind, row_list[1:(idx - 1)])
   final_results <- final_results %>% arrange(N)
   return(final_results)
@@ -1298,16 +1276,16 @@ mst_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
   results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
-  
+
   row_list <- vector("list", length = (max_N - M + 1))
   idx <- 1
-  
+
   min_a <- 0
   min_b <- 0
-  
+
   for (current_N in seq.int(M, max_N)) {
     subset_results <- results %>% filter(N == current_N)
-    
+
     if (nrow(subset_results) == 1) {
       chosen_row <- subset_results
     } else {
@@ -1316,16 +1294,16 @@ cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
         arrange(a, b) %>%
         slice(1)
     }
-    
+
     if (nrow(chosen_row) > 0) {
       min_a <- max(min_a, chosen_row$a)
       min_b <- max(min_b, chosen_row$b)
-      
+
       row_list[[idx]] <- chosen_row
       idx <- idx + 1
     }
   }
-  
+
   final_results <- do.call(rbind, row_list[1:(idx - 1)])
   final_results <- final_results %>% arrange(N)
   return(final_results)
@@ -1341,16 +1319,16 @@ cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
   results <- all_mc_ac_N_unknown_vec(M, m, conf_level, max_N)
-  
+
   row_list <- vector("list", length = (max_N - M + 1))
   idx <- 1
-  
+
   min_a <- 0
   min_b <- 0
-  
+
   for (current_N in seq.int(M, max_N)) {
     subset_results <- results %>% filter(N == current_N)
-    
+
     if (nrow(subset_results) == 1) {
       chosen_row <- subset_results
     } else {
@@ -1359,16 +1337,16 @@ bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
         arrange(desc(a), desc(b)) %>%
         slice(1)
     }
-    
+
     if (nrow(chosen_row) > 0) {
       min_a <- max(min_a, chosen_row$a)
       min_b <- max(min_b, chosen_row$b)
-      
+
       row_list[[idx]] <- chosen_row
       idx <- idx + 1
     }
   }
-  
+
   final_results <- do.call(rbind, row_list[1:(idx - 1)])
   final_results <- final_results %>% arrange(N)
   return(final_results)
