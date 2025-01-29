@@ -432,10 +432,9 @@ all_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
                        cardinality = integer(), 
                        coverage_prob = numeric())
   
-  # The largest possible b
-  max_x = max_N - M
-  
   for (N in M:max_N) {
+    # The largest possible a/b
+    max_x = N - M
     
     # Temporary results for this N
     temp_results = data.frame(N = integer(), 
@@ -491,52 +490,80 @@ all_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 ```{r}
 all_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  max_x <- max_N - M
+  # We'll collect final data for each N in a list
+  all_results_list <- vector("list", length = (max_N - M + 1))
   
-  # (1) Build triangular data frame of (a,b) with a <= b
-  ab_df <- do.call(
-    rbind,
-    lapply(0:max_x, function(a_val) {
-      data.frame(a = a_val, b = a_val:max_x)
-    })
-  )
+  # Index to store in our list
+  idx <- 1
   
-  # (2) Combine with N in [M..max_N]
-  N_seq <- seq.int(M, max_N)
-  df_full <- data.frame(
-    N = rep(N_seq, each = nrow(ab_df)),
-    a = rep(ab_df$a, times = length(N_seq)),
-    b = rep(ab_df$b, times = length(N_seq))
-  )
+  # Loop from N = M to N = max_N
+  for (N_val in seq.int(M, max_N)) {
+    # The largest possible b = N_val - M
+    max_x <- N_val - M
+    
+    # Build all (a, b) pairs with 0 <= a <= max_x, 0 <= b <= max_x, and b >= a
+    ab_grid <- expand.grid(
+      a = seq.int(0, max_x),
+      b = seq.int(0, max_x)
+    ) %>%
+      filter(b >= a)
+    
+    # Calculate coverage_prob and cardinality
+    coverage_vec <- mapply(
+      FUN = function(a_val, b_val) {
+        sum_ngh_pmf(N_val, M, m, a_val, b_val)
+      },
+      ab_grid$a,
+      ab_grid$b
+    )
+    
+    cardinality_vec <- ab_grid$b - ab_grid$a + 1
+    
+    # Combine columns into a temporary data frame
+    temp_results <- data.frame(
+      N             = N_val,
+      a             = ab_grid$a,
+      b             = ab_grid$b,
+      cardinality   = cardinality_vec,
+      coverage_prob = coverage_vec
+    )
+    
+    # Filter out sets based on coverage
+    temp_results <- temp_results %>%
+      filter(
+        coverage_prob >= conf_level,
+        coverage_prob <= 1,
+        coverage_prob >= 0,
+        a <= b
+      )
+    
+    # Store results if we got any valid rows
+    if (nrow(temp_results) > 0) {
+      all_results_list[[idx]] <- temp_results
+      idx <- idx + 1
+    }
+  }
   
-  # (3) Vectorized coverage
-  coverage_vec <- mapply(
-    FUN = function(Ni, ai, bi) {
-      sum_ngh_pmf(Ni, M, m, ai, bi)
-    },
-    df_full$N,
-    df_full$a,
-    df_full$b
-  )
+  # Combine everything into one data frame
+  # (Only up to idx - 1, since we might not have used the entire list)
+  if (idx > 1) {
+    combined_results <- do.call(rbind, all_results_list[1:(idx - 1)])
+  } else {
+    # If no results found at all, return an empty data frame with the same structure
+    combined_results <- data.frame(
+      N = integer(),
+      a = integer(),
+      b = integer(),
+      cardinality = integer(),
+      coverage_prob = numeric()
+    )
+  }
   
-  cardinality_vec <- df_full$b - df_full$a + 1
+  # Add a "x_set" column
+  filtered_results <- combined_results %>%
+    mutate(x_set = paste(a, b, sep = "-"))
   
-  # (4) Add columns
-  df_full$coverage_prob <- coverage_vec
-  df_full$cardinality   <- cardinality_vec
-  
-  # (5) Filter coverage >= conf_level & coverage in [0,1]
-  df_filter <- subset(
-    df_full,
-    coverage_prob >= conf_level &
-      coverage_prob <= 1 &
-      coverage_prob >= 0
-  )
-  
-  # (6) Add x_set column
-  df_filter$x_set <- paste(df_filter$a, df_filter$b, sep = "-")
-  
-  return(df_filter)
+  return(filtered_results)
 }
 ```
 
@@ -994,6 +1021,8 @@ ggplot() +
 ```
 
 ```{r}
+#| eval: false
+
 custom_colors <- c(
   "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d", "#666666", 
   "#0173b2", "#de8f05", "#029e73", "#d55e00", "#cc78bc", "#ca9161", "#fbafe4", "#949494", 
@@ -1057,7 +1086,7 @@ mst_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
     # print(min(subset_results$cardinality))
     
     chosen_row <- subset_results %>%
-      filter(cardinality >= previous_cardinality) %>%
+      # filter(cardinality >= previous_cardinality) %>%
       filter(a >= min_a, b >= min_b) %>% 
       filter(cardinality == min(cardinality)) %>%  
       arrange(desc(coverage_prob), desc(a), desc(b)) %>% 
@@ -1077,59 +1106,10 @@ mst_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 }
 ```
 
-N = 25: 0-0
-
-N = 26: 0-1
-
-N = 27: 0-2
-
-N = 28: 0-3
-
-N = 29: 1-4
-
-N = 30: 1-5
-
-N = 31: 1-6
-
-N = 32: 1-6
-
-N = 33: 2-7
-
-N = 34: 2-8
-
-N = 35: 3-9
-
-N = 36: 3-10
-
-N = 37: 3-10
-
-N = 38: 3-11
-
-N = 39:
-
-N = 40:
-
 ```{r}
-all_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 50) %>%
-  filter(N == 39) %>%
-  filter(cardinality >= 9) %>%
-  filter(a >= 3, b >= 11) %>% 
-  filter(cardinality == min(cardinality)) %>%  
-  arrange(desc(coverage_prob), desc(a), desc(b))
-
-  # filter(cardinality >= 9) %>%
-  # filter(a >= 17, b >= 25) %>%
-  # filter(cardinality == min(cardinality)) %>%
-  # arrange(desc(coverage_prob), desc(a), desc(b))
-```
-
-```{r}
-test <- mst_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 49)
-test
-```
-
-```{r}
-mst_ac_N_unknown(M = 10, m = 5, conf_level = 0.95, max_N = 40)
+Sys.time()
+mst_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+Sys.time()
 ```
 
 ## CG Acceptance Curves (Function)
@@ -1162,7 +1142,7 @@ cg_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
     # print(min(subset_results$cardinality))
     
     chosen_row <- subset_results %>%
-      filter(cardinality >= previous_cardinality) %>%
+      # filter(cardinality >= previous_cardinality) %>%
       filter(a >= min_a, b >= min_b) %>% 
       filter(cardinality == min(cardinality)) %>%  
       arrange(a, b) %>%
@@ -1180,6 +1160,13 @@ cg_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
   
   return(final_results)
 }
+```
+
+```{r}
+Sys.time()
+test<- cg_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+test
+Sys.time()
 ```
 
 ```{r}
@@ -1216,7 +1203,7 @@ bk_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
     # print(min(subset_results$cardinality))
     
     chosen_row <- subset_results %>%
-      filter(cardinality >= previous_cardinality) %>%
+      # filter(cardinality >= previous_cardinality) %>%
       filter(a >= min_a, b >= min_b) %>% 
       filter(cardinality == min(cardinality)) %>%  
       arrange(desc(a), desc(b)) %>% 
@@ -1237,9 +1224,10 @@ bk_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
-bk_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 50)
-
-bk_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 50)
+Sys.time()
+test<- bk_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+test
+Sys.time()
 ```
 
 ## Confidence Intervals Bounds (Function)
@@ -1310,11 +1298,11 @@ minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N =
                                                 procedure = "MST") {
   # Choose the procedure
   if (procedure == "MST") {
-    results <- mst_ac_N_unknown_vec(M, m, conf_level, max_N)
+    results <- mst_ac_N_unknown(M, m, conf_level, max_N)
   } else if (procedure == "CG") {
-    results <- cg_ac_N_unknown_vec(M, m, conf_level, max_N)
+    results <- cg_ac_N_unknown(M, m, conf_level, max_N)
   } else if (procedure == "BK") {
-    results <- bk_ac_N_unknown_vec(M, m, conf_level, max_N)
+    results <- bk_ac_N_unknown(M, m, conf_level, max_N)
   } else {
     stop("Invalid procedure. Choose from 'MST', 'CG', or 'BK'.")
   }

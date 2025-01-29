@@ -26,9 +26,9 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
   # Setting the initial min_a and min_b, always starts with 0-0
   min_a = 0
   min_b = 0
-  max_x = max_N - M
   
   for (N in M:max_N) {
+    max_x = N - M
     # cat("N: ", N, "\n")
     
     # Initializing a data frame that temporarily stores results
@@ -113,10 +113,10 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
   # Start with these constraints
   min_a <- 0
   min_b <- 0
-  max_x <- max_N - M
   
   # Loop over N from M up to max_N
   for (N_val in seq.int(M, max_N)) {
+    max_x <- N_val - M
     # Build all (a, b) pairs (with b >= a) in a single step
     ab_grid <- expand.grid(
       a = seq.int(min_a, max_x),
@@ -190,11 +190,15 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
 ```
 
 ```{r}
-cmc_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 100)
+Sys.time()
+test <- cmc_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 100)
+Sys.time()
 ```
 
 ```{r}
-cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 100)
+Sys.time()
+test1 <- cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 100)
+Sys.time()
 ```
 
 ## Confidence Intervals Bounds (Function)
@@ -248,7 +252,7 @@ cmc_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 250) {
 ```
 
 ```{r}
-cmc_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250, procedure = "MST") {
+cmc_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
   results <- cmc_ac_N_unknown_vec(M, m, conf_level, max_N)
   
   unique_a_values <- sort(unique(results$a), decreasing = TRUE)
