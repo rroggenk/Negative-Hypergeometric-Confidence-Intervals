@@ -30,9 +30,13 @@ ngh_cdf = function(x, N, M, m, lower_tail = TRUE) {
 
 
 sum_ngh_pmf <- function(N, M, m, min_x, max_x) {
-  x_seq <- seq.int(min_x, max_x)
-  pmf_values <- sapply(x_seq, function(xx) ngh_pmf(xx, N, M, m))
-  return(sum(pmf_values))
+  sum_pmf = 0
+  for (x in min_x:max_x) {
+    if (x >= 0 && x <= (N - M)) {
+      sum_pmf = sum_pmf + ngh_pmf(x, N, M, m)
+    }
+  }
+  return(sum_pmf)
 }
 
 
