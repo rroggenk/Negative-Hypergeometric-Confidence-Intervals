@@ -4,12 +4,19 @@
 #---------------------------------#
 ###################################
 
-ngh_pmf = function(x, N, M, m) {
-  numerator = choose(m + x - 1, m - 1) * choose(N - m - x, M - m)
-  denominator = choose(N, M)
-  result = numerator / denominator
+ngh_pmf <- function(x, N, M, m) {
+  # Conditions: check supports
+  if (x > (N - M) || N < M || m > M) {
+    return(0)
+  }
+  
+  numerator <- choose(m + x - 1, m - 1) * choose(N - m - x, M - m)
+  denominator <- choose(N, M)
+  result <- numerator / denominator
+  
   return(result)
 }
+
 
 
 ngh_cdf = function(x, N, M, m, lower_tail = TRUE) {

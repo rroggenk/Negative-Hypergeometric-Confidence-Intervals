@@ -120,21 +120,6 @@ expected_length_N_unknown <- function(data_frame,
   
   return(results)
 }
-
-```
-
-```{r}
-# test <- minimal_cardinality_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.95, max_N = 100, 
-#                                 procedure = "CG")
-# 
-# ex_length <- expected_length_N_unknown(data_frame = test, 
-#                                       lb_col_name = "ci_lb", 
-#                                       ub_col_name = "ci_ub", 
-#                                       M = 10,  # fixed M
-#                                       m = 5,  # fixed m
-#                                       N_max = 20  # largest N value you want to calculate
-#                                       )
-# ex_length
 ```
 
 # Average Length Function
@@ -402,7 +387,7 @@ Sys.time()
 ##### M = 50, m = 5
 
 ```{r}
-#| eval: true
+#| eval: false
 
 M = 50
 m = 5
@@ -412,7 +397,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -426,7 +411,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -480,7 +465,7 @@ Sys.time()
 ##### M = 25, m = 5
 
 ```{r}
-#| eval: true
+#| eval: false
 
 M = 25
 m = 5
@@ -490,7 +475,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -504,7 +489,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -518,7 +503,7 @@ Sys.time()
 ##### M = 25, m = 15
 
 ```{r}
-#| eval: true
+#| eval: false
 
 M = 25
 m = 15
@@ -528,7 +513,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -542,7 +527,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -556,7 +541,7 @@ Sys.time()
 ##### M = 50, m = 5
 
 ```{r}
-#| eval: true
+#| eval: false
 
 M = 50
 m = 5
@@ -566,7 +551,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -580,7 +565,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -594,7 +579,7 @@ Sys.time()
 ##### M = 50, m = 15
 
 ```{r}
-#| eval: true
+#| eval: false
 
 M = 50
 m = 15
@@ -604,7 +589,7 @@ N_values = M:200
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -618,7 +603,7 @@ Sys.time()
 ```
 
 ```{r}
-#| eval: true
+#| eval: false
 
 Sys.time()
 
@@ -649,7 +634,7 @@ N_values = M:200
 Sys.time()
 
 CI <- minimal_cardinality_ci_N_unkown(M = M, m = m, conf_level = conf_level, 
-                                      max_N = max_N, procedure = "MST") %>%
+                                      max_N = max_N, procedure = "BK") %>%
   filter(x <= 25)
 
 average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
@@ -662,7 +647,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -687,7 +672,7 @@ N_values = M:200
 Sys.time()
 
 CI <- minimal_cardinality_ci_N_unkown(M = M, m = m, conf_level = conf_level, 
-                                      max_N = max_N, procedure = "MST") %>%
+                                      max_N = max_N, procedure = "BK") %>%
   filter(x <= 25)
 
 average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
@@ -700,7 +685,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -725,7 +710,7 @@ N_values = M:200
 Sys.time()
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
-                                      max_N = max_N, procedure = "MST") %>%
+                                      max_N = max_N, procedure = "BK") %>%
   filter(x <= 25)
 
 average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
@@ -738,7 +723,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -763,7 +748,7 @@ N_values = M:200
 Sys.time()
 
 CI <- minimal_cardinality_ci_N_unkown(M = M, m = m, conf_level = conf_level, 
-                                      max_N = max_N, procedure = "MST") %>%
+                                      max_N = max_N, procedure = "BK") %>%
   filter(x <= 25)
 
 average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
@@ -776,7 +761,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -939,6 +924,158 @@ Sys.time()
 
 #### CMC
 
+##### M = 25, m = 5
+
+```{r}
+#| eval: false
+
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 505
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
+##### M = 25, m = 15
+
+```{r}
+#| eval: false
+
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
+##### M = 50, m = 5
+
+```{r}
+#| eval: false
+
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 1200
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
+##### M = 50, m = 15
+
+```{r}
+#| eval: false
+
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 220
+N_values = M:200
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+average_length(data_frame = CI, lb_col_name = "ci_lb", ub_col_name = "ci_ub")
+
+Sys.time()
+```
+
+```{r}
+#| eval: false
+
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(N <= 200) %>%
+  summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
+
+Sys.time()
+```
+
 ### Plot
 
 ```{r}
@@ -972,7 +1109,8 @@ M = 50, m = 15
 ```{r}
 Sys.time()
 
-mst_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 505)
+mst_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 505)
+# max_N = 505
 
 Sys.time()
 ```
@@ -980,7 +1118,12 @@ Sys.time()
 ```{r}
 Sys.time()
 
-mst_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+all_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+
+Sys.time()
+
+mst_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+# max_N = 205
 
 Sys.time()
 ```
@@ -988,7 +1131,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-mst_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 220)
+mst_ac_N_unknown(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
 
 Sys.time()
 ```
@@ -996,7 +1139,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-mst_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
+mst_ac_N_unknown(M = 50, m = 15, conf_level = 0.95, max_N = 220)
 
 Sys.time()
 ```
@@ -1004,7 +1147,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-cg_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 600)
+cg_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 600)
 
 Sys.time()
 ```
@@ -1012,7 +1155,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-cg_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 300)
+cg_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 300)
 
 Sys.time()
 ```
@@ -1020,7 +1163,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-cg_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
+cg_ac_N_unknown(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
 
 Sys.time()
 ```
@@ -1028,7 +1171,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-cg_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 300)
+cg_ac_N_unknown(M = 50, m = 15, conf_level = 0.95, max_N = 300)
 
 Sys.time()
 ```
@@ -1036,7 +1179,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-bk_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 600)
+bk_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 600)
 
 Sys.time()
 ```
@@ -1044,7 +1187,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-bk_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 300)
+bk_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 300)
 
 Sys.time()
 ```
@@ -1052,7 +1195,7 @@ Sys.time()
 ```{r}
 Sys.time()
 
-bk_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
+bk_ac_N_unknown(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
 
 Sys.time()
 ```
@@ -1060,7 +1203,39 @@ Sys.time()
 ```{r}
 Sys.time()
 
-bk_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 300)
+bk_ac_N_unknown(M = 50, m = 15, conf_level = 0.95, max_N = 300)
+
+Sys.time()
+```
+
+```{r}
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 600)
+
+Sys.time()
+```
+
+```{r}
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 300)
+
+Sys.time()
+```
+
+```{r}
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
+
+Sys.time()
+```
+
+```{r}
+Sys.time()
+
+cmc_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 300)
 
 Sys.time()
 ```
