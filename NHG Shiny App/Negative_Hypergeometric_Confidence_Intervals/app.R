@@ -18,6 +18,7 @@
 library(shiny)
 library(tidyverse)
 library(extraDistr)
+library(data.table)
 library(DT)  # Load DT for data tables
 
 source('../../functions.R', encoding = 'UTF-8')
