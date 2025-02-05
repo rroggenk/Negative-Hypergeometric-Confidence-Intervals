@@ -340,7 +340,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+mst_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -378,7 +378,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+mst_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -416,7 +416,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+mst_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -454,7 +454,7 @@ Sys.time()
 
 Sys.time()
 
-mst_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+mst_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -494,7 +494,7 @@ Sys.time()
 
 Sys.time()
 
-cg_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cg_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -532,7 +532,7 @@ Sys.time()
 
 Sys.time()
 
-cg_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cg_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -570,7 +570,7 @@ Sys.time()
 
 Sys.time()
 
-cg_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cg_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -608,7 +608,7 @@ Sys.time()
 
 Sys.time()
 
-cg_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cg_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -648,7 +648,7 @@ Sys.time()
 
 Sys.time()
 
-bk_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -686,7 +686,7 @@ Sys.time()
 
 Sys.time()
 
-bk_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -724,7 +724,7 @@ Sys.time()
 
 Sys.time()
 
-bk_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -762,7 +762,7 @@ Sys.time()
 
 Sys.time()
 
-bk_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+bk_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -1129,7 +1129,7 @@ Sys.time()
 Sys.time()
 
 mst_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
-# max_N =
+# max_N = 1160
 
 Sys.time()
 ```
@@ -1165,7 +1165,7 @@ Sys.time()
 Sys.time()
 
 cg_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
-# max_N =
+# max_N = 1165
 
 Sys.time()
 ```
@@ -1201,7 +1201,7 @@ Sys.time()
 Sys.time()
 
 bk_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
-# max_N =
+# max_N = 1000
 
 Sys.time()
 ```
