@@ -1624,81 +1624,98 @@ blaker_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
 #---------------------------------#
 ###################################
 
-cmc_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 250) {
-  # Initialize list to hold candidate acceptance curves
-  results <- list()
+cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
+  # Initialize the final results
+  results <- data.frame(
+    N              = integer(),
+    a              = integer(),
+    b              = integer(),
+    cardinality    = integer(),
+    coverage_prob  = numeric()
+  )
   
-  # Initialize state variables to enforce non-decreasing a and b across N
+  # Start with these constraints
   min_a <- 0
   min_b <- 0
   
-  # Loop over N from M to max_N
+  # Loop over N from M up to max_N
   for (N_val in seq.int(M, max_N)) {
-    max_x <- N_val - M  # possible values for a and b are in 0:max_x
-    candidate_found <- FALSE
-    candidate <- NULL
+    max_x <- N_val - M
+    # Build all (a, b) pairs (with b >= a) in a single step
+    ab_grid <- expand.grid(
+      a = seq.int(min_a, min(min_a + 5, max_x)),
+      # a = seq.int(min_a, min_a+1),
+      b = seq.int(min_b, max_x)
+    ) %>%
+      filter(b >= a)
     
-    # For CMC, we want the acceptance curve with the highest a (and, if tied, the smallest b).
-    # So iterate a in descending order, starting at the highest possible value.
-    for (a_val in seq(from = max_x, to = min_a, by = -1)) {
-      # b must be at least max(a_val, min_b) to ensure b >= a and meet the non-decreasing constraint.
-      b_start <- max(a_val, min_b)
-      # For a given a, scan b in ascending order so that the first valid b is the smallest.
-      for (b_val in seq(from = b_start, to = max_x)) {
-        cov_prob <- sum_ngh_pmf(N_val, M, m, a_val, b_val)
-        # Check that the candidate meets the coverage condition (and is a valid probability)
-        if (cov_prob >= conf_level && cov_prob <= 1 && cov_prob >= 0) {
-          candidate <- list(
-            N = N_val,
-            a = a_val,
-            b = b_val,
-            cardinality = b_val - a_val + 1,
-            coverage_prob = cov_prob
-          )
-          candidate_found <- TRUE
-          break  # stop scanning b once a valid candidate is found for this a
-        }
-      }
-      if (candidate_found) {
-        # Since we iterate a in descending order, the first valid candidate is optimal.
-        break
-      }
+    # Compute coverage probability in a vectorized manner
+    if (nrow(ab_grid) > 0) {
+      coverage_vec <- mapply(
+        FUN = function(a_val, b_val) {
+          sum_ngh_pmf(N_val, M, m, a_val, b_val)
+        },
+        ab_grid$a,
+        ab_grid$b
+      )
+      
+      temp_results <- data.frame(
+        N             = N_val,
+        a             = ab_grid$a,
+        b             = ab_grid$b,
+        cardinality   = ab_grid$b - ab_grid$a + 1,
+        coverage_prob = coverage_vec
+      )
+    } else {
+      # If there's no valid (a,b) pair, skip
+      temp_results <- data.frame(
+        N             = integer(),
+        a             = integer(),
+        b             = integer(),
+        cardinality   = integer(),
+        coverage_prob = numeric()
+      )
     }
     
-    # If a candidate was found for this N, update the lower bound state and record the candidate.
-    if (!is.null(candidate)) {
-      min_a <- candidate$a  # update: subsequent N must have a >= candidate$a
-      min_b <- candidate$b  # update: subsequent N must have b >= candidate$b
-      results[[length(results) + 1]] <- candidate
+    # Filter out sets with coverage_prob >= conf_level
+    # Then pick the acceptance curve with the highest 'a' and the lowest 'b'
+    temp_results <- temp_results %>%
+      filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1)
+    
+    # If no rows left, skip the group_by part
+    if (nrow(temp_results) > 0) {
+      temp_results <- temp_results %>%
+        group_by(N) %>%
+        filter(a == max(a)) %>%
+        filter(b == min(b)) %>%
+        ungroup()
     }
-    # (If no candidate is found for a given N, that N is skipped.)
+    
+    # Update min_a, min_b if we found any valid intervals
+    if (nrow(temp_results) > 0) {
+      min_a <- max(min_a, min(temp_results$a))
+      min_b <- max(min_b, min(temp_results$b))
+    }
+    
+    # Append to main results
+    results <- rbind(results, temp_results)
   }
   
-  # If no valid candidate was found at all, return an empty data.frame with the expected structure.
-  if (length(results) == 0) {
-    return(data.frame(
-      N = integer(),
-      a = integer(),
-      b = integer(),
-      cardinality = integer(),
-      coverage_prob = numeric(),
-      x_set = character(),
-      stringsAsFactors = FALSE
-    ))
-  }
+  # Arrange by N in ascending order
+  filtered_results <- results %>%
+    arrange(N)
   
-  # Combine the accepted curves into a data.table, add the x_set column, and arrange columns.
-  dt <- rbindlist(results, use.names = TRUE, fill = TRUE)
-  dt[, x_set := paste(a, b, sep = "-")]
-  setcolorder(dt, c("N", "a", "b", "cardinality", "coverage_prob", "x_set"))
+  # Add x_set column "a-b"
+  filtered_results <- filtered_results %>%
+    mutate(x_set = paste(a, b, sep = "-"))
   
-  return(as.data.frame(dt))
+  return(filtered_results)
 }
 
 
 
 cmc_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
-  results <- cmc_ac_N_unknown_direct(M, m, conf_level, max_N)
+  results <- cmc_ac_N_unknown_vec(M, m, conf_level, max_N)
   
   unique_a_values <- sort(unique(results$a), decreasing = TRUE)
   max_x <- if (length(unique_a_values) > 1) unique_a_values[2] else unique_a_values[1]

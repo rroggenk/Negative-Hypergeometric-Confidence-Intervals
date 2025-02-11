@@ -38,16 +38,10 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
                               cardinality = integer(), 
                               coverage_prob = numeric())
     
-    # Find all possible acceptance curves that have non-decreasing a and b
-    
-    # Loops through the a first, making sure it only starts at min_a so that a is 
-    # non-decreasing, stops at a max_x
-    # for (a in min_a:(min_a+1)) {
-    for (a in min_a:max_x) {
-      # Loops through b: starting at the max of a and min_b to make sure that b >= a and 
-      # so that b is non-decreasing, stops at max_x
+    # Loop through possible 'a' values (ensuring non-decreasing a)
+    for (a in min_a:min(min_a + 5, max_x)) {
+      # Loop through b's (starting at max(a, min_b) to ensure b >= a and non-decreasing b)
       for (b in max(a, min_b):max_x) {
-        # Calculates coverage probability, cardinality, and stores it in data frame
         coverage_prob = sum_ngh_pmf(N, M, m, a, b)
         cardinality = b - a + 1
         temp_results = rbind(temp_results, data.frame(N = N, 
@@ -55,21 +49,18 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
                                                       b = b, 
                                                       cardinality = cardinality, 
                                                       coverage_prob = coverage_prob))
-        # cat("a: ", a, ", b: ", b,
-        #     ", card: ", cardinality,
-        #     ", coverage: ", coverage_prob, "\n")
+        # Added break condition: once coverage meets or exceeds the conf_level, stop further b's
+        if (coverage_prob >= conf_level) {
+          break
+        }
       }
     }
-
-
+    
     # Filter out the sets with the coverage probability >= conf_level
-    # For each N, filters out to choose the acceptance curve with the highest a and the 
-    # lowest b (which is the same as the one with the lowest coverage prob that is still
-    # above the confidence level)
     temp_results <- temp_results %>%
       filter(coverage_prob >= conf_level & coverage_prob >= 0 & coverage_prob <= 1)
 
-    # If no rows left, skip the group_by part
+    # If any valid rows exist, choose the acceptance curve with max a and min b
     if (nrow(temp_results) > 0) {
       temp_results <- temp_results %>%
         group_by(N) %>%
@@ -78,7 +69,7 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
         ungroup()
     }
 
-    # Updates min_a and min_b for each iteration
+    # Update min_a and min_b for the next iteration
     if (nrow(temp_results) > 0) {
       min_a = max(min_a, min(temp_results$a))
       min_b = max(min_b, min(temp_results$b))
@@ -86,16 +77,12 @@ cmc_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 250) {
     results = rbind(results, temp_results)
   }
 
-  # Arranges data by N
+  # Arrange results by N and add x_set column
   filtered_results = results %>%
-    arrange(N)
-
-  # Adds a column of the x set
-  filtered_results = filtered_results %>%
+    arrange(N) %>%
     mutate(x_set = paste(a, b, sep = "-"))
 
   return(filtered_results)
-    
 }
 ```
 
@@ -119,7 +106,7 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
     max_x <- N_val - M
     # Build all (a, b) pairs (with b >= a) in a single step
     ab_grid <- expand.grid(
-      a = seq.int(min_a, max_x),
+      a = seq.int(min_a, min(min_a + 5, max_x)),
       # a = seq.int(min_a, min_a+1),
       b = seq.int(min_b, max_x)
     ) %>%
@@ -190,87 +177,14 @@ cmc_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 250) {
 ```
 
 ```{r}
-cmc_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 250) {
-  # Initialize list to hold candidate acceptance curves
-  results <- list()
-  
-  # Initialize state variables to enforce non-decreasing a and b across N
-  min_a <- 0
-  min_b <- 0
-  
-  # Loop over N from M to max_N
-  for (N_val in seq.int(M, max_N)) {
-    max_x <- N_val - M  # possible values for a and b are in 0:max_x
-    candidate_found <- FALSE
-    candidate <- NULL
-    
-    # For CMC, we want the acceptance curve with the highest a (and, if tied, the smallest b).
-    # So iterate a in descending order, starting at the highest possible value.
-    for (a_val in seq(from = max_x, to = min_a, by = -1)) {
-      # b must be at least max(a_val, min_b) to ensure b >= a and meet the non-decreasing constraint.
-      b_start <- max(a_val, min_b)
-      # For a given a, scan b in ascending order so that the first valid b is the smallest.
-      for (b_val in seq(from = b_start, to = max_x)) {
-        cov_prob <- sum_ngh_pmf(N_val, M, m, a_val, b_val)
-        # Check that the candidate meets the coverage condition (and is a valid probability)
-        if (cov_prob >= conf_level && cov_prob <= 1 && cov_prob >= 0) {
-          candidate <- list(
-            N = N_val,
-            a = a_val,
-            b = b_val,
-            cardinality = b_val - a_val + 1,
-            coverage_prob = cov_prob
-          )
-          candidate_found <- TRUE
-          break  # stop scanning b once a valid candidate is found for this a
-        }
-      }
-      if (candidate_found) {
-        # Since we iterate a in descending order, the first valid candidate is optimal.
-        break
-      }
-    }
-    
-    # If a candidate was found for this N, update the lower bound state and record the candidate.
-    if (!is.null(candidate)) {
-      min_a <- candidate$a  # update: subsequent N must have a >= candidate$a
-      min_b <- candidate$b  # update: subsequent N must have b >= candidate$b
-      results[[length(results) + 1]] <- candidate
-    }
-    # (If no candidate is found for a given N, that N is skipped.)
-  }
-  
-  # If no valid candidate was found at all, return an empty data.frame with the expected structure.
-  if (length(results) == 0) {
-    return(data.frame(
-      N = integer(),
-      a = integer(),
-      b = integer(),
-      cardinality = integer(),
-      coverage_prob = numeric(),
-      x_set = character(),
-      stringsAsFactors = FALSE
-    ))
-  }
-  
-  # Combine the accepted curves into a data.table, add the x_set column, and arrange columns.
-  dt <- rbindlist(results, use.names = TRUE, fill = TRUE)
-  dt[, x_set := paste(a, b, sep = "-")]
-  setcolorder(dt, c("N", "a", "b", "cardinality", "coverage_prob", "x_set"))
-  
-  return(as.data.frame(dt))
-}
-```
-
-```{r}
 Sys.time()
-test <- cmc_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 100)
+test <- cmc_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 200)
 Sys.time()
 ```
 
 ```{r}
 Sys.time()
-test1 <- cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 100)
+test1 <- cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 200)
 Sys.time()
 ```
 

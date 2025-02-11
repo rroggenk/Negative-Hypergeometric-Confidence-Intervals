@@ -133,26 +133,633 @@ average_length <- function(data_frame, lb_col_name, ub_col_name) {
 }
 ```
 
-# Note: Minimal Cardinality Procedures
-
-The average length is the same for the minimal cardinality procedures. This is because they are choosing choosing between acceptance sets of minimal cardinality (so the same minimal length). The only difference is between which minimal cardinality sets are being chosen, but the length of them is the same since they are minimal cardinality. Thus, the average length is the same for the minimal cardinality procedures.
-
-Therefore, Modified Sterne (MST) is considered superior because they all have the same average length, but MST chooses the acceptance sets with the highest coverage probability, so with the same length as the other minimal cardinality procedures, MST is getting the most coverage.
-
 # Plots of Expected and Average Length
 
 ## Plot of Expected Length
 
 ### Data Preparation
 
-```{r}
+#### Analog to Clopper Pearson
 
+##### M = 25, m = 5
+
+```{r}
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 425
+N_values = M:200
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_acp_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "lower_bound", 
+                                                    ub_col_name = "upper_bound", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_acp_M25_m5$Method = "Analog to Clopper-Pearson"
+exp_length_acp_M25_m5$M = M
+exp_length_acp_M25_m5$m = m
+```
+
+##### M = 25, m = 15
+
+```{r}
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_acp_M25_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "lower_bound", 
+                                                    ub_col_name = "upper_bound", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_acp_M25_m15$Method = "Analog to Clopper-Pearson"
+exp_length_acp_M25_m15$M = M
+exp_length_acp_M25_m15$m = m
+```
+
+##### M = 50, m = 5
+
+```{r}
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 870
+N_values = M:200
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_acp_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "lower_bound", 
+                                                    ub_col_name = "upper_bound", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_acp_M50_m5$Method = "Analog to Clopper-Pearson"
+exp_length_acp_M50_m5$M = M
+exp_length_acp_M50_m5$m = m
+```
+
+##### M = 50, m = 15
+
+```{r}
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 210
+N_values = M:200
+
+CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_acp_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "lower_bound", 
+                                                    ub_col_name = "upper_bound", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_acp_M50_m15$Method = "Analog to Clopper-Pearson"
+exp_length_acp_M50_m15$M = M
+exp_length_acp_M50_m15$m = m
+```
+
+#### MST
+
+##### M = 25, m = 5
+
+```{r}
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 505
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "MST") %>%
+  filter(x <= 25)
+
+exp_length_mst_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_mst_M25_m5$Method = "MST"
+exp_length_mst_M25_m5$M = M
+exp_length_mst_M25_m5$m = m
+```
+
+##### M = 25, m = 15
+
+```{r}
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "MST") %>%
+  filter(x <= 25)
+
+exp_length_mst_M25_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_mst_M25_m15$Method = "MST"
+exp_length_mst_M25_m15$M = M
+exp_length_mst_M25_m15$m = m
+```
+
+##### M = 50, m = 5
+
+```{r}
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 1160
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "MST") %>%
+  filter(x <= 25)
+
+exp_length_mst_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_mst_M50_m5$Method = "MST"
+exp_length_mst_M50_m5$M = M
+exp_length_mst_M50_m5$m = m
+```
+
+##### M = 50, m = 15
+
+```{r}
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 220
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "MST") %>%
+  filter(x <= 25)
+
+exp_length_mst_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_mst_M50_m15$Method = "MST"
+exp_length_mst_M50_m15$M = M
+exp_length_mst_M50_m15$m = m
+```
+
+#### CG
+
+##### M = 25, m = 5
+
+```{r}
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 550
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "CG") %>%
+  filter(x <= 25)
+
+exp_length_cg_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cg_M25_m5$Method = "CG"
+exp_length_cg_M25_m5$M = M
+exp_length_cg_M25_m5$m = m
+```
+
+##### M = 25, m = 15
+
+```{r}
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "CG") %>%
+  filter(x <= 25)
+
+exp_length_cg_M25_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cg_M25_m15$Method = "CG"
+exp_length_cg_M25_m15$M = M
+exp_length_cg_M25_m15$m = m
+```
+
+##### M = 50, m = 5
+
+```{r}
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 1165
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "CG") %>%
+  filter(x <= 25)
+
+exp_length_cg_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cg_M50_m5$Method = "CG"
+exp_length_cg_M50_m5$M = M
+exp_length_cg_M50_m5$m = m
+```
+
+##### M = 50, m = 15
+
+```{r}
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 230
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "CG") %>%
+  filter(x <= 25)
+
+exp_length_cg_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cg_M50_m15$Method = "CG"
+exp_length_cg_M50_m15$M = M
+exp_length_cg_M50_m15$m = m
+```
+
+#### BK
+
+##### M = 25, m = 5
+
+```{r}
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 470
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "BK") %>%
+  filter(x <= 25)
+
+exp_length_bk_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_bk_M25_m5$Method = "BK"
+exp_length_bk_M25_m5$M = M
+exp_length_bk_M25_m5$m = m
+```
+
+##### M = 25, m = 15
+
+```{r}
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "BK") %>%
+  filter(x <= 25)
+
+exp_length_bk_M25_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_bk_M25_m15$Method = "BK"
+exp_length_bk_M25_m15$M = M
+exp_length_bk_M25_m15$m = m
+```
+
+##### M = 50, m = 5
+
+```{r}
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 1000
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "BK") %>%
+  filter(x <= 25)
+
+exp_length_bk_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_bk_M50_m5$Method = "BK"
+exp_length_bk_M50_m5$M = M
+exp_length_bk_M50_m5$m = m
+```
+
+##### M = 50, m = 15
+
+```{r}
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 220
+N_values = M:200
+
+CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                                          max_N = max_N, procedure = "BK") %>%
+  filter(x <= 25)
+
+exp_length_bk_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_bk_M50_m15$Method = "BK"
+exp_length_bk_M50_m15$M = M
+exp_length_bk_M50_m15$m = m
+```
+
+#### Blaker
+
+##### M = 25, m = 5
+
+```{r}
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 425
+N_values = M:200
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_blaker_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_blaker_M25_m5$Method = "Blaker"
+exp_length_blaker_M25_m5$M = M
+exp_length_blaker_M25_m5$m = m
+```
+
+##### M = 25, m = 15
+
+```{r}
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_blaker_M25_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_blaker_M25_m15$Method = "Blaker"
+exp_length_blaker_M25_m15$M = M
+exp_length_blaker_M25_m15$m = m
+```
+
+##### M = 50, m = 5
+
+```{r}
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 870
+N_values = M:200
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_blaker_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_blaker_M50_m5$Method = "Blaker"
+exp_length_blaker_M50_m5$M = M
+exp_length_blaker_M50_m5$m = m
+```
+
+##### M = 50, m = 15
+
+```{r}
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 210
+N_values = M:200
+
+CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                             max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_blaker_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_blaker_M50_m15$Method = "Blaker"
+exp_length_blaker_M50_m15$M = M
+exp_length_blaker_M50_m15$m = m
+```
+
+#### CMC
+
+##### M = 25, m = 5
+
+```{r}
+M = 25
+m = 5
+conf_level = 0.95
+max_N = 380
+N_values = M:200
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_cmc_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cmc_M25_m5$Method = "CMC"
+exp_length_cmc_M25_m5$M = M
+exp_length_cmc_M25_m5$m = m
+```
+
+##### M = 25, m = 15
+
+```{r}
+M = 25
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_cmc_M25_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cmc_M25_m15$Method = "CMC"
+exp_length_cmc_M25_m15$M = M
+exp_length_cmc_M25_m15$m = m
+```
+
+##### M = 50, m = 5
+
+```{r}
+M = 50
+m = 5
+conf_level = 0.95
+max_N = 770
+N_values = M:200
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_cmc_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cmc_M50_m5$Method = "CMC"
+exp_length_cmc_M50_m5$M = M
+exp_length_cmc_M50_m5$m = m
+```
+
+##### M = 50, m = 15
+
+```{r}
+M = 50
+m = 15
+conf_level = 0.95
+max_N = 205
+N_values = M:200
+
+CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
+                          max_N = max_N) %>%
+  filter(x <= 25)
+
+exp_length_cmc_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
+                                                    lb_col_name = "ci_lb", 
+                                                    ub_col_name = "ci_ub", 
+                                                    M = M, m = m, N_max = 200)
+
+exp_length_cmc_M50_m15$Method = "CMC"
+exp_length_cmc_M50_m15$M = M
+exp_length_cmc_M50_m15$m = m
 ```
 
 ### Plot
 
 ```{r}
+df_list <- list(exp_length_acp_M25_m5, 
+                exp_length_acp_M25_m15,
+                exp_length_acp_M50_m5,
+                exp_length_acp_M50_m15,
+                exp_length_mst_M25_m5,
+                exp_length_mst_M25_m15,
+                exp_length_mst_M50_m5,
+                exp_length_mst_M50_m15,
+                exp_length_cg_M25_m5,
+                exp_length_cg_M25_m15,
+                exp_length_cg_M50_m5,
+                exp_length_cg_M50_m15,
+                exp_length_bk_M25_m5,
+                exp_length_bk_M25_m15,
+                exp_length_bk_M50_m5,
+                exp_length_bk_M50_m15,
+                exp_length_blaker_M25_m5,
+                exp_length_blaker_M25_m15,
+                exp_length_blaker_M50_m5,
+                exp_length_blaker_M50_m15,
+                exp_length_cmc_M25_m5,
+                exp_length_cmc_M25_m15,
+                exp_length_cmc_M50_m5,
+                exp_length_cmc_M50_m15
+                )
+expected_value_df <- bind_rows(df_list)
+```
 
+```{r}
+expected_value_plot_df <- expected_value_df
+
+# Define a distinct color palette
+distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+
+# Custom labels for M and m
+M_labels <- c("25" = "M = 25", "50" = "M = 50")
+m_labels <- c("5" = "m = 5", "15" = "m = 15")
+
+# Combine M and m labels into a single factor for facetting
+expected_value_plot_df$facet_label <- factor(
+  paste("M =", expected_value_plot_df$M, ", m =", expected_value_plot_df$m),
+  levels = c("M = 25 , m = 5", "M = 50 , m = 5", "M = 25 , m = 15", "M = 50 , m = 15")
+)
+
+# Create the plot using facet_wrap for independent axes
+ggplot(expected_value_plot_df, aes(x = N, y = ExpectedLength, color = Method)) +
+  geom_line(linewidth = 1, alpha = 0.6) +  # Adjust line thickness and transparency
+  scale_color_manual(values = distinct_colors) +  # Use the distinct color palette
+  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
+  labs(x = "N", y = "Expected Length", color = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(size = 12),  # Increase facet label size for clarity
+    panel.spacing = unit(1, "lines"),  # Increase spacing between panels for clarity
+    axis.title.y = element_text(margin = margin(r = 10)),  # Add margin to y-axis label
+    axis.title.x = element_text(margin = margin(t = 10))   # Add margin to x-axis label
+  )
 ```
 
 ## Plot of Average Length and Average Coverage Probability
@@ -393,7 +1000,7 @@ Sys.time()
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 1200
+max_N = 1160
 N_values = M:200
 ```
 
@@ -471,7 +1078,7 @@ Sys.time()
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 540
+max_N = 550
 N_values = M:200
 ```
 
@@ -547,7 +1154,7 @@ Sys.time()
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 1200
+max_N = 1165
 N_values = M:200
 ```
 
@@ -625,7 +1232,7 @@ Sys.time()
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 505
+max_N = 470
 N_values = M:200
 ```
 
@@ -701,7 +1308,7 @@ Sys.time()
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 1200
+max_N = 1000
 N_values = M:200
 ```
 
@@ -933,7 +1540,7 @@ Sys.time()
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 505
+max_N = 380
 N_values = M:200
 ```
 
@@ -956,7 +1563,7 @@ Sys.time()
 
 Sys.time()
 
-cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cmc_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -994,7 +1601,7 @@ Sys.time()
 
 Sys.time()
 
-cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cmc_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -1009,7 +1616,7 @@ Sys.time()
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 1200
+max_N = 770
 N_values = M:200
 ```
 
@@ -1032,7 +1639,7 @@ Sys.time()
 
 Sys.time()
 
-cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cmc_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -1047,7 +1654,7 @@ Sys.time()
 M = 50
 m = 15
 conf_level = 0.95
-max_N = 220
+max_N = 205
 N_values = M:200
 ```
 
@@ -1070,7 +1677,7 @@ Sys.time()
 
 Sys.time()
 
-cmc_ac_N_unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
+cmc_ac_N_unknown_direct(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
   filter(N <= 200) %>%
   summarize(avg_coverage = mean(coverage_prob, na.rm = TRUE))
 
@@ -1080,7 +1687,37 @@ Sys.time()
 ### Plot
 
 ```{r}
+#| message: false
 
+average_length_cp_df <- read_csv(here::here("N_Unknown", "N Unknown_ Average Length and Coverage Probability (X_0-25, N_M_200).csv"))
+```
+
+```{r}
+average_length_cp_plot_df <- average_length_cp_df
+
+# Combine M and m labels into a single factor for facetting
+average_length_cp_plot_df$facet_label <- factor(
+  paste("M =", average_length_cp_plot_df$M, ", m =", average_length_cp_plot_df$m),
+  levels = c("M = 25 , m = 5", "M = 50 , m = 5", "M = 25 , m = 15", "M = 50 , m = 15")
+)
+
+# Define a distinct color palette
+distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+
+# Create the scatter plot using facet_wrap for independent axes
+ggplot(average_length_cp_plot_df, aes(x = AverageLength, 
+                                      y = AverageCoverageProbability, 
+                                      color = Method)) +
+  geom_point(size = 3, alpha = 0.5) +  # Adjust point size and transparency
+  geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
+  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
+  scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
+  labs(x = "Average Length", y = "Average Coverage Probability", color = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(size = 12)  # Increase facet label size for clarity
+  )
 ```
 
 M = 25, m = 5
@@ -1106,147 +1743,3 @@ M = 50, m = 15
 -   x: 0 to 25
 
 -   N: 50 to 200
-
-```{r}
-Sys.time()
-
-mst_ac_N_unknown(M = 25, m = 5, conf_level = 0.95, max_N = 505)
-# max_N = 505
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-mst_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
-# max_N = 205
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-mst_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
-# max_N = 1160
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-mst_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 220)
-# max_N = 220
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cg_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 600)
-# max_N = 550
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cg_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 300)
-# max_N = 205
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cg_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
-# max_N = 1165
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cg_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 300)
-# max_N = 230
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-bk_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 600)
-# max_N = 470
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-bk_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 300)
-# max_N = 205
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-bk_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
-# max_N = 1000
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-bk_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 300)
-# max_N = 220
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cmc_ac_N_unknown_vec(M = 25, m = 5, conf_level = 0.95, max_N = 600)
-# max_N = 380
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cmc_ac_N_unknown_vec(M = 25, m = 15, conf_level = 0.95, max_N = 300)
-# max_N = 205
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cmc_ac_N_unknown_vec(M = 50, m = 5, conf_level = 0.95, max_N = 1500)
-# max_N =
-
-Sys.time()
-```
-
-```{r}
-Sys.time()
-
-cmc_ac_N_unknown_vec(M = 50, m = 15, conf_level = 0.95, max_N = 300)
-# max_N = 205
-
-Sys.time()
-```
