@@ -1243,6 +1243,101 @@ cg_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
   # This function finds minimal‐cardinality acceptance curves following the CG procedure.
   # For each N from M to max_N, it searches for an (a, b) (with b = a + k - 1, where k is the candidate cardinality)
   # such that the coverage probability (computed by sum_ngh_pmf) meets the conf_level.
+  # Among all candidates at the minimal viable cardinality, it chooses the one with the largest a, then largest b.
+  # In addition, a and b are not allowed to decrease across N.
+  
+  results <- list()
+  
+  # Initialize state variables
+  min_a <- 0
+  min_b <- 0
+  previous_cardinality <- NA  # for N=M, we start with candidate_card = 1
+  
+  for (current_N in M:max_N) {
+    max_x <- current_N - M  # possible a, b range is 0:max_x
+    candidate_card <- if (!is.na(previous_cardinality)) previous_cardinality else 1
+    candidate_found <- FALSE
+    best_candidate <- NULL
+    
+    # Loop over candidate cardinalities until a viable acceptance curve is found.
+    while (candidate_card <= (max_x + 1) && !candidate_found) {
+      # For candidate cardinality k, ensure a >= min_a and also a >= min_b - (k - 1) so that b >= min_b.
+      a_min <- max(min_a, min_b - candidate_card + 1)
+      a_max <- max_x - (candidate_card - 1)
+      
+      if (a_min > a_max) {
+        candidate_card <- candidate_card + 1
+        next
+      }
+      
+      # For CG, choose the candidate with the largest a; if tied, choose the one with largest b.
+      for (a_val in a_min:a_max) {
+        b_val <- a_val + candidate_card - 1
+        if (b_val < min_b) next
+        
+        cov_prob <- sum_ngh_pmf(current_N, M, m, a_val, b_val)
+        if (cov_prob >= conf_level && cov_prob <= 1 && cov_prob >= 0) {
+          if (is.null(best_candidate)) {
+            best_candidate <- list(N = current_N, a = a_val, b = b_val,
+                                   cardinality = candidate_card, coverage_prob = cov_prob)
+          } else {
+            # For CG, prefer larger a; if a is equal then prefer larger b.
+            if (a_val > best_candidate$a ||
+                (a_val == best_candidate$a && b_val > best_candidate$b)) {
+              best_candidate <- list(N = current_N, a = a_val, b = b_val,
+                                     cardinality = candidate_card, coverage_prob = cov_prob)
+            }
+          }
+        }
+      }
+      
+      if (!is.null(best_candidate)) {
+        candidate_found <- TRUE
+      } else {
+        candidate_card <- candidate_card + 1
+      }
+    }  # end while over candidate_card
+    
+    if (!is.null(best_candidate)) {
+      results[[length(results) + 1]] <- best_candidate
+      min_a <- best_candidate$a
+      min_b <- best_candidate$b
+      previous_cardinality <- candidate_card
+    }
+  }  # end loop over N
+  
+  if (length(results) == 0) {
+    return(data.frame(
+      N = integer(),
+      a = integer(),
+      b = integer(),
+      cardinality = integer(),
+      coverage_prob = numeric(),
+      x_set = character(),
+      stringsAsFactors = FALSE
+    ))
+  }
+  
+  dt <- rbindlist(results, use.names = TRUE, fill = TRUE)
+  dt[, x_set := paste(a, b, sep = "-")]
+  setcolorder(dt, c("N", "a", "b", "cardinality", "coverage_prob", "x_set"))
+  
+  return(as.data.frame(dt))
+}
+
+
+
+
+###################################
+#---------------------------------#
+# BK                              #
+#---------------------------------#
+###################################
+
+bk_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  # This function finds minimal‐cardinality acceptance curves following the BK procedure.
+  # For each N from M to max_N, it searches for an (a, b) (with b = a + k - 1, where k is the candidate cardinality)
+  # such that the coverage probability (computed by sum_ngh_pmf) meets the conf_level.
   # Among all candidates at the minimal viable cardinality, it chooses the one with the smallest a, then smallest b.
   # Additionally, a and b are not allowed to decrease across N.
   
@@ -1271,7 +1366,7 @@ cg_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
         next
       }
       
-      # For CG, we select the candidate with the smallest a then smallest b.
+      # For BK, we select the candidate with the smallest a then smallest b.
       for (a_val in a_min:a_max) {
         b_val <- a_val + candidate_card - 1
         if (b_val < min_b) next  # enforce non-decreasing b
@@ -1311,101 +1406,6 @@ cg_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
   }  # end loop over N
   
   # If no curves were found, return an empty data.frame with the expected columns.
-  if (length(results) == 0) {
-    return(data.frame(
-      N = integer(),
-      a = integer(),
-      b = integer(),
-      cardinality = integer(),
-      coverage_prob = numeric(),
-      x_set = character(),
-      stringsAsFactors = FALSE
-    ))
-  }
-  
-  dt <- rbindlist(results, use.names = TRUE, fill = TRUE)
-  dt[, x_set := paste(a, b, sep = "-")]
-  setcolorder(dt, c("N", "a", "b", "cardinality", "coverage_prob", "x_set"))
-  
-  return(as.data.frame(dt))
-}
-
-
-
-
-###################################
-#---------------------------------#
-# BK                              #
-#---------------------------------#
-###################################
-
-bk_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # This function finds minimal‐cardinality acceptance curves following the BK procedure.
-  # For each N from M to max_N, it searches for an (a, b) (with b = a + k - 1, where k is the candidate cardinality)
-  # such that the coverage probability (computed by sum_ngh_pmf) meets the conf_level.
-  # Among all candidates at the minimal viable cardinality, it chooses the one with the largest a, then largest b.
-  # In addition, a and b are not allowed to decrease across N.
-  
-  results <- list()
-  
-  # Initialize state variables
-  min_a <- 0
-  min_b <- 0
-  previous_cardinality <- NA  # for N=M, we start with candidate_card = 1
-  
-  for (current_N in M:max_N) {
-    max_x <- current_N - M  # possible a, b range is 0:max_x
-    candidate_card <- if (!is.na(previous_cardinality)) previous_cardinality else 1
-    candidate_found <- FALSE
-    best_candidate <- NULL
-    
-    # Loop over candidate cardinalities until a viable acceptance curve is found.
-    while (candidate_card <= (max_x + 1) && !candidate_found) {
-      # For candidate cardinality k, ensure a >= min_a and also a >= min_b - (k - 1) so that b >= min_b.
-      a_min <- max(min_a, min_b - candidate_card + 1)
-      a_max <- max_x - (candidate_card - 1)
-      
-      if (a_min > a_max) {
-        candidate_card <- candidate_card + 1
-        next
-      }
-      
-      # For BK, choose the candidate with the largest a; if tied, choose the one with largest b.
-      for (a_val in a_min:a_max) {
-        b_val <- a_val + candidate_card - 1
-        if (b_val < min_b) next
-        
-        cov_prob <- sum_ngh_pmf(current_N, M, m, a_val, b_val)
-        if (cov_prob >= conf_level && cov_prob <= 1 && cov_prob >= 0) {
-          if (is.null(best_candidate)) {
-            best_candidate <- list(N = current_N, a = a_val, b = b_val,
-                                   cardinality = candidate_card, coverage_prob = cov_prob)
-          } else {
-            # For BK, prefer larger a; if a is equal then prefer larger b.
-            if (a_val > best_candidate$a ||
-                (a_val == best_candidate$a && b_val > best_candidate$b)) {
-              best_candidate <- list(N = current_N, a = a_val, b = b_val,
-                                     cardinality = candidate_card, coverage_prob = cov_prob)
-            }
-          }
-        }
-      }
-      
-      if (!is.null(best_candidate)) {
-        candidate_found <- TRUE
-      } else {
-        candidate_card <- candidate_card + 1
-      }
-    }  # end while over candidate_card
-    
-    if (!is.null(best_candidate)) {
-      results[[length(results) + 1]] <- best_candidate
-      min_a <- best_candidate$a
-      min_b <- best_candidate$b
-      previous_cardinality <- candidate_card
-    }
-  }  # end loop over N
-  
   if (length(results) == 0) {
     return(data.frame(
       N = integer(),

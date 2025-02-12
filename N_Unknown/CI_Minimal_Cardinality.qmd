@@ -1253,10 +1253,10 @@ mst_ac_N_unknown_direct(M = 25, m = 15, conf_level = 0.95, max_N = 50)
 Sys.time()
 ```
 
-## CG Acceptance Curves (Function)
+## BK Acceptance Curves (Function)
 
 ```{r}
-cg_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
+bk_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
   # Gets all minimal cardinality acceptance curves 
   results = all_ac_N_unknown_vec(M, m, conf_level, max_N)
   
@@ -1304,7 +1304,7 @@ cg_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
-cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
+bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
   results <- all_ac_N_unknown_vec(M, m, conf_level, max_N)
   dt_results <- as.data.table(results)
   
@@ -1322,7 +1322,7 @@ cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
     min_card <- min(subset_dt$cardinality)
     subset_dt <- subset_dt[cardinality == min_card]
     
-    # For the CG procedure, order in increasing order of a and b.
+    # For the BK procedure, order in increasing order of a and b.
     setorder(subset_dt, a, b)
     chosen_row <- subset_dt[1]
     
@@ -1342,8 +1342,8 @@ cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
-cg_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # This function finds minimal‐cardinality acceptance curves following the CG procedure.
+bk_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  # This function finds minimal‐cardinality acceptance curves following the BK procedure.
   # For each N from M to max_N, it searches for an (a, b) (with b = a + k - 1, where k is the candidate cardinality)
   # such that the coverage probability (computed by sum_ngh_pmf) meets the conf_level.
   # Among all candidates at the minimal viable cardinality, it chooses the one with the smallest a, then smallest b.
@@ -1374,7 +1374,7 @@ cg_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
         next
       }
       
-      # For CG, we select the candidate with the smallest a then smallest b.
+      # For BK, we select the candidate with the smallest a then smallest b.
       for (a_val in a_min:a_max) {
         b_val <- a_val + candidate_card - 1
         if (b_val < min_b) next  # enforce non-decreasing b
@@ -1436,19 +1436,19 @@ cg_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 ```{r}
 Sys.time()
-test<- cg_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+test<- bk_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
 test
 Sys.time()
 ```
 
 ```{r}
-cg <- cg_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 50)
+bk <- bk_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 50)
 ```
 
-## BK Acceptance Curves (Function)
+## CG Acceptance Curves (Function)
 
 ```{r}
-bk_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
+cg_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
   # Gets all minimal cardinality acceptance curves 
   results = all_ac_N_unknown_vec(M, m, conf_level, max_N)
   
@@ -1496,7 +1496,7 @@ bk_ac_N_unknown <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
-bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
+cg_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
   results <- all_ac_N_unknown_vec(M, m, conf_level, max_N)
   dt_results <- as.data.table(results)
   
@@ -1514,7 +1514,7 @@ bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
     min_card <- min(subset_dt$cardinality)
     subset_dt <- subset_dt[cardinality == min_card]
     
-    # For BK, we order by descending a and descending b.
+    # For CG, we order by descending a and descending b.
     setorder(subset_dt, -a, -b)
     chosen_row <- subset_dt[1]
     
@@ -1534,8 +1534,8 @@ bk_ac_N_unknown_vec <- function(M, m, conf_level = 0.95, max_N = 1000) {
 ```
 
 ```{r}
-bk_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
-  # This function finds minimal‐cardinality acceptance curves following the BK procedure.
+cg_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
+  # This function finds minimal‐cardinality acceptance curves following the CG procedure.
   # For each N from M to max_N, it searches for an (a, b) (with b = a + k - 1, where k is the candidate cardinality)
   # such that the coverage probability (computed by sum_ngh_pmf) meets the conf_level.
   # Among all candidates at the minimal viable cardinality, it chooses the one with the largest a, then largest b.
@@ -1565,7 +1565,7 @@ bk_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
         next
       }
       
-      # For BK, choose the candidate with the largest a; if tied, choose the one with largest b.
+      # For CG, choose the candidate with the largest a; if tied, choose the one with largest b.
       for (a_val in a_min:a_max) {
         b_val <- a_val + candidate_card - 1
         if (b_val < min_b) next
@@ -1576,7 +1576,7 @@ bk_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
             best_candidate <- list(N = current_N, a = a_val, b = b_val,
                                    cardinality = candidate_card, coverage_prob = cov_prob)
           } else {
-            # For BK, prefer larger a; if a is equal then prefer larger b.
+            # For CG, prefer larger a; if a is equal then prefer larger b.
             if (a_val > best_candidate$a ||
                 (a_val == best_candidate$a && b_val > best_candidate$b)) {
               best_candidate <- list(N = current_N, a = a_val, b = b_val,
@@ -1623,7 +1623,7 @@ bk_ac_N_unknown_direct <- function(M, m, conf_level = 0.95, max_N = 1000) {
 
 ```{r}
 Sys.time()
-test<- bk_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
+test<- cg_ac_N_unknown(M = 25, m = 15, conf_level = 0.95, max_N = 205)
 test
 Sys.time()
 ```

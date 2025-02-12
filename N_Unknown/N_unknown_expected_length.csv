@@ -1,0 +1,3925 @@
+"N","ExpectedLength","Method","M","m"
+25,26,"Analog to Clopper-Pearson",25,5
+26,28.8846153846154,"Analog to Clopper-Pearson",25,5
+27,31.7692307692308,"Analog to Clopper-Pearson",25,5
+28,34.6324786324786,"Analog to Clopper-Pearson",25,5
+29,37.4647804302977,"Analog to Clopper-Pearson",25,5
+30,40.262157382847,"Analog to Clopper-Pearson",25,5
+31,43.0237490849282,"Analog to Clopper-Pearson",25,5
+32,45.7503927678427,"Analog to Clopper-Pearson",25,5
+33,48.4437551695616,"Analog to Clopper-Pearson",25,5
+34,51.1058487140899,"Analog to Clopper-Pearson",25,5
+35,53.7387926420675,"Analog to Clopper-Pearson",25,5
+36,56.3447050406826,"Analog to Clopper-Pearson",25,5
+37,58.9256541710248,"Analog to Clopper-Pearson",25,5
+38,61.4836333688851,"Analog to Clopper-Pearson",25,5
+39,64.0205448871812,"Analog to Clopper-Pearson",25,5
+40,66.5381879311131,"Analog to Clopper-Pearson",25,5
+41,69.0382499185515,"Analog to Clopper-Pearson",25,5
+42,71.5223010248309,"Analog to Clopper-Pearson",25,5
+43,73.9917920446014,"Analog to Clopper-Pearson",25,5
+44,76.4480553047934,"Analog to Clopper-Pearson",25,5
+45,78.8923081116808,"Analog to Clopper-Pearson",25,5
+46,81.3256580989273,"Analog to Clopper-Pearson",25,5
+47,83.7491098466988,"Analog to Clopper-Pearson",25,5
+48,86.163572219556,"Analog to Clopper-Pearson",25,5
+49,88.569865981592,"Analog to Clopper-Pearson",25,5
+50,90.9687313625769,"Analog to Clopper-Pearson",25,5
+51,93.3608353140992,"Analog to Clopper-Pearson",25,5
+52,95.7467781444619,"Analog to Clopper-Pearson",25,5
+53,98.1270990392206,"Analog to Clopper-Pearson",25,5
+54,100.502279724058,"Analog to Clopper-Pearson",25,5
+55,102.872745323371,"Analog to Clopper-Pearson",25,5
+56,105.238861421652,"Analog to Clopper-Pearson",25,5
+57,107.600926503544,"Analog to Clopper-Pearson",25,5
+58,109.959159322229,"Analog to Clopper-Pearson",25,5
+59,112.313681258504,"Analog to Clopper-Pearson",25,5
+60,114.664494290008,"Analog to Clopper-Pearson",25,5
+61,117.011455697323,"Analog to Clopper-Pearson",25,5
+62,119.354251017549,"Analog to Clopper-Pearson",25,5
+63,121.692366974246,"Analog to Clopper-Pearson",25,5
+64,124.025066154574,"Analog to Clopper-Pearson",25,5
+65,126.351365085511,"Analog to Clopper-Pearson",25,5
+66,128.670017113848,"Analog to Clopper-Pearson",25,5
+67,130.979501160768,"Analog to Clopper-Pearson",25,5
+68,133.278017043396,"Analog to Clopper-Pearson",25,5
+69,135.563487671061,"Analog to Clopper-Pearson",25,5
+70,137.83356806371,"Analog to Clopper-Pearson",25,5
+71,140.085660825891,"Analog to Clopper-Pearson",25,5
+72,142.316937455448,"Analog to Clopper-Pearson",25,5
+73,144.524364677159,"Analog to Clopper-Pearson",25,5
+74,146.704734867877,"Analog to Clopper-Pearson",25,5
+75,148.854699576419,"Analog to Clopper-Pearson",25,5
+76,150.97080513091,"Analog to Clopper-Pearson",25,5
+77,153.049529359265,"Analog to Clopper-Pearson",25,5
+78,155.087318515253,"Analog to Clopper-Pearson",25,5
+79,157.080623593708,"Analog to Clopper-Pearson",25,5
+80,159.025935325224,"Analog to Clopper-Pearson",25,5
+81,160.919817255695,"Analog to Clopper-Pearson",25,5
+82,162.758936432994,"Analog to Clopper-Pearson",25,5
+83,164.540091337128,"Analog to Clopper-Pearson",25,5
+84,166.260236797538,"Analog to Clopper-Pearson",25,5
+85,167.916505739377,"Analog to Clopper-Pearson",25,5
+86,169.506227687857,"Analog to Clopper-Pearson",25,5
+87,171.026944035362,"Analog to Clopper-Pearson",25,5
+88,172.476420139716,"Analog to Clopper-Pearson",25,5
+89,173.85265437409,"Analog to Clopper-Pearson",25,5
+90,175.153884290158,"Analog to Clopper-Pearson",25,5
+91,176.378590087138,"Analog to Clopper-Pearson",25,5
+92,177.525495601317,"Analog to Clopper-Pearson",25,5
+93,178.593567044642,"Analog to Clopper-Pearson",25,5
+94,179.582009728077,"Analog to Clopper-Pearson",25,5
+95,180.490263006782,"Analog to Clopper-Pearson",25,5
+96,181.31799368074,"Analog to Clopper-Pearson",25,5
+97,182.065088077216,"Analog to Clopper-Pearson",25,5
+98,182.731643031266,"Analog to Clopper-Pearson",25,5
+99,183.317955968073,"Analog to Clopper-Pearson",25,5
+100,183.824514276939,"Analog to Clopper-Pearson",25,5
+101,184.251984151815,"Analog to Clopper-Pearson",25,5
+102,184.601199057775,"Analog to Clopper-Pearson",25,5
+103,184.873147967218,"Analog to Clopper-Pearson",25,5
+104,185.068963494198,"Analog to Clopper-Pearson",25,5
+105,185.189910040261,"Analog to Clopper-Pearson",25,5
+106,185.237372050828,"Analog to Clopper-Pearson",25,5
+107,185.212842467549,"Analog to Clopper-Pearson",25,5
+108,185.117911449322,"Analog to Clopper-Pearson",25,5
+109,184.95425542284,"Analog to Clopper-Pearson",25,5
+110,184.723626512681,"Analog to Clopper-Pearson",25,5
+111,184.427842391045,"Analog to Clopper-Pearson",25,5
+112,184.068776578275,"Analog to Clopper-Pearson",25,5
+113,183.648349217306,"Analog to Clopper-Pearson",25,5
+114,183.168518337998,"Analog to Clopper-Pearson",25,5
+115,182.63127162106,"Analog to Clopper-Pearson",25,5
+116,182.038618665717,"Analog to Clopper-Pearson",25,5
+117,181.39258376052,"Analog to Clopper-Pearson",25,5
+118,180.695199152617,"Analog to Clopper-Pearson",25,5
+119,179.948498807288,"Analog to Clopper-Pearson",25,5
+120,179.154512646701,"Analog to Clopper-Pearson",25,5
+121,178.315261254389,"Analog to Clopper-Pearson",25,5
+122,177.432751030075,"Analog to Clopper-Pearson",25,5
+123,176.508969777893,"Analog to Clopper-Pearson",25,5
+124,175.545882709953,"Analog to Clopper-Pearson",25,5
+125,174.545428846299,"Analog to Clopper-Pearson",25,5
+126,173.509517791808,"Analog to Clopper-Pearson",25,5
+127,172.44002687022,"Analog to Clopper-Pearson",25,5
+128,171.338798595415,"Analog to Clopper-Pearson",25,5
+129,170.207638460118,"Analog to Clopper-Pearson",25,5
+130,169.048313022423,"Analog to Clopper-Pearson",25,5
+131,167.862548270918,"Analog to Clopper-Pearson",25,5
+132,166.652028249613,"Analog to Clopper-Pearson",25,5
+133,165.418393924442,"Analog to Clopper-Pearson",25,5
+134,164.163242273695,"Analog to Clopper-Pearson",25,5
+135,162.888125585432,"Analog to Clopper-Pearson",25,5
+136,161.594550945588,"Analog to Clopper-Pearson",25,5
+137,160.283979901245,"Analog to Clopper-Pearson",25,5
+138,158.957828284257,"Analog to Clopper-Pearson",25,5
+139,157.617466181193,"Analog to Clopper-Pearson",25,5
+140,156.264218036288,"Analog to Clopper-Pearson",25,5
+141,154.899362874858,"Analog to Clopper-Pearson",25,5
+142,153.524134635358,"Analog to Clopper-Pearson",25,5
+143,152.13972259899,"Analog to Clopper-Pearson",25,5
+144,150.747271906467,"Analog to Clopper-Pearson",25,5
+145,149.347884152199,"Analog to Clopper-Pearson",25,5
+146,147.942618046864,"Analog to Clopper-Pearson",25,5
+147,146.532490139919,"Analog to Clopper-Pearson",25,5
+148,145.118475594232,"Analog to Clopper-Pearson",25,5
+149,143.701509005577,"Analog to Clopper-Pearson",25,5
+150,142.282485260304,"Analog to Clopper-Pearson",25,5
+151,140.862260425011,"Analog to Clopper-Pearson",25,5
+152,139.441652662515,"Analog to Clopper-Pearson",25,5
+153,138.021443168931,"Analog to Clopper-Pearson",25,5
+154,136.602377127076,"Analog to Clopper-Pearson",25,5
+155,135.185164671835,"Analog to Clopper-Pearson",25,5
+156,133.770481863523,"Analog to Clopper-Pearson",25,5
+157,132.358971665647,"Analog to Clopper-Pearson",25,5
+158,130.951244923783,"Analog to Clopper-Pearson",25,5
+159,129.547881342648,"Analog to Clopper-Pearson",25,5
+160,128.149430458701,"Analog to Clopper-Pearson",25,5
+161,126.756412605906,"Analog to Clopper-Pearson",25,5
+162,125.369319872554,"Analog to Clopper-Pearson",25,5
+163,123.988617047239,"Analog to Clopper-Pearson",25,5
+164,122.61474255236,"Analog to Clopper-Pearson",25,5
+165,121.248109363681,"Analog to Clopper-Pearson",25,5
+166,119.889105914676,"Analog to Clopper-Pearson",25,5
+167,118.538096984579,"Analog to Clopper-Pearson",25,5
+168,117.195424569197,"Analog to Clopper-Pearson",25,5
+169,115.86140873369,"Analog to Clopper-Pearson",25,5
+170,114.53634844668,"Analog to Clopper-Pearson",25,5
+171,113.220522395123,"Analog to Clopper-Pearson",25,5
+172,111.914189779559,"Analog to Clopper-Pearson",25,5
+173,110.617591089379,"Analog to Clopper-Pearson",25,5
+174,109.330948857905,"Analog to Clopper-Pearson",25,5
+175,108.054468397119,"Analog to Clopper-Pearson",25,5
+176,106.788338511976,"Analog to Clopper-Pearson",25,5
+177,105.532732194287,"Analog to Clopper-Pearson",25,5
+178,104.287807296233,"Analog to Clopper-Pearson",25,5
+179,103.053707183613,"Analog to Clopper-Pearson",25,5
+180,101.830561368983,"Analog to Clopper-Pearson",25,5
+181,100.618486124891,"Analog to Clopper-Pearson",25,5
+182,99.4175850774363,"Analog to Clopper-Pearson",25,5
+183,98.2279497804242,"Analog to Clopper-Pearson",25,5
+184,97.0496602704221,"Analog to Clopper-Pearson",25,5
+185,95.8827856030316,"Analog to Clopper-Pearson",25,5
+186,94.7273843707251,"Analog to Clopper-Pearson",25,5
+187,93.5835052026102,"Analog to Clopper-Pearson",25,5
+188,92.4511872464995,"Analog to Clopper-Pearson",25,5
+189,91.3304606336754,"Analog to Clopper-Pearson",25,5
+190,90.2213469267517,"Analog to Clopper-Pearson",25,5
+191,89.1238595510394,"Analog to Clopper-Pearson",25,5
+192,88.03800420983,"Analog to Clopper-Pearson",25,5
+193,86.9637792840169,"Analog to Clopper-Pearson",25,5
+194,85.9011762164699,"Analog to Clopper-Pearson",25,5
+195,84.8501798815904,"Analog to Clopper-Pearson",25,5
+196,83.8107689404604,"Analog to Clopper-Pearson",25,5
+197,82.7829161820095,"Analog to Clopper-Pearson",25,5
+198,81.766588850613,"Analog to Clopper-Pearson",25,5
+199,80.7617489605333,"Analog to Clopper-Pearson",25,5
+200,79.7683535976126,"Analog to Clopper-Pearson",25,5
+25,5,"Analog to Clopper-Pearson",25,15
+26,6.15384615384615,"Analog to Clopper-Pearson",25,15
+27,7.30769230769231,"Analog to Clopper-Pearson",25,15
+28,8.46153846153846,"Analog to Clopper-Pearson",25,15
+29,9.61538461538461,"Analog to Clopper-Pearson",25,15
+30,10.7692307692308,"Analog to Clopper-Pearson",25,15
+31,11.8704339783316,"Analog to Clopper-Pearson",25,15
+32,12.9157040586407,"Analog to Clopper-Pearson",25,15
+33,13.9083311942044,"Analog to Clopper-Pearson",25,15
+34,14.8460896722854,"Analog to Clopper-Pearson",25,15
+35,15.7370888288575,"Analog to Clopper-Pearson",25,15
+36,16.6011084762475,"Analog to Clopper-Pearson",25,15
+37,17.4509351728484,"Analog to Clopper-Pearson",25,15
+38,18.2905987586188,"Analog to Clopper-Pearson",25,15
+39,19.1222311127762,"Analog to Clopper-Pearson",25,15
+40,19.9486139472235,"Analog to Clopper-Pearson",25,15
+41,20.7719551135949,"Analog to Clopper-Pearson",25,15
+42,21.5924624125403,"Analog to Clopper-Pearson",25,15
+43,22.4089303127448,"Analog to Clopper-Pearson",25,15
+44,23.2199004253409,"Analog to Clopper-Pearson",25,15
+45,24.0242385082896,"Analog to Clopper-Pearson",25,15
+46,24.8214396530511,"Analog to Clopper-Pearson",25,15
+47,25.6119496266181,"Analog to Clopper-Pearson",25,15
+48,26.3970210422855,"Analog to Clopper-Pearson",25,15
+49,27.178272585566,"Analog to Clopper-Pearson",25,15
+50,27.9572338600476,"Analog to Clopper-Pearson",25,15
+51,28.7309911208615,"Analog to Clopper-Pearson",25,15
+52,29.4859023880188,"Analog to Clopper-Pearson",25,15
+53,30.1941197808384,"Analog to Clopper-Pearson",25,15
+54,30.8153359655489,"Analog to Clopper-Pearson",25,15
+55,31.3028527879103,"Analog to Clopper-Pearson",25,15
+56,31.6113710029061,"Analog to Clopper-Pearson",25,15
+57,31.7039828215842,"Analog to Clopper-Pearson",25,15
+58,31.5568437539768,"Analog to Clopper-Pearson",25,15
+59,31.1610933512337,"Analog to Clopper-Pearson",25,15
+60,30.5223701197995,"Analog to Clopper-Pearson",25,15
+61,29.6586409953429,"Analog to Clopper-Pearson",25,15
+62,28.5971270269952,"Analog to Clopper-Pearson",25,15
+63,27.370985207799,"Analog to Clopper-Pearson",25,15
+64,26.0162127152203,"Analog to Clopper-Pearson",25,15
+65,24.5690459920465,"Analog to Clopper-Pearson",25,15
+66,23.0639690342294,"Analog to Clopper-Pearson",25,15
+67,21.5323339724036,"Analog to Clopper-Pearson",25,15
+68,20.0015294728546,"Analog to Clopper-Pearson",25,15
+69,18.494599470762,"Analog to Clopper-Pearson",25,15
+70,17.0302058723087,"Analog to Clopper-Pearson",25,15
+71,15.6228349299736,"Analog to Clopper-Pearson",25,15
+72,14.2831609392813,"Analog to Clopper-Pearson",25,15
+73,13.0184978309171,"Analog to Clopper-Pearson",25,15
+74,11.8332860764167,"Analog to Clopper-Pearson",25,15
+75,10.7295774009033,"Analog to Clopper-Pearson",25,15
+76,9.70749235904703,"Analog to Clopper-Pearson",25,15
+77,8.76563573146718,"Analog to Clopper-Pearson",25,15
+78,7.90146212618833,"Analog to Clopper-Pearson",25,15
+79,7.11158947330992,"Analog to Clopper-Pearson",25,15
+80,6.39206168168776,"Analog to Clopper-Pearson",25,15
+81,5.73856397213758,"Analog to Clopper-Pearson",25,15
+82,5.14659565502104,"Analog to Clopper-Pearson",25,15
+83,4.61160566568359,"Analog to Clopper-Pearson",25,15
+84,4.12909623496599,"Analog to Clopper-Pearson",25,15
+85,3.69469982644079,"Analog to Clopper-Pearson",25,15
+86,3.30423404435864,"Analog to Clopper-Pearson",25,15
+87,2.95373869708205,"Analog to Clopper-Pearson",25,15
+88,2.63949865200069,"Analog to Clopper-Pearson",25,15
+89,2.35805557994594,"Analog to Clopper-Pearson",25,15
+90,2.10621118453685,"Analog to Clopper-Pearson",25,15
+91,1.8810240580516,"Analog to Clopper-Pearson",25,15
+92,1.67980190598521,"Analog to Clopper-Pearson",25,15
+93,1.50009053800218,"Analog to Clopper-Pearson",25,15
+94,1.33966073094471,"Analog to Clopper-Pearson",25,15
+95,1.19649382552684,"Analog to Clopper-Pearson",25,15
+96,1.06876671707984,"Analog to Clopper-Pearson",25,15
+97,0.954836736709759,"Analog to Clopper-Pearson",25,15
+98,0.853226787122715,"Analog to Clopper-Pearson",25,15
+99,0.762610992178034,"Analog to Clopper-Pearson",25,15
+100,0.681801036450696,"Analog to Clopper-Pearson",25,15
+101,0.609733306768617,"Analog to Clopper-Pearson",25,15
+102,0.545456898424932,"Analog to Clopper-Pearson",25,15
+103,0.488122511648393,"Analog to Clopper-Pearson",25,15
+104,0.436972236509963,"Analog to Clopper-Pearson",25,15
+105,0.39133020472771,"Analog to Clopper-Pearson",25,15
+106,0.350594073141811,"Analog to Clopper-Pearson",25,15
+107,0.314227294611613,"Analog to Clopper-Pearson",25,15
+108,0.281752126642003,"Analog to Clopper-Pearson",25,15
+109,0.252743325299343,"Analog to Clopper-Pearson",25,15
+110,0.226822471230302,"Analog to Clopper-Pearson",25,15
+111,0.203652875300265,"Analog to Clopper-Pearson",25,15
+112,0.182935013092131,"Analog to Clopper-Pearson",25,15
+113,0.16440243991895,"Analog to Clopper-Pearson",25,15
+114,0.147818140850803,"Analog to Clopper-Pearson",25,15
+115,0.132971273345494,"Analog to Clopper-Pearson",25,15
+116,0.11967426326128,"Analog to Clopper-Pearson",25,15
+117,0.107760218213797,"Analog to Clopper-Pearson",25,15
+118,0.0970806253445264,"Analog to Clopper-Pearson",25,15
+119,0.0875033035438654,"Analog to Clopper-Pearson",25,15
+120,0.0789105829851201,"Analog to Clopper-Pearson",25,15
+121,0.0711976874570607,"Analog to Clopper-Pearson",25,15
+122,0.064271297422594,"Analog to Clopper-Pearson",25,15
+123,0.0580482739774992,"Analog to Clopper-Pearson",25,15
+124,0.0524545259391877,"Analog to Clopper-Pearson",25,15
+125,0.047424004167893,"Analog to Clopper-Pearson",25,15
+126,0.042897808920786,"Analog to Clopper-Pearson",25,15
+127,0.0388233975739532,"Analog to Clopper-Pearson",25,15
+128,0.0351538814294815,"Analog to Clopper-Pearson",25,15
+129,0.0318474015668324,"Analog to Clopper-Pearson",25,15
+130,0.02886657481097,"Analog to Clopper-Pearson",25,15
+131,0.0261780018856689,"Analog to Clopper-Pearson",25,15
+132,0.0237518307099056,"Analog to Clopper-Pearson",25,15
+133,0.0215613685884296,"Analog to Clopper-Pearson",25,15
+134,0.0195827377540209,"Analog to Clopper-Pearson",25,15
+135,0.0177945693473672,"Analog to Clopper-Pearson",25,15
+136,0.0161777314789956,"Analog to Clopper-Pearson",25,15
+137,0.0147150875136464,"Analog to Clopper-Pearson",25,15
+138,0.0133912811575674,"Analog to Clopper-Pearson",25,15
+139,0.0121925453194891,"Analog to Clopper-Pearson",25,15
+140,0.0111065320619862,"Analog to Clopper-Pearson",25,15
+141,0.0101221612664287,"Analog to Clopper-Pearson",25,15
+142,0.00922948590619883,"Analog to Clopper-Pearson",25,15
+143,0.00841957206321685,"Analog to Clopper-Pearson",25,15
+144,0.0076843920356101,"Analog to Clopper-Pearson",25,15
+145,0.00701672907270327,"Analog to Clopper-Pearson",25,15
+146,0.00641009244019471,"Analog to Clopper-Pearson",25,15
+147,0.00585864166589702,"Analog to Clopper-Pearson",25,15
+148,0.00535711894696168,"Analog to Clopper-Pearson",25,15
+149,0.00490078881503258,"Analog to Clopper-Pearson",25,15
+150,0.00448538425801454,"Analog to Clopper-Pearson",25,15
+151,0.00410705858763633,"Analog to Clopper-Pearson",25,15
+152,0.00376234242209203,"Analog to Clopper-Pearson",25,15
+153,0.00344810522396253,"Analog to Clopper-Pearson",25,15
+154,0.00316152089641539,"Analog to Clopper-Pearson",25,15
+155,0.00290003699629552,"Analog to Clopper-Pearson",25,15
+156,0.00266134717198507,"Analog to Clopper-Pearson",25,15
+157,0.00244336647756029,"Analog to Clopper-Pearson",25,15
+158,0.00224420925345932,"Analog to Clopper-Pearson",25,15
+159,0.00206216929816801,"Analog to Clopper-Pearson",25,15
+160,0.00189570208584042,"Analog to Clopper-Pearson",25,15
+161,0.00174340881174355,"Analog to Clopper-Pearson",25,15
+162,0.00160402207134714,"Analog to Clopper-Pearson",25,15
+163,0.00147639300011996,"Analog to Clopper-Pearson",25,15
+164,0.00135947971995158,"Analog to Clopper-Pearson",25,15
+165,0.001252336954866,"Analog to Clopper-Pearson",25,15
+166,0.00115410669357336,"Analog to Clopper-Pearson",25,15
+167,0.00106400978962871,"Analog to Clopper-Pearson",25,15
+168,0.000981338401724023,"Analog to Clopper-Pearson",25,15
+169,0.000905449187095083,"Analog to Clopper-Pearson",25,15
+170,0.000835757170327775,"Analog to Clopper-Pearson",25,15
+171,0.000771730218127865,"Analog to Clopper-Pearson",25,15
+172,0.000712884057990576,"Analog to Clopper-Pearson",25,15
+173,0.000658777785272544,"Analog to Clopper-Pearson",25,15
+174,0.000609009809019878,"Analog to Clopper-Pearson",25,15
+175,0.000563214192121764,"Analog to Clopper-Pearson",25,15
+176,0.000521057346010177,"Analog to Clopper-Pearson",25,15
+177,0.000482235044275707,"Analog to Clopper-Pearson",25,15
+178,0.000446469723272659,"Analog to Clopper-Pearson",25,15
+179,0.000413508041092951,"Analog to Clopper-Pearson",25,15
+180,0.000383118669241497,"Analog to Clopper-Pearson",25,15
+181,0.000355090293984587,"Analog to Clopper-Pearson",25,15
+182,0.000329229806701632,"Analog to Clopper-Pearson",25,15
+183,0.000305360664680169,"Analog to Clopper-Pearson",25,15
+184,0.000283321405681184,"Analog to Clopper-Pearson",25,15
+185,0.000262964301290978,"Analog to Clopper-Pearson",25,15
+186,0.000244154135588092,"Analog to Clopper-Pearson",25,15
+187,0.000226767097008527,"Analog to Clopper-Pearson",25,15
+188,0.000210689772506421,"Analog to Clopper-Pearson",25,15
+189,0.000195818234195585,"Analog to Clopper-Pearson",25,15
+190,0.000182057209633309,"Analog to Clopper-Pearson",25,15
+191,0.000169319327783494,"Analog to Clopper-Pearson",25,15
+192,0.00015752443348214,"Analog to Clopper-Pearson",25,15
+193,0.000146598963933966,"Analog to Clopper-Pearson",25,15
+194,0.000136475381402886,"Analog to Clopper-Pearson",25,15
+195,0.000127091656828828,"Analog to Clopper-Pearson",25,15
+196,0.000118390799615539,"Analog to Clopper-Pearson",25,15
+197,0.000110320429294726,"Analog to Clopper-Pearson",25,15
+198,0.00010283238518633,"Analog to Clopper-Pearson",25,15
+199,9.58823705478407e-05,"Analog to Clopper-Pearson",25,15
+200,8.94296280415013e-05,"Analog to Clopper-Pearson",25,15
+50,53,"Analog to Clopper-Pearson",50,5
+51,56.2352941176471,"Analog to Clopper-Pearson",50,5
+52,59.4366515837104,"Analog to Clopper-Pearson",50,5
+53,62.60407239819,"Analog to Clopper-Pearson",50,5
+54,65.7382205906068,"Analog to Clopper-Pearson",50,5
+55,68.8401344616661,"Analog to Clopper-Pearson",50,5
+56,71.9110597135014,"Analog to Clopper-Pearson",50,5
+57,74.9523505487639,"Analog to Clopper-Pearson",50,5
+58,77.9654091266617,"Analog to Clopper-Pearson",50,5
+59,80.9516472364763,"Analog to Clopper-Pearson",50,5
+60,83.9124612756598,"Analog to Clopper-Pearson",50,5
+61,86.8492155291174,"Analog to Clopper-Pearson",50,5
+62,89.7632308788493,"Analog to Clopper-Pearson",50,5
+63,92.655777245529,"Analog to Clopper-Pearson",50,5
+64,95.5280687136332,"Analog to Clopper-Pearson",50,5
+65,98.3812606565708,"Analog to Clopper-Pearson",50,5
+66,101.216448387407,"Analog to Clopper-Pearson",50,5
+67,104.034666985198,"Analog to Clopper-Pearson",50,5
+68,106.836892025445,"Analog to Clopper-Pearson",50,5
+69,109.624040996685,"Analog to Clopper-Pearson",50,5
+70,112.39697522496,"Analog to Clopper-Pearson",50,5
+71,115.156502159575,"Analog to Clopper-Pearson",50,5
+72,117.903377900034,"Analog to Clopper-Pearson",50,5
+73,120.638309866807,"Analog to Clopper-Pearson",50,5
+74,123.361959538205,"Analog to Clopper-Pearson",50,5
+75,126.074945192528,"Analog to Clopper-Pearson",50,5
+76,128.777844609003,"Analog to Clopper-Pearson",50,5
+77,131.471197693067,"Analog to Clopper-Pearson",50,5
+78,134.155509001485,"Analog to Clopper-Pearson",50,5
+79,136.831250150773,"Analog to Clopper-Pearson",50,5
+80,139.498862098825,"Analog to Clopper-Pearson",50,5
+81,142.158757294459,"Analog to Clopper-Pearson",50,5
+82,144.811321693317,"Analog to Clopper-Pearson",50,5
+83,147.456916641064,"Analog to Clopper-Pearson",50,5
+84,150.09588062649,"Analog to Clopper-Pearson",50,5
+85,152.728530907966,"Analog to Clopper-Pearson",50,5
+86,155.35516501688,"Analog to Clopper-Pearson",50,5
+87,157.976062141374,"Analog to Clopper-Pearson",50,5
+88,160.591484392888,"Analog to Clopper-Pearson",50,5
+89,163.201677957051,"Analog to Clopper-Pearson",50,5
+90,165.806874129241,"Analog to Clopper-Pearson",50,5
+91,168.407290233899,"Analog to Clopper-Pearson",50,5
+92,171.003130425654,"Analog to Clopper-Pearson",50,5
+93,173.594586369251,"Analog to Clopper-Pearson",50,5
+94,176.181837794855,"Analog to Clopper-Pearson",50,5
+95,178.765052924823,"Analog to Clopper-Pearson",50,5
+96,181.344388768311,"Analog to Clopper-Pearson",50,5
+97,183.919991280611,"Analog to Clopper-Pearson",50,5
+98,186.491995384959,"Analog to Clopper-Pearson",50,5
+99,189.060524856045,"Analog to Clopper-Pearson",50,5
+100,191.625692065911,"Analog to Clopper-Pearson",50,5
+101,194.187597594966,"Analog to Clopper-Pearson",50,5
+102,196.746329712767,"Analog to Clopper-Pearson",50,5
+103,199.301963735407,"Analog to Clopper-Pearson",50,5
+104,201.854561268559,"Analog to Clopper-Pearson",50,5
+105,204.40416934711,"Analog to Clopper-Pearson",50,5
+106,206.950819484402,"Analog to Clopper-Pearson",50,5
+107,209.494526645661,"Analog to Clopper-Pearson",50,5
+108,212.035288161752,"Analog to Clopper-Pearson",50,5
+109,214.573082600274,"Analog to Clopper-Pearson",50,5
+110,217.107868612128,"Analog to Clopper-Pearson",50,5
+111,219.639583771866,"Analog to Clopper-Pearson",50,5
+112,222.168143430311,"Analog to Clopper-Pearson",50,5
+113,224.693439597788,"Analog to Clopper-Pearson",50,5
+114,227.215339875598,"Analog to Clopper-Pearson",50,5
+115,229.733686452685,"Analog to Clopper-Pearson",50,5
+116,232.24829518323,"Analog to Clopper-Pearson",50,5
+117,234.758954759664,"Analog to Clopper-Pearson",50,5
+118,237.265425994067,"Analog to Clopper-Pearson",50,5
+119,239.767441219241,"Analog to Clopper-Pearson",50,5
+120,242.264703819077,"Analog to Clopper-Pearson",50,5
+121,244.756887896049,"Analog to Clopper-Pearson",50,5
+122,247.24363808163,"Analog to Clopper-Pearson",50,5
+123,249.724569493911,"Analog to Clopper-Pearson",50,5
+124,252.19926784468,"Analog to Clopper-Pearson",50,5
+125,254.667289696573,"Analog to Clopper-Pearson",50,5
+126,257.128162869276,"Analog to Clopper-Pearson",50,5
+127,259.581386992221,"Analog to Clopper-Pearson",50,5
+128,262.026434199788,"Analog to Clopper-Pearson",50,5
+129,264.462749963743,"Analog to Clopper-Pearson",50,5
+130,266.889754056549,"Analog to Clopper-Pearson",50,5
+131,269.30684163811,"Analog to Clopper-Pearson",50,5
+132,271.713384457716,"Analog to Clopper-Pearson",50,5
+133,274.108732162197,"Analog to Clopper-Pearson",50,5
+134,276.492213700826,"Analog to Clopper-Pearson",50,5
+135,278.863138816948,"Analog to Clopper-Pearson",50,5
+136,281.220799616109,"Analog to Clopper-Pearson",50,5
+137,283.564472200249,"Analog to Clopper-Pearson",50,5
+138,285.893418357507,"Analog to Clopper-Pearson",50,5
+139,288.206887297171,"Analog to Clopper-Pearson",50,5
+140,290.50411741939,"Analog to Clopper-Pearson",50,5
+141,292.784338109747,"Analog to Clopper-Pearson",50,5
+142,295.046771548729,"Analog to Clopper-Pearson",50,5
+143,297.290634526816,"Analog to Clopper-Pearson",50,5
+144,299.51514025607,"Analog to Clopper-Pearson",50,5
+145,301.719500169832,"Analog to Clopper-Pearson",50,5
+146,303.902925702392,"Analog to Clopper-Pearson",50,5
+147,306.064630041176,"Analog to Clopper-Pearson",50,5
+148,308.203829844517,"Analog to Clopper-Pearson",50,5
+149,310.319746918614,"Analog to Clopper-Pearson",50,5
+150,312.411609847952,"Analog to Clopper-Pearson",50,5
+151,314.47865557381,"Analog to Clopper-Pearson",50,5
+152,316.520130916318,"Analog to Clopper-Pearson",50,5
+153,318.535294036018,"Analog to Clopper-Pearson",50,5
+154,320.523415831232,"Analog to Clopper-Pearson",50,5
+155,322.483781268349,"Analog to Clopper-Pearson",50,5
+156,324.415690642513,"Analog to Clopper-Pearson",50,5
+157,326.318460766658,"Analog to Clopper-Pearson",50,5
+158,328.191426087509,"Analog to Clopper-Pearson",50,5
+159,330.033939727251,"Analog to Clopper-Pearson",50,5
+160,331.845374450365,"Analog to Clopper-Pearson",50,5
+161,333.625123555342,"Analog to Clopper-Pearson",50,5
+162,335.372601691223,"Analog to Clopper-Pearson",50,5
+163,337.087245599601,"Analog to Clopper-Pearson",50,5
+164,338.76851478263,"Analog to Clopper-Pearson",50,5
+165,340.415892098172,"Analog to Clopper-Pearson",50,5
+166,342.028884283302,"Analog to Clopper-Pearson",50,5
+167,343.607022407673,"Analog to Clopper-Pearson",50,5
+168,345.149862258473,"Analog to Clopper-Pearson",50,5
+169,346.656984658807,"Analog to Clopper-Pearson",50,5
+170,348.127995721578,"Analog to Clopper-Pearson",50,5
+171,349.562527041032,"Analog to Clopper-Pearson",50,5
+172,350.960235824212,"Analog to Clopper-Pearson",50,5
+173,352.320804964798,"Analog to Clopper-Pearson",50,5
+174,353.643943061654,"Analog to Clopper-Pearson",50,5
+175,354.929384384682,"Analog to Clopper-Pearson",50,5
+176,356.176888790514,"Analog to Clopper-Pearson",50,5
+177,357.386241590627,"Analog to Clopper-Pearson",50,5
+178,358.557253374422,"Analog to Clopper-Pearson",50,5
+179,359.689759789945,"Analog to Clopper-Pearson",50,5
+180,360.783621284692,"Analog to Clopper-Pearson",50,5
+181,361.838722809273,"Analog to Clopper-Pearson",50,5
+182,362.85497348621,"Analog to Clopper-Pearson",50,5
+183,363.832306246563,"Analog to Clopper-Pearson",50,5
+184,364.770677436614,"Analog to Clopper-Pearson",50,5
+185,365.670066397286,"Analog to Clopper-Pearson",50,5
+186,366.530475018334,"Analog to Clopper-Pearson",50,5
+187,367.351927269704,"Analog to Clopper-Pearson",50,5
+188,368.134468712294,"Analog to Clopper-Pearson",50,5
+189,368.878165990153,"Analog to Clopper-Pearson",50,5
+190,369.583106306177,"Analog to Clopper-Pearson",50,5
+191,370.249396883367,"Analog to Clopper-Pearson",50,5
+192,370.877164413431,"Analog to Clopper-Pearson",50,5
+193,371.466554494564,"Analog to Clopper-Pearson",50,5
+194,372.017731060256,"Analog to Clopper-Pearson",50,5
+195,372.530875800539,"Analog to Clopper-Pearson",50,5
+196,373.006187577603,"Analog to Clopper-Pearson",50,5
+197,373.443881836836,"Analog to Clopper-Pearson",50,5
+198,373.844190015105,"Analog to Clopper-Pearson",50,5
+199,374.207358947371,"Analog to Clopper-Pearson",50,5
+200,374.533650272955,"Analog to Clopper-Pearson",50,5
+50,12,"Analog to Clopper-Pearson",50,15
+51,13.7647058823529,"Analog to Clopper-Pearson",50,15
+52,15.5294117647059,"Analog to Clopper-Pearson",50,15
+53,17.2650900708614,"Analog to Clopper-Pearson",50,15
+54,18.9523890833547,"Analog to Clopper-Pearson",50,15
+55,20.5816329434531,"Analog to Clopper-Pearson",50,15
+56,22.1504341015995,"Analog to Clopper-Pearson",50,15
+57,23.6611172770995,"Analog to Clopper-Pearson",50,15
+58,25.1186525595037,"Analog to Clopper-Pearson",50,15
+59,26.5292043272403,"Analog to Clopper-Pearson",50,15
+60,27.8991498765424,"Analog to Clopper-Pearson",50,15
+61,29.2344358285188,"Analog to Clopper-Pearson",50,15
+62,30.5402031034741,"Analog to Clopper-Pearson",50,15
+63,31.8206341066997,"Analog to Clopper-Pearson",50,15
+64,33.0789698870271,"Analog to Clopper-Pearson",50,15
+65,34.3176372661718,"Analog to Clopper-Pearson",50,15
+66,35.5384285191715,"Analog to Clopper-Pearson",50,15
+67,36.7426882883386,"Analog to Clopper-Pearson",50,15
+68,37.9314784116788,"Analog to Clopper-Pearson",50,15
+69,39.1057062636498,"Analog to Clopper-Pearson",50,15
+70,40.2662134481295,"Analog to Clopper-Pearson",50,15
+71,41.4138287211556,"Analog to Clopper-Pearson",50,15
+72,42.549392485724,"Analog to Clopper-Pearson",50,15
+73,43.673761123358,"Analog to Clopper-Pearson",50,15
+74,44.7877987986393,"Analog to Clopper-Pearson",50,15
+75,45.8923629683476,"Analog to Clopper-Pearson",50,15
+76,46.9882881607681,"Analog to Clopper-Pearson",50,15
+77,48.0763709342755,"Analog to Clopper-Pearson",50,15
+78,49.1573573723341,"Analog to Clopper-Pearson",50,15
+79,50.2319330456717,"Analog to Clopper-Pearson",50,15
+80,51.3007141142451,"Analog to Clopper-Pearson",50,15
+81,52.3642372595909,"Analog to Clopper-Pearson",50,15
+82,53.4229455844088,"Analog to Clopper-Pearson",50,15
+83,54.4771676246252,"Analog to Clopper-Pearson",50,15
+84,55.5270872401624,"Analog to Clopper-Pearson",50,15
+85,56.57270331586,"Analog to Clopper-Pearson",50,15
+86,57.6137797323893,"Analog to Clopper-Pearson",50,15
+87,58.6497877056955,"Analog to Clopper-Pearson",50,15
+88,59.6798440746484,"Analog to Clopper-Pearson",50,15
+89,60.7026502122276,"Analog to Clopper-Pearson",50,15
+90,61.7164367954968,"Analog to Clopper-Pearson",50,15
+91,62.718919638018,"Analog to Clopper-Pearson",50,15
+92,63.7072711993689,"Analog to Clopper-Pearson",50,15
+93,64.6781113448395,"Analog to Clopper-Pearson",50,15
+94,65.6275195830518,"Analog to Clopper-Pearson",50,15
+95,66.5510695245673,"Analog to Clopper-Pearson",50,15
+96,67.443884837214,"Analog to Clopper-Pearson",50,15
+97,68.3007146546707,"Analog to Clopper-Pearson",50,15
+98,69.116025319222,"Analog to Clopper-Pearson",50,15
+99,69.884104564321,"Analog to Clopper-Pearson",50,15
+100,70.5991737875731,"Analog to Clopper-Pearson",50,15
+101,71.2555039194292,"Analog to Clopper-Pearson",50,15
+102,71.8475305230456,"Analog to Clopper-Pearson",50,15
+103,72.3699641174256,"Analog to Clopper-Pearson",50,15
+104,72.8178922422646,"Analog to Clopper-Pearson",50,15
+105,73.1868704207283,"Analog to Clopper-Pearson",50,15
+106,73.472999871367,"Analog to Clopper-Pearson",50,15
+107,73.672990524653,"Analog to Clopper-Pearson",50,15
+108,73.7842085744727,"Analog to Clopper-Pearson",50,15
+109,73.8047084106334,"Analog to Clopper-Pearson",50,15
+110,73.7332493151785,"Analog to Clopper-Pearson",50,15
+111,73.5692977508787,"Analog to Clopper-Pearson",50,15
+112,73.3130164204464,"Analog to Clopper-Pearson",50,15
+113,72.965241531032,"Analog to Clopper-Pearson",50,15
+114,72.5274498659818,"Analog to Clopper-Pearson",50,15
+115,72.0017173537186,"Analog to Clopper-Pearson",50,15
+116,71.3906708424016,"Analog to Clopper-Pearson",50,15
+117,70.697434750538,"Analog to Clopper-Pearson",50,15
+118,69.9255741795323,"Analog to Clopper-Pearson",50,15
+119,69.079035955593,"Analog to Clopper-Pearson",50,15
+120,68.1620889257751,"Analog to Clopper-Pearson",50,15
+121,67.1792646753842,"Analog to Clopper-Pearson",50,15
+122,66.1352996692742,"Analog to Clopper-Pearson",50,15
+123,65.035079654471,"Analog to Clopper-Pearson",50,15
+124,63.883587000921,"Analog to Clopper-Pearson",50,15
+125,62.6858515052133,"Analog to Clopper-Pearson",50,15
+126,61.4469050416025,"Analog to Clopper-Pearson",50,15
+127,60.1717403174733,"Analog to Clopper-Pearson",50,15
+128,58.8652738776248,"Analog to Clopper-Pearson",50,15
+129,57.5323134038021,"Analog to Clopper-Pearson",50,15
+130,56.1775292726579,"Analog to Clopper-Pearson",50,15
+131,54.8054302661877,"Analog to Clopper-Pearson",50,15
+132,53.4203432728622,"Analog to Clopper-Pearson",50,15
+133,52.0263967740748,"Analog to Clopper-Pearson",50,15
+134,50.6275078779991,"Analog to Clopper-Pearson",50,15
+135,49.2273726401801,"Analog to Clopper-Pearson",50,15
+136,47.8294593960307,"Analog to Clopper-Pearson",50,15
+137,46.4370048235278,"Analog to Clopper-Pearson",50,15
+138,45.0530124537242,"Analog to Clopper-Pearson",50,15
+139,43.6802533510531,"Analog to Clopper-Pearson",50,15
+140,42.3212686938518,"Analog to Clopper-Pearson",50,15
+141,40.9783739972051,"Analog to Clopper-Pearson",50,15
+142,39.653664734181,"Analog to Clopper-Pearson",50,15
+143,38.3490231273028,"Analog to Clopper-Pearson",50,15
+144,37.0661258988893,"Analog to Clopper-Pearson",50,15
+145,35.8064527863522,"Analog to Clopper-Pearson",50,15
+146,34.5712956461162,"Analog to Clopper-Pearson",50,15
+147,33.3617679872834,"Analog to Clopper-Pearson",50,15
+148,32.1788147931702,"Analog to Clopper-Pearson",50,15
+149,31.0232225052004,"Analog to Clopper-Pearson",50,15
+150,29.8956290591993,"Analog to Clopper-Pearson",50,15
+151,28.7965338787461,"Analog to Clopper-Pearson",50,15
+152,27.7263077439025,"Analog to Clopper-Pearson",50,15
+153,26.6852024662284,"Analog to Clopper-Pearson",50,15
+154,25.6733603125187,"Analog to Clopper-Pearson",50,15
+155,24.6908231302167,"Analog to Clopper-Pearson",50,15
+156,23.7375411369152,"Analog to Clopper-Pearson",50,15
+157,22.8133813448322,"Analog to Clopper-Pearson",50,15
+158,21.9181355986995,"Analog to Clopper-Pearson",50,15
+159,21.0515282121178,"Analog to Clopper-Pearson",50,15
+160,20.213223193267,"Analog to Clopper-Pearson",50,15
+161,19.4028310558894,"Analog to Clopper-Pearson",50,15
+162,18.6199152157719,"Analog to Clopper-Pearson",50,15
+163,17.8639979766564,"Analog to Clopper-Pearson",50,15
+164,17.134566112561,"Analog to Clopper-Pearson",50,15
+165,16.4310760560666,"Analog to Clopper-Pearson",50,15
+166,15.7529587041847,"Analog to Clopper-Pearson",50,15
+167,15.0996238550752,"Analog to Clopper-Pearson",50,15
+168,14.4704642901565,"Analog to Clopper-Pearson",50,15
+169,13.8648595170876,"Analog to Clopper-Pearson",50,15
+170,13.2821791897622,"Analog to Clopper-Pearson",50,15
+171,12.7217862218581,"Analog to Clopper-Pearson",50,15
+172,12.1830396106721,"Analog to Clopper-Pearson",50,15
+173,11.6652969879886,"Analog to Clopper-Pearson",50,15
+174,11.1679169145742,"Analog to Clopper-Pearson",50,15
+175,10.6902609346272,"Analog to Clopper-Pearson",50,15
+176,10.2316954061294,"Analog to Clopper-Pearson",50,15
+177,9.791593122586,"Analog to Clopper-Pearson",50,15
+178,9.36933474111083,"Analog to Clopper-Pearson",50,15
+179,8.96431003123607,"Analog to Clopper-Pearson",50,15
+180,8.57591895820464,"Analog to Clopper-Pearson",50,15
+181,8.20357261386766,"Analog to Clopper-Pearson",50,15
+182,7.84669400764103,"Analog to Clopper-Pearson",50,15
+183,7.5047187293203,"Analog to Clopper-Pearson",50,15
+184,7.17709549487776,"Analog to Clopper-Pearson",50,15
+185,6.86328658571937,"Analog to Clopper-Pearson",50,15
+186,6.562768191218,"Analog to Clopper-Pearson",50,15
+187,6.27503066371746,"Analog to Clopper-Pearson",50,15
+188,5.9995786945861,"Analog to Clopper-Pearson",50,15
+189,5.73593141930461,"Analog to Clopper-Pearson",50,15
+190,5.48362245900595,"Analog to Clopper-Pearson",50,15
+191,5.24219990534179,"Analog to Clopper-Pearson",50,15
+192,5.01122625502849,"Analog to Clopper-Pearson",50,15
+193,4.79027829993399,"Analog to Clopper-Pearson",50,15
+194,4.57894697810285,"Analog to Clopper-Pearson",50,15
+195,4.37683719066988,"Analog to Clopper-Pearson",50,15
+196,4.18356758920683,"Analog to Clopper-Pearson",50,15
+197,3.99877033764717,"Analog to Clopper-Pearson",50,15
+198,3.82209085257845,"Analog to Clopper-Pearson",50,15
+199,3.65318752534456,"Analog to Clopper-Pearson",50,15
+200,3.49173142908473,"Analog to Clopper-Pearson",50,15
+25,27,"MST",25,5
+26,30.6538461538462,"MST",25,5
+27,34.1794871794872,"MST",25,5
+28,37.6303418803419,"MST",25,5
+29,41.0303566165635,"MST",25,5
+30,44.3899204244032,"MST",25,5
+31,47.7135088369794,"MST",25,5
+32,51.0031742296759,"MST",25,5
+33,54.2601822537863,"MST",25,5
+34,57.4857664037635,"MST",25,5
+35,60.681419525969,"MST",25,5
+36,63.8489413548712,"MST",25,5
+37,66.9903741048968,"MST",25,5
+38,70.1079024936631,"MST",25,5
+39,73.2037563228007,"MST",25,5
+40,76.2801303947129,"MST",25,5
+41,79.3391245821184,"MST",25,5
+42,82.3827020795782,"MST",25,5
+43,85.4126626977922,"MST",25,5
+44,88.4306282724545,"MST",25,5
+45,91.4380377497694,"MST",25,5
+46,94.4361498954455,"MST",25,5
+47,97.4260518137554,"MST",25,5
+48,100.408671629267,"MST",25,5
+49,103.384793845584,"MST",25,5
+50,106.355076087465,"MST",25,5
+51,109.320066110631,"MST",25,5
+52,112.280218040423,"MST",25,5
+53,115.235906736507,"MST",25,5
+54,118.187439033044,"MST",25,5
+55,121.135060497239,"MST",25,5
+56,124.078956409946,"MST",25,5
+57,127.019245968044,"MST",25,5
+58,129.955969228421,"MST",25,5
+59,132.889066980497,"MST",25,5
+60,135.818354437026,"MST",25,5
+61,138.743490260827,"MST",25,5
+62,141.663942912146,"MST",25,5
+63,144.578956559299,"MST",25,5
+64,147.487518833476,"MST",25,5
+65,150.388332548082,"MST",25,5
+66,153.279793185049,"MST",25,5
+67,156.159973526891,"MST",25,5
+68,159.026616336218,"MST",25,5
+69,161.877135501122,"MST",25,5
+70,164.708625612842,"MST",25,5
+71,167.51787954846,"MST",25,5
+72,170.301413312224,"MST",25,5
+73,173.055497151557,"MST",25,5
+74,175.776191807278,"MST",25,5
+75,178.459388676106,"MST",25,5
+76,181.100852647702,"MST",25,5
+77,183.696266416682,"MST",25,5
+78,186.241275150382,"MST",25,5
+79,188.73153050379,"MST",25,5
+80,191.162733103409,"MST",25,5
+81,193.53067276251,"MST",25,5
+82,195.831265833661,"MST",25,5
+83,198.060589244362,"MST",25,5
+84,200.214910893646,"MST",25,5
+85,202.290716208226,"MST",25,5
+86,204.284730764359,"MST",25,5
+87,206.193938974794,"MST",25,5
+88,208.01559891889,"MST",25,5
+89,209.747253458427,"MST",25,5
+90,211.386737832632,"MST",25,5
+91,212.932183964521,"MST",25,5
+92,214.382021738108,"MST",25,5
+93,215.734977523666,"MST",25,5
+94,216.990070237377,"MST",25,5
+95,218.146605223782,"MST",25,5
+96,219.204166245603,"MST",25,5
+97,220.162605856959,"MST",25,5
+98,221.022034423804,"MST",25,5
+99,221.782808040448,"MST",25,5
+100,222.445515574112,"MST",25,5
+101,223.010965051353,"MST",25,5
+102,223.480169581377,"MST",25,5
+103,223.854332992263,"MST",25,5
+104,224.134835337344,"MST",25,5
+105,224.323218410704,"MST",25,5
+106,224.421171393248,"MST",25,5
+107,224.430516734144,"MST",25,5
+108,224.353196356927,"MST",25,5
+109,224.191258265055,"MST",25,5
+110,223.94684360846,"MST",25,5
+111,223.622174260468,"MST",25,5
+112,223.219540943568,"MST",25,5
+113,222.741291932598,"MST",25,5
+114,222.189822355239,"MST",25,5
+115,221.567564101926,"MST",25,5
+116,220.876976350559,"MST",25,5
+117,220.120536705527,"MST",25,5
+118,219.300732945531,"MST",25,5
+119,218.420055370423,"MST",25,5
+120,217.480989733706,"MST",25,5
+121,216.486010744401,"MST",25,5
+122,215.437576119581,"MST",25,5
+123,214.338121167033,"MST",25,5
+124,213.190053876029,"MST",25,5
+125,211.995750493186,"MST",25,5
+126,210.757551559681,"MST",25,5
+127,209.477758385683,"MST",25,5
+128,208.158629937747,"MST",25,5
+129,206.802380114984,"MST",25,5
+130,205.411175390076,"MST",25,5
+131,203.987132791657,"MST",25,5
+132,202.532318205103,"MST",25,5
+133,201.048744969454,"MST",25,5
+134,199.538372748919,"MST",25,5
+135,198.003106658206,"MST",25,5
+136,196.444796621805,"MST",25,5
+137,194.865236948193,"MST",25,5
+138,193.266166100876,"MST",25,5
+139,191.649266649051,"MST",25,5
+140,190.016165381645,"MST",25,5
+141,188.368433569344,"MST",25,5
+142,186.707587360148,"MST",25,5
+143,185.035088294873,"MST",25,5
+144,183.352343929856,"MST",25,5
+145,181.660708554959,"MST",25,5
+146,179.961483995778,"MST",25,5
+147,178.255920489721,"MST",25,5
+148,176.545217626358,"MST",25,5
+149,174.830525343169,"MST",25,5
+150,173.112944968461,"MST",25,5
+151,171.393530303891,"MST",25,5
+152,169.673288739611,"MST",25,5
+153,167.953182395655,"MST",25,5
+154,166.234129283687,"MST",25,5
+155,164.517004483782,"MST",25,5
+156,162.802641331339,"MST",25,5
+157,161.091832609723,"MST",25,5
+158,159.385331744605,"MST",25,5
+159,157.683853996402,"MST",25,5
+160,155.988077647531,"MST",25,5
+161,154.298645181593,"MST",25,5
+162,152.616164451854,"MST",25,5
+163,150.941209836734,"MST",25,5
+164,149.274323380243,"MST",25,5
+165,147.616015915588,"MST",25,5
+166,145.966768170372,"MST",25,5
+167,144.327031852047,"MST",25,5
+168,142.697230712458,"MST",25,5
+169,141.077761590501,"MST",25,5
+170,139.468995432076,"MST",25,5
+171,137.871278286681,"MST",25,5
+172,136.284932280109,"MST",25,5
+173,134.710256562841,"MST",25,5
+174,133.147528233853,"MST",25,5
+175,131.597003239636,"MST",25,5
+176,130.058917248338,"MST",25,5
+177,128.533486499005,"MST",25,5
+178,127.02090862599,"MST",25,5
+179,125.521363458642,"MST",25,5
+180,124.035013796474,"MST",25,5
+181,122.562006160032,"MST",25,5
+182,121.102471517768,"MST",25,5
+183,119.656525989217,"MST",25,5
+184,118.224271524863,"MST",25,5
+185,116.805796563065,"MST",25,5
+186,115.401176664472,"MST",25,5
+187,114.010475124365,"MST",25,5
+188,112.633743563373,"MST",25,5
+189,111.271022497062,"MST",25,5
+190,109.922341884854,"MST",25,5
+191,108.587721658794,"MST",25,5
+192,107.267172232655,"MST",25,5
+193,105.960694991901,"MST",25,5
+194,104.668282765008,"MST",25,5
+195,103.389920276664,"MST",25,5
+196,102.12558458335,"MST",25,5
+197,100.875245491827,"MST",25,5
+198,99.6388659610186,"MST",25,5
+199,98.4164024878062,"MST",25,5
+200,97.207805477223,"MST",25,5
+25,4,"MST",25,15
+26,5.73076923076923,"MST",25,15
+27,6.77777777777778,"MST",25,15
+28,7.97130647130647,"MST",25,15
+29,9.1109426971496,"MST",25,15
+30,10.1895288619427,"MST",25,15
+31,11.1957513503676,"MST",25,15
+32,12.1190758012226,"MST",25,15
+33,12.9842940399114,"MST",25,15
+34,13.8161062148826,"MST",25,15
+35,14.6355209492028,"MST",25,15
+36,15.446675250346,"MST",25,15
+37,16.2462672429302,"MST",25,15
+38,17.034970692924,"MST",25,15
+39,17.8176698988712,"MST",25,15
+40,18.5990433404226,"MST",25,15
+41,19.3806752761147,"MST",25,15
+42,20.1618849313103,"MST",25,15
+43,20.9421402400855,"MST",25,15
+44,21.7216199982084,"MST",25,15
+45,22.50079006455,"MST",25,15
+46,23.2802496554158,"MST",25,15
+47,24.0604897039984,"MST",25,15
+48,24.8416824836561,"MST",25,15
+49,25.6236020590593,"MST",25,15
+50,26.4057590516814,"MST",25,15
+51,27.1836904445963,"MST",25,15
+52,27.9431318645541,"MST",25,15
+53,28.6566572970147,"MST",25,15
+54,29.2852214747772,"MST",25,15
+55,29.7838374993738,"MST",25,15
+56,30.1089437580663,"MST",25,15
+57,30.2250543045867,"MST",25,15
+58,30.1092208085007,"MST",25,15
+59,29.7528773513596,"MST",25,15
+60,29.1613858184999,"MST",25,15
+61,28.3519643477568,"MST",25,15
+62,27.3507445743802,"MST",25,15
+63,26.1895897847178,"MST",25,15
+64,24.9031220321737,"MST",25,15
+65,23.5262210058984,"MST",25,15
+66,22.0921058528858,"MST",25,15
+67,20.6310041298953,"MST",25,15
+68,19.1693468771004,"MST",25,15
+69,17.7293967820176,"MST",25,15
+70,16.3292076048753,"MST",25,15
+71,14.9828186588392,"MST",25,15
+72,13.7006013920955,"MST",25,15
+73,12.4896912920744,"MST",25,15
+74,11.3544544693707,"MST",25,15
+75,10.2969527460788,"MST",25,15
+76,9.31738314535822,"MST",25,15
+77,8.41447720476468,"MST",25,15
+78,7.58585269014517,"MST",25,15
+79,6.82831540204414,"MST",25,15
+80,6.13811222554634,"MST",25,15
+81,5.51113874883901,"MST",25,15
+82,4.94310599413189,"MST",25,15
+83,4.42967134031195,"MST",25,15
+84,3.96653878703493,"MST",25,15
+85,3.54953348093804,"MST",25,15
+86,3.17465501888017,"MST",25,15
+87,2.8381135479248,"MST",25,15
+88,2.53635215702009,"MST",25,15
+89,2.26605854006981,"MST",25,15
+90,2.02416842817027,"MST",25,15
+91,1.80786285322529,"MST",25,15
+92,1.61456092151955,"MST",25,15
+93,1.44190944479558,"MST",25,15
+94,1.28777049554355,"MST",25,15
+95,1.15020771842519,"MST",25,15
+96,1.02747203600812,"MST",25,15
+97,0.917987229027007,"MST",25,15
+98,0.82033574408232,"MST",25,15
+99,0.733244980254952,"MST",25,15
+100,0.655574226247125,"MST",25,15
+101,0.586302357561138,"MST",25,15
+102,0.524516355620918,"MST",25,15
+103,0.469400674838019,"MST",25,15
+104,0.420227457081312,"MST",25,15
+105,0.376347573882466,"MST",25,15
+106,0.33718246339659,"MST",25,15
+107,0.302216720334467,"MST",25,15
+108,0.270991391734707,"MST",25,15
+109,0.243097928705406,"MST",25,15
+110,0.218172743462884,"MST",25,15
+111,0.195892321599596,"MST",25,15
+112,0.175968841109782,"MST",25,15
+113,0.15814625196899,"MST",25,15
+114,0.142196772756656,"MST",25,15
+115,0.127917763743547,"MST",25,15
+116,0.11512893890003,"MST",25,15
+117,0.103669882315554,"MST",25,15
+118,0.0933978374827532,"MST",25,15
+119,0.0841857407416158,"MST",25,15
+120,0.0759204728680323,"MST",25,15
+121,0.0685013053075449,"MST",25,15
+122,0.0618385198897358,"MST",25,15
+123,0.0558521830090671,"MST",25,15
+124,0.0504710572268506,"MST",25,15
+125,0.0456316350426769,"MST",25,15
+126,0.0412772812107349,"MST",25,15
+127,0.0373574714471175,"MST",25,15
+128,0.0338271166993652,"MST",25,15
+129,0.0306459633403362,"MST",25,15
+130,0.0277780607161613,"MST",25,15
+131,0.0251912884333664,"MST",25,15
+132,0.022856936623559,"MST",25,15
+133,0.0207493331851314,"MST",25,15
+134,0.0188455126793133,"MST",25,15
+135,0.0171249221610259,"MST",25,15
+136,0.0155691597610658,"MST",25,15
+137,0.0141617423122305,"MST",25,15
+138,0.0128878987345071,"MST",25,15
+139,0.0117343862691693,"MST",25,15
+140,0.0106893269838072,"MST",25,15
+141,0.0097420622646513,"MST",25,15
+142,0.00888302327326459,"MST",25,15
+143,0.00810361557553845,"MST",25,15
+144,0.00739611635532145,"MST",25,15
+145,0.00675358280592697,"MST",25,15
+146,0.00616977045289626,"MST",25,15
+147,0.00563906030311002,"MST",25,15
+148,0.00515639384076229,"MST",25,15
+149,0.00471721500170902,"MST",25,15
+150,0.00431741835594561,"MST",25,15
+151,0.00395330281492442,"MST",25,15
+152,0.00362153025740196,"MST",25,15
+153,0.00331908853565878,"MST",25,15
+154,0.0030432583842868,"MST",25,15
+155,0.00279158380718997,"MST",25,15
+156,0.00256184556579604,"MST",25,15
+157,0.00235203743343276,"MST",25,15
+158,0.00216034491800793,"MST",25,15
+159,0.00198512618809747,"MST",25,15
+160,0.00182489496677876,"MST",25,15
+161,0.00167830518347597,"MST",25,15
+162,0.00154413719709162,"MST",25,15
+163,0.00142128542411872,"MST",25,15
+164,0.00130874722355848,"MST",25,15
+165,0.00120561290657071,"MST",25,15
+166,0.00111105675309048,"MST",25,15
+167,0.0010243289303592,"MST",25,15
+168,0.000944748219622849,"MST",25,15
+169,0.000871695467304314,"MST",25,15
+170,0.000804607685902077,"MST",25,15
+171,0.000742972737829808,"MST",25,15
+172,0.000686324542500573,"MST",25,15
+173,0.000634238753274282,"MST",25,15
+174,0.000586328856513964,"MST",25,15
+175,0.00054224265001255,"MST",25,15
+176,0.000501659062525123,"MST",25,15
+177,0.000464285280132353,"MST",25,15
+178,0.000429854148722527,"MST",25,15
+179,0.000398121825059705,"MST",25,15
+180,0.000368865651745969,"MST",25,15
+181,0.000341882233923905,"MST",25,15
+182,0.000316985697834395,"MST",25,15
+183,0.000294006113373902,"MST",25,15
+184,0.000272788064610768,"MST",25,15
+185,0.000253189353844856,"MST",25,15
+186,0.000235079826249635,"MST",25,15
+187,0.000218340303439015,"MST",25,15
+188,0.000202861615468974,"MST",25,15
+189,0.00018854372183096,"MST",25,15
+190,0.00017529491293293,"MST",25,15
+191,0.000163031084406339,"MST",25,15
+192,0.000151675077333484,"MST",25,15
+193,0.000141156078168634,"MST",25,15
+194,0.000131409072736236,"MST",25,15
+195,0.000122374349237686,"MST",25,15
+196,0.000113997045690885,"MST",25,15
+197,0.000106226737670058,"MST",25,15
+198,9.90170626120802e-05,"MST",25,15
+199,9.23253773145167e-05,"MST",25,15
+200,8.61124455738462e-05,"MST",25,15
+50,62,"MST",50,5
+51,66.1176470588235,"MST",50,5
+52,70.1674208144796,"MST",50,5
+53,74.155297532656,"MST",50,5
+54,78.0868107926931,"MST",50,5
+55,81.9670514875842,"MST",50,5
+56,85.8006807596153,"MST",50,5
+57,89.591950878942,"MST",50,5
+58,93.3447303636164,"MST",50,5
+59,97.0625309307939,"MST",50,5
+60,100.748534788311,"MST",50,5
+61,104.405621366413,"MST",50,5
+62,108.036392958989,"MST",50,5
+63,111.643198976835,"MST",50,5
+64,115.228158665472,"MST",50,5
+65,118.793182237544,"MST",50,5
+66,122.339990432692,"MST",50,5
+67,125.870132556589,"MST",50,5
+68,129.385003072707,"MST",50,5
+69,132.88585683041,"MST",50,5
+70,136.373823015279,"MST",50,5
+71,139.849917905124,"MST",50,5
+72,143.315056510359,"MST",50,5
+73,146.770063171949,"MST",50,5
+74,150.215681184934,"MST",50,5
+75,153.65258151123,"MST",50,5
+76,157.081370642075,"MST",50,5
+77,160.50259766812,"MST",50,5
+78,163.916760613488,"MST",50,5
+79,167.324312088917,"MST",50,5
+80,170.725664317991,"MST",50,5
+81,174.121193589311,"MST",50,5
+82,177.511244185938,"MST",50,5
+83,180.896131841516,"MST",50,5
+84,184.276146769953,"MST",50,5
+85,187.651556312512,"MST",50,5
+86,191.022607242495,"MST",50,5
+87,194.389527763683,"MST",50,5
+88,197.752529234165,"MST",50,5
+89,201.111807642622,"MST",50,5
+90,204.467544859404,"MST",50,5
+91,207.819909680163,"MST",50,5
+92,211.169058675677,"MST",50,5
+93,214.515136857552,"MST",50,5
+94,217.85827816657,"MST",50,5
+95,221.198605787701,"MST",50,5
+96,224.536232294272,"MST",50,5
+97,227.87125962277,"MST",50,5
+98,231.203778879433,"MST",50,5
+99,234.533869980473,"MST",50,5
+100,237.861601128628,"MST",50,5
+101,241.187028130541,"MST",50,5
+102,244.510193561271,"MST",50,5
+103,247.831125784558,"MST",50,5
+104,251.149837839875,"MST",50,5
+105,254.466326209541,"MST",50,5
+106,257.780569481558,"MST",50,5
+107,261.092526925839,"MST",50,5
+108,264.402137003392,"MST",50,5
+109,267.709315829207,"MST",50,5
+110,271.013955611025,"MST",50,5
+111,274.315923086526,"MST",50,5
+112,277.615057981731,"MST",50,5
+113,280.911171513385,"MST",50,5
+114,284.204044957222,"MST",50,5
+115,287.493428303287,"MST",50,5
+116,290.779039018006,"MST",50,5
+117,294.0605609312,"MST",50,5
+118,297.337643264361,"MST",50,5
+119,300.609899814446,"MST",50,5
+120,303.876908305349,"MST",50,5
+121,307.138209916987,"MST",50,5
+122,310.39330899936,"MST",50,5
+123,313.641672977052,"MST",50,5
+124,316.882732447054,"MST",50,5
+125,320.115881470716,"MST",50,5
+126,323.340478058544,"MST",50,5
+127,326.555844844602,"MST",50,5
+128,329.761269945434,"MST",50,5
+129,332.956007996811,"MST",50,5
+130,336.13928136013,"MST",50,5
+131,339.310281489006,"MST",50,5
+132,342.468170445461,"MST",50,5
+133,345.612082554217,"MST",50,5
+134,348.741126182957,"MST",50,5
+135,351.854385635651,"MST",50,5
+136,354.950923145843,"MST",50,5
+137,358.029780956451,"MST",50,5
+138,361.089983472621,"MST",50,5
+139,364.130539474179,"MST",50,5
+140,367.150444374274,"MST",50,5
+141,370.148682511428,"MST",50,5
+142,373.124229462172,"MST",50,5
+143,376.076054362231,"MST",50,5
+144,379.003122224511,"MST",50,5
+145,381.90439624301,"MST",50,5
+146,384.778840072119,"MST",50,5
+147,387.62542007167,"MST",50,5
+148,390.443107508719,"MST",50,5
+149,393.23088070778,"MST",50,5
+150,395.987727142058,"MST",50,5
+151,398.712645458704,"MST",50,5
+152,401.404647432163,"MST",50,5
+153,404.062759840367,"MST",50,5
+154,406.686026258915,"MST",50,5
+155,409.273508769473,"MST",50,5
+156,411.824289579094,"MST",50,5
+157,414.337472547737,"MST",50,5
+158,416.812184622151,"MST",50,5
+159,419.247577174417,"MST",50,5
+160,421.642827244405,"MST",50,5
+161,423.997138685781,"MST",50,5
+162,426.309743215402,"MST",50,5
+163,428.579901366893,"MST",50,5
+164,430.806903349071,"MST",50,5
+165,432.990069810629,"MST",50,5
+166,435.128752512603,"MST",50,5
+167,437.222334910563,"MST",50,5
+168,439.270232648667,"MST",50,5
+169,441.27189396799,"MST",50,5
+170,443.226800031701,"MST",50,5
+171,445.134465169905,"MST",50,5
+172,446.99443704701,"MST",50,5
+173,448.806296754777,"MST",50,5
+174,450.569658834054,"MST",50,5
+175,452.284171228518,"MST",50,5
+176,453.949515173666,"MST",50,5
+177,455.565405024407,"MST",50,5
+178,457.13158802448,"MST",50,5
+179,458.64784402118,"MST",50,5
+180,460.113985128519,"MST",50,5
+181,461.529855342394,"MST",50,5
+182,462.895330110689,"MST",50,5
+183,464.210315861796,"MST",50,5
+184,465.474749494416,"MST",50,5
+185,466.688597832094,"MST",50,5
+186,467.851857045123,"MST",50,5
+187,468.964552042894,"MST",50,5
+188,470.026735839594,"MST",50,5
+189,471.038488895856,"MST",50,5
+190,471.999918439041,"MST",50,5
+191,472.911157764806,"MST",50,5
+192,473.772365522265,"MST",50,5
+193,474.583724985116,"MST",50,5
+194,475.345443311111,"MST",50,5
+195,476.057750791705,"MST",50,5
+196,476.720900094383,"MST",50,5
+197,477.335165499015,"MST",50,5
+198,477.900842130602,"MST",50,5
+199,478.418245189816,"MST",50,5
+200,478.887709183053,"MST",50,5
+50,12,"MST",50,15
+51,13.7647058823529,"MST",50,15
+52,15.5294117647059,"MST",50,15
+53,17.236062494664,"MST",50,15
+54,18.874982213495,"MST",50,15
+55,20.4481060929452,"MST",50,15
+56,21.960862666745,"MST",50,15
+57,23.4198365452527,"MST",50,15
+58,24.8318588933997,"MST",50,15
+59,26.2035378305605,"MST",50,15
+60,27.540939314567,"MST",50,15
+61,28.8493807699382,"MST",50,15
+62,30.1333510214207,"MST",50,15
+63,31.3965378492022,"MST",50,15
+64,32.6419182755145,"MST",50,15
+65,33.8718687754321,"MST",50,15
+66,35.0882698272655,"MST",50,15
+67,36.2925960884081,"MST",50,15
+68,37.4859932469485,"MST",50,15
+69,38.669345517577,"MST",50,15
+70,39.8433367586037,"MST",50,15
+71,41.0085060570105,"MST",50,15
+72,42.1652969764855,"MST",50,15
+73,43.3140990216431,"MST",50,15
+74,44.4552801119766,"MST",50,15
+75,45.5892095964343,"MST",50,15
+76,46.7162721759375,"MST",50,15
+77,47.8368737242811,"MST",50,15
+78,48.9514402135568,"MST",50,15
+79,50.0604107044419,"MST",50,15
+80,51.1642247508095,"MST",50,15
+81,52.2633038142518,"MST",50,15
+82,53.3580256677817,"MST",50,15
+83,54.448690539054,"MST",50,15
+84,55.5354780442199,"MST",50,15
+85,56.6183947908904,"MST",50,15
+86,57.6972137428335,"MST",50,15
+87,58.771407809287,"MST",50,15
+88,59.8400813886899,"MST",50,15
+89,60.9019045317205,"MST",50,15
+90,61.9550548358424,"MST",50,15
+91,62.9971720793147,"MST",50,15
+92,64.0253299724733,"MST",50,15
+93,65.0360283450323,"MST",50,15
+94,66.0252077424023,"MST",50,15
+95,66.9882869306471,"MST",50,15
+96,67.9202223613392,"MST",50,15
+97,68.8155873519875,"MST",50,15
+98,69.6686676881457,"MST",50,15
+99,70.4735696049814,"MST",50,15
+100,71.2243356777707,"MST",50,15
+101,71.915064031144,"MST",50,15
+102,72.5400264311519,"MST",50,15
+103,73.0937812029479,"MST",50,15
+104,73.5712774629739,"MST",50,15
+105,73.9679478096647,"MST",50,15
+106,74.279787326458,"MST",50,15
+107,74.5034174674298,"MST",50,15
+108,74.6361340805126,"MST",50,15
+109,74.6759394464444,"MST",50,15
+110,74.6215587536232,"MST",50,15
+111,74.4724418779785,"MST",50,15
+112,74.228751688797,"MST",50,15
+113,73.8913403576409,"MST",50,15
+114,73.461715313907,"MST",50,15
+115,72.9419965764632,"MST",50,15
+116,72.3348672068896,"MST",50,15
+117,71.6435185881162,"MST",50,15
+118,70.8715921444894,"MST",50,15
+119,70.0231189969713,"MST",50,15
+120,69.1024589007494,"MST",50,15
+121,68.1142396512512,"MST",50,15
+122,67.0632979763087,"MST",50,15
+123,65.9546227637797,"MST",50,15
+124,64.7933013102374,"MST",50,15
+125,63.5844691216269,"MST",50,15
+126,62.3332636538203,"MST",50,15
+127,61.0447822516906,"MST",50,15
+128,59.7240444307469,"MST",50,15
+129,58.3759585459137,"MST",50,15
+130,57.0052928075548,"MST",50,15
+131,55.6166505347332,"MST",50,15
+132,54.2144494791359,"MST",50,15
+133,52.8029050089525,"MST",50,15
+134,51.3860169091271,"MST",50,15
+135,49.9675595314319,"MST",50,15
+136,48.5510750136002,"MST",50,15
+137,47.1398692799306,"MST",50,15
+138,45.7370105352275,"MST",50,15
+139,44.3453299685242,"MST",50,15
+140,42.9674243917364,"MST",50,15
+141,41.6056605503853,"MST",50,15
+142,40.2621808578248,"MST",50,15
+143,38.9389103205298,"MST",50,15
+144,37.6375644391508,"MST",50,15
+145,36.3596578878489,"MST",50,15
+146,35.1065137923551,"MST",50,15
+147,33.8792734449963,"MST",50,15
+148,32.67890631226,"MST",50,15
+149,31.506220207136,"MST",50,15
+150,30.3618715143262,"MST",50,15
+151,29.2463753712927,"MST",50,15
+152,28.1601157220304,"MST",50,15
+153,27.1033551732648,"MST",50,15
+154,26.0762445945129,"MST",50,15
+155,25.0788324141514,"MST",50,15
+156,24.1110735732609,"MST",50,15
+157,23.1728381076416,"MST",50,15
+158,22.2639193360785,"MST",50,15
+159,21.3840416396678,"MST",50,15
+160,20.5328678229511,"MST",50,15
+161,19.7100060527209,"MST",50,15
+162,18.9150163747454,"MST",50,15
+163,18.1474168124249,"MST",50,15
+164,17.4066890545001,"MST",50,15
+165,16.6922837415473,"MST",50,15
+166,16.0036253630928,"MST",50,15
+167,15.340116778859,"MST",50,15
+168,14.7011433789477,"MST",50,15
+169,14.0860768987252,"MST",50,15
+170,13.4942789048363,"MST",50,15
+171,12.9251039691903,"MST",50,15
+172,12.377902547951,"MST",50,15
+173,11.8520235825754,"MST",50,15
+174,11.3468168397948,"MST",50,15
+175,10.8616350071551,"MST",50,15
+176,10.3958355603519,"MST",50,15
+177,9.94878241812101,"MST",50,15
+178,9.51984739990848,"MST",50,15
+179,9.10841150095724,"MST",50,15
+180,8.71386599881307,"MST",50,15
+181,8.33561340460727,"MST",50,15
+182,7.97306827179242,"MST",50,15
+183,7.62565787434131,"MST",50,15
+184,7.29282276573228,"MST",50,15
+185,6.97401722938599,"MST",50,15
+186,6.66870963054632,"MST",50,15
+187,6.3763826789649,"MST",50,15
+188,6.09653361112229,"MST",50,15
+189,5.82867430011421,"MST",50,15
+190,5.57233130075475,"MST",50,15
+191,5.32704583689494,"MST",50,15
+192,5.092373737425,"MST",50,15
+193,4.86788532692804,"MST",50,15
+194,4.65316527648049,"MST",50,15
+195,4.44781241964048,"MST",50,15
+196,4.25143953825133,"MST",50,15
+197,4.06367312228174,"MST",50,15
+198,3.8841531075618,"MST",50,15
+199,3.71253259492092,"MST",50,15
+200,3.54847755391252,"MST",50,15
+25,22,"CG",25,5
+26,25.0769230769231,"CG",25,5
+27,28.1111111111111,"CG",25,5
+28,31.1132478632479,"CG",25,5
+29,34.0792808723843,"CG",25,5
+30,37.0054524020041,"CG",25,5
+31,39.8913512639875,"CG",25,5
+32,42.7391231235085,"CG",25,5
+33,45.5521638477701,"CG",25,5
+34,48.3341111793396,"CG",25,5
+35,51.088264654711,"CG",25,5
+36,53.8173568013954,"CG",25,5
+37,56.523548450428,"CG",25,5
+38,59.2085353682441,"CG",25,5
+39,61.873687978141,"CG",25,5
+40,64.5201797230793,"CG",25,5
+41,67.14908469515,"CG",25,5
+42,69.761440805532,"CG",25,5
+43,72.3582829405789,"CG",25,5
+44,74.9406536883207,"CG",25,5
+45,77.5095994372231,"CG",25,5
+46,80.0661584558031,"CG",25,5
+47,82.6113458991228,"CG",25,5
+48,85.14613906604,"CG",25,5
+49,87.6714648757334,"CG",25,5
+50,90.1881905070327,"CG",25,5
+51,92.6971173923214,"CG",25,5
+52,95.1989781677859,"CG",25,5
+53,97.6944356782103,"CG",25,5
+54,100.184082724066,"CG",25,5
+55,102.668440988822,"CG",25,5
+56,105.147957567238,"CG",25,5
+57,107.622997759484,"CG",25,5
+58,110.093833268433,"CG",25,5
+59,112.560625555554,"CG",25,5
+60,115.023404768043,"CG",25,5
+61,117.482045244109,"CG",25,5
+62,119.936239057345,"CG",25,5
+63,122.385469331096,"CG",25,5
+64,124.828985130035,"CG",25,5
+65,127.265779636394,"CG",25,5
+66,129.694573078024,"CG",25,5
+67,132.113801539391,"CG",25,5
+68,134.521612399969,"CG",25,5
+69,136.915866748034,"CG",25,5
+70,139.294148744399,"CG",25,5
+71,141.653781583592,"CG",25,5
+72,143.991849433875,"CG",25,5
+73,146.305224538736,"CG",25,5
+74,148.590598531,"CG",25,5
+75,150.84451694197,"CG",25,5
+76,153.063415873977,"CG",25,5
+77,155.243659836189,"CG",25,5
+78,157.381579810239,"CG",25,5
+79,159.473510704533,"CG",25,5
+80,161.515827464991,"CG",25,5
+81,163.504979227659,"CG",25,5
+82,165.437521018652,"CG",25,5
+83,167.31014262411,"CG",25,5
+84,169.119694363373,"CG",25,5
+85,170.863209599807,"CG",25,5
+86,172.537923913765,"CG",25,5
+87,174.141290940306,"CG",25,5
+88,175.670994940189,"CG",25,5
+89,177.124960226627,"CG",25,5
+90,178.501357612927,"CG",25,5
+91,179.798608078438,"CG",25,5
+92,181.015383873048,"CG",25,5
+93,182.150607295188,"CG",25,5
+94,183.203447385819,"CG",25,5
+95,184.173314782445,"CG",25,5
+96,185.059854973853,"CG",25,5
+97,185.862940188939,"CG",25,5
+98,186.582660142616,"CG",25,5
+99,187.219311849059,"CG",25,5
+100,187.773388698262,"CG",25,5
+101,188.245568976511,"CG",25,5
+102,188.636703995462,"CG",25,5
+103,188.947805978469,"CG",25,5
+104,189.18003583692,"CG",25,5
+105,189.334690953904,"CG",25,5
+106,189.413193077718,"CG",25,5
+107,189.417076413705,"CG",25,5
+108,189.347975989764,"CG",25,5
+109,189.207616358665,"CG",25,5
+110,188.997800689108,"CG",25,5
+111,188.720400287205,"CG",25,5
+112,188.377344580828,"CG",25,5
+113,187.970611590981,"CG",25,5
+114,187.502218906927,"CG",25,5
+115,186.974215175338,"CG",25,5
+116,186.388672107976,"CG",25,5
+117,185.747677007519,"CG",25,5
+118,185.053325806874,"CG",25,5
+119,184.307716613718,"CG",25,5
+120,183.512943749024,"CG",25,5
+121,182.671092265794,"CG",25,5
+122,181.784232932266,"CG",25,5
+123,180.854417662231,"CG",25,5
+124,179.883675373917,"CG",25,5
+125,178.874008258,"CG",25,5
+126,177.827388434743,"CG",25,5
+127,176.745754979883,"CG",25,5
+128,175.631011298828,"CG",25,5
+129,174.485022828738,"CG",25,5
+130,173.309615048338,"CG",25,5
+131,172.106571775625,"CG",25,5
+132,170.877633734135,"CG",25,5
+133,169.624497368963,"CG",25,5
+134,168.34881389436,"CG",25,5
+135,167.052188555425,"CG",25,5
+136,165.736180087089,"CG",25,5
+137,164.402300354378,"CG",25,5
+138,163.05201415868,"CG",25,5
+139,161.686739195511,"CG",25,5
+140,160.307846150063,"CG",25,5
+141,158.916658917568,"CG",25,5
+142,157.514454936284,"CG",25,5
+143,156.102465621637,"CG",25,5
+144,154.681876890781,"CG",25,5
+145,153.253829767533,"CG",25,5
+146,151.819421058333,"CG",25,5
+147,150.3797040905,"CG",25,5
+148,148.9356895047,"CG",25,5
+149,147.488346094139,"CG",25,5
+150,146.038601683545,"CG",25,5
+151,144.587344041552,"CG",25,5
+152,143.135421820606,"CG",25,5
+153,141.683645519005,"CG",25,5
+154,140.232788460122,"CG",25,5
+155,138.783587784303,"CG",25,5
+156,137.336745449327,"CG",25,5
+157,135.892929235696,"CG",25,5
+158,134.452773753371,"CG",25,5
+159,133.016881446905,"CG",25,5
+160,131.585823596214,"CG",25,5
+161,130.160141310552,"CG",25,5
+162,128.740346513461,"CG",25,5
+163,127.326922916774,"CG",25,5
+164,125.920326981936,"CG",25,5
+165,124.520988867129,"CG",25,5
+166,123.129313358892,"CG",25,5
+167,121.74568078709,"CG",25,5
+168,120.370447922257,"CG",25,5
+169,119.003948854489,"CG",25,5
+170,117.646495853206,"CG",25,5
+171,116.298380207206,"CG",25,5
+172,114.95987304459,"CG",25,5
+173,113.631226132186,"CG",25,5
+174,112.312672654253,"CG",25,5
+175,111.004427970287,"CG",25,5
+176,109.706690351855,"CG",25,5
+177,108.419641698436,"CG",25,5
+178,107.143448232328,"CG",25,5
+179,105.878261172715,"CG",25,5
+180,104.624217389061,"CG",25,5
+181,103.381440034028,"CG",25,5
+182,102.150039156145,"CG",25,5
+183,100.930112292525,"CG",25,5
+184,99.7217450419072,"CG",25,5
+185,98.5250116183814,"CG",25,5
+186,97.3399753861174,"CG",25,5
+187,96.1666893754946,"CG",25,5
+188,95.0051967810047,"CG",25,5
+189,93.8555314413313,"CG",25,5
+190,92.7177183020171,"CG",25,5
+191,91.5917738611343,"CG",25,5
+192,90.4777065983863,"CG",25,5
+193,89.3755173880653,"CG",25,5
+194,88.2851998963003,"CG",25,5
+195,87.2067409630254,"CG",25,5
+196,86.1401209690999,"CG",25,5
+197,85.0853141890123,"CG",25,5
+198,84.0422891295925,"CG",25,5
+199,83.0110088551572,"CG",25,5
+200,81.9914312995088,"CG",25,5
+25,4,"CG",25,15
+26,5.15384615384615,"CG",25,15
+27,6.30769230769231,"CG",25,15
+28,7.46153846153846,"CG",25,15
+29,8.4865479348238,"CG",25,15
+30,9.45143362384742,"CG",25,15
+31,10.369771866991,"CG",25,15
+32,11.2664641624597,"CG",25,15
+33,12.1257522603463,"CG",25,15
+34,12.9416160406149,"CG",25,15
+35,13.7206379086246,"CG",25,15
+36,14.471319373989,"CG",25,15
+37,15.2096305989521,"CG",25,15
+38,15.9499520178052,"CG",25,15
+39,16.7032425597498,"CG",25,15
+40,17.472808908849,"CG",25,15
+41,18.2560582817237,"CG",25,15
+42,19.0483215445843,"CG",25,15
+43,19.8458827354742,"CG",25,15
+44,20.646295359875,"CG",25,15
+45,21.4482067470716,"CG",25,15
+46,22.2508898652387,"CG",25,15
+47,23.0541051490522,"CG",25,15
+48,23.8579401904512,"CG",25,15
+49,24.6626038463591,"CG",25,15
+50,25.4679912088753,"CG",25,15
+51,26.2695384015913,"CG",25,15
+52,27.0524159555512,"CG",25,15
+53,27.7884984235237,"CG",25,15
+54,28.4382602501788,"CG",25,15
+55,28.9566508593442,"CG",25,15
+56,29.300470653628,"CG",25,15
+57,29.4348986892903,"CG",25,15
+58,29.3377794714913,"CG",25,15
+59,29.0013032042411,"CG",25,15
+60,28.4314319123046,"CG",25,15
+61,27.6457636911292,"CG",25,15
+62,26.6705747286379,"CG",25,15
+63,25.5376578569395,"CG",25,15
+64,24.2813911383077,"CG",25,15
+65,22.9362868673249,"CG",25,15
+66,21.5351231939851,"CG",25,15
+67,20.1076569726635,"CG",25,15
+68,18.6798540806091,"CG",25,15
+69,17.2735434607857,"CG",25,15
+70,15.9063936385701,"CG",25,15
+71,14.5921167810157,"CG",25,15
+72,13.3408188920316,"CG",25,15
+73,12.1594309066992,"CG",25,15
+74,11.0521714258743,"CG",25,15
+75,10.0210060683226,"CG",25,15
+76,9.06608024172104,"CG",25,15
+77,8.18611142678807,"CG",25,15
+78,7.37873402170398,"CG",25,15
+79,6.64079474500049,"CG",25,15
+80,5.9685999266815,"CG",25,15
+81,5.35811809722416,"CG",25,15
+82,4.80514243565847,"CG",25,15
+83,4.30541812900413,"CG",25,15
+84,3.85473973803235,"CG",25,15
+85,3.4490234202556,"CG",25,15
+86,3.08435844917585,"CG",25,15
+87,2.7570419736178,"CG",25,15
+88,2.4636004400955,"CG",25,15
+89,2.20080059206691,"CG",25,15
+90,1.9656524853108,"CG",25,15
+91,1.75540653074003,"CG",25,15
+92,1.56754619980165,"CG",25,15
+93,1.39977770355509,"CG",25,15
+94,1.25001768199551,"CG",25,15
+95,1.11637971097161,"CG",25,15
+96,0.997160245124033,"CG",25,15
+97,0.890824461415709,"CG",25,15
+98,0.795992343964685,"CG",25,15
+99,0.711425252312921,"CG",25,15
+100,0.636013137733332,"CG",25,15
+101,0.5687625119704,"CG",25,15
+102,0.508785226716123,"CG",25,15
+103,0.455288087415706,"CG",25,15
+104,0.407563299388115,"CG",25,15
+105,0.364979725836629,"CG",25,15
+106,0.326974924553866,"CG",25,15
+107,0.293047921723636,"CG",25,15
+108,0.262752676162396,"CG",25,15
+109,0.2356921848041,"CG",25,15
+110,0.211513179560818,"CG",25,15
+111,0.189901366373311,"CG",25,15
+112,0.170577158898999,"CG",25,15
+113,0.153291861558924,"CG",25,15
+114,0.137824259342861,"CG",25,15
+115,0.123977574673303,"CG",25,15
+116,0.111576754621479,"CG",25,15
+117,0.100466054754591,"CG",25,15
+118,0.0905068888042916,"CG",25,15
+119,0.0815759161346712,"CG",25,15
+120,0.0735633416232512,"CG",25,15
+121,0.0663714050325285,"CG",25,15
+122,0.0599130392338728,"CG",25,15
+123,0.0541106787481934,"CG",25,15
+124,0.048895201991831,"CG",25,15
+125,0.044204992368067,"CG",25,15
+126,0.0399851049331851,"CG",25,15
+127,0.0361865268012564,"CG",25,15
+128,0.03276552074457,"CG",25,15
+129,0.0296830426079622,"CG",25,15
+130,0.0269042241961918,"CG",25,15
+131,0.0243979142246021,"CG",25,15
+132,0.0221362707547734,"CG",25,15
+133,0.0200943992782394,"CG",25,15
+134,0.0182500312715474,"CG",25,15
+135,0.0165832386332019,"CG",25,15
+136,0.015076179934904,"CG",25,15
+137,0.0137128748828897,"CG",25,15
+138,0.0124790037963241,"CG",25,15
+139,0.0113617292743149,"CG",25,15
+140,0.0103495375462563,"CG",25,15
+141,0.00943209728650463,"CG",25,15
+142,0.0086001339279396,"CG",25,15
+143,0.00784531773345164,"CG",25,15
+144,0.00716016408311606,"CG",25,15
+145,0.00653794461069201,"CG",25,15
+146,0.00597260797873129,"CG",25,15
+147,0.00545870921931579,"CG",25,15
+148,0.00499134668932352,"CG",25,15
+149,0.00456610579697812,"CG",25,15
+150,0.00417900875188545,"CG",25,15
+151,0.00382646967523706,"CG",25,15
+152,0.00350525448163541,"CG",25,15
+153,0.0032124450101922,"CG",25,15
+154,0.00294540694116405,"CG",25,15
+155,0.00270176108629693,"CG",25,15
+156,0.00247935768703003,"CG",25,15
+157,0.002276253395447,"CG",25,15
+158,0.00209069064896404,"CG",25,15
+159,0.00192107918174713,"CG",25,15
+160,0.00176597944422698,"CG",25,15
+161,0.0016240877272487,"CG",25,15
+162,0.00149422280972364,"CG",25,15
+163,0.00137531396846874,"CG",25,15
+164,0.00126639020651316,"CG",25,15
+165,0.00116657057177732,"CG",25,15
+166,0.00107505545191095,"CG",25,15
+167,0.000991118743413214,"CG",25,15
+168,0.000914100804125585,"CG",25,15
+169,0.00084340210794199,"CG",25,15
+170,0.000778477529258471,"CG",25,15
+171,0.000718831192408095,"CG",25,15
+172,0.000664011828203248,"CG",25,15
+173,0.000613608585832269,"CG",25,15
+174,0.000567247253814827,"CG",25,15
+175,0.000524586848585136,"CG",25,15
+176,0.000485316533610078,"CG",25,15
+177,0.000449152835819293,"CG",25,15
+178,0.000415837129577906,"CG",25,15
+179,0.000385133361516125,"CG",25,15
+180,0.000356825992283946,"CG",25,15
+181,0.000330718133760106,"CG",25,15
+182,0.000306629862444085,"CG",25,15
+183,0.000284396691727129,"CG",25,15
+184,0.00026386818749807,"CG",25,15
+185,0.000244906713114717,"CG",25,15
+186,0.000227386291181837,"CG",25,15
+187,0.000211191570839832,"CG",25,15
+188,0.000196216890400143,"CG",25,15
+189,0.000182365426178061,"CG",25,15
+190,0.00016954841928361,"CG",25,15
+191,0.000157684472947613,"CG",25,15
+192,0.000146698913692787,"CG",25,15
+193,0.000136523210317733,"CG",25,15
+194,0.000127094445252712,"CG",25,15
+195,0.000118354833377226,"CG",25,15
+196,0.000110251283866966,"CG",25,15
+197,0.0001027350010671,"CG",25,15
+198,9.57611207752955e-05,"CG",25,15
+199,8.92883786656428e-05,"CG",25,15
+200,8.32788078978404e-05,"CG",25,15
+50,52,"CG",50,5
+51,54.9411764705882,"CG",50,5
+52,57.9389140271493,"CG",50,5
+53,60.9737898061982,"CG",50,5
+54,64.031029150896,"CG",50,5
+55,67.0994552370801,"CG",50,5
+56,70.1707232833759,"CG",50,5
+57,73.2387307540938,"CG",50,5
+58,76.2991463540299,"CG",50,5
+59,79.3490266837246,"CG",50,5
+60,82.3865023073013,"CG",50,5
+61,85.4105212284397,"CG",50,5
+62,88.4206408151746,"CG",50,5
+63,91.4168608045788,"CG",50,5
+64,94.3994909940646,"CG",50,5
+65,97.3690479645953,"CG",50,5
+66,100.326175834632,"CG",50,5
+67,103.271586661572,"CG",50,5
+68,106.206016697072,"CG",50,5
+69,109.130195257306,"CG",50,5
+70,112.04482348038,"CG",50,5
+71,114.950560704379,"CG",50,5
+72,117.848016607967,"CG",50,5
+73,120.737747610884,"CG",50,5
+74,123.620256336234,"CG",50,5
+75,126.495993193509,"CG",50,5
+76,129.365359355397,"CG",50,5
+77,132.228710577126,"CG",50,5
+78,135.086361449416,"CG",50,5
+79,137.938589789627,"CG",50,5
+80,140.785640964849,"CG",50,5
+81,143.627732009484,"CG",50,5
+82,146.465055451898,"CG",50,5
+83,149.297782803151,"CG",50,5
+84,152.126067688266,"CG",50,5
+85,154.95004861942,"CG",50,5
+86,157.76985142258,"CG",50,5
+87,160.585591336317,"CG",50,5
+88,163.397374804798,"CG",50,5
+89,166.205300987782,"CG",50,5
+90,169.009463009298,"CG",50,5
+91,171.809948964525,"CG",50,5
+92,174.606842701742,"CG",50,5
+93,177.400224393261,"CG",50,5
+94,180.190170906776,"CG",50,5
+95,182.976755986145,"CG",50,5
+96,185.760050249043,"CG",50,5
+97,188.540121007781,"CG",50,5
+98,191.317031919069,"CG",50,5
+99,194.090842468716,"CG",50,5
+100,196.861607297764,"CG",50,5
+101,199.629375377771,"CG",50,5
+102,202.394189044225,"CG",50,5
+103,205.156082898774,"CG",50,5
+104,207.915082592739,"CG",50,5
+105,210.671203505989,"CG",50,5
+106,213.424449337059,"CG",50,5
+107,216.174810621776,"CG",50,5
+108,218.922263199035,"CG",50,5
+109,221.666766643107,"CG",50,5
+110,224.408262682792,"CG",50,5
+111,227.146673627823,"CG",50,5
+112,229.881900822883,"CG",50,5
+113,232.613823149356,"CG",50,5
+114,235.342295593997,"CG",50,5
+115,238.067147902897,"CG",50,5
+116,240.788183337678,"CG",50,5
+117,243.505177549439,"CG",50,5
+118,246.217877584239,"CG",50,5
+119,248.926001032046,"CG",50,5
+120,251.629235329183,"CG",50,5
+121,254.32723722236,"CG",50,5
+122,257.019632400101,"CG",50,5
+123,259.706015295748,"CG",50,5
+124,262.385949063964,"CG",50,5
+125,265.058965730896,"CG",50,5
+126,267.724566516353,"CG",50,5
+127,270.382222324706,"CG",50,5
+128,273.03137439966,"CG",50,5
+129,275.671435136646,"CG",50,5
+130,278.301789045434,"CG",50,5
+131,280.921793854388,"CG",50,5
+132,283.530781746952,"CG",50,5
+133,286.128060720132,"CG",50,5
+134,288.712916054285,"CG",50,5
+135,291.284611882867,"CG",50,5
+136,293.842392850679,"CG",50,5
+137,296.385485848863,"CG",50,5
+138,298.913101814941,"CG",50,5
+139,301.424437586208,"CG",50,5
+140,303.918677794855,"CG",50,5
+141,306.394996793782,"CG",50,5
+142,308.852560602004,"CG",50,5
+143,311.290528859277,"CG",50,5
+144,313.70805677984,"CG",50,5
+145,316.104297095886,"CG",50,5
+146,318.478401981735,"CG",50,5
+147,320.829524950409,"CG",50,5
+148,323.15682271488,"CG",50,5
+149,325.459457006889,"CG",50,5
+150,327.736596346952,"CG",50,5
+151,329.987417759558,"CG",50,5
+152,332.2111084285,"CG",50,5
+153,334.406867287824,"CG",50,5
+154,336.573906544253,"CG",50,5
+155,338.711453127834,"CG",50,5
+156,340.818750067994,"CG",50,5
+157,342.895057792654,"CG",50,5
+158,344.939655348833,"CG",50,5
+159,346.951841543243,"CG",50,5
+160,348.930936002246,"CG",50,5
+161,350.876280150815,"CG",50,5
+162,352.787238110351,"CG",50,5
+163,354.663197515997,"CG",50,5
+164,356.503570253991,"CG",50,5
+165,358.307793120222,"CG",50,5
+166,360.075328401273,"CG",50,5
+167,361.805664379537,"CG",50,5
+168,363.498315764235,"CG",50,5
+169,365.152824050313,"CG",50,5
+170,366.76875780739,"CG",50,5
+171,368.345712901124,"CG",50,5
+172,369.883312649367,"CG",50,5
+173,371.381207915781,"CG",50,5
+174,372.839077143416,"CG",50,5
+175,374.256626331029,"CG",50,5
+176,375.633588954893,"CG",50,5
+177,376.969725838861,"CG",50,5
+178,378.26482497543,"CG",50,5
+179,379.518701300704,"CG",50,5
+180,380.731196425878,"CG",50,5
+181,381.902178328245,"CG",50,5
+182,383.031541004185,"CG",50,5
+183,384.11920408704,"CG",50,5
+184,385.1651124323,"CG",50,5
+185,386.169235672969,"CG",50,5
+186,387.131567747345,"CG",50,5
+187,388.052126401783,"CG",50,5
+188,388.930952670864,"CG",50,5
+189,389.768110337189,"CG",50,5
+190,390.563685372996,"CG",50,5
+191,391.317785365867,"CG",50,5
+192,392.030538930444,"CG",50,5
+193,392.702095108137,"CG",50,5
+194,393.332622756834,"CG",50,5
+195,393.922309932137,"CG",50,5
+196,394.471363262232,"CG",50,5
+197,394.980007317519,"CG",50,5
+198,395.448483976985,"CG",50,5
+199,395.877051792503,"CG",50,5
+200,396.265985352484,"CG",50,5
+50,10,"CG",50,15
+51,11.7647058823529,"CG",50,15
+52,13.4389140271493,"CG",50,15
+53,15.0516520105865,"CG",50,15
+54,16.612595691397,"CG",50,15
+55,18.1220969189893,"CG",50,15
+56,19.5812112415886,"CG",50,15
+57,20.9946886262092,"CG",50,15
+58,22.3698997113211,"CG",50,15
+59,23.7146644579882,"CG",50,15
+60,25.0356177260811,"CG",50,15
+61,26.3375261191974,"CG",50,15
+62,27.6233242048032,"CG",50,15
+63,28.8945003027564,"CG",50,15
+64,30.1515605539318,"CG",50,15
+65,31.3944353195529,"CG",50,15
+66,32.6227861059076,"CG",50,15
+67,33.8362173518094,"CG",50,15
+68,35.0344121955681,"CG",50,15
+69,36.2172115392628,"CG",50,15
+70,37.3846516905381,"CG",50,15
+71,38.5369720824747,"CG",50,15
+72,39.674602093519,"CG",50,15
+73,40.7981344369637,"CG",50,15
+74,41.9082913583473,"CG",50,15
+75,43.0058886126003,"CG",50,15
+76,44.0918008183312,"CG",50,15
+77,45.1669303739622,"CG",50,15
+78,46.2321807538242,"CG",50,15
+79,47.2884337435057,"CG",50,15
+80,48.3365290887702,"CG",50,15
+81,49.3772442205024,"CG",50,15
+82,50.4112713036469,"CG",50,15
+83,51.4391889466115,"CG",50,15
+84,52.4614265347276,"CG",50,15
+85,53.4782202520707,"CG",50,15
+86,54.4895612678959,"CG",50,15
+87,55.4951380615564,"CG",50,15
+88,56.494276203541,"CG",50,15
+89,57.4858798956574,"CG",50,15
+90,58.4683800652417,"CG",50,15
+91,59.4396937566354,"CG",50,15
+92,60.3971989998526,"CG",50,15
+93,61.3377283578978,"CG",50,15
+94,62.2575830977929,"CG",50,15
+95,63.1525685477992,"CG",50,15
+96,64.0180498395379,"CG",50,15
+97,64.849026009917,"CG",50,15
+98,65.6402194425,"CG",50,15
+99,66.3861769139779,"CG",50,15
+100,67.0813780971422,"CG",50,15
+101,67.7203472473065,"CG",50,15
+102,68.2977639323996,"CG",50,15
+103,68.8085690120631,"CG",50,15
+104,69.2480625747137,"CG",50,15
+105,69.6119911491114,"CG",50,15
+106,69.8966221674875,"CG",50,15
+107,70.0988043257536,"CG",50,15
+108,70.2160131263006,"CG",50,15
+109,70.2463814724914,"CG",50,15
+110,70.1887156924448,"CG",50,15
+111,70.0424977916672,"CG",50,15
+112,69.807875065538,"CG",50,15
+113,69.485638444794,"CG",50,15
+114,69.0771911052676,"CG",50,15
+115,68.5845089558066,"CG",50,15
+116,68.0100946354379,"CG",50,15
+117,67.356926613634,"CG",50,15
+118,66.628404906965,"CG",50,15
+119,65.8282948122184,"CG",50,15
+120,64.9606699200172,"CG",50,15
+121,64.0298555227575,"CG",50,15
+122,63.0403733737056,"CG",50,15
+123,61.9968885967316,"CG",50,15
+124,60.9041593930461,"CG",50,15
+125,59.7669900464605,"CG",50,15
+126,58.5901875947156,"CG",50,15
+127,57.3785224131416,"CG",50,15
+128,56.1366928493551,"CG",50,15
+129,54.8692939542503,"CG",50,15
+130,53.5807902750843,"CG",50,15
+131,52.2754926104522,"CG",50,15
+132,50.9575385736137,"CG",50,15
+133,49.6308767689563,"CG",50,15
+134,48.2992543552588,"CG",50,15
+135,46.9662077475997,"CG",50,15
+136,45.6350561961565,"CG",50,15
+137,44.3088979734923,"CG",50,15
+138,42.9906089011818,"CG",50,15
+139,41.6828429507129,"CG",50,15
+140,40.3880346615781,"CG",50,15
+141,39.1084031305446,"CG",50,15
+142,37.8459573393565,"CG",50,15
+143,36.6025026031187,"CG",50,15
+144,35.3796479375828,"CG",50,15
+145,34.1788141601778,"CG",50,15
+146,33.00124255636,"CG",50,15
+147,31.8480039594978,"CG",50,15
+148,30.720008108709,"CG",50,15
+149,29.6180131646631,"CG",50,15
+150,28.5426352782049,"CG",50,15
+151,27.4943581205897,"CG",50,15
+152,26.4735422971593,"CG",50,15
+153,25.4804345783063,"CG",50,15
+154,24.5151768925752,"CG",50,15
+155,23.5778150367943,"CG",50,15
+156,22.6683070671697,"CG",50,15
+157,21.7865313433645,"CG",50,15
+158,20.9322942048076,"CG",50,15
+159,20.1053372648007,"CG",50,15
+160,19.3053443135707,"CG",50,15
+161,18.5319478262266,"CG",50,15
+162,17.7847350757056,"CG",50,15
+163,17.063253854334,"CG",50,15
+164,16.3670178105599,"CG",50,15
+165,15.6955114098752,"CG",50,15
+166,15.0481945309246,"CG",50,15
+167,14.4245067093853,"CG",50,15
+168,13.8238710434275,"CG",50,15
+169,13.2456977754682,"CG",50,15
+170,12.6893875655673,"CG",50,15
+171,12.1543344722113,"CG",50,15
+172,11.6399286564113,"CG",50,15
+173,11.1455588250683,"CG",50,15
+174,10.6706144294129,"CG",50,15
+175,10.2144876340839,"CG",50,15
+176,9.77657507204641,"CG",50,15
+177,9.35627940011913,"CG",50,15
+178,8.9530106693728,"CG",50,15
+179,8.56618752412079,"CG",50,15
+180,8.19523824262702,"CG",50,15
+181,7.83960163205573,"CG",50,15
+182,7.49872778955008,"CG",50,15
+183,7.17207874070434,"CG",50,15
+184,6.85912896605095,"CG",50,15
+185,6.55936582556881,"CG",50,15
+186,6.27228989058856,"CG",50,15
+187,5.99741519187857,"CG",50,15
+188,5.73426939210802,"CG",50,15
+189,5.48239389031685,"CG",50,15
+190,5.24134386548252,"CG",50,15
+191,5.01068826575422,"CG",50,15
+192,4.79000974942839,"CG",50,15
+193,4.57890458326999,"CG",50,15
+194,4.37698250334089,"CG",50,15
+195,4.18386654307066,"CG",50,15
+196,3.99919283291681,"CG",50,15
+197,3.82261037558072,"CG",50,15
+198,3.65378080040564,"CG",50,15
+199,3.49237810025153,"CG",50,15
+200,3.33808835384025,"CG",50,15
+25,31,"BK",25,5
+26,34.0769230769231,"BK",25,5
+27,37.1111111111111,"BK",25,5
+28,40.1559829059829,"BK",25,5
+29,43.2443265546714,"BK",25,5
+30,46.3865310934276,"BK",25,5
+31,49.5773746708118,"BK",25,5
+32,52.8038198900963,"BK",25,5
+33,56.0508304573933,"BK",25,5
+34,59.3047010923818,"BK",25,5
+35,62.5544827753982,"BK",25,5
+36,65.7922699220015,"BK",25,5
+37,69.0129334094033,"BK",25,5
+38,72.213647473155,"BK",25,5
+39,75.393385236546,"BK",25,5
+40,78.5524568383705,"BK",25,5
+41,81.6921141627856,"BK",25,5
+42,84.814224768153,"BK",25,5
+43,87.9210099073488,"BK",25,5
+44,91.0148395090931,"BK",25,5
+45,94.0980768925028,"BK",25,5
+46,97.1729663146768,"BK",25,5
+47,100.241556760367,"BK",25,5
+48,103.305655430235,"BK",25,5
+49,106.366804065592,"BK",25,5
+50,109.426270775467,"BK",25,5
+51,112.485049854475,"BK",25,5
+52,115.543862602422,"BK",25,5
+53,118.603153518753,"BK",25,5
+54,121.663078279531,"BK",25,5
+55,124.723482242496,"BK",25,5
+56,127.783870449634,"BK",25,5
+57,130.84337186789,"BK",25,5
+58,133.900701731888,"BK",25,5
+59,136.954126282517,"BK",25,5
+60,140.001434006377,"BK",25,5
+61,143.039916820898,"BK",25,5
+62,146.066363694257,"BK",25,5
+63,149.077068107207,"BK",25,5
+64,152.067849696588,"BK",25,5
+65,155.034089470013,"BK",25,5
+66,157.970777211388,"BK",25,5
+67,160.87256913602,"BK",25,5
+68,163.733853503538,"BK",25,5
+69,166.548821738875,"BK",25,5
+70,169.311542617029,"BK",25,5
+71,172.016037201379,"BK",25,5
+72,174.65635245283,"BK",25,5
+73,177.226631714887,"BK",25,5
+74,179.721180599425,"BK",25,5
+75,182.134527125969,"BK",25,5
+76,184.461475285703,"BK",25,5
+77,186.697151497207,"BK",25,5
+78,188.83704368555,"BK",25,5
+79,190.877032945047,"BK",25,5
+80,192.813417936842,"BK",25,5
+81,194.642932325967,"BK",25,5
+82,196.362755680624,"BK",25,5
+83,197.970518342164,"BK",25,5
+84,199.464300831418,"BK",25,5
+85,200.842628389481,"BK",25,5
+86,202.10446126283,"BK",25,5
+87,203.249181337607,"BK",25,5
+88,204.276575709502,"BK",25,5
+89,205.186817747173,"BK",25,5
+90,205.980446171261,"BK",25,5
+91,206.658342630296,"BK",25,5
+92,207.221708211044,"BK",25,5
+93,207.672039275866,"BK",25,5
+94,208.011102974665,"BK",25,5
+95,208.240912735123,"BK",25,5
+96,208.36370399285,"BK",25,5
+97,208.381910383425,"BK",25,5
+98,208.298140581411,"BK",25,5
+99,208.11515593754,"BK",25,5
+100,207.835849034505,"BK",25,5
+101,207.46322325413,"BK",25,5
+102,207.000373424097,"BK",25,5
+103,206.450467590764,"BK",25,5
+104,205.816729945727,"BK",25,5
+105,205.102424917553,"BK",25,5
+106,204.31084242622,"BK",25,5
+107,203.445284286174,"BK",25,5
+108,202.509051734264,"BK",25,5
+109,201.50543405093,"BK",25,5
+110,200.437698236765,"BK",25,5
+111,199.309079701722,"BK",25,5
+112,198.122773920586,"BK",25,5
+113,196.881929005807,"BK",25,5
+114,195.589639147153,"BK",25,5
+115,194.248938866786,"BK",25,5
+116,192.862798038231,"BK",25,5
+117,191.434117618051,"BK",25,5
+118,189.965726039913,"BK",25,5
+119,188.460376221938,"BK",25,5
+120,186.920743139738,"BK",25,5
+121,185.349421919298,"BK",25,5
+122,183.748926405772,"BK",25,5
+123,182.121688166299,"BK",25,5
+124,180.470055887087,"BK",25,5
+125,178.796295127158,"BK",25,5
+126,177.102588393361,"BK",25,5
+127,175.3910355034,"BK",25,5
+128,173.663654205808,"BK",25,5
+129,171.922381027872,"BK",25,5
+130,170.169072324566,"BK",25,5
+131,168.405505503507,"BK",25,5
+132,166.633380402867,"BK",25,5
+133,164.854320800948,"BK",25,5
+134,163.069876037886,"BK",25,5
+135,161.281522731552,"BK",25,5
+136,159.49066657128,"BK",25,5
+137,157.698644174502,"BK",25,5
+138,155.906724992736,"BK",25,5
+139,154.116113254632,"BK",25,5
+140,152.327949935008,"BK",25,5
+141,150.543314739891,"BK",25,5
+142,148.763228098616,"BK",25,5
+143,146.988653155003,"BK",25,5
+144,145.220497750501,"BK",25,5
+145,143.459616393023,"BK",25,5
+146,141.706812205924,"BK",25,5
+147,139.962838852288,"BK",25,5
+148,138.228402430302,"BK",25,5
+149,136.504163336093,"BK",25,5
+150,134.790738090922,"BK",25,5
+151,133.088701130097,"BK",25,5
+152,131.398586551436,"BK",25,5
+153,129.720889821487,"BK",25,5
+154,128.05606943806,"BK",25,5
+155,126.404548547972,"BK",25,5
+156,124.766716519188,"BK",25,5
+157,123.142930466795,"BK",25,5
+158,121.533516732484,"BK",25,5
+159,119.938772317425,"BK",25,5
+160,118.358966268601,"BK",25,5
+161,116.794341018825,"BK",25,5
+162,115.245113680825,"BK",25,5
+163,113.711477295876,"BK",25,5
+164,112.193602037601,"BK",25,5
+165,110.691636371634,"BK",25,5
+166,109.205708171922,"BK",25,5
+167,107.735925794528,"BK",25,5
+168,106.282379109823,"BK",25,5
+169,104.845140494036,"BK",25,5
+170,103.42426578114,"BK",25,5
+171,102.019795176109,"BK",25,5
+172,100.631754130573,"BK",25,5
+173,99.2601541819461,"BK",25,5
+174,97.9049937570882,"BK",25,5
+175,96.5662589415815,"BK",25,5
+176,95.243924215692,"BK",25,5
+177,93.9379531580938,"BK",25,5
+178,92.6482991184184,"BK",25,5
+179,91.3749058596863,"BK",25,5
+180,90.1177081716619,"BK",25,5
+181,88.8766324561605,"BK",25,5
+182,87.6515972853165,"BK",25,5
+183,86.442513933806,"BK",25,5
+184,85.2492868859926,"BK",25,5
+185,84.0718143189487,"BK",25,5
+186,82.9099885622777,"BK",25,5
+187,81.7636965356425,"BK",25,5
+188,80.6328201648801,"BK",25,5
+189,79.5172367775595,"BK",25,5
+190,78.4168194788131,"BK",25,5
+191,77.3314375082505,"BK",25,5
+192,76.2609565787358,"BK",25,5
+193,75.205239197788,"BK",25,5
+194,74.1641449723355,"BK",25,5
+195,73.137530897536,"BK",25,5
+196,72.1252516303461,"BK",25,5
+197,71.1271597485007,"BK",25,5
+198,70.1431059955435,"BK",25,5
+199,69.1729395125196,"BK",25,5
+200,68.2165080569274,"BK",25,5
+25,4,"BK",25,15
+26,5.73076923076923,"BK",25,15
+27,6.77777777777778,"BK",25,15
+28,7.97130647130647,"BK",25,15
+29,9.23977937771041,"BK",25,15
+30,10.4257294429708,"BK",25,15
+31,11.5226917440488,"BK",25,15
+32,12.5057590104865,"BK",25,15
+33,13.3891598452221,"BK",25,15
+34,14.2338067938735,"BK",25,15
+35,15.078279895855,"BK",25,15
+36,15.9264207551193,"BK",25,15
+37,16.7648974501032,"BK",25,15
+38,17.582839791961,"BK",25,15
+39,18.3801271965899,"BK",25,15
+40,19.1621494430171,"BK",25,15
+41,19.9346664144271,"BK",25,15
+42,20.7037308875395,"BK",25,15
+43,21.4744753918598,"BK",25,15
+44,22.2497548252073,"BK",25,15
+45,23.0306830136984,"BK",25,15
+46,23.8175170576509,"BK",25,15
+47,24.6099432129358,"BK",25,15
+48,25.4073383673733,"BK",25,15
+49,26.2087989542018,"BK",25,15
+50,27.0132848837239,"BK",25,15
+51,27.8158000828132,"BK",25,15
+52,28.6013719988464,"BK",25,15
+53,29.341544414195,"BK",25,15
+54,29.9959106779498,"BK",25,15
+55,30.5179192330194,"BK",25,15
+56,30.8624428847149,"BK",25,15
+57,30.9926323323894,"BK",25,15
+58,30.884529903808,"BK",25,15
+59,30.5289929116202,"BK",25,15
+60,29.9312470413299,"BK",25,15
+61,29.1087688398666,"BK",25,15
+62,28.0882641476907,"BK",25,15
+63,26.9023940088853,"BK",25,15
+64,25.5867108934728,"BK",25,15
+65,24.1770775011444,"BK",25,15
+66,22.7076841576847,"BK",25,15
+67,21.2096702830746,"BK",25,15
+68,19.7102879285448,"BK",25,15
+69,18.2325120837992,"BK",25,15
+70,16.7949931442566,"BK",25,15
+71,15.412252537589,"BK",25,15
+72,14.095036040228,"BK",25,15
+73,12.8507559025477,"BK",25,15
+74,11.6839694886137,"BK",25,15
+75,10.5968570279342,"BK",25,15
+76,9.58967351659794,"BK",25,15
+77,8.6611596308512,"BK",25,15
+78,7.80890390297815,"BK",25,15
+79,7.02965369661407,"BK",25,15
+80,6.3195760989368,"BK",25,15
+81,5.67447210233459,"BK",25,15
+82,5.08994871623864,"BK",25,15
+83,4.561554212411,"BK",25,15
+84,4.08488178799583,"BK",25,15
+85,3.65564670140452,"BK",25,15
+86,3.2697415231814,"BK",25,15
+87,2.92327363765436,"BK",25,15
+88,2.61258859332519,"BK",25,15
+89,2.33428237107393,"BK",25,15
+90,2.08520514409297,"BK",25,15
+91,1.86245865559304,"BK",25,15
+92,1.6633889456031,"BK",25,15
+93,1.48557581740205,"BK",25,15
+94,1.32682014487841,"BK",25,15
+95,1.18512988019342,"BK",25,15
+96,1.05870542140991,"BK",25,15
+97,0.945924836858255,"BK",25,15
+98,0.845329311675975,"BK",25,15
+99,0.755609077270844,"BK",25,15
+100,0.675590001988422,"BK",25,15
+101,0.604220957111,"BK",25,15
+102,0.540562023103791,"BK",25,15
+103,0.483773563884474,"BK",25,15
+104,0.433106169411839,"BK",25,15
+105,0.387891447063246,"BK",25,15
+106,0.347533628449402,"BK",25,15
+107,0.311501949153185,"BK",25,15
+108,0.279323753289135,"BK",25,15
+109,0.250578271889297,"BK",25,15
+110,0.224891023235324,"BK",25,15
+111,0.201928783828614,"BK",25,15
+112,0.18139508029156,"BK",25,15
+113,0.16302615479231,"BK",25,15
+114,0.146587359328592,"BK",25,15
+115,0.13186993720109,"BK",25,15
+116,0.11868815311046,"BK",25,15
+117,0.106876736419494,"BK",25,15
+118,0.096288605158812,"BK",25,15
+119,0.086792841269178,"BK",25,15
+120,0.0782728903326747,"BK",25,15
+121,0.0706249616282649,"BK",25,15
+122,0.0637566067447564,"BK",25,15
+123,0.0575854571931152,"BK",25,15
+124,0.0520381034830824,"BK",25,15
+125,0.0470490999724554,"BK",25,15
+126,0.0425600814699618,"BK",25,15
+127,0.0385189790846927,"BK",25,15
+128,0.0348793241777142,"BK",25,15
+129,0.0315996304961883,"BK",25,15
+130,0.0286428456685271,"BK",25,15
+131,0.0259758642218505,"BK",25,15
+132,0.0235690951609336,"BK",25,15
+133,0.0213960779309014,"BK",25,15
+134,0.0194331412834889,"BK",25,15
+135,0.0176591001873702,"BK",25,15
+136,0.0160549864747886,"BK",25,15
+137,0.0146038094067547,"BK",25,15
+138,0.0132903427739874,"BK",25,15
+139,0.0121009355365324,"BK",25,15
+140,0.0110233433469683,"BK",25,15
+141,0.0100465786051502,"BK",25,15
+142,0.0091607769608759,"BK",25,15
+143,0.00835707841857553,"BK",25,15
+144,0.007627521408594,"BK",25,15
+145,0.00696494837594303,"BK",25,15
+146,0.00636292160230712,"BK",25,15
+147,0.00581564812303895,"BK",25,15
+148,0.00531791273005401,"BK",25,15
+149,0.00486501816585943,"BK",25,15
+150,0.00445273171514191,"BK",25,15
+151,0.00407723748990977,"BK",25,15
+152,0.00373509378347848,"BK",25,15
+153,0.00342319493879604,"BK",25,15
+154,0.00313873723877571,"BK",25,15
+155,0.00287918838136916,"BK",25,15
+156,0.00264226015089593,"BK",25,15
+157,0.0024258839403702,"BK",25,15
+158,0.00222818881787796,"BK",25,15
+159,0.00204748186402229,"BK",25,15
+160,0.00188223053757404,"BK",25,15
+161,0.00173104685318258,"BK",25,15
+162,0.00159267317870807,"BK",25,15
+163,0.00146596948077804,"BK",25,15
+164,0.00134990186585388,"BK",25,15
+165,0.00124353228068559,"BK",25,15
+166,0.00114600925077585,"BK",25,15
+167,0.00105655954857717,"BK",25,15
+168,0.0009744806947958,"BK",25,15
+169,0.000899134206537272,"BK",25,15
+170,0.000829939515247791,"BK",25,15
+171,0.000766368485611254,"BK",25,15
+172,0.000707940473868217,"BK",25,15
+173,0.000654217870531402,"BK",25,15
+174,0.000604802078271935,"BK",25,15
+175,0.000559329880920432,"BK",25,15
+176,0.00051747016413769,"BK",25,15
+177,0.000478920952423067,"BK",25,15
+178,0.000443406730799798,"BK",25,15
+179,0.000410676022794404,"BK",25,15
+180,0.000380499199255156,"BK",25,15
+181,0.000352666495170909,"BK",25,15
+182,0.000326986213990369,"BK",25,15
+183,0.00030328310103356,"BK",25,15
+184,0.000281396869458484,"BK",25,15
+185,0.000261180863920948,"BK",25,15
+186,0.000242500848565163,"BK",25,15
+187,0.000225233907326158,"BK",25,15
+188,0.000209267445728862,"BK",25,15
+189,0.000194498284447985,"BK",25,15
+190,0.000180831835860741,"BK",25,15
+191,0.000168181355692936,"BK",25,15
+192,0.000156467262638469,"BK",25,15
+193,0.000145616519532269,"BK",25,15
+194,0.000135562070285509,"BK",25,15
+195,0.000126242327357036,"BK",25,15
+196,0.000117600705043032,"BK",25,15
+197,0.00010958519432384,"BK",25,15
+198,0.000102147975418086,"BK",25,15
+199,9.52450645642852e-05,"BK",25,15
+200,8.88359918834216e-05,"BK",25,15
+50,63,"BK",50,5
+51,67.2156862745098,"BK",50,5
+52,71.420060331825,"BK",50,5
+53,75.6026637069922,"BK",50,5
+54,79.7576861417039,"BK",50,5
+55,83.8817923967758,"BK",50,5
+56,87.9729580445452,"BK",50,5
+57,92.029872386961,"BK",50,5
+58,96.0516502560974,"BK",50,5
+59,100.037704491719,"BK",50,5
+60,103.987696139695,"BK",50,5
+61,107.901517585621,"BK",50,5
+62,111.779285765785,"BK",50,5
+63,115.621334876327,"BK",50,5
+64,119.428204620424,"BK",50,5
+65,123.200623390163,"BK",50,5
+66,126.939487302573,"BK",50,5
+67,130.645836538892,"BK",50,5
+68,134.320830459521,"BK",50,5
+69,137.965722759802,"BK",50,5
+70,141.58183764429,"BK",50,5
+71,145.170547707521,"BK",50,5
+72,148.7332539535,"BK",50,5
+73,152.271368177737,"BK",50,5
+74,155.786297775792,"BK",50,5
+75,159.279432926304,"BK",50,5
+76,162.752136017293,"BK",50,5
+77,166.205733134791,"BK",50,5
+78,169.641507405285,"BK",50,5
+79,173.060693972219,"BK",50,5
+80,176.464476386702,"BK",50,5
+81,179.853984199802,"BK",50,5
+82,183.230291555385,"BK",50,5
+83,186.594416596502,"BK",50,5
+84,189.947321513249,"BK",50,5
+85,193.289913075373,"BK",50,5
+86,196.623043508024,"BK",50,5
+87,199.947511584026,"BK",50,5
+88,203.26406382072,"BK",50,5
+89,206.573395684056,"BK",50,5
+90,209.876152717135,"BK",50,5
+91,213.1729315248,"BK",50,5
+92,216.464280560318,"BK",50,5
+93,219.750700674182,"BK",50,5
+94,223.032645398977,"BK",50,5
+95,226.310520957208,"BK",50,5
+96,229.584685991423,"BK",50,5
+97,232.855451027247,"BK",50,5
+98,236.123077689892,"BK",50,5
+99,239.387777703524,"BK",50,5
+100,242.649711709844,"BK",50,5
+101,245.908987947968,"BK",50,5
+102,249.165660841488,"BK",50,5
+103,252.41972954109,"BK",50,5
+104,255.671136472047,"BK",50,5
+105,258.91976593525,"BK",50,5
+106,262.165442808905,"BK",50,5
+107,265.40793139506,"BK",50,5
+108,268.646934451613,"BK",50,5
+109,271.882092445665,"BK",50,5
+110,275.112983059568,"BK",50,5
+111,278.339120975303,"BK",50,5
+112,281.559957957382,"BK",50,5
+113,284.774883248992,"BK",50,5
+114,287.983224290327,"BK",50,5
+115,291.184247762956,"BK",50,5
+116,294.377160958843,"BK",50,5
+117,297.561113468078,"BK",50,5
+118,300.735199175011,"BK",50,5
+119,303.898458548723,"BK",50,5
+120,307.049881210457,"BK",50,5
+121,310.188408757921,"BK",50,5
+122,313.312937823749,"BK",50,5
+123,316.422323344029,"BK",50,5
+124,319.515382011142,"BK",50,5
+125,322.59089588438,"BK",50,5
+126,325.647616131316,"BK",50,5
+127,328.684266872837,"BK",50,5
+128,331.699549104943,"BK",50,5
+129,334.692144670999,"BK",50,5
+130,337.660720258972,"BK",50,5
+131,340.60393139919,"BK",50,5
+132,343.520426439409,"BK",50,5
+133,346.408850475344,"BK",50,5
+134,349.26784921647,"BK",50,5
+135,352.096072768241,"BK",50,5
+136,354.892179313785,"BK",50,5
+137,357.654838679665,"BK",50,5
+138,360.382735772115,"BK",50,5
+139,363.074573871783,"BK",50,5
+140,365.729077776565,"BK",50,5
+141,368.344996784089,"BK",50,5
+142,370.921107506529,"BK",50,5
+143,373.456216512271,"BK",50,5
+144,375.949162790112,"BK",50,5
+145,378.398820033293,"BK",50,5
+146,380.804098741625,"BK",50,5
+147,383.163948141301,"BK",50,5
+148,385.477357923038,"BK",50,5
+149,387.743359800096,"BK",50,5
+150,389.961028888768,"BK",50,5
+151,392.129484914396,"BK",50,5
+152,394.247893247061,"BK",50,5
+153,396.31546577157,"BK",50,5
+154,398.331461596699,"BK",50,5
+155,400.295187609411,"BK",50,5
+156,402.205998880006,"BK",50,5
+157,404.063298924422,"BK",50,5
+158,405.866539830415,"BK",50,5
+159,407.615222254091,"BK",50,5
+160,409.308895293853,"BK",50,5
+161,410.947156248733,"BK",50,5
+162,412.529650267886,"BK",50,5
+163,414.056069898529,"BK",50,5
+164,415.52615453902,"BK",50,5
+165,416.939689804105,"BK",50,5
+166,418.296506809009,"BK",50,5
+167,419.596481379045,"BK",50,5
+168,420.839533191198,"BK",50,5
+169,422.025624853984,"BK",50,5
+170,423.15476093167,"BK",50,5
+171,424.226986918795,"BK",50,5
+172,425.242388170595,"BK",50,5
+173,426.201088794912,"BK",50,5
+174,427.103250510649,"BK",50,5
+175,427.949071477855,"BK",50,5
+176,428.738785104153,"BK",50,5
+177,429.472658832026,"BK",50,5
+178,430.15099291113,"BK",50,5
+179,430.774119159776,"BK",50,5
+180,431.342399719182,"BK",50,5
+181,431.85622580428,"BK",50,5
+182,432.316016454097,"BK",50,5
+183,432.722217285042,"BK",50,5
+184,433.075299249695,"BK",50,5
+185,433.375757404109,"BK",50,5
+186,433.624109685715,"BK",50,5
+187,433.820895704229,"BK",50,5
+188,433.966675547661,"BK",50,5
+189,434.062028605198,"BK",50,5
+190,434.107552408644,"BK",50,5
+191,434.103861494071,"BK",50,5
+192,434.051586284902,"BK",50,5
+193,433.951371997664,"BK",50,5
+194,433.803877571601,"BK",50,5
+195,433.609774622805,"BK",50,5
+196,433.369746424081,"BK",50,5
+197,433.084486910703,"BK",50,5
+198,432.754699713103,"BK",50,5
+199,432.381097216666,"BK",50,5
+200,431.964399649047,"BK",50,5
+50,12,"BK",50,15
+51,13.7647058823529,"BK",50,15
+52,15.5294117647059,"BK",50,15
+53,17.2650900708614,"BK",50,15
+54,18.9620649420871,"BK",50,15
+55,20.6199845289745,"BK",50,15
+56,22.2401808328556,"BK",50,15
+57,23.822176343819,"BK",50,15
+58,25.3637611702597,"BK",50,15
+59,26.8625092051897,"BK",50,15
+60,28.3171277978892,"BK",50,15
+61,29.7280858555981,"BK",50,15
+62,31.0975959097503,"BK",50,15
+63,32.4292197405086,"BK",50,15
+64,33.7273416145097,"BK",50,15
+65,34.9966660199945,"BK",50,15
+66,36.2418168337164,"BK",50,15
+67,37.4670603123707,"BK",50,15
+68,38.67614350997,"BK",50,15
+69,39.8722258749386,"BK",50,15
+70,41.0578783140643,"BK",50,15
+71,42.2351260544586,"BK",50,15
+72,43.4055160321933,"BK",50,15
+73,44.570194453495,"BK",50,15
+74,45.729984674441,"BK",50,15
+75,46.8854592435102,"BK",50,15
+76,48.0370027548619,"BK",50,15
+77,49.1848640895192,"BK",50,15
+78,50.3291977329585,"BK",50,15
+79,51.4700942496536,"BK",50,15
+80,52.6075998458743,"BK",50,15
+81,53.7417245272435,"BK",50,15
+82,54.8724379670928,"BK",50,15
+83,55.999652121516,"BK",50,15
+84,57.1231900240459,"BK",50,15
+85,58.2427410846997,"BK",50,15
+86,59.3578044792187,"BK",50,15
+87,60.4676236210541,"BK",50,15
+88,61.5711160025514,"BK",50,15
+89,62.6668036415394,"BK",50,15
+90,63.7527498152121,"BK",50,15
+91,64.8265076379147,"BK",50,15
+92,65.8850853679554,"BK",50,15
+93,66.9249322094908,"BK",50,15
+94,67.9419469549494,"BK",50,15
+95,68.931510255806,"BK",50,15
+96,69.8885397734073,"BK",50,15
+97,70.8075660805173,"BK",50,15
+98,71.682826056469,"BK",50,15
+99,72.508369703211,"BK",50,15
+100,73.2781758272134,"BK",50,15
+101,73.9862718727946,"BK",50,15
+102,74.6268533209583,"BK",50,15
+103,75.1943984337881,"BK",50,15
+104,75.6837746689636,"BK",50,15
+105,76.0903337516147,"BK",50,15
+106,76.4099931148719,"BK",50,15
+107,76.6393021560662,"BK",50,15
+108,76.775492461925,"BK",50,15
+109,76.8165118020466,"BK",50,15
+110,76.7610422543431,"BK",50,15
+111,76.6085032960125,"BK",50,15
+112,76.3590410642053,"BK",50,15
+113,76.013505262915,"BK",50,15
+114,75.5734153723504,"BK",50,15
+115,75.0409179134193,"BK",50,15
+116,74.4187365437624,"BK",50,15
+117,73.7101167252776,"BK",50,15
+118,72.9187666183044,"BK",50,15
+119,72.0487957364241,"BK",50,15
+120,71.1046527489412,"BK",50,15
+121,70.0910636551463,"BK",50,15
+122,69.0129713835892,"BK",50,15
+123,67.875477697893,"BK",50,15
+124,66.6837881232595,"BK",50,15
+125,65.4431604492258,"BK",50,15
+126,64.1588572173339,"BK",50,15
+127,62.8361024692375,"BK",50,15
+128,61.4800429125464,"BK",50,15
+129,60.0957135588767,"BK",50,15
+130,58.6880078010274,"BK",50,15
+131,57.2616518233712,"BK",50,15
+132,55.8211831806089,"BK",50,15
+133,54.3709333338757,"BK",50,15
+134,52.9150138986227,"BK",50,15
+135,51.457306334356,"BK",50,15
+136,50.0014547910236,"BK",50,15
+137,48.5508618191923,"BK",50,15
+138,47.1086866500314,"BK",50,15
+139,45.6778457553183,"BK",50,15
+140,44.2610154061847,"BK",50,15
+141,42.8606359612562,"BK",50,15
+142,41.4789176292066,"BK",50,15
+143,40.1178474670372,"BK",50,15
+144,38.7791973927879,"BK",50,15
+145,37.4645330095047,"BK",50,15
+146,36.1752230555663,"BK",50,15
+147,34.91244931465,"BK",50,15
+148,33.6772168363449,"BK",50,15
+149,32.4703643354862,"BK",50,15
+150,31.2925746545435,"BK",50,15
+151,30.1443851886617,"BK",50,15
+152,29.0261981872537,"BK",50,15
+153,27.938290859222,"BK",50,15
+154,26.8808252209596,"BK",50,15
+155,25.8538576373141,"BK",50,15
+156,24.8573480156158,"BK",50,15
+157,23.891168621771,"BK",50,15
+158,22.9551124953542,"BK",50,15
+159,22.0489014475906,"BK",50,15
+160,21.1721936322572,"BK",50,15
+161,20.3245906848309,"BK",50,15
+162,19.5056444297514,"BK",50,15
+163,18.7148631595757,"BK",50,15
+164,17.9517174930297,"BK",50,15
+165,17.2156458216795,"BK",50,15
+166,16.5060593571372,"BK",50,15
+167,15.8223467924669,"BK",50,15
+168,15.1638785928174,"BK",50,15
+169,14.5300109313142,"BK",50,15
+170,13.9200892869519,"BK",50,15
+171,13.3334517216735,"BK",50,15
+172,12.7694318540359,"BK",50,15
+173,12.2273615468967,"BK",50,15
+174,11.7065733264078,"BK",50,15
+175,11.2064025493415,"BK",50,15
+176,10.7261893353857,"BK",50,15
+177,10.2652802805751,"BK",50,15
+178,9.82302996747705,"BK",50,15
+179,9.39880228716084,"BK",50,15
+180,8.99197158733048,"BK",50,15
+181,8.60192366034661,"BK",50,15
+182,8.22805658416707,"BK",50,15
+183,7.86978142855588,"BK",50,15
+184,7.5265228382079,"BK",50,15
+185,7.19771950376348,"BK",50,15
+186,6.88282453099833,"BK",50,15
+187,6.58130571782541,"BK",50,15
+188,6.29264574810326,"BK",50,15
+189,6.01634231062483,"BK",50,15
+190,5.75190815106914,"BK",50,15
+191,5.49887106413,"BK",50,15
+192,5.25677383249093,"BK",50,15
+193,5.02517411880175,"BK",50,15
+194,4.8036443163258,"BK",50,15
+195,4.59177136346028,"BK",50,15
+196,4.38915652690612,"BK",50,15
+197,4.19541515784628,"BK",50,15
+198,4.01017642511844,"BK",50,15
+199,3.83308302900431,"BK",50,15
+200,3.66379089892724,"BK",50,15
+25,25,"Blaker",25,5
+26,27.8846153846154,"Blaker",25,5
+27,30.6410256410256,"Blaker",25,5
+28,33.3333333333333,"Blaker",25,5
+29,35.9873268493958,"Blaker",25,5
+30,38.6143530798703,"Blaker",25,5
+31,41.2197883688429,"Blaker",25,5
+32,43.806402294097,"Blaker",25,5
+33,46.3757784052556,"Blaker",25,5
+34,48.9289375072353,"Blaker",25,5
+35,51.4666237163129,"Blaker",25,5
+36,53.9894498300161,"Blaker",25,5
+37,56.4979830217022,"Blaker",25,5
+38,58.9928002639232,"Blaker",25,5
+39,61.4745223642812,"Blaker",25,5
+40,63.9438296377855,"Blaker",25,5
+41,66.4014620817009,"Blaker",25,5
+42,68.8482080333574,"Blaker",25,5
+43,71.2848858753759,"Blaker",25,5
+44,73.7123230254722,"Blaker",25,5
+45,76.1313354853858,"Blaker",25,5
+46,78.5427100540023,"Blaker",25,5
+47,80.9471902567402,"Blaker",25,5
+48,83.3454662593973,"Blaker",25,5
+49,85.738168537989,"Blaker",25,5
+50,88.1258648135097,"Blaker",25,5
+51,90.5090596212707,"Blaker",25,5
+52,92.8881957468656,"Blaker",25,5
+53,95.2636565644966,"Blaker",25,5
+54,97.6357680906978,"Blaker",25,5
+55,100.004799412225,"Blaker",25,5
+56,102.370960158163,"Blaker",25,5
+57,104.734393913314,"Blaker",25,5
+58,107.095166898059,"Blaker",25,5
+59,109.453251800835,"Blaker",25,5
+60,111.808507247997,"Blaker",25,5
+61,114.160653937965,"Blaker",25,5
+62,116.509248879296,"Blaker",25,5
+63,118.853659414268,"Blaker",25,5
+64,121.193038770629,"Blaker",25,5
+65,123.526304780564,"Blaker",25,5
+66,125.852123170887,"Blaker",25,5
+67,128.168896503885,"Blaker",25,5
+68,130.474759476836,"Blaker",25,5
+69,132.767580908473,"Blaker",25,5
+70,135.044972383587,"Blaker",25,5
+71,137.304303214662,"Blaker",25,5
+72,139.542721125638,"Blaker",25,5
+73,141.757177873561,"Blaker",25,5
+74,143.944458898949,"Blaker",25,5
+75,146.101216030578,"Blaker",25,5
+76,148.224002257719,"Blaker",25,5
+77,150.309307613351,"Blaker",25,5
+78,152.353595276185,"Blaker",25,5
+79,154.353337087863,"Blaker",25,5
+80,156.30504778609,"Blaker",25,5
+81,158.20531736712,"Blaker",25,5
+82,160.050841105913,"Blaker",25,5
+83,161.838446874345,"Blaker",25,5
+84,163.565119503584,"Blaker",25,5
+85,165.228022033404,"Blaker",25,5
+86,166.82451377733,"Blaker",25,5
+87,168.352165207012,"Blaker",25,5
+88,169.808769722224,"Blaker",25,5
+89,171.192352424267,"Blaker",25,5
+90,172.501176051281,"Blaker",25,5
+91,173.733744264641,"Blaker",25,5
+92,174.888802497411,"Blaker",25,5
+93,175.965336589678,"Blaker",25,5
+94,176.962569442752,"Blaker",25,5
+95,177.879955925566,"Blaker",25,5
+96,178.717176263354,"Blaker",25,5
+97,179.474128131578,"Blaker",25,5
+98,180.150917668074,"Blaker",25,5
+99,180.747849604195,"Blaker",25,5
+100,181.265416701978,"Blaker",25,5
+101,181.704288669644,"Blaker",25,5
+102,182.065300712501,"Blaker",25,5
+103,182.349441860939,"Blaker",25,5
+104,182.557843201994,"Blaker",25,5
+105,182.691766126213,"Blaker",25,5
+106,182.752590687365,"Blaker",25,5
+107,182.741804159129,"Blaker",25,5
+108,182.660989860344,"Blaker",25,5
+109,182.511816308727,"Blaker",25,5
+110,182.29602675227,"Blaker",25,5
+111,182.015429117729,"Blaker",25,5
+112,181.671886406821,"Blaker",25,5
+113,181.267307562801,"Blaker",25,5
+114,180.803638823053,"Blaker",25,5
+115,180.282855567119,"Blaker",25,5
+116,179.706954664152,"Blaker",25,5
+117,179.077947319068,"Blaker",25,5
+118,178.397852412648,"Blaker",25,5
+119,177.668690327396,"Blaker",25,5
+120,176.892477248114,"Blaker",25,5
+121,176.071219923789,"Blaker",25,5
+122,175.206910875485,"Blaker",25,5
+123,174.301524033426,"Blaker",25,5
+124,173.357010785339,"Blaker",25,5
+125,172.375296417267,"Blaker",25,5
+126,171.358276927564,"Blaker",25,5
+127,170.307816194425,"Blaker",25,5
+128,169.225743477254,"Blaker",25,5
+129,168.113851232213,"Blaker",25,5
+130,166.973893222559,"Blaker",25,5
+131,165.807582904683,"Blaker",25,5
+132,164.616592071277,"Blaker",25,5
+133,163.402549733544,"Blaker",25,5
+134,162.167041224991,"Blaker",25,5
+135,160.911607510023,"Blaker",25,5
+136,159.6377446812,"Blaker",25,5
+137,158.346903629795,"Blaker",25,5
+138,157.04048987498,"Blaker",25,5
+139,155.719863537745,"Blaker",25,5
+140,154.386339446387,"Blaker",25,5
+141,153.041187361127,"Blaker",25,5
+142,151.685632306184,"Blaker",25,5
+143,150.320854998303,"Blaker",25,5
+144,148.947992361454,"Blaker",25,5
+145,147.568138118077,"Blaker",25,5
+146,146.182343447928,"Blaker",25,5
+147,144.791617706155,"Blaker",25,5
+148,143.396929192873,"Blaker",25,5
+149,141.999205967074,"Blaker",25,5
+150,140.599336698226,"Blaker",25,5
+151,139.198171549459,"Blaker",25,5
+152,137.796523086721,"Blaker",25,5
+153,136.39516720873,"Blaker",25,5
+154,134.994844093014,"Blaker",25,5
+155,133.596259153719,"Blaker",25,5
+156,132.200084007259,"Blaker",25,5
+157,130.806957442242,"Blaker",25,5
+158,129.417486390447,"Blaker",25,5
+159,128.032246895934,"Blaker",25,5
+160,126.65178507967,"Blaker",25,5
+161,125.276618097332,"Blaker",25,5
+162,123.90723508818,"Blaker",25,5
+163,122.54409811316,"Blaker",25,5
+164,121.187643080591,"Blaker",25,5
+165,119.838280657993,"Blaker",25,5
+166,118.496397168818,"Blaker",25,5
+167,117.162355472986,"Blaker",25,5
+168,115.836495830318,"Blaker",25,5
+169,114.519136746075,"Blaker",25,5
+170,113.210575797954,"Blaker",25,5
+171,111.911090444028,"Blaker",25,5
+172,110.620938811187,"Blaker",25,5
+173,109.340360463784,"Blaker",25,5
+174,108.069577152247,"Blaker",25,5
+175,106.808793541516,"Blaker",25,5
+176,105.558197919221,"Blaker",25,5
+177,104.317962883621,"Blaker",25,5
+178,103.088246011331,"Blaker",25,5
+179,101.869190504963,"Blaker",25,5
+180,100.660925820831,"Blaker",25,5
+181,99.4635682769161,"Blaker",25,5
+182,98.2772216413327,"Blaker",25,5
+183,97.101977701559,"Blaker",25,5
+184,95.9379168147282,"Blaker",25,5
+185,94.7851084393049,"Blaker",25,5
+186,93.643611648486,"Blaker",25,5
+187,92.5134756256873,"Blaker",25,5
+188,91.3947401424904,"Blaker",25,5
+189,90.2874360194382,"Blaker",25,5
+190,89.1915855700748,"Blaker",25,5
+191,88.1072030286358,"Blaker",25,5
+192,87.0342949617978,"Blaker",25,5
+193,85.9728606649046,"Blaker",25,5
+194,84.9228925430822,"Blaker",25,5
+195,83.8843764776635,"Blaker",25,5
+196,82.8572921783373,"Blaker",25,5
+197,81.8416135214374,"Blaker",25,5
+198,80.8373088747836,"Blaker",25,5
+199,79.8443414094827,"Blaker",25,5
+200,78.8626693990947,"Blaker",25,5
+25,4,"Blaker",25,15
+26,5.73076923076923,"Blaker",25,15
+27,6.77777777777778,"Blaker",25,15
+28,7.97130647130647,"Blaker",25,15
+29,9.1109426971496,"Blaker",25,15
+30,10.1895288619427,"Blaker",25,15
+31,11.2483942951129,"Blaker",25,15
+32,12.245747887016,"Blaker",25,15
+33,13.1685443465199,"Blaker",25,15
+34,14.0274521548159,"Blaker",25,15
+35,14.8468668891361,"Blaker",25,15
+36,15.6478280710761,"Blaker",25,15
+37,16.4402887161508,"Blaker",25,15
+38,17.228507627284,"Blaker",25,15
+39,18.0199377095929,"Blaker",25,15
+40,18.820918227203,"Blaker",25,15
+41,19.6327918104825,"Blaker",25,15
+42,20.4521225683628,"Blaker",25,15
+43,21.2728518632681,"Blaker",25,15
+44,22.0889848086465,"Blaker",25,15
+45,22.8963114475412,"Blaker",25,15
+46,23.6930829456876,"Blaker",25,15
+47,24.4797683801094,"Blaker",25,15
+48,25.2582179299253,"Blaker",25,15
+49,26.0308310991102,"Blaker",25,15
+50,26.7999704786157,"Blaker",25,15
+51,27.5636654015288,"Blaker",25,15
+52,28.3094288257663,"Blaker",25,15
+53,29.0107958002235,"Blaker",25,15
+54,29.6289636637669,"Blaker",25,15
+55,30.1186755050917,"Blaker",25,15
+56,30.4358167795821,"Blaker",25,15
+57,30.5442634483394,"Blaker",25,15
+58,30.4204844370293,"Blaker",25,15
+59,30.0554670640363,"Blaker",25,15
+60,29.454293281425,"Blaker",25,15
+61,28.634063940148,"Blaker",25,15
+62,27.620931161007,"Blaker",25,15
+63,26.446882422086,"Blaker",25,15
+64,25.1467324111927,"Blaker",25,15
+65,23.7555902414401,"Blaker",25,15
+66,22.3069155667094,"Blaker",25,15
+67,20.8311684117477,"Blaker",25,15
+68,19.3549913150446,"Blaker",25,15
+69,17.9008298286213,"Blaker",25,15
+70,16.4868884313307,"Blaker",25,15
+71,15.1273245527627,"Blaker",25,15
+72,13.8325967879494,"Blaker",25,15
+73,12.6098997318411,"Blaker",25,15
+74,11.4636341811834,"Blaker",25,15
+75,10.3958760838478,"Blaker",25,15
+76,9.40681982699548,"Blaker",25,15
+77,8.49518109186501,"Blaker",25,15
+78,7.65855174107088,"Blaker",25,15
+79,6.89370438007192,"Blaker",25,15
+80,6.19684773517283,"Blaker",25,15
+81,5.56383619181288,"Blaker",25,15
+82,4.99033807131212,"Blaker",25,15
+83,4.47196776816223,"Blaker",25,15
+84,4.00438694302473,"Blaker",25,15
+85,3.58337973677682,"Blaker",25,15
+86,3.20490656219142,"Blaker",25,15
+87,2.86514053048953,"Blaker",25,15
+88,2.560490040583,"Blaker",25,15
+89,2.28761053885471,"Blaker",25,15
+90,2.0434079709212,"Blaker",25,15
+91,1.82503600716405,"Blaker",25,15
+92,1.62988873655143,"Blaker",25,15
+93,1.45559018908704,"Blaker",25,15
+94,1.29998176370888,"Blaker",25,15
+95,1.16110840142926,"Blaker",25,15
+96,1.03720414791027,"Blaker",25,15
+97,0.926677590200118,"Blaker",25,15
+98,0.828097523833512,"Blaker",25,15
+99,0.740179104100931,"Blaker",25,15
+100,0.661770654663023,"Blaker",25,15
+101,0.59184124399896,"Blaker",25,15
+102,0.529469092120822,"Blaker",25,15
+103,0.47383083374502,"Blaker",25,15
+104,0.424191637321245,"Blaker",25,15
+105,0.379896160014864,"Blaker",25,15
+106,0.340360305304051,"Blaker",25,15
+107,0.305063740970774,"Blaker",25,15
+108,0.273543129870207,"Blaker",25,15
+109,0.245386023102426,"Blaker",25,15
+110,0.220225364404418,"Blaker",25,15
+111,0.197734555194169,"Blaker",25,15
+112,0.177623031313351,"Blaker",25,15
+113,0.15963230480715,"Blaker",25,15
+114,0.143532426800807,"Blaker",25,15
+115,0.12911883049529,"Blaker",25,15
+116,0.116209516369329,"Blaker",25,15
+117,0.104642544740129,"Blaker",25,15
+118,0.094273803827648,"Blaker",25,15
+119,0.0849750243377137,"Blaker",25,15
+120,0.0766320142947743,"Blaker",25,15
+121,0.0691430903964428,"Blaker",25,15
+122,0.0624176845196407,"Blaker",25,15
+123,0.0563751061796469,"Blaker",25,15
+124,0.0509434437315379,"Blaker",25,15
+125,0.0460585889147166,"Blaker",25,15
+126,0.0416633709842195,"Blaker",25,15
+127,0.0377067881575093,"Blaker",25,15
+128,0.0341433254435155,"Blaker",25,15
+129,0.0309323491231048,"Blaker",25,15
+130,0.0280375692282047,"Blaker",25,15
+131,0.0254265623313872,"Blaker",25,15
+132,0.0230703478193077,"Blaker",25,15
+133,0.0209430115918079,"Blaker",25,15
+134,0.0190213718129287,"Blaker",25,15
+135,0.0172846819490219,"Blaker",25,15
+136,0.0157143668703918,"Blaker",25,15
+137,0.0142937882735794,"Blaker",25,15
+138,0.0130080361079695,"Blaker",25,15
+139,0.0118437430687376,"Blaker",25,15
+140,0.0107889195535218,"Blaker",25,15
+141,0.00983280677736992,"Blaker",25,15
+142,0.00896574600372686,"Blaker",25,15
+143,0.00817906208230374,"Blaker",25,15
+144,0.00746495969102057,"Blaker",25,15
+145,0.00681643086186549,"Blaker",25,15
+146,0.00622717253217584,"Blaker",25,15
+147,0.00569151300591822,"Blaker",25,15
+148,0.00520434633616413,"Blaker",25,15
+149,0.00476107375201664,"Blaker",25,15
+150,0.00435755135242306,"Blaker",25,15
+151,0.00399004337709516,"Blaker",25,15
+152,0.00365518044247056,"Blaker",25,15
+153,0.0033499221994525,"Blaker",25,15
+154,0.00307152393059084,"Blaker",25,15
+155,0.00281750665832765,"Blaker",25,15
+156,0.00258563038373285,"Blaker",25,15
+157,0.00237387011751004,"Blaker",25,15
+158,0.00218039440259188,"Blaker",25,15
+159,0.00200354606092262,"Blaker",25,15
+160,0.00184182492653586,"Blaker",25,15
+161,0.001693872353211,"Blaker",25,15
+162,0.00155845730821795,"Blaker",25,15
+163,0.00143446388427319,"Blaker",25,15
+164,0.00132088008013266,"Blaker",25,15
+165,0.00121678771650198,"Blaker",25,15
+166,0.00112135336838592,"Blaker",25,15
+167,0.00103382020783448,"Blaker",25,15
+168,0.00095350066245412,"Blaker",25,15
+169,0.000879769805202189,"Blaker",25,15
+170,0.000812059400012333,"Blaker",25,15
+171,0.000749852535836336,"Blaker",25,15
+172,0.000692678788843904,"Blaker",25,15
+173,0.000640109858896445,"Blaker",25,15
+174,0.000591755632091039,"Blaker",25,15
+175,0.000547260626234157,"Blaker",25,15
+176,0.000506300780620212,"Blaker",25,15
+177,0.000468580555518375,"Blaker",25,15
+178,0.000433830310366407,"Blaker",25,15
+179,0.000401803932880297,"Blaker",25,15
+180,0.000372276694155722,"Blaker",25,15
+181,0.00034504330739942,"Blaker",25,15
+182,0.00031991617021885,"Blaker",25,15
+183,0.000296723772446731,"Blaker",25,15
+184,0.000275309253309463,"Blaker",25,15
+185,0.000255529093388524,"Blaker",25,15
+186,0.0002372519282924,"Blaker",25,15
+187,0.000220357472272035,"Blaker",25,15
+188,0.000204735541191534,"Blaker",25,15
+189,0.000190285165322592,"Blaker",25,15
+190,0.000176913783378849,"Blaker",25,15
+191,0.000164536510056717,"Blaker",25,15
+192,0.000153075470112421,"Blaker",25,15
+193,0.000142459192690379,"Blaker",25,15
+194,0.000132622060233669,"Blaker",25,15
+195,0.000123503806860603,"Blaker",25,15
+196,0.000115049061588862,"Blaker",25,15
+197,0.000107206932235983,"Blaker",25,15
+198,9.99306262275418e-05,"Blaker",25,15
+199,9.31771049067013e-05,"Blaker",25,15
+200,8.69067682650368e-05,"Blaker",25,15
+50,51,"Blaker",50,5
+51,54.3333333333333,"Blaker",50,5
+52,57.5987933634992,"Blaker",50,5
+53,60.8023563561854,"Blaker",50,5
+54,63.9495558907324,"Blaker",50,5
+55,67.0454828601333,"Blaker",50,5
+56,70.0947984066741,"Blaker",50,5
+57,73.1017548005106,"Blaker",50,5
+58,76.0702195267218,"Blaker",50,5
+59,79.0036999254584,"Blaker",50,5
+60,81.9053673859146,"Blaker",50,5
+61,84.7780809777965,"Blaker",50,5
+62,87.6244107073802,"Blaker",50,5
+63,90.4466605708517,"Blaker",50,5
+64,93.2468914394965,"Blaker",50,5
+65,96.0269436619746,"Blaker",50,5
+66,98.7884591599926,"Blaker",50,5
+67,101.532902739557,"Blaker",50,5
+68,104.26158233582,"Blaker",50,5
+69,106.975667942607,"Blaker",50,5
+70,109.676209033792,"Blaker",50,5
+71,112.364150350358,"Blaker",50,5
+72,115.040345994392,"Blaker",50,5
+73,117.705571833026,"Blaker",50,5
+74,120.36053626729,"Blaker",50,5
+75,123.005889461365,"Blaker",50,5
+76,125.642231156494,"Blaker",50,5
+77,128.270117211665,"Blaker",50,5
+78,130.890065021599,"Blaker",50,5
+79,133.502557963196,"Blaker",50,5
+80,136.108049016289,"Blaker",50,5
+81,138.706963694875,"Blaker",50,5
+82,141.2997024125,"Blaker",50,5
+83,143.886642391299,"Blaker",50,5
+84,146.468139209336,"Blaker",50,5
+85,149.044528066108,"Blaker",50,5
+86,151.616124831817,"Blaker",50,5
+87,154.183226932785,"Blaker",50,5
+88,156.746114113228,"Blaker",50,5
+89,159.305049102896,"Blaker",50,5
+90,161.86027821068,"Blaker",50,5
+91,164.412031856327,"Blaker",50,5
+92,166.960525045912,"Blaker",50,5
+93,169.505957791417,"Blaker",50,5
+94,172.04851547103,"Blaker",50,5
+95,174.588369123906,"Blaker",50,5
+96,177.125675671692,"Blaker",50,5
+97,179.660578058473,"Blaker",50,5
+98,182.193205301022,"Blaker",50,5
+99,184.723672442367,"Blaker",50,5
+100,187.252080403124,"Blaker",50,5
+101,189.778515727274,"Blaker",50,5
+102,192.303050221249,"Blaker",50,5
+103,194.825740487855,"Blaker",50,5
+104,197.346627359162,"Blaker",50,5
+105,199.865735234964,"Blaker",50,5
+106,202.383071335915,"Blaker",50,5
+107,204.898624882573,"Blaker",50,5
+108,207.412366213574,"Blaker",50,5
+109,209.92424585752,"Blaker",50,5
+110,212.434193574651,"Blaker",50,5
+111,214.942117384986,"Blaker",50,5
+112,217.447902600059,"Blaker",50,5
+113,219.95141087562,"Blaker",50,5
+114,222.452479302151,"Blaker",50,5
+115,224.950919549654,"Blaker",50,5
+116,227.446517082117,"Blaker",50,5
+117,229.939030456033,"Blaker",50,5
+118,232.428190715924,"Blaker",50,5
+119,234.913700898315,"Blaker",50,5
+120,237.395235654005,"Blaker",50,5
+121,239.872440996782,"Blaker",50,5
+122,242.344934184781,"Blaker",50,5
+123,244.812303739184,"Blaker",50,5
+124,247.274109603032,"Blaker",50,5
+125,249.729883441227,"Blaker",50,5
+126,252.179129081278,"Blaker",50,5
+127,254.621323092734,"Blaker",50,5
+128,257.055915501885,"Blaker",50,5
+129,259.482330636998,"Blaker",50,5
+130,261.899968098248,"Blaker",50,5
+131,264.308203845448,"Blaker",50,5
+132,266.706391395849,"Blaker",50,5
+133,269.093863123498,"Blaker",50,5
+134,271.469931651207,"Blaker",50,5
+135,273.833891325513,"Blaker",50,5
+136,276.185019764888,"Blaker",50,5
+137,278.52257947114,"Blaker",50,5
+138,280.845819493944,"Blaker",50,5
+139,283.15397713842,"Blaker",50,5
+140,285.446279705702,"Blaker",50,5
+141,287.721946256898,"Blaker",50,5
+142,289.98018939082,"Blaker",50,5
+143,292.220217026416,"Blaker",50,5
+144,294.441234181096,"Blaker",50,5
+145,296.642444736746,"Blaker",50,5
+146,298.823053185525,"Blaker",50,5
+147,300.982266348178,"Blaker",50,5
+148,303.119295058099,"Blaker",50,5
+149,305.233355804902,"Blaker",50,5
+150,307.323672331916,"Blaker",50,5
+151,309.389477182345,"Blaker",50,5
+152,311.43001318967,"Blaker",50,5
+153,313.444534908324,"Blaker",50,5
+154,315.432309981049,"Blaker",50,5
+155,317.392620440081,"Blaker",50,5
+156,319.324763939738,"Blaker",50,5
+157,321.228054918369,"Blaker",50,5
+158,323.10182568834,"Blaker",50,5
+159,324.94542745279,"Blaker",50,5
+160,326.758231248644,"Blaker",50,5
+161,328.53962881565,"Blaker",50,5
+162,330.289033391363,"Blaker",50,5
+163,332.005880432718,"Blaker",50,5
+164,333.689628264737,"Blaker",50,5
+165,335.339758657483,"Blaker",50,5
+166,336.955777332472,"Blaker",50,5
+167,338.537214400025,"Blaker",50,5
+168,340.08362472926,"Blaker",50,5
+169,341.594588252553,"Blaker",50,5
+170,343.069710206494,"Blaker",50,5
+171,344.50862131148,"Blaker",50,5
+172,345.910977892171,"Blaker",50,5
+173,347.276461941234,"Blaker",50,5
+174,348.604781128676,"Blaker",50,5
+175,349.895668759325,"Blaker",50,5
+176,351.148883680962,"Blaker",50,5
+177,352.36421014565,"Blaker",50,5
+178,353.541457626757,"Blaker",50,5
+179,354.680460594334,"Blaker",50,5
+180,355.781078251239,"Blaker",50,5
+181,356.843194232756,"Blaker",50,5
+182,357.866716271944,"Blaker",50,5
+183,358.851575833384,"Blaker",50,5
+184,359.797727717511,"Blaker",50,5
+185,360.705149638177,"Blaker",50,5
+186,361.573841775471,"Blaker",50,5
+187,362.403826306123,"Blaker",50,5
+188,363.195146913734,"Blaker",50,5
+189,363.947868280816,"Blaker",50,5
+190,364.662075564682,"Blaker",50,5
+191,365.337873859218,"Blaker",50,5
+192,365.975387644313,"Blaker",50,5
+193,366.574760224722,"Blaker",50,5
+194,367.136153160223,"Blaker",50,5
+195,367.659745688432,"Blaker",50,5
+196,368.145734142199,"Blaker",50,5
+197,368.594331362617,"Blaker",50,5
+198,369.00576610943,"Blaker",50,5
+199,369.38028246993,"Blaker",50,5
+200,369.71813926764,"Blaker",50,5
+50,12,"Blaker",50,15
+51,13.4705882352941,"Blaker",50,15
+52,15.0316742081448,"Blaker",50,15
+53,16.5961751899599,"Blaker",50,15
+54,18.135063604542,"Blaker",50,15
+55,19.6372561955248,"Blaker",50,15
+56,21.0993475632765,"Blaker",50,15
+57,22.5218780479602,"Blaker",50,15
+58,23.9073435271529,"Blaker",50,15
+59,25.2589096760869,"Blaker",50,15
+60,26.5796737360627,"Blaker",50,15
+61,27.8723813231535,"Blaker",50,15
+62,29.1394329860538,"Blaker",50,15
+63,30.3830064908658,"Blaker",50,15
+64,31.6051753511582,"Blaker",50,15
+65,32.8079720696594,"Blaker",50,15
+66,33.993393357101,"Blaker",50,15
+67,35.1633674368705,"Blaker",50,15
+68,36.3197073100116,"Blaker",50,15
+69,37.464068071574,"Blaker",50,15
+70,38.5979181145849,"Blaker",50,15
+71,39.7225270634344,"Blaker",50,15
+72,40.8389687781047,"Blaker",50,15
+73,41.9481356241806,"Blaker",50,15
+74,43.0507597381298,"Blaker",50,15
+75,44.1474375099276,"Blaker",50,15
+76,45.2386543771442,"Blaker",50,15
+77,46.3248078708036,"Blaker",50,15
+78,47.4062274241013,"Blaker",50,15
+79,48.4831896519273,"Blaker",50,15
+80,49.5559276855301,"Blaker",50,15
+81,50.6246328828471,"Blaker",50,15
+82,51.6894470742345,"Blaker",50,15
+83,52.7504436666233,"Blaker",50,15
+84,53.8075965411413,"Blaker",50,15
+85,54.8607367310347,"Blaker",50,15
+86,55.9094982231326,"Blaker",50,15
+87,56.9532556687495,"Blaker",50,15
+88,57.9910580760271,"Blaker",50,15
+89,59.0215634743777,"Blaker",50,15
+90,60.0429799530685,"Blaker",50,15
+91,61.0530183291057,"Blaker",50,15
+92,62.048861029034,"Blaker",50,15
+93,63.0271506771277,"Blaker",50,15
+94,63.9840005127948,"Blaker",50,15
+95,64.9150272714404,"Blaker",50,15
+96,65.8154057062235,"Blaker",50,15
+97,66.6799426283423,"Blaker",50,15
+98,67.5031672913583,"Blaker",50,15
+99,68.2794341937131,"Blaker",50,15
+100,69.0030339402549,"Blaker",50,15
+101,69.6683076760794,"Blaker",50,15
+102,70.2697607493114,"Blaker",50,15
+103,70.8021716244582,"Blaker",50,15
+104,71.2606925981768,"Blaker",50,15
+105,71.6409395072127,"Blaker",50,15
+106,71.9390683103596,"Blaker",50,15
+107,72.1518371255631,"Blaker",50,15
+108,72.276652971794,"Blaker",50,15
+109,72.3116030741037,"Blaker",50,15
+110,72.2554711200357,"Blaker",50,15
+111,72.1077392946051,"Blaker",50,15
+112,71.8685772654559,"Blaker",50,15
+113,71.5388195409753,"Blaker",50,15
+114,71.1199327877803,"Blaker",50,15
+115,70.6139747791371,"Blaker",50,15
+116,70.02354666295,"Blaker",50,15
+117,69.3517401986637,"Blaker",50,15
+118,68.6020815282299,"Blaker",50,15
+119,67.7784729283684,"Blaker",50,15
+120,66.8851338498925,"Blaker",50,15
+121,65.9265423938739,"Blaker",50,15
+122,64.907378211565,"Blaker",50,15
+123,63.8324676518851,"Blaker",50,15
+124,62.7067318216991,"Blaker",50,15
+125,61.5351380742131,"Blaker",50,15
+126,60.3226553022596,"Blaker",50,15
+127,59.0742132879159,"Blaker",50,15
+128,57.7946662488345,"Blaker",50,15
+129,56.4887606252514,"Blaker",50,15
+130,55.1611070697331,"Blaker",50,15
+131,53.8161565337534,"Blaker",50,15
+132,52.4581802903421,"Blaker",50,15
+133,51.091253689249,"Blaker",50,15
+134,49.7192434091823,"Blaker",50,15
+135,48.3457979493954,"Blaker",50,15
+136,46.9743410891015,"Blaker",50,15
+137,45.6080680365529,"Blaker",50,15
+138,44.2499439890747,"Blaker",50,15
+139,42.9027048297498,"Blaker",50,15
+140,41.5688596948738,"Blaker",50,15
+141,40.2506951578808,"Blaker",50,15
+142,38.9502807892853,"Blaker",50,15
+143,37.6694758677757,"Blaker",50,15
+144,36.4099370341913,"Blaker",50,15
+145,35.1731266973548,"Blaker",50,15
+146,33.9603220180746,"Blaker",50,15
+147,32.7726243148648,"Blaker",50,15
+148,31.6109687516948,"Blaker",50,15
+149,30.4761341842134,"Blaker",50,15
+150,29.3687530562308,"Blaker",50,15
+151,28.2893212526404,"Blaker",50,15
+152,27.2382078284253,"Blaker",50,15
+153,26.2156645457991,"Blaker",50,15
+154,25.2218351628791,"Blaker",50,15
+155,24.256764427653,"Blaker",50,15
+156,23.3204067403084,"Blaker",50,15
+157,22.4126344553408,"Blaker",50,15
+158,21.5332458022838,"Blaker",50,15
+159,20.681972410421,"Blaker",50,15
+160,19.8584864285758,"Blaker",50,15
+161,19.0624072360244,"Blaker",50,15
+162,18.293307744816,"Blaker",50,15
+163,17.5507202974219,"Blaker",50,15
+164,16.8341421666418,"Blaker",50,15
+165,16.1430406672187,"Blaker",50,15
+166,15.4768578906423,"Blaker",50,15
+167,14.835015076243,"Blaker",50,15
+168,14.2169166329263,"Blaker",50,15
+169,13.6219538268219,"Blaker",50,15
+170,13.0495081507614,"Blaker",50,15
+171,12.4989543918993,"Blaker",50,15
+172,11.9696634139676,"Blaker",50,15
+173,11.4610046706733,"Blaker",50,15
+174,10.9723484665885,"Blaker",50,15
+175,10.5030679816254,"Blaker",50,15
+176,10.0525410748069,"Blaker",50,15
+177,9.6201518825908,"Blaker",50,15
+178,9.2052922264798,"Blaker",50,15
+179,8.80736284408344,"Blaker",50,15
+180,8.42577445718155,"Blaker",50,15
+181,8.05994868971414,"Blaker",50,15
+182,7.70931884796293,"Blaker",50,15
+183,7.3733305745442,"Blaker",50,15
+184,7.05144238716714,"Blaker",50,15
+185,6.74312611247532,"Blaker",50,15
+186,6.44786722463699,"Blaker",50,15
+187,6.1651650977376,"Blaker",50,15
+188,5.89453318042108,"Blaker",50,15
+189,5.63549910064144,"Blaker",50,15
+190,5.38760470782794,"Blaker",50,15
+191,5.15040605923192,"Blaker",50,15
+192,4.9234733567097,"Blaker",50,15
+193,4.70639083971225,"Blaker",50,15
+194,4.49875663979482,"Blaker",50,15
+195,4.3001826015202,"Blaker",50,15
+196,4.11029407422936,"Blaker",50,15
+197,3.92872967875999,"Blaker",50,15
+198,3.75514105284355,"Blaker",50,15
+199,3.58919257856941,"Blaker",50,15
+200,3.43056109499447,"Blaker",50,15
+25,19,"CMC",25,5
+26,21.5,"CMC",25,5
+27,23.9145299145299,"CMC",25,5
+28,26.2542735042735,"CMC",25,5
+29,28.5299145299145,"CMC",25,5
+30,30.7512525788388,"CMC",25,5
+31,32.9268893262219,"CMC",25,5
+32,35.0640930568628,"CMC",25,5
+33,37.1688057956134,"CMC",25,5
+34,39.2458003865532,"CMC",25,5
+35,41.2989369787446,"CMC",25,5
+36,43.3314427557909,"CMC",25,5
+37,45.3461547946106,"CMC",25,5
+38,47.3456908266329,"CMC",25,5
+39,49.3325383589222,"CMC",25,5
+40,51.3090737370852,"CMC",25,5
+41,53.2775346311361,"CMC",25,5
+42,55.2399715837796,"CMC",25,5
+43,57.1981996313962,"CMC",25,5
+44,59.1537633875276,"CMC",25,5
+45,61.1079213888837,"CMC",25,5
+46,63.0616496729606,"CMC",25,5
+47,65.0156610322727,"CMC",25,5
+48,66.9704349349333,"CMC",25,5
+49,68.9262531164103,"CMC",25,5
+50,70.8832366880668,"CMC",25,5
+51,72.8413817249171,"CMC",25,5
+52,74.8005913043577,"CMC",25,5
+53,76.760702687295,"CMC",25,5
+54,78.7215087619005,"CMC",25,5
+55,80.682773116929,"CMC",25,5
+56,82.6442383105122,"CMC",25,5
+57,84.6056271492833,"CMC",25,5
+58,86.5666371272752,"CMC",25,5
+59,88.5269285737537,"CMC",25,5
+60,90.4861074698644,"CMC",25,5
+61,92.4437042532353,"CMC",25,5
+62,94.3991501861067,"CMC",25,5
+63,96.3517529861436,"CMC",25,5
+64,98.3006734033186,"CMC",25,5
+65,100.244904284468,"CMC",25,5
+66,102.183253426234,"CMC",25,5
+67,104.114331210609,"CMC",25,5
+68,106.036543679443,"CMC",25,5
+69,107.948091365802,"CMC",25,5
+70,109.846973885516,"CMC",25,5
+71,111.731000019219,"CMC",25,5
+72,113.597802794069,"CMC",25,5
+73,115.444858909503,"CMC",25,5
+74,117.269511742244,"CMC",25,5
+75,119.068997108012,"CMC",25,5
+76,120.840470944472,"CMC",25,5
+77,122.581038104052,"CMC",25,5
+78,124.287781498052,"CMC",25,5
+79,125.957790907156,"CMC",25,5
+80,127.588190860561,"CMC",25,5
+81,129.176167080396,"CMC",25,5
+82,130.718991084421,"CMC",25,5
+83,132.214042634287,"CMC",25,5
+84,133.65882980556,"CMC",25,5
+85,135.051006537227,"CMC",25,5
+86,136.388387591087,"CMC",25,5
+87,137.668960914468,"CMC",25,5
+88,138.890897453089,"CMC",25,5
+89,140.052558504605,"CMC",25,5
+90,141.1525007381,"CMC",25,5
+91,142.189479031148,"CMC",25,5
+92,143.162447294926,"CMC",25,5
+93,144.070557470095,"CMC",25,5
+94,144.913156882688,"CMC",25,5
+95,145.689784150996,"CMC",25,5
+96,146.400163832156,"CMC",25,5
+97,147.04419999173,"CMC",25,5
+98,147.621968871599,"CMC",25,5
+99,148.133710821719,"CMC",25,5
+100,148.579821650134,"CMC",25,5
+101,148.960843533654,"CMC",25,5
+102,149.277455619172,"CMC",25,5
+103,149.530464432968,"CMC",25,5
+104,149.72079420288,"CMC",25,5
+105,149.849477186079,"CMC",25,5
+106,149.917644083497,"CMC",25,5
+107,149.926514610927,"CMC",25,5
+108,149.877388286401,"CMC",25,5
+109,149.771635483863,"CMC",25,5
+110,149.610688794257,"CMC",25,5
+111,149.396034727068,"CMC",25,5
+112,149.129205778062,"CMC",25,5
+113,148.811772882376,"CMC",25,5
+114,148.445338266265,"CMC",25,5
+115,148.031528705691,"CMC",25,5
+116,147.571989195361,"CMC",25,5
+117,147.068377027959,"CMC",25,5
+118,146.522356279922,"CMC",25,5
+119,145.935592697269,"CMC",25,5
+120,145.309748972593,"CMC",25,5
+121,144.646480402374,"CMC",25,5
+122,143.947430912137,"CMC",25,5
+123,143.21422943577,"CMC",25,5
+124,142.448486634302,"CMC",25,5
+125,141.651791938801,"CMC",25,5
+126,140.825710901523,"CMC",25,5
+127,139.971782839234,"CMC",25,5
+128,139.091518752484,"CMC",25,5
+129,138.186399504692,"CMC",25,5
+130,137.257874245071,"CMC",25,5
+131,136.307359059695,"CMC",25,5
+132,135.336235835388,"CMC",25,5
+133,134.345851321547,"CMC",25,5
+134,133.337516375504,"CMC",25,5
+135,132.31250537756,"CMC",25,5
+136,131.272055802411,"CMC",25,5
+137,130.217367934258,"CMC",25,5
+138,129.149604713496,"CMC",25,5
+139,128.069891703507,"CMC",25,5
+140,126.979317166674,"CMC",25,5
+141,125.878932239339,"CMC",25,5
+142,124.769751196056,"CMC",25,5
+143,123.652751794038,"CMC",25,5
+144,122.528875689289,"CMC",25,5
+145,121.399028916472,"CMC",25,5
+146,120.264082425088,"CMC",25,5
+147,119.12487266505,"CMC",25,5
+148,117.982202215261,"CMC",25,5
+149,116.836840449228,"CMC",25,5
+150,115.689524232241,"CMC",25,5
+151,114.540958645044,"CMC",25,5
+152,113.391817729336,"CMC",25,5
+153,112.242745250826,"CMC",25,5
+154,111.094355475928,"CMC",25,5
+155,109.947233958504,"CMC",25,5
+156,108.801938333415,"CMC",25,5
+157,107.658999113901,"CMC",25,5
+158,106.518920490116,"CMC",25,5
+159,105.382181126403,"CMC",25,5
+160,104.249234955113,"CMC",25,5
+161,103.120511965039,"CMC",25,5
+162,101.996418982706,"CMC",25,5
+163,100.87734044498,"CMC",25,5
+164,99.7636391616256,"CMC",25,5
+165,98.6556570666153,"CMC",25,5
+166,97.553715957144,"CMC",25,5
+167,96.458118219443,"CMC",25,5
+168,95.3691475406226,"CMC",25,5
+169,94.2870696058872,"CMC",25,5
+170,93.2121327805765,"CMC",25,5
+171,92.1445687765901,"CMC",25,5
+172,91.0845933028399,"CMC",25,5
+173,90.0324066994581,"CMC",25,5
+174,88.9881945555674,"CMC",25,5
+175,87.9521283104836,"CMC",25,5
+176,86.924365838284,"CMC",25,5
+177,85.9050520157333,"CMC",25,5
+178,84.8943192736025,"CMC",25,5
+179,83.8922881314679,"CMC",25,5
+180,82.8990677161093,"CMC",25,5
+181,81.9147562636703,"CMC",25,5
+182,80.9394416057655,"CMC",25,5
+183,79.9732016397546,"CMC",25,5
+184,79.0161047834229,"CMC",25,5
+185,78.0682104143287,"CMC",25,5
+186,77.1295692940965,"CMC",25,5
+187,76.2002239779515,"CMC",25,5
+188,75.2802092097988,"CMC",25,5
+189,74.3695523031672,"CMC",25,5
+190,73.4682735083405,"CMC",25,5
+191,72.5763863660085,"CMC",25,5
+192,71.6938980477747,"CMC",25,5
+193,70.8208096838599,"CMC",25,5
+194,69.957116678343,"CMC",25,5
+195,69.102809012283,"CMC",25,5
+196,68.2578715350627,"CMC",25,5
+197,67.4222842442956,"CMC",25,5
+198,66.5960225546359,"CMC",25,5
+199,65.7790575558249,"CMC",25,5
+200,64.9713562603086,"CMC",25,5
+25,4,"CMC",25,15
+26,5.15384615384615,"CMC",25,15
+27,6.30769230769231,"CMC",25,15
+28,7.25396825396825,"CMC",25,15
+29,8.17161382678624,"CMC",25,15
+30,9.13649951580986,"CMC",25,15
+31,10.1056335828305,"CMC",25,15
+32,11.0642332886493,"CMC",25,15
+33,11.9786752612114,"CMC",25,15
+34,12.8222169932404,"CMC",25,15
+35,13.59963451454,"CMC",25,15
+36,14.3320230319674,"CMC",25,15
+37,15.0495571296461,"CMC",25,15
+38,15.7719818579107,"CMC",25,15
+39,16.5073709372931,"CMC",25,15
+40,17.2533834210697,"CMC",25,15
+41,18.0018898098879,"CMC",25,15
+42,18.7440259518924,"CMC",25,15
+43,19.4739651779115,"CMC",25,15
+44,20.1895188436557,"CMC",25,15
+45,20.8912537694578,"CMC",25,15
+46,21.5813498731768,"CMC",25,15
+47,22.2628594195324,"CMC",25,15
+48,22.9390373222079,"CMC",25,15
+49,23.6129761492185,"CMC",25,15
+50,24.2876332180634,"CMC",25,15
+51,24.9622123008314,"CMC",25,15
+52,25.6264307336062,"CMC",25,15
+53,26.2570561471998,"CMC",25,15
+54,26.8191188264503,"CMC",25,15
+55,27.2711479323787,"CMC",25,15
+56,27.5721376232431,"CMC",25,15
+57,27.687944607975,"CMC",25,15
+58,27.5956827694862,"CMC",25,15
+59,27.2856667166095,"CMC",25,15
+60,26.7611718640927,"CMC",25,15
+61,26.0366362284757,"CMC",25,15
+62,25.135000272615,"CMC",25,15
+63,24.0847818848658,"CMC",25,15
+64,22.9173144925256,"CMC",25,15
+65,21.6644034560324,"CMC",25,15
+66,20.356513061686,"CMC",25,15
+67,19.0214946615119,"CMC",25,15
+68,17.6838037791382,"CMC",25,15
+69,16.3641224748309,"CMC",25,15
+70,15.0792937639591,"CMC",25,15
+71,13.8424791909781,"CMC",25,15
+72,12.66346239221,"CMC",25,15
+73,11.5490361743474,"CMC",25,15
+74,10.5034254707071,"CMC",25,15
+75,9.52871193513123,"CMC",25,15
+76,8.62523717521431,"CMC",25,15
+77,7.79197053967661,"CMC",25,15
+78,7.02683410041566,"CMC",25,15
+79,6.3269823035321,"CMC",25,15
+80,5.68903705356043,"CMC",25,15
+81,5.10928108261694,"CMC",25,15
+82,4.58381364511221,"CMC",25,15
+83,4.10867312312503,"CMC",25,15
+84,3.67993123015628,"CMC",25,15
+85,3.29376331729102,"CMC",25,15
+86,2.9464989310114,"CMC",25,15
+87,2.63465632844554,"CMC",25,15
+88,2.3549641804522,"CMC",25,15
+89,2.10437322290724,"CMC",25,15
+90,1.880060174841,"CMC",25,15
+91,1.67942584142703,"CMC",25,15
+92,1.50008896594532,"CMC",25,15
+93,1.33987708876276,"CMC",25,15
+94,1.19681541117567,"CMC",25,15
+95,1.06911444402249,"CMC",25,15
+96,0.95515704082397,"CMC",25,15
+97,0.853485268086681,"CMC",25,15
+98,0.762787446638018,"CMC",25,15
+99,0.681885603069916,"CMC",25,15
+100,0.609723495594635,"CMC",25,15
+101,0.545355320362743,"CMC",25,15
+102,0.487935159534131,"CMC",25,15
+103,0.436707198546993,"CMC",25,15
+104,0.390996714926185,"CMC",25,15
+105,0.350201822804822,"CMC",25,15
+106,0.313785944613272,"CMC",25,15
+107,0.281270972903149,"CMC",25,15
+108,0.252231080037168,"CMC",25,15
+109,0.226287130699465,"CMC",25,15
+110,0.203101651236487,"CMC",25,15
+111,0.18237431022949,"CMC",25,15
+112,0.16383786603724,"CMC",25,15
+113,0.147254539030497,"CMC",25,15
+114,0.132412768636858,"CMC",25,15
+115,0.11912431795052,"CMC",25,15
+116,0.107221691405549,"CMC",25,15
+117,0.0965558337675201,"CMC",25,15
+118,0.0869940813982683,"CMC",25,15
+119,0.0784183393446002,"CMC",25,15
+120,0.0707234602627799,"CMC",25,15
+121,0.0638158034975419,"CMC",25,15
+122,0.0576119547774513,"CMC",25,15
+123,0.0520375889646408,"CMC",25,15
+124,0.0470264601081351,"CMC",25,15
+125,0.0425195047014031,"CMC",25,15
+126,0.0384640455440014,"CMC",25,15
+127,0.0348130849631774,"CMC",25,15
+128,0.0315246773738831,"CMC",25,15
+129,0.0285613722549142,"CMC",25,15
+130,0.0258897196049559,"CMC",25,15
+131,0.0234798308250211,"CMC",25,15
+132,0.0213049887625531,"CMC",25,15
+133,0.0193413013562388,"CMC",25,15
+134,0.0175673939476634,"CMC",25,15
+135,0.0159641358840499,"CMC",25,15
+136,0.0145143975325524,"CMC",25,15
+137,0.0132028342673965,"CMC",25,15
+138,0.0120156943824795,"CMC",25,15
+139,0.0109406482291981,"CMC",25,15
+140,0.00996663618708617,"CMC",25,15
+141,0.00908373334765138,"CMC",25,15
+142,0.00828302903349749,"CMC",25,15
+143,0.00755651948888703,"CMC",25,15
+144,0.0068970122674572,"CMC",25,15
+145,0.00629804101062339,"CMC",25,15
+146,0.00575378945876731,"CMC",25,15
+147,0.00525902366880922,"CMC",25,15
+148,0.00480903152816299,"CMC",25,15
+149,0.00439956875810355,"CMC",25,15
+150,0.00402681069077907,"CMC",25,15
+151,0.00368730918483829,"CMC",25,15
+152,0.00337795411612624,"CMC",25,15
+153,0.00309593894319803,"CMC",25,15
+154,0.00283872990345722,"CMC",25,15
+155,0.00260403844537989,"CMC",25,15
+156,0.00238979654627782,"CMC",25,15
+157,0.00219413460403862,"CMC",25,15
+158,0.00201536162583608,"CMC",25,15
+159,0.00185194746744089,"CMC",25,15
+160,0.00170250690393228,"CMC",25,15
+161,0.0015657853367145,"CMC",25,15
+162,0.00144064596313015,"CMC",25,15
+163,0.00132605825394811,"CMC",25,15
+164,0.00122108760086105,"CMC",25,15
+165,0.00112488601110136,"CMC",25,15
+166,0.00103668373958819,"CMC",25,15
+167,0.000955781760843825,"CMC",25,15
+168,0.000881544993431835,"CMC",25,15
+169,0.000813396199021756,"CMC",25,15
+170,0.000750810486506561,"CMC",25,15
+171,0.00069331035900642,"CMC",25,15
+172,0.000640461248188089,"CMC",25,15
+173,0.000591867486204805,"CMC",25,15
+174,0.00054716867079759,"CMC",25,15
+175,0.000506036383766633,"CMC",25,15
+176,0.00046817122718438,"CMC",25,15
+177,0.000433300145436096,"CMC",25,15
+178,0.000401174004488684,"CMC",25,15
+179,0.00037156540274854,"CMC",25,15
+180,0.000344266690513282,"CMC",25,15
+181,0.000319088177384934,"CMC",25,15
+182,0.000295856509124422,"CMC",25,15
+183,0.000274413197316346,"CMC",25,15
+184,0.000254613286903123,"CMC",25,15
+185,0.00023632414816047,"CMC",25,15
+186,0.000219424381040789,"CMC",25,15
+187,0.000203802821024524,"CMC",25,15
+188,0.000189357636707008,"CMC",25,15
+189,0.000175995510323283,"CMC",25,15
+190,0.000163630893287787,"CMC",25,15
+191,0.000152185329610414,"CMC",25,15
+192,0.000141586840754677,"CMC",25,15
+193,0.000131769366136147,"CMC",25,15
+194,0.000122672254027465,"CMC",25,15
+195,0.000114239798146818,"CMC",25,15
+196,0.000106420815665807,"CMC",25,15
+197,9.91682627855575e-05,"CMC",25,15
+198,9.24388844014284e-05,"CMC",25,15
+199,8.6192894711096e-05,"CMC",25,15
+200,8.0393685921974e-05,"CMC",25,15
+50,40,"CMC",50,5
+51,42.6470588235294,"CMC",50,5
+52,45.2488687782805,"CMC",50,5
+53,47.8084179970972,"CMC",50,5
+54,50.3284732696497,"CMC",50,5
+55,52.8116524820187,"CMC",50,5
+56,55.2604517815395,"CMC",50,5
+57,57.6772511822456,"CMC",50,5
+58,60.064311221793,"CMC",50,5
+59,62.4237672404758,"CMC",50,5
+60,64.7576245799708,"CMC",50,5
+61,67.0677561991475,"CMC",50,5
+62,69.3559031934176,"CMC",50,5
+63,71.6236781333034,"CMC",50,5
+64,73.8725708259727,"CMC",50,5
+65,76.1039559516644,"CMC",50,5
+66,78.3191019776134,"CMC",50,5
+67,80.5191807692556,"CMC",50,5
+68,82.7052773779016,"CMC",50,5
+69,84.8783995683844,"CMC",50,5
+70,87.0394867463815,"CMC",50,5
+71,89.1894180433175,"CMC",50,5
+72,91.329019409609,"CMC",50,5
+73,93.4590696494307,"CMC",50,5
+74,95.5803053990406,"CMC",50,5
+75,97.6934251046061,"CMC",50,5
+76,99.799092094421,"CMC",50,5
+77,101.897936865407,"CMC",50,5
+78,103.990558716599,"CMC",50,5
+79,106.07752686499,"CMC",50,5
+80,108.159381173937,"CMC",50,5
+81,110.236632613368,"CMC",50,5
+82,112.309763556369,"CMC",50,5
+83,114.379227999904,"CMC",50,5
+84,116.445451779858,"CMC",50,5
+85,118.508832833359,"CMC",50,5
+86,120.569741545081,"CMC",50,5
+87,122.628521199673,"CMC",50,5
+88,124.6854885496,"CMC",50,5
+89,126.740934497033,"CMC",50,5
+90,128.795124879691,"CMC",50,5
+91,130.848301343875,"CMC",50,5
+92,132.900682283145,"CMC",50,5
+93,134.95246381793,"CMC",50,5
+94,137.003820789934,"CMC",50,5
+95,139.054907744851,"CMC",50,5
+96,141.105859877916,"CMC",50,5
+97,143.156793918698,"CMC",50,5
+98,145.207808934064,"CMC",50,5
+99,147.258987031561,"CMC",50,5
+100,149.310393948888,"CMC",50,5
+101,151.362079519068,"CMC",50,5
+102,153.414078004681,"CMC",50,5
+103,155.466408298446,"CMC",50,5
+104,157.519073991107,"CMC",50,5
+105,159.572063310958,"CMC",50,5
+106,161.625348942538,"CMC",50,5
+107,163.678887734675,"CMC",50,5
+108,165.732620310496,"CMC",50,5
+109,167.786470593701,"CMC",50,5
+110,169.840345267081,"CMC",50,5
+111,171.894133180042,"CMC",50,5
+112,173.947704722536,"CMC",50,5
+113,176.000911182987,"CMC",50,5
+114,178.053584107508,"CMC",50,5
+115,180.10553467723,"CMC",50,5
+116,182.156553119687,"CMC",50,5
+117,184.206408169129,"CMC",50,5
+118,186.254846589358,"CMC",50,5
+119,188.301592771193,"CMC",50,5
+120,190.34634841517,"CMC",50,5
+121,192.388792308472,"CMC",50,5
+122,194.428580203229,"CMC",50,5
+123,196.46534480193,"CMC",50,5
+124,198.49869585381,"CMC",50,5
+125,200.528220364584,"CMC",50,5
+126,202.553482920344,"CMC",50,5
+127,204.574026125025,"CMC",50,5
+128,206.589371149491,"CMC",50,5
+129,208.599018389101,"CMC",50,5
+130,210.602448225534,"CMC",50,5
+131,212.599121887696,"CMC",50,5
+132,214.588482405682,"CMC",50,5
+133,216.569955651085,"CMC",50,5
+134,218.542951456445,"CMC",50,5
+135,220.506864806037,"CMC",50,5
+136,222.461077090022,"CMC",50,5
+137,224.404957413653,"CMC",50,5
+138,226.337863953229,"CMC",50,5
+139,228.259145350358,"CMC",50,5
+140,230.168142136165,"CMC",50,5
+141,232.064188177375,"CMC",50,5
+142,233.946612136173,"CMC",50,5
+143,235.814738936235,"CMC",50,5
+144,237.667891227439,"CMC",50,5
+145,239.505390842355,"CMC",50,5
+146,241.326560237786,"CMC",50,5
+147,243.130723915193,"CMC",50,5
+148,244.917209814242,"CMC",50,5
+149,246.685350674154,"CMC",50,5
+150,248.434485358088,"CMC",50,5
+151,250.163960136047,"CMC",50,5
+152,251.873129922516,"CMC",50,5
+153,253.561359465423,"CMC",50,5
+154,255.228024483299,"CMC",50,5
+155,256.872512748193,"CMC",50,5
+156,258.494225112197,"CMC",50,5
+157,260.092576475819,"CMC",50,5
+158,261.666996696987,"CMC",50,5
+159,263.216931439573,"CMC",50,5
+160,264.741842960933,"CMC",50,5
+161,266.241210838197,"CMC",50,5
+162,267.714532633184,"CMC",50,5
+163,269.161324496424,"CMC",50,5
+164,270.581121710685,"CMC",50,5
+165,271.973479174899,"CMC",50,5
+166,273.337971829424,"CMC",50,5
+167,274.674195023879,"CMC",50,5
+168,275.98176482889,"CMC",50,5
+169,277.260318293281,"CMC",50,5
+170,278.509513648334,"CMC",50,5
+171,279.729030460917,"CMC",50,5
+172,280.918569737266,"CMC",50,5
+173,282.077853979473,"CMC",50,5
+174,283.206627196538,"CMC",50,5
+175,284.304654872137,"CMC",50,5
+176,285.371723891152,"CMC",50,5
+177,286.407642427089,"CMC",50,5
+178,287.412239792463,"CMC",50,5
+179,288.385366254335,"CMC",50,5
+180,289.326892817017,"CMC",50,5
+181,290.236710974213,"CMC",50,5
+182,291.114732432457,"CMC",50,5
+183,291.960888808076,"CMC",50,5
+184,292.775131299498,"CMC",50,5
+185,293.557430337101,"CMC",50,5
+186,294.307775212294,"CMC",50,5
+187,295.026173687786,"CMC",50,5
+188,295.712651590889,"CMC",50,5
+189,296.367252391523,"CMC",50,5
+190,296.990036766624,"CMC",50,5
+191,297.581082152653,"CMC",50,5
+192,298.140482287678,"CMC",50,5
+193,298.668346744532,"CMC",50,5
+194,299.16480045657,"CMC",50,5
+195,299.629983237208,"CMC",50,5
+196,300.0640492948,"CMC",50,5
+197,300.467166743763,"CMC",50,5
+198,300.839517113414,"CMC",50,5
+199,301.181294855438,"CMC",50,5
+200,301.492706851076,"CMC",50,5
+50,10,"CMC",50,15
+51,11.4705882352941,"CMC",50,15
+52,12.9411764705882,"CMC",50,15
+53,14.382737129685,"CMC",50,15
+54,15.7759184951194,"CMC",50,15
+55,17.1143872775393,"CMC",50,15
+56,18.399814761635,"CMC",50,15
+57,19.63818238735,"CMC",50,15
+58,20.837239941224,"CMC",50,15
+59,22.0047318117564,"CMC",50,15
+60,23.1473613368151,"CMC",50,15
+61,24.270440011081,"CMC",50,15
+62,25.3780077172658,"CMC",50,15
+63,26.4731547006502,"CMC",50,15
+64,27.5583426672219,"CMC",50,15
+65,28.6356285100558,"CMC",50,15
+66,29.7067772234982,"CMC",50,15
+67,30.773292817436,"CMC",50,15
+68,31.8364061445955,"CMC",50,15
+69,32.8970516904669,"CMC",50,15
+70,33.9558533772104,"CMC",50,15
+71,35.0131286279216,"CMC",50,15
+72,36.068912442358,"CMC",50,15
+73,37.1229989025475,"CMC",50,15
+74,38.1749954292476,"CMC",50,15
+75,39.2243843500939,"CMC",50,15
+76,40.2705863171818,"CMC",50,15
+77,41.313020487553,"CMC",50,15
+78,42.3511569631557,"CMC",50,15
+79,43.3845576609447,"CMC",50,15
+80,44.412902493503,"CMC",50,15
+81,45.4359984940655,"CMC",50,15
+82,46.4537703721434,"CMC",50,15
+83,47.4662319985563,"CMC",50,15
+84,48.4734395136514,"CMC",50,15
+85,49.4754280838071,"CMC",50,15
+86,50.4721356840847,"CMC",50,15
+87,51.4633185006051,"CMC",50,15
+88,52.4484634609891,"CMC",50,15
+89,53.4267038840262,"CMC",50,15
+90,54.396744218901,"CMC",50,15
+91,55.3567993183133,"CMC",50,15
+92,56.304552722393,"CMC",50,15
+93,57.2371371342972,"CMC",50,15
+94,58.1511387843517,"CMC",50,15
+95,59.0426258531954,"CMC",50,15
+96,59.9071996883587,"CMC",50,15
+97,60.7400663091088,"CMC",50,15
+98,61.5361247241116,"CMC",50,15
+99,62.2900679237487,"CMC",50,15
+100,62.9964920599335,"CMC",50,15
+101,63.6500092714039,"CMC",50,15
+102,64.2453598127134,"CMC",50,15
+103,64.7775195500419,"CMC",50,15
+104,65.2417994407249,"CMC",50,15
+105,65.6339342606086,"CMC",50,15
+106,65.9501585332063,"CMC",50,15
+107,66.1872683032091,"CMC",50,15
+108,66.3426680491784,"CMC",50,15
+109,66.4144026199119,"CMC",50,15
+110,66.4011745888787,"CMC",50,15
+111,66.3023478412938,"CMC",50,15
+112,66.1179385360798,"CMC",50,15
+113,65.8485948223541,"CMC",50,15
+114,65.4955668432224,"CMC",50,15
+115,65.0606686376825,"CMC",50,15
+116,64.5462335646107,"CMC",50,15
+117,63.9550648324916,"CMC",50,15
+118,63.290382635829,"CMC",50,15
+119,62.5557692847437,"CMC",50,15
+120,61.7551135778394,"CMC",50,15
+121,60.8925555185638,"CMC",50,15
+122,59.9724323192674,"CMC",50,15
+123,58.9992264812028,"CMC",50,15
+124,57.9775165873205,"CMC",50,15
+125,56.9119313017835,"CMC",50,15
+126,55.807106938138,"CMC",50,15
+127,54.6676488387796,"CMC",50,15
+128,53.4980967026923,"CMC",50,15
+129,52.3028939067492,"CMC",50,15
+130,51.0863607879894,"CMC",50,15
+131,49.8526717896592,"CMC",50,15
+132,48.605836321642,"CMC",50,15
+133,47.3496831451721,"CMC",50,15
+134,46.0878480613496,"CMC",50,15
+135,44.8237646616954,"CMC",50,15
+136,43.5606578857491,"CMC",50,15
+137,42.3015401242541,"CMC",50,15
+138,41.0492096057848,"CMC",50,15
+139,39.8062508086804,"CMC",50,15
+140,38.5750366479537,"CMC",50,15
+141,37.3577321976523,"CMC",50,15
+142,36.1562997220926,"CMC",50,15
+143,34.9725048040024,"CMC",50,15
+144,33.807923373168,"CMC",50,15
+145,32.6639494553683,"CMC",50,15
+146,31.5418034776668,"CMC",50,15
+147,30.4425409823234,"CMC",50,15
+148,29.3670616173517,"CMC",50,15
+149,28.3161182869134,"CMC",50,15
+150,27.2903263591739,"CMC",50,15
+151,26.2901728427883,"CMC",50,15
+152,25.3160254558636,"CMC",50,15
+153,24.3681415229158,"CMC",50,15
+154,23.4466766460369,"CMC",50,15
+155,22.551693106243,"CMC",50,15
+156,21.6831679597548,"CMC",50,15
+157,20.8410008018241,"CMC",50,15
+158,20.0250211777345,"CMC",50,15
+159,19.2349956267474,"CMC",50,15
+160,18.4706343501877,"CMC",50,15
+161,17.731597499534,"CMC",50,15
+162,17.0175010843929,"CMC",50,15
+163,16.3279225036757,"CMC",50,15
+164,15.6624057061481,"CMC",50,15
+165,15.0204659889154,"CMC",50,15
+166,14.4015944443366,"CMC",50,15
+167,13.805262067404,"CMC",50,15
+168,13.2309235368211,"CMC",50,15
+169,12.6780206838963,"CMC",50,15
+170,12.1459856639928,"CMC",50,15
+171,11.6342438456659,"CMC",50,15
+172,11.1422164328038,"CMC",50,15
+173,10.6693228351187,"CMC",50,15
+174,10.2149828022017,"CMC",50,15
+175,9.77861833612436,"CMC",50,15
+176,9.35965539722768,"CMC",50,15
+177,8.95752541732094,"CMC",50,15
+178,8.57166663403497,"CMC",50,15
+179,8.20152525954838,"CMC",50,15
+180,7.84655649633843,"CMC",50,15
+181,7.50622541202855,"CMC",50,15
+182,7.18000768479306,"CMC",50,15
+183,6.86739023018058,"CMC",50,15
+184,6.56787171959931,"CMC",50,15
+185,6.28096300011477,"CMC",50,15
+186,6.00618742460461,"CMC",50,15
+187,5.74308110074428,"CMC",50,15
+188,5.49119306673218,"CMC",50,15
+189,5.25008540111747,"CMC",50,15
+190,5.01933327357288,"CMC",50,15
+191,4.79852494295564,"CMC",50,15
+192,4.58726170852016,"CMC",50,15
+193,4.38515781969415,"CMC",50,15
+194,4.19184034940281,"CMC",50,15
+195,4.00694903551494,"CMC",50,15
+196,3.83013609461073,"CMC",50,15
+197,3.66106601190378,"CMC",50,15
+198,3.49941531082221,"CMC",50,15
+199,3.34487230543411,"CMC",50,15
+200,3.19713683861185,"CMC",50,15
