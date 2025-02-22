@@ -79,11 +79,16 @@ simulate_point_estimate_m <- function(simulations = 1000, true_N, true_M, m) {
   mse_M_HG <- mean((results$est_M_HG - true_M)^2, na.rm = TRUE)
   mse_N_NHG <- mean((results$est_N_NHG - true_N)^2, na.rm = TRUE)
   mse_M_NHG <- mean((results$est_M_NHG - true_M)^2, na.rm = TRUE)
+  
+  # Calculate MSE ratios
+  mse_N_ratio <- mse_N_NHG / mse_N_HG
+  mse_M_ratio <- mse_M_NHG / mse_M_HG
 
   # Return results as a list
   return(list(
     MSE_Hypergeometric = list(N = mse_N_HG, M = mse_M_HG),
-    MSE_Negative_Hypergeometric = list(N = mse_N_NHG, M = mse_M_NHG)
+    MSE_Negative_Hypergeometric = list(N = mse_N_NHG, M = mse_M_NHG),
+    MSE_ratio = list(mse_N_ratio = mse_N_ratio, mse_M_ratio = mse_M_ratio)
   ))
 }
 ```
@@ -95,11 +100,11 @@ simulate_point_estimate_m <- function(simulations = 1000, true_N, true_M, m) {
 
 set.seed(814)
 
-true_N = 100
-true_M = 25
-m = 5
+true_N = 1000
+true_M = 300
+m = 20
 
-results <- simulate_point_estimate_m(simulations = 1000, true_N, true_M, m)
+results <- simulate_point_estimate_m(simulations = 10000, true_N, true_M, m)
 
 cat("\nMSE for Hypergeometric estimates:\n")
 cat(sprintf("N: %.4f\n", results$MSE_Hypergeometric$N))
@@ -108,6 +113,10 @@ cat(sprintf("M: %.4f\n", results$MSE_Hypergeometric$M))
 cat("\nMSE for Negative Hypergeometric estimates:\n")
 cat(sprintf("N: %.4f\n", results$MSE_Negative_Hypergeometric$N))
 cat(sprintf("M: %.4f\n", results$MSE_Negative_Hypergeometric$M))
+
+cat("\nMSE Ratios:\n")
+cat(sprintf("N: %.4f\n", results$MSE_ratio$mse_N_ratio))
+cat(sprintf("M: %.4f\n", results$MSE_ratio$mse_M_ratio))
 ```
 
 ## Simulating Combinations of N, M, and m
@@ -115,6 +124,7 @@ cat(sprintf("M: %.4f\n", results$MSE_Negative_Hypergeometric$M))
 ```{r}
 #| label: simulating multiple combinations of N, M, and m
 #| warning: false
+#| eval: false
 
 set.seed(814)
 
@@ -144,7 +154,7 @@ for (i in 1:nrow(parameters)) {
   true_M <- parameters$M[i]
   m <- parameters$m[i]
   
-  result <- simulate_point_estimate_m(simulations = 1000, 
+  result <- simulate_point_estimate_m(simulations = 10000, 
                                     true_N = true_N, 
                                     true_M = true_M, 
                                     m = m)
@@ -171,6 +181,7 @@ for (i in 1:nrow(parameters)) {
 ```{r}
 #| label: simulating random combinations of N, M, and m
 #| warning: false
+#| eval: false
 
 set.seed(814)
 
@@ -191,7 +202,7 @@ for (i in 1:nrow(parameters)) {
   true_M <- parameters$M[i]
   m <- parameters$m[i]
   
-  result <- simulate_point_estimate_m(simulations = 1000, 
+  result <- simulate_point_estimate_m(simulations = 10000, 
                                     true_N = true_N, 
                                     true_M = true_M, 
                                     m = m)
@@ -225,9 +236,15 @@ write.csv(results_df_2, file.path("/Users/rachelroggenkemper/Documents/NegativeH
 
 Note: Difference (MSE) = HG - NHG
 
--   Diff \> 0 (positive) = HG \> NHG = NHG performs better (lower MSE)
+-   Diff \> 0 (positive) -\> HG \> NHG = NHG performs better (lower MSE)
 
--   Diff \< 0 (negative) = HG \< NHG = HG performs better (lower MSE)
+-   Diff \< 0 (negative) -\> HG \< NHG = HG performs better (lower MSE)
+
+Note: Ratio (MSE) = NHG / HG
+
+-   Ratio \> 1 -\> HG \< NHG = HG performs better (lower MSE)
+
+-   Ratio \< 1 -\> HG \> NHG = NHG performs better (lower MSE)
 
 ### Observations and Trends
 
@@ -265,10 +282,14 @@ Note: Difference (MSE) = HG - NHG
 -   **HG excels** when:
     -   The population has a higher density of successes ((M / N) large), and the observed successes ((m / M)) are closer to the total successes.
 
-## Visualizing Results
+## Exploratory Data Analysis
 
 ```{r}
 #| label: combining above results into one dataset (m)
+#| message: false
+
+results_df <- read_csv(here::here("Simulation_Comparison", "comp_1.csv"))
+results_df_2 <- read_csv(here::here("Simulation_Comparison", "comp_2.csv"))
 
 combined_results <- bind_rows(results_df, results_df_2)
 ```
@@ -369,348 +390,212 @@ ggplot(combined_results, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))
   ) 
 ```
 
-# Simulate Point Estimates (fix N, M, n)
+## The Plot.
 
-## Function
+### Simulating 
 
 ```{r}
-#| label: point estimate simulation function (n)
+#| eval: false
 
-simulate_point_estimate_n <- function(simulations = 1000, true_N, true_M, n) {
+set.seed(818)
+
+# Create an empty data frame to store all simulation results
+results_all <- data.frame()
+
+# Number of simulations per combination
+n_sim <- 10000
+
+# Loop over each value of m and its corresponding N and M combinations
+for (m_val in c(5, 10, 15, 20)) {
   
-  # Initializing results data frame
-  results <- data.frame(sim = 1:simulations,
-                        est_N_HG = numeric(simulations),
-                        est_M_HG = numeric(simulations),
-                        est_N_NHG = numeric(simulations),
-                        est_M_NHG = numeric(simulations))
-
-  # Simulation loop
-  for (i in 1:simulations) {
-    # Sample from Hypergeometric
-    m_HG <- rhyper(1, true_M, true_N - true_M, n)  # Number of successes observed
+  if (m_val == 5) {
+    N_vals <- c(50, 75, 100, 250, 500, 750, 1000)
+    for (N in N_vals) {
+      # Define M values based on N for m = 5
+      if (N == 50) {
+        M_vec <- seq(10, 30, by = 5)
+      } else if (N == 75) {
+        M_vec <- seq(10, 55, by = 5)
+      } else if (N == 100) {
+        M_vec <- seq(10, 60, by = 5)
+      } else if (N == 250) {
+        M_vec <- seq(10, 150, by = 10)
+      } else if (N == 500) {
+        M_vec <- seq(10, 300, by = 10)
+      } else if (N == 750) {
+        M_vec <- seq(10, 450, by = 10)
+      } else if (N == 1000) {
+        M_vec <- seq(10, 600, by = 10)
+      }
+      
+      for (M in M_vec) {
+        # Run the simulation for the current combination
+        sim_out <- simulate_point_estimate_m(simulations = n_sim,
+                                             true_N = N,
+                                             true_M = M,
+                                             m = m_val)
+        # Append the simulation summary to the results data frame
+        results_all <- rbind(results_all,
+                             data.frame(m = m_val,
+                                        true_N = N,
+                                        true_M = M,
+                                        mse_N_HG = sim_out$MSE_Hypergeometric$N,
+                                        mse_M_HG = sim_out$MSE_Hypergeometric$M,
+                                        mse_N_NHG = sim_out$MSE_Negative_Hypergeometric$N,
+                                        mse_M_NHG = sim_out$MSE_Negative_Hypergeometric$M,
+                                        mse_N_ratio = sim_out$MSE_ratio$mse_N_ratio,
+                                        mse_M_ratio = sim_out$MSE_ratio$mse_M_ratio))
+      }
+    }
     
-    # Sample from Negative Hypergeometric
-    x_NHG <- r_ngh(1, true_N, true_M, m_HG)  # Number of failures before m successes
-    n_NHG <- x_NHG + m_HG
-
-    # Point estimates for Hypergeometric (handle cases where m_HG = 0 or NA)
-    if (is.na(m_HG) || m_HG == 0) {
-      est_N_HG <- NA
-      est_M_HG <- NA
-    } else {
-      est_N_HG <- (true_M * n) / m_HG
-      est_M_HG <- (true_N * m_HG) / n
+  } else if (m_val == 10) {
+    N_vals <- c(150, 250, 500, 750, 1000)
+    for (N in N_vals) {
+      # Define M values based on N for m = 10
+      if (N == 150) {
+        M_vec <- seq(20, 60, by = 10)
+      } else if (N == 250) {
+        M_vec <- seq(20, 150, by = 10)
+      } else if (N == 500) {
+        M_vec <- seq(20, 300, by = 10)
+      } else if (N == 750) {
+        M_vec <- seq(20, 450, by = 10)
+      } else if (N == 1000) {
+        M_vec <- seq(20, 600, by = 10)
+      }
+      
+      for (M in M_vec) {
+        sim_out <- simulate_point_estimate_m(simulations = n_sim,
+                                             true_N = N,
+                                             true_M = M,
+                                             m = m_val)
+        results_all <- rbind(results_all,
+                             data.frame(m = m_val,
+                                        true_N = N,
+                                        true_M = M,
+                                        mse_N_HG = sim_out$MSE_Hypergeometric$N,
+                                        mse_M_HG = sim_out$MSE_Hypergeometric$M,
+                                        mse_N_NHG = sim_out$MSE_Negative_Hypergeometric$N,
+                                        mse_M_NHG = sim_out$MSE_Negative_Hypergeometric$M,
+                                        mse_N_ratio = sim_out$MSE_ratio$mse_N_ratio,
+                                        mse_M_ratio = sim_out$MSE_ratio$mse_M_ratio))
+      }
     }
-
-    # Point estimates for Negative Hypergeometric
-    if (is.na(x_NHG) || x_NHG == 0) {
-      est_N_NHG <- NA
-      est_M_NHG <- NA
-    } else {
-      est_N_NHG <- (true_M * n_NHG) / m_HG
-      est_M_NHG <- (true_N * m_HG) / n_NHG
+    
+  } else if (m_val == 15) {
+    N_vals <- c(250, 500, 750, 1000)
+    for (N in N_vals) {
+      # Define M values based on N for m = 15
+      if (N == 250) {
+        M_vec <- seq(25, 100, by = 10)
+      } else if (N == 500) {
+        M_vec <- seq(25, 300, by = 10)
+      } else if (N == 750) {
+        M_vec <- seq(25, 450, by = 10)
+      } else if (N == 1000) {
+        M_vec <- seq(25, 600, by = 10)
+      }
+      
+      for (M in M_vec) {
+        sim_out <- simulate_point_estimate_m(simulations = n_sim,
+                                             true_N = N,
+                                             true_M = M,
+                                             m = m_val)
+        results_all <- rbind(results_all,
+                             data.frame(m = m_val,
+                                        true_N = N,
+                                        true_M = M,
+                                        mse_N_HG = sim_out$MSE_Hypergeometric$N,
+                                        mse_M_HG = sim_out$MSE_Hypergeometric$M,
+                                        mse_N_NHG = sim_out$MSE_Negative_Hypergeometric$N,
+                                        mse_M_NHG = sim_out$MSE_Negative_Hypergeometric$M,
+                                        mse_N_ratio = sim_out$MSE_ratio$mse_N_ratio,
+                                        mse_M_ratio = sim_out$MSE_ratio$mse_M_ratio))
+      }
     }
-
-    # Store results
-    results[i, ] <- c(i, est_N_HG, est_M_HG, est_N_NHG, est_M_NHG)
+    
+  } else if (m_val == 20) {
+    N_vals <- c(450, 600, 800, 1000)
+    for (N in N_vals) {
+      # Define M values based on N for m = 20
+      if (N == 450) {
+        M_vec <- seq(30, 150, by = 10)
+      } else if (N == 600) {
+        M_vec <- seq(30, 200, by = 10)
+      } else if (N == 800) {
+        M_vec <- seq(30, 250, by = 10)
+      } else if (N == 1000) {
+        M_vec <- seq(30, 300, by = 10)
+      }
+      
+      for (M in M_vec) {
+        sim_out <- simulate_point_estimate_m(simulations = n_sim,
+                                             true_N = N,
+                                             true_M = M,
+                                             m = m_val)
+        results_all <- rbind(results_all,
+                             data.frame(m = m_val,
+                                        true_N = N,
+                                        true_M = M,
+                                        mse_N_HG = sim_out$MSE_Hypergeometric$N,
+                                        mse_M_HG = sim_out$MSE_Hypergeometric$M,
+                                        mse_N_NHG = sim_out$MSE_Negative_Hypergeometric$N,
+                                        mse_M_NHG = sim_out$MSE_Negative_Hypergeometric$M,
+                                        mse_N_ratio = sim_out$MSE_ratio$mse_N_ratio,
+                                        mse_M_ratio = sim_out$MSE_ratio$mse_M_ratio))
+      }
+    }
   }
-
-  # Calculate MSE for estimates
-  mse_N_HG <- mean((results$est_N_HG - true_N)^2, na.rm = TRUE)
-  mse_M_HG <- mean((results$est_M_HG - true_M)^2, na.rm = TRUE)
-  mse_N_NHG <- mean((results$est_N_NHG - true_N)^2, na.rm = TRUE)
-  mse_M_NHG <- mean((results$est_M_NHG - true_M)^2, na.rm = TRUE)
-
-  # Return results as a list
-  return(list(
-    MSE_Hypergeometric = list(N = mse_N_HG, M = mse_M_HG),
-    MSE_Negative_Hypergeometric = list(N = mse_N_NHG, M = mse_M_NHG)
-  ))
 }
-```
-
-## Testing Function
-
-```{r}
-#| label: testing function (n)
-
-set.seed(814)
-
-true_N = 100
-true_M = 25
-n = 5
-
-results <- simulate_point_estimate_n(simulations = 1000, true_N, true_M, n)
-
-cat("\nMSE for Hypergeometric estimates:\n")
-cat(sprintf("N: %.4f\n", results$MSE_Hypergeometric$N))
-cat(sprintf("M: %.4f\n", results$MSE_Hypergeometric$M))
-
-cat("\nMSE for Negative Hypergeometric estimates:\n")
-cat(sprintf("N: %.4f\n", results$MSE_Negative_Hypergeometric$N))
-cat(sprintf("M: %.4f\n", results$MSE_Negative_Hypergeometric$M))
-```
-
-## Simulating Combinations of N, M, and n
-
-```{r}
-#| label: simulating multiple combinations of N, M, and n
-#| warning: false
-
-set.seed(814)
-
-parameters <- data.frame(
-  N = c(
-    rep(100, 12),  
-    rep(500, 15),  
-    rep(1000, 15) 
-  ),
-  M = c(
-    rep(25, 3), rep(50, 4), rep(75, 5),      
-    rep(100, 5), rep(250, 5), rep(400, 5),   
-    rep(250, 5), rep(500, 5), rep(750, 5)   
-  ),
-  n = c(
-    5, 10, 15, 5, 10, 15, 25, 5, 10, 15, 25, 40,   
-    5, 10, 25, 40, 50, 10, 20, 30, 40, 50, 10, 20, 50, 60, 75,  
-    5, 10, 25, 40, 50, 10, 20, 30, 40, 50, 10, 20, 50, 60, 75  
-  )
-)
-
-
-results_df_3 <- data.frame()
-
-for (i in 1:nrow(parameters)) {
-  true_N <- parameters$N[i]
-  true_M <- parameters$M[i]
-  n <- parameters$n[i]
-  
-  result <- simulate_point_estimate_n(simulations = 1000, 
-                                    true_N = true_N, 
-                                    true_M = true_M, 
-                                    n = n)
-  
-  results_df_3 <- rbind(
-    results_df_3,
-    data.frame(
-      N = true_N,
-      M = true_M,
-      n = n,
-      MSE_HG_N = result$MSE_Hypergeometric$N,
-      MSE_NHG_N = result$MSE_Negative_Hypergeometric$N,
-      Diff_MSE_N = result$MSE_Hypergeometric$N - result$MSE_Negative_Hypergeometric$N,
-      MSE_HG_M = result$MSE_Hypergeometric$M,
-      MSE_NHG_M = result$MSE_Negative_Hypergeometric$M,
-      Diff_MSE_M = result$MSE_Hypergeometric$M - result$MSE_Negative_Hypergeometric$M,
-      M_over_N = true_M / true_N,
-      n_over_N = n / true_N
-    )
-  )
-}
-```
-
-```{r}
-#| label: simulating random combinations of N, M, and n
-#| warning: false
-
-set.seed(814)
-
-num_combinations <- 50  
-parameters <- data.frame(
-  N = sample(seq(100, 2000, by = 100), num_combinations, replace = TRUE), 
-  M = NA, 
-  n = NA   
-)
-
-parameters$M <- sapply(parameters$N, function(N) sample(seq(10, N, by = 10), 1))  
-parameters$n <- sapply(parameters$M, function(M) sample(seq(5, M/2, by = 1), 1))   
-
-results_df_4 <- data.frame()
-
-for (i in 1:nrow(parameters)) {
-  true_N <- parameters$N[i]
-  true_M <- parameters$M[i]
-  n <- parameters$n[i]
-  
-  result <- simulate_point_estimate_n(simulations = 1000, 
-                                    true_N = true_N, 
-                                    true_M = true_M, 
-                                    n = n)
-  
-  results_df_4 <- rbind(
-    results_df_4,
-    data.frame(
-      N = true_N,
-      M = true_M,
-      n = n,
-      MSE_HG_N = result$MSE_Hypergeometric$N,
-      MSE_NHG_N = result$MSE_Negative_Hypergeometric$N,
-      Diff_MSE_N = result$MSE_Hypergeometric$N - result$MSE_Negative_Hypergeometric$N,
-      MSE_HG_M = result$MSE_Hypergeometric$M,
-      MSE_NHG_M = result$MSE_Negative_Hypergeometric$M,
-      Diff_MSE_M = result$MSE_Hypergeometric$M - result$MSE_Negative_Hypergeometric$M,
-      M_over_N = true_M / true_N,
-      n_over_N = n / true_N
-    )
-  )
-}
-```
-
-```{r}
-#| label: combining above results into one dataset (n)
-
-combined_results_2 <- bind_rows(results_df_3, results_df_4)
 ```
 
 ```{r}
 #| eval: false
 
-write.csv(combined_results_2, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison", "comp_3.csv"), row.names = FALSE)
-```
-
-Note: Difference (MSE) = HG - NHG
-
--   Diff \> 0 (positive) = HG \> NHG = NHG performs better (lower MSE)
-
--   Diff \< 0 (negative) = HG \< NHG = HG performs better (lower MSE)
-
-### Observations and Trends
-
-#### **Performance of NHG vs. HG for (N)**:
-
-1.  **NHG Performs Better ((**Diff_MSE_N \> 0)):
-    -   NHG achieves lower MSE for (N) (positive differences) when:
-        -   **(M / N) is small** (e.g., (\< 0.3)), suggesting a sparse population of successes. Sparse populations favor NHG due to its fixed-success sampling mechanism.
-        -   **(n / N) is small** (e.g., (\< 0.1)), meaning the sample size is small relative to the total population. NHG handles smaller sample sizes better.
-2.  **HG Performs Better ((**Diff_MSE_N \< 0)):
-    -   HG performs better when:
-        -   **(M / N) is moderate to high** (e.g., (\> 0.5)), indicating denser populations of successes. This aligns with HG's fixed-sample-size design.
-        -   **(n / N) is moderate to high** (e.g., (\> 0.1)), meaning larger samples are drawn relative to the population size.
-
-#### **Performance of NHG vs. HG for (M)**:
-
-1.  **NHG Performs Better ((**Diff_MSE_M \> 0)):
-    -   NHG achieves lower MSE for (M) when:
-        -   **(M / N) is small** (e.g., (\< 0.3)), consistent with sparsity favoring NHG.
-        -   **(n / N) is small** (e.g., (\< 0.1)), reinforcing NHG's robustness in smaller sample scenarios.
-2.  **HG Performs Better ((**Diff_MSE_M \< 0)):
-    -   HG performs better when:
-        -   **(M / N) is high** (e.g., (\> 0.5)), indicating denser populations.
-        -   **(n / N) is high** (e.g., (\> 0.1)), where HG benefits from its larger fixed sample sizes.
-
-#### **General Trends**:
-
--   **Impact of (M / N)**:
-    -   NHG tends to perform better as (M / N) decreases, aligning with scenarios of sparsity.
-    -   HG excels as (M / N) increases, particularly when the success density is high ((M / N \> 0.5)).
--   **Impact of (n / N)**:
-    -   NHG outperforms HG when (n / N) is small, reflecting its effectiveness in scenarios with limited sampling.
-    -   HG surpasses NHG when (n / N) increases, benefiting from its stable performance in larger fixed sample sizes.
-
-### Summary Interpretation
-
--   **NHG Excels**:
-    -   Sparse populations: (M / N) is small.
-    -   Small samples: (n / N) is small.
--   **HG Excels**:
-    -   Dense populations: (M / N) is large.
-    -   Larger samples: (n / N) is moderate to large.
-
-## Visualizing Results
-
-```{r}
-#| warning: false
-
-# Plot 1: Diff_MSE_N vs. M/N
-ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_N, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method = "loess", se = FALSE) +
-  labs(
-    title = "Difference in MSE (N): NHG vs. HG by M/N",
-    x = "M / N (Success Fraction in Population)",
-    y = "Diff_MSE_N (HG - NHG)",
-    color = "N"
-  ) 
-
-ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_N, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  labs(
-    title = "Difference in MSE (N): NHG vs. HG by M/N",
-    x = "M / N (Success Fraction in Population)",
-    y = "Diff_MSE_N (HG - NHG)",
-    color = "N"
-  ) 
+write.csv(results_all, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison", "point_estimate_simulation.csv"), row.names = FALSE)
 ```
 
 ```{r}
-#| warning: false
+#| message: false
 
-# Plot 2: Diff_MSE_N vs. n/N
-ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_N, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method = "loess", se = FALSE) +
-  labs(
-    title = "Difference in MSE (N): NHG vs. HG by n/N",
-    x = "n / N (Sample Size Fraction)",
-    y = "Diff_MSE_N (HG - NHG)",
-    color = "N"
-  ) 
+point_estimation_sim_df <- read_csv(here::here("Simulation_Comparison", "point_estimate_simulation.csv"))
 
-ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_N, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  labs(
-    title = "Difference in MSE (N): NHG vs. HG by n/N",
-    x = "n / N (Sample Size Fraction)",
-    y = "Diff_MSE_N (HG - NHG)",
-    color = "N"
-  ) 
+point_estimation_sim_df <- point_estimation_sim_df %>%
+  mutate(M_over_N = true_M / true_N) %>%
+  filter(mse_N_ratio <= 2) %>%
+  filter(mse_M_ratio <= 2)
 ```
 
+### MSE (N) Plot 
+
 ```{r}
-#| warning: false
-
-# Plot 3: Diff_MSE_M vs. M/N
-ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_M, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method = "loess", se = FALSE) +
-  labs(
-    title = "Difference in MSE (M): NHG vs. HG by M/N",
-    x = "M / N (Success Fraction in Population)",
-    y = "Diff_MSE_M (HG - NHG)",
-    color = "N"
-  )
-
-ggplot(combined_results_2, aes(x = M_over_N, y = Diff_MSE_M, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  labs(
-    title = "Difference in MSE (M): NHG vs. HG by M/N",
-    x = "M / N (Success Fraction in Population)",
-    y = "Diff_MSE_M (HG - NHG)",
-    color = "N"
-  )
+ggplot(point_estimation_sim_df, 
+       aes(x = M_over_N, y = mse_N_ratio, 
+           color = factor(true_N), group = factor(true_N))) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
+  facet_wrap(~ m, scales = "free_x") +
+  labs(title = "MSE N Ratio by M/N",
+       x = "M/N",
+       y = "MSE N Ratio",
+       color = "True N") +
+  theme_minimal()
 ```
 
+### MSE (M) Plot 
+
 ```{r}
-#| warning: false
-
-# Plot 4: Diff_MSE_M vs. n/N
-ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_M, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method = "loess", se = FALSE) +
-  labs(
-    title = "Difference in MSE (M): NHG vs. HG by m/M",
-    x = "n / N (Sample Size Fraction)",
-    y = "Diff_MSE_M (HG - NHG)",
-    color = "N"
-  ) 
-
-ggplot(combined_results_2, aes(x = n_over_N, y = Diff_MSE_M, color = as.factor(N))) +
-  geom_point(alpha = 0.6) +
-  labs(
-    title = "Difference in MSE (M): NHG vs. HG by n/N",
-    x = "n / N (Sample Size Fraction)",
-    y = "Diff_MSE_M (HG - NHG)",
-    color = "N"
-  ) 
+ggplot(point_estimation_sim_df, 
+       aes(x = M_over_N, y = mse_M_ratio, 
+           color = factor(true_N), group = factor(true_N))) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
+  facet_wrap(~ m, scales = "free_x") +
+  labs(title = "MSE M Ratio by M/N",
+       x = "M/N",
+       y = "MSE M Ratio",
+       color = "True N") +
+  theme_minimal()
 ```
