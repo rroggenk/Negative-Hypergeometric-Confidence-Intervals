@@ -392,7 +392,7 @@ ggplot(combined_results, aes(x = m_over_M, y = Diff_MSE_M, color = as.factor(N))
 
 ## The Plot.
 
-### Simulating 
+### Simulating
 
 ```{r}
 #| eval: false
@@ -566,36 +566,66 @@ point_estimation_sim_df <- point_estimation_sim_df %>%
   filter(mse_M_ratio <= 2)
 ```
 
-### MSE (N) Plot 
+### MSE (N) Plot
 
 ```{r}
+m_labels <- c(
+  "5"  = "m = 5",
+  "10" = "m = 10",
+  "15" = "m = 15",
+  "20" = "m = 20"
+)
+
 ggplot(point_estimation_sim_df, 
        aes(x = M_over_N, y = mse_N_ratio, 
            color = factor(true_N), group = factor(true_N))) +
   geom_point() +
   geom_line() +
   geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
-  facet_wrap(~ m, scales = "free_x") +
-  labs(title = "MSE N Ratio by M/N",
-       x = "M/N",
-       y = "MSE N Ratio",
-       color = "True N") +
-  theme_minimal()
+  facet_wrap(~ m, scales = "free_x", 
+             labeller = as_labeller(m_labels)) +
+  labs(x = "M/N",
+       y = "MSE (N) Ratio",
+       color = "N") +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)))
 ```
 
-### MSE (M) Plot 
+### MSE (M) Plot
 
 ```{r}
+m_labels <- c(
+  "5"  = "m = 5",
+  "10" = "m = 10",
+  "15" = "m = 15",
+  "20" = "m = 20"
+)
+
 ggplot(point_estimation_sim_df, 
        aes(x = M_over_N, y = mse_M_ratio, 
            color = factor(true_N), group = factor(true_N))) +
   geom_point() +
   geom_line() +
   geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
-  facet_wrap(~ m, scales = "free_x") +
-  labs(title = "MSE M Ratio by M/N",
-       x = "M/N",
-       y = "MSE M Ratio",
-       color = "True N") +
-  theme_minimal()
+  facet_wrap(~ m, scales = "free_x", 
+             labeller = as_labeller(m_labels)) +
+  labs(x = "M/N",
+       y = "MSE (M) Ratio",
+       color = "N") +
+  theme_minimal() +
+  theme(
+  panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.border = element_rect(color = "black", fill = NA, size = 1),
+  axis.ticks = element_line(size = 0.5),
+  axis.ticks.length = unit(2, "mm"),
+  axis.text.x = element_text(margin = margin(t = 5)),
+  axis.text.y = element_text(margin = margin(r = 5)))
 ```
