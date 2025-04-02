@@ -301,7 +301,7 @@ M_compare_HG_NHG_CI <- function(n, N, level = 0.95, method = "CG") {
 
 ## CI Comparison using CG (NHG)
 
-### Plot
+### Data Collection
 
 ```{r}
 #| eval: false
@@ -343,6 +343,8 @@ M_final_results <- M_final_results[, c("N", "n", setdiff(names(M_final_results),
 # write.csv(M_final_results, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison", "M_unknown_CI_comp.csv"), row.names = FALSE)
 ```
 
+### Plot
+
 ```{r}
 #| message: false
 
@@ -361,9 +363,9 @@ ggplot(M_unknown_CI_comp,
   geom_line() +
   geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
   facet_wrap(~ N, scales = "free_x", 
-             labeller = as_labeller(25)) +
+             labeller = as_labeller(N_labels)) +
   labs(x = "x",
-       y = "CI Ratio",
+       y = "CI Ratio (NHG/HG)",
        color = "n") +
   theme_minimal() +
   theme(
@@ -374,6 +376,44 @@ ggplot(M_unknown_CI_comp,
   axis.ticks.length = unit(2, "mm"),
   axis.text.x = element_text(margin = margin(t = 5)),
   axis.text.y = element_text(margin = margin(r = 5)))
+```
+
+### Performance Metrics
+
+```{r}
+M_unknown_CI_comp %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 1 ~ "less than 1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 ~ "greater than 1",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
+```
+
+```{r}
+M_unknown_CI_comp %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 0.8 ~ "less than 0.8",
+      ratio >= 0.8 & ratio < 1 ~ "0.8 to <1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 & ratio <= 1.2 ~ "1 < ratio <= 1.2",
+      ratio > 1.2 ~ "greater than 1.2",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
 ```
 
 # N Unknown Comparison
@@ -399,8 +439,12 @@ N_compare_HG_NHG_CI <- function(n, M, level = 0.95, method = "CG") {
     x_hg <- hg_ci$x[i]
     m_val <- x_hg  # set NHG m equal to the HG observed successes
     
-    # Compute max_N for the NHG call based on the current HG upper bound 
-    current_max_N <- hg_ci$hg_upper[i] + 300
+    if (m_val == 1) {
+      current_max_N <- 10
+    } else {
+      # Compute max_N for the NHG call based on the current HG upper bound 
+      current_max_N <- min(ceiling(hg_ci$hg_upper[i] * 3), 1000)
+    }
     
     # Choose the appropriate NHG function based on the method argument
     if (method == "CG") {
@@ -467,47 +511,11 @@ N_compare_HG_NHG_CI <- function(n, M, level = 0.95, method = "CG") {
 
 ## CI Comparison using CG (NHG)
 
-### Plot
+### Data Collection
 
 ```{r}
 #| eval: false
 
-# Define the specific combinations in a data frame
-combos <- data.frame(
-  M = c(rep(25, 4), rep(35, 4), rep(45, 4), rep(55, 4)),
-  n = c(5, 10, 15, 20,
-        10, 15, 20, 25,
-        10, 20, 25, 35,
-        10, 20, 30, 40)
-)
-
-# Initialize an empty list to store results for each combination
-results_list <- vector("list", nrow(combos))
-
-# Loop over each combination
-for (i in 1:nrow(combos)) {
-  M_val <- combos$M[i]
-  n_val <- combos$n[i]
-  
-  # Run the comparison function with method "CG" and 0.95 conf level.
-  temp <- N_compare_HG_NHG_CI(n = n_val, M = M_val, level = 0.95, method = "CG")
-  
-  # Add the current combination's M and n to the result
-  temp$M <- M_val
-  temp$n <- n_val
-  
-  # Store in the list
-  results_list[[i]] <- temp
-}
-
-# Combine all results into one data frame
-N_final_results <- do.call(rbind, results_list)
-
-# Rearrange columns so that M and n come first
-N_final_results <- N_final_results[, c("M", "n", setdiff(names(N_final_results), c("M", "n")))]
-```
-
-```{r}
 Sys.time()
 library(pbmcapply)   # provides pbmclapply()
 library(parallel)    # for detectCores()
@@ -535,7 +543,7 @@ results_list <- pbmclapply(
     temp <- N_compare_HG_NHG_CI(
       n     = n_val,
       M     = M_val,
-      level = 0.95,
+      level = 0.80,
       method = "CG"
     )
     
@@ -557,4 +565,157 @@ N_final_results <- N_final_results[, c("M", "n", setdiff(names(N_final_results),
 # View the final results (optional)
 head(N_final_results)
 Sys.time()
+
+# write.csv(N_final_results, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison", "N_unknown_CI_comp.csv"), row.names = FALSE)
+```
+
+```{r}
+#| message: false
+#| eval: false
+
+N_final_results <- read_csv(here::here("Simulation_Comparison", "N_unknown_CI_comp.csv"))
+
+N_unknown_CI_comp_NA <- read_csv(here::here("Simulation_Comparison", 
+                                            "N_unknown_CI_comp_NA.csv"))
+
+N_unknown_CI_comp_NA$nhg_length <- (N_unknown_CI_comp_NA$nhg_upper - N_unknown_CI_comp_NA$nhg_lower + 1)
+
+N_unknown_CI_comp_NA$ratio <- (N_unknown_CI_comp_NA$nhg_length / N_unknown_CI_comp_NA$hg_length)
+
+N_final_results_updated <- rows_update(
+  N_final_results, 
+  N_unknown_CI_comp_NA, 
+  by = c("M", "n", "x")
+)
+
+write.csv(N_final_results_updated, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison", "N_unknown_CI_comp_updated.csv"), 
+          row.names = FALSE)
+```
+
+```{r}
+CI.N(n = 5, M = 25, level = 0.80)
+```
+
+### Plot
+
+```{r}
+#| message: false
+
+N_unknown_CI_comp <- read_csv(here::here("Simulation_Comparison", 
+                                         "N_unknown_CI_comp_updated.csv"))
+
+N_unknown_CI_comp <- N_unknown_CI_comp %>%
+  mutate(ratio = if_else(is.na(ratio), 10, ratio))
+```
+
+```{r}
+M_labels <- c(
+  "25"  = "M = 25",
+  "35" = "M = 50",
+  "45" = "M = 75",
+  "55" = "M = 100"
+)
+
+ggplot(N_unknown_CI_comp, 
+       aes(x = x, y = ratio, color = factor(n))) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
+  coord_cartesian(ylim = c(min(N_unknown_CI_comp$ratio), 2.5)) +
+  facet_wrap(~ M, scales = "free_x", 
+             labeller = as_labeller(M_labels)) +
+  labs(x = "x",
+       y = "CI Ratio (NHG/HG)",
+       color = "n") +
+  theme_minimal() +
+  theme(
+  panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(),
+  panel.border = element_rect(color = "black", fill = NA, size = 1),
+  axis.ticks = element_line(size = 0.5),
+  axis.ticks.length = unit(2, "mm"),
+  axis.text.x = element_text(margin = margin(t = 5)),
+  axis.text.y = element_text(margin = margin(r = 5)))
+```
+
+### Performance Metrics
+
+#### With x (HG) = m (HG) = 1
+
+```{r}
+N_unknown_CI_comp %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 1 ~ "less than 1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 ~ "greater than 1",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
+```
+
+```{r}
+N_unknown_CI_comp %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 0.9 ~ "less than 0.9",
+      ratio >= 0.9 & ratio < 1 ~ "0.9 to <1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 & ratio <= 1.5 ~ "1 < ratio <= 1.5",
+      ratio >= 1.5 & ratio <= 2.5 ~ "1.5 <= ratio <= 2.5",
+      ratio > 2.5 ~ "greater than 2.5",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
+```
+
+#### Without x (HG) = m (HG) = 1
+
+```{r}
+N_unknown_CI_comp %>%
+  filter(x != 1) %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 1 ~ "less than 1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 ~ "greater than 1",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
+```
+
+```{r}
+N_unknown_CI_comp %>%
+  filter(x != 1) %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 0.9 ~ "less than 0.9",
+      ratio >= 0.9 & ratio < 1 ~ "0.9 to <1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 & ratio <= 1.5 ~ "1 < ratio <= 1.5",
+      ratio >= 1.5 & ratio <= 2.5 ~ "1.5 <= ratio <= 2.5",
+      ratio > 2.5 ~ "greater than 2.5",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
 ```
