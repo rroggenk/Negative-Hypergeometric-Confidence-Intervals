@@ -22,6 +22,7 @@ library(data.table)
 library(DT)  # Load DT for data tables
 
 source('../../functions.R', encoding = 'UTF-8')
+source('../../functions_vec.R', encoding = 'UTF-8')
 
 # Define UI for application that calculates and displays confidence intervals
 ui <- fluidPage(
@@ -39,14 +40,19 @@ ui <- fluidPage(
       
       selectInput(inputId = "procedure", 
                   label = "Procedure", 
-                  choices = c("Normal Approximation / Large Sample (MLE)", 
-                              "Normal Approximation / Large Sample (Unbiased)",
-                              "Analog to the Clopper-Pearson", 
-                              "Modified Sterne", 
-                              "Crow & Gardner", 
-                              "Bryne and Kabaila", 
-                              "Blaker", 
+                  choices = c("Crow & Gardner", 
                               "CMC")),
+      
+      # selectInput(inputId = "procedure", 
+      #             label = "Procedure", 
+      #             choices = c("Normal Approximation / Large Sample (MLE)", 
+      #                         "Normal Approximation / Large Sample (Unbiased)",
+      #                         "Analog to the Clopper-Pearson", 
+      #                         "Modified Sterne", 
+      #                         "Crow & Gardner", 
+      #                         "Bryne and Kabaila", 
+      #                         "Blaker", 
+      #                         "CMC")),
       
       numericInput(inputId = "confidence_level", 
                    label = "Confidence Level (%)", 
@@ -184,7 +190,7 @@ server <- function(input, output, session) {
       return(NULL)
     }
     
-    # Handle only if the parameter of interest is "M"
+    # Parameter of interest is "M"
     if (input$parameter_of_interest == "M") {
       # Convert confidence level to a decimal
       conf_level <- input$confidence_level / 100
@@ -205,19 +211,53 @@ server <- function(input, output, session) {
           "Observed x (Number of failures observed):", input$x, "\n"
         ),
         result_table = switch(input$procedure,
-                              "Normal Approximation / Large Sample (MLE)" = CI_cov_prob_MLE(N = N, m = m, conf_level = conf_level),
-                              "Normal Approximation / Large Sample (Unbiased)" = CI_cov_prob_unbiased(N = N, m = m, conf_level = conf_level),
-                              "Analog to the Clopper-Pearson" = CI_cov_prob(N = N, m = m, conf_level = conf_level),
-                              "Modified Sterne" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "MST"),
-                              "Crow & Gardner" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "CG"),
-                              "Bryne and Kabaila" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "BK"),
-                              "Blaker" = blaker_ci(N = N, m = m, conf_level = conf_level),
-                              "CMC" = cmc_ci(N = N, m = m, conf_level = conf_level)
+                              # "Normal Approximation / Large Sample (MLE)" = CI_cov_prob_MLE(N = N, m = m, conf_level = conf_level),
+                              # "Normal Approximation / Large Sample (Unbiased)" = CI_cov_prob_unbiased(N = N, m = m, conf_level = conf_level),
+                              # "Analog to the Clopper-Pearson" = CI_cov_prob(N = N, m = m, conf_level = conf_level),
+                              # "Modified Sterne" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "MST"),
+                              "Crow & Gardner" = minimal_cardinality_ci_vec(N = N, m = m, conf_level = conf_level, procedure = "CG"),
+                              # "Bryne and Kabaila" = minimal_cardinality_ci(N = N, m = m, conf_level = conf_level, procedure = "BK"),
+                              # "Blaker" = blaker_ci(N = N, m = m, conf_level = conf_level),
+                              "CMC" = cmc_ci_vec(N = N, m = m, conf_level = conf_level)
         ) %>% filter(x == input$x)
       )
-    } else {
+    } 
+    
+    # Parameter of interest is "N"
+    if (input$parameter_of_interest == "N") {
+      # Convert confidence level to a decimal
+      conf_level <- input$confidence_level / 100
+      
+      # Get N, m, and M based on the input
+      N <- input$N
+      m <- input$m
+      M <- input$M
+      
+      # Return a list of results and text details
       list(
-        text_output = "Currently only handling cases where the parameter of interest is M.",
+        text_output = paste(
+          "Parameter of Interest:", input$parameter_of_interest, "\n",
+          "Procedure:", input$procedure, "\n",
+          "Confidence Level (%):", input$confidence_level, "\n",
+          "m (Number of successes to be observed):", input$m, "\n",
+          "M (Total successes in population):", M, "\n",
+          "Observed x (Number of failures observed):", input$x, "\n"
+        ),
+        result_table = switch(input$procedure,
+                              # "Analog to the Clopper-Pearson" = CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N),
+                              # "Modified Sterne" = minimal_cardinality_ci(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "MST"),
+                              "Crow & Gardner" = minimal_cardinality_ci_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "CG"),
+                              # "Bryne and Kabaila" = minimal_cardinality_ci(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "BK"),
+                              # "Blaker" = blaker_ci(M = M, m = m, conf_level = conf_level, max_N = max_N),
+                              "CMC" = cmc_ci_vec(M = M, m = m, conf_level = conf_level, max_N = max_N)
+        ) %>% filter(x == input$x)
+      )
+    } 
+    
+    
+    else {
+      list(
+        text_output = "ERROR",
         result_table = NULL
       )
     }
