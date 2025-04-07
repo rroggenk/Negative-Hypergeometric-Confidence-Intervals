@@ -87,11 +87,27 @@ ac <- all_ac_N_unknown_vec_editted(M = 10, m = 1, conf_level = 0.80, max_N = 100
 Sys.time()
 ```
 
+```{r}
+# For M = 10, m = 1, conf_level = 0.80 case
+# CMC and CG/BK/MST acceptance curves are the same up from N = 1 to 49
+# Starts to differ at N = 50
+
+filter_ac <- ac %>%
+  filter(N == 50) %>%
+  filter(coverage_prob >= 0.80) %>%
+  filter(a >= 0) %>%
+  filter(b >= 6)
+filter_ac
+```
+
 ## Plot
 
 ```{r}
-ac$a <- factor(ac$a)
 ac %>%
+  filter(N >= 50) %>%
+  filter(a <= 4) %>%
+  filter(cardinality <= 42) %>%
+  mutate(a = factor(a)) %>%
   ggplot() +
   geom_line(aes(x = N, 
                 y = coverage_prob, 
@@ -183,6 +199,12 @@ Sys.time()
 ```
 
 # CMC
+
+```{r}
+Sys.time()
+cmc_ac <- cmc_ac_N_unknown_vec(M = 10, m = 1, conf_level = 0.80, max_N = 200)
+Sys.time()
+```
 
 ```{r}
 Sys.time()

@@ -1019,8 +1019,8 @@ minimal_cardinality_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 100
   
   # Initializes data frame that will be outputted 
   ci_results = data.frame(x = integer(), 
-                          ci_lb = integer(), 
-                          ci_ub = integer(), 
+                          ci_lb = numeric(), 
+                          ci_ub = numeric(), 
                           ci = character(),
                           stringsAsFactors = FALSE)
   
@@ -1045,10 +1045,10 @@ minimal_cardinality_ci_N_unkown <- function(M, m, conf_level = 0.95, max_N = 100
       slice(n())
     
     # Finds the N of the corresponding above intervals and saves those as the CI bounds
-    if (nrow(first_occurrence) > 0 && nrow(last_occurrence) > 0) {
+    if (nrow(first_occurrence) > 0) {
       ci_lb = first_occurrence$N
-      ci_ub = last_occurrence$N
-      ci = paste0("[", ci_lb, ", ", ci_ub, "]")
+      ci_ub = if (m == 1) Inf else if (nrow(last_occurrence) > 0) last_occurrence$N else NA
+      ci = if (is.infinite(ci_ub)) paste0("[", ci_lb, ", ∞)") else paste0("[", ci_lb, ", ", ci_ub, "]")
       
       ci_results = rbind(ci_results, data.frame(x = x, 
                                                 ci_lb = ci_lb, 

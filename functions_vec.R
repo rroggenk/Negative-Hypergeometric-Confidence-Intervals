@@ -1091,8 +1091,8 @@ minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N =
     last_occurrence <- subset_dt[.N]
     
     ci_lb <- first_occurrence$N
-    ci_ub <- last_occurrence$N
-    ci_str <- paste0("[", ci_lb, ", ", ci_ub, "]")
+    ci_ub <- if (m == 1) Inf else last_occurrence$N
+    ci_str <- if (is.infinite(ci_ub)) paste0("[", ci_lb, ", ∞)") else paste0("[", ci_lb, ", ", ci_ub, "]")
     
     ci_list[[idx]] <- data.table(x = x, ci_lb = ci_lb, ci_ub = ci_ub, ci = ci_str)
     idx <- idx + 1
@@ -1101,11 +1101,12 @@ minimal_cardinality_ci_N_unkown_vec <- function(M, m, conf_level = 0.95, max_N =
   if (idx > 1) {
     ci_dt <- rbindlist(ci_list[1:(idx - 1)])
   } else {
-    ci_dt <- data.table(x = integer(), ci_lb = integer(), ci_ub = integer(), ci = character())
+    ci_dt <- data.table(x = integer(), ci_lb = numeric(), ci_ub = numeric(), ci = character())
   }
   
   return(as.data.frame(ci_dt))
 }
+
 
 
 
