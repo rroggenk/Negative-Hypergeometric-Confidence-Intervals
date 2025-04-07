@@ -1,10 +1,3 @@
-# TO DO: 
-# edit input errors (does is automatically change input, then error message doesnt show)
-# maybe make error messages red and bigger?
-# make it so when the inputs are empty, it doenst crash, just has an error
-# add a submit button
-
-
 #
 # This is a Shiny web application. You can run the application by clicking
 # the 'Run App' button above.
@@ -232,6 +225,7 @@ server <- function(input, output, session) {
       N <- input$N
       m <- input$m
       M <- input$M
+      max_N <- 500
       
       # Return a list of results and text details
       list(
@@ -245,11 +239,11 @@ server <- function(input, output, session) {
         ),
         result_table = switch(input$procedure,
                               # "Analog to the Clopper-Pearson" = CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N),
-                              # "Modified Sterne" = minimal_cardinality_ci(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "MST"),
-                              "Crow & Gardner" = minimal_cardinality_ci_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "CG"),
-                              # "Bryne and Kabaila" = minimal_cardinality_ci(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "BK"),
-                              # "Blaker" = blaker_ci(M = M, m = m, conf_level = conf_level, max_N = max_N),
-                              "CMC" = cmc_ci_vec(M = M, m = m, conf_level = conf_level, max_N = max_N)
+                              # "Modified Sterne" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "MST"),
+                              "Crow & Gardner" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "CG"),
+                              # "Bryne and Kabaila" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "BK"),
+                              # "Blaker" = blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N),
+                              "CMC" = cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N)
         ) %>% filter(x == input$x)
       )
     } 
