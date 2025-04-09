@@ -1,0 +1,57 @@
+---
+title: "Shiny App: Max N (N Unknown)"
+author: "Rachel Roggenkemper"
+format: html
+editor: visual
+---
+
+# Set-Up
+
+```{r}
+#| message: false
+
+library(extraDistr)
+library(tidyverse)
+library(data.table)
+
+source('../functions.R', encoding = 'UTF-8')
+source('../functions_vec.R', encoding = 'UTF-8')
+```
+
+# Restrictions
+
+-   Confidence Level: 80% - 99%
+
+-   M: 1 - 50
+
+-   m: 1 - M
+
+-   x: 1 - 50
+
+Note: consider max N impact of computation time
+
+Need to make sure it's big enough to capture the observed x's interval -\> add condition where if an interval isn't produced, increase max_N?
+
+# CMC
+
+```{r}
+Sys.time()
+cmc_ci_N_unkown_vec(M = 10, m = 5, conf_level = 0.99, max_N = 300)
+Sys.time()
+```
+
+# CG
+
+```{r}
+Sys.time()
+minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "CG")
+Sys.time()
+```
+
+# Blaker
+
+```{r}
+Sys.time()
+blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N)
+Sys.time()
+```
