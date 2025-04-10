@@ -256,35 +256,66 @@ server <- function(input, output, session) {
     
     # Parameter of interest is "N"
     else if (input$parameter_of_interest == "N") {
-      # Convert confidence level to a decimal
       conf_level <- input$confidence_level / 100
-      
-      # Get N, m, and M based on the input
-      N <- input$N
       m <- input$m
+      x <- input$x
       M <- input$M
-      max_N <- 200
       
-      # Return a list of results and text details
+      # Translate NHG to HG
+      n_HG <- m + x
+      M_HG <- M
+      x_HG <- m
+      
+      # Get HG CI for N
+      hg_ci_df <- CI.N(n = n_HG, M = M_HG, level = conf_level)
+      hg_upper <- hg_ci_df[x_HG + 1, "upper"]
+      
+      # Handle Inf case
+      if (is.infinite(hg_upper)) {
+        max_N <- 10000
+      } else {
+        # Try different multipliers
+        multiplier_list <- c(1.5, 3, 10)
+        max_N <- NULL
+        nhg_ci <- NULL
+        for (mult in multiplier_list) {
+          candidate_max_N <- ceiling(mult * hg_upper)
+          nhg_ci <- switch(input$procedure,
+                           "Crow & Gardner" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = candidate_max_N, procedure = "CG"),
+                           "Blaker" = blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = candidate_max_N),
+                           "CMC" = cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = candidate_max_N)
+          )
+          if (nrow(nhg_ci %>% filter(x == input$x)) > 0) {
+            max_N <- candidate_max_N
+            break
+          }
+        }
+        # If all failed, fall back to 10000
+        if (is.null(max_N)) {
+          max_N <- 10000
+        }
+      }
+      
+      # Final computation with chosen max_N
+      nhg_ci_final <- switch(input$procedure,
+                             "Crow & Gardner" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "CG"),
+                             "Blaker" = blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N),
+                             "CMC" = cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N)
+      ) %>% filter(x == input$x)
+      
       list(
         text_output = paste(
           "Parameter of Interest:", input$parameter_of_interest, "\n",
           "Procedure:", input$procedure, "\n",
           "Confidence Level (%):", input$confidence_level, "\n",
           "M (Total successes in population):", M, "\n",
-          "m (Number of successes to be observed):", input$m, "\n",
-          "Observed x (Number of failures observed):", input$x, "\n"
+          "m (Number of successes to be observed):", m, "\n",
+          "Observed x (Number of failures observed):", x
         ),
-        result_table = switch(input$procedure,
-                              # "Analog to the Clopper-Pearson" = CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N),
-                              # "Modified Sterne" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "MST"),
-                              "Crow & Gardner" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "CG"),
-                              # "Bryne and Kabaila" = minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N, procedure = "BK"),
-                              "Blaker" = blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N),
-                              "CMC" = cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N)
-        ) %>% filter(x == input$x)
+        result_table = nhg_ci_final
       )
-    } 
+    }
+    
     
     
     else {
