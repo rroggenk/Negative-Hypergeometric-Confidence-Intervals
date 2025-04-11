@@ -105,7 +105,7 @@ filter_ac
 ```{r}
 ac %>%
   filter(N >= 50) %>%
-  filter(a <= 4) %>%
+  filter(a < 3) %>%
   filter(cardinality <= 42) %>%
   mutate(a = factor(a)) %>%
   ggplot() +
@@ -113,7 +113,10 @@ ac %>%
                 y = coverage_prob, 
                 group = x_set, 
                 color = a)) +
-  labs(x = "N", y = "Coverage Probability") +
+  scale_color_manual(
+  values = c("0" = "#F8766D", "1" = "#00BA38", "2" = "#619CFF"), 
+  labels = c("0" = "RB(0)", "1" = "RB(1)", "2" = "RB(2)")) +
+  labs(x = "N", y = "Coverage Probability", color = NULL) +
   geom_hline(yintercept = 0.80, color = "red") +
   coord_cartesian(ylim = c(0.80 - 0.005, 1)) +
   scale_y_continuous(breaks = c(0.80, 1)) +
