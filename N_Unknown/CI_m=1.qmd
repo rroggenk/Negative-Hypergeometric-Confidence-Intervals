@@ -104,7 +104,7 @@ filter_ac
 
 ```{r}
 ac %>%
-  filter(N >= 50) %>%
+  #filter(N >= 50) %>%
   filter(a < 3) %>%
   filter(cardinality <= 42) %>%
   mutate(a = factor(a)) %>%
