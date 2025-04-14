@@ -539,7 +539,7 @@ results_list <- pbmclapply(
     M_val <- combos$M[i]
     n_val <- combos$n[i]
     
-    # Run the comparison function with method "CG" and 0.95 conf level.
+    # Run the comparison function with method "CG" and 0.80 conf level.
     temp <- N_compare_HG_NHG_CI(
       n     = n_val,
       M     = M_val,
@@ -590,10 +590,6 @@ N_final_results_updated <- rows_update(
 
 write.csv(N_final_results_updated, file.path("/Users/rachelroggenkemper/Documents/NegativeHypergeometric/Simulation_Comparison", "N_unknown_CI_comp_updated.csv"), 
           row.names = FALSE)
-```
-
-```{r}
-CI.N(n = 5, M = 25, level = 0.80)
 ```
 
 ### Plot
@@ -702,6 +698,49 @@ N_unknown_CI_comp %>%
 ```{r}
 N_unknown_CI_comp %>%
   filter(x != 1) %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 0.9 ~ "less than 0.9",
+      ratio >= 0.9 & ratio < 1 ~ "0.9 to <1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 & ratio <= 1.5 ~ "1 < ratio <= 1.5",
+      ratio >= 1.5 & ratio <= 2.5 ~ "1.5 <= ratio <= 2.5",
+      ratio > 2.5 ~ "greater than 2.5",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
+```
+
+#### Without x (HG) = m (HG) = 1 and 2
+
+```{r}
+N_unknown_CI_comp %>%
+  filter(x != 1) %>%
+  filter(x != 2) %>%
+  mutate(
+    ratio_cat = case_when(
+      ratio < 1 ~ "less than 1",
+      ratio == 1 ~ "exactly 1",
+      ratio > 1 ~ "greater than 1",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  group_by(ratio_cat) %>%
+  summarize(count = n()) %>%
+  mutate(
+    percentage = round(100 * count / sum(count), 2)
+  )
+```
+
+```{r}
+N_unknown_CI_comp %>%
+  filter(x != 1) %>%
+  filter(x != 2) %>%
   mutate(
     ratio_cat = case_when(
       ratio < 0.9 ~ "less than 0.9",
