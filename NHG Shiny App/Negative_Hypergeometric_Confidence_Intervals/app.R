@@ -16,8 +16,9 @@ library(DT)  # Load DT for data tables
 library(shinybusy)
 library(shinyjs)
 
-source('../../functions.R', encoding = 'UTF-8')
-source('../../functions_vec.R', encoding = 'UTF-8')
+# source('../../functions.R', encoding = 'UTF-8')
+# source('../../functions_vec.R', encoding = 'UTF-8')
+source('functions_vec.R', encoding = 'UTF-8')
 
 # Define UI for application that calculates and displays confidence intervals
 ui <- fluidPage(
