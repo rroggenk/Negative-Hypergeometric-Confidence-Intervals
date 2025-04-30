@@ -146,6 +146,13 @@ average_length <- function(data_frame, lb_col_name, ub_col_name) {
 ##### M = 25, m = 5
 
 ```{r}
+ngh_pmf(x = 26, N = 200, M = 25, m = 5)
+
+ngh_pmf(x = 75, N = 200, M = 25, m = 5)
+ngh_pmf(x = 75, N = 200, M = 25, m = 5) < 0.001
+```
+
+```{r}
 #| eval: false
 
 M = 25
@@ -168,6 +175,11 @@ exp_length_acp_M25_m5$m = m
 ```
 
 ##### M = 25, m = 15
+
+```{r}
+ngh_pmf(x = 26, N = 200, M = 25, m = 15)
+ngh_pmf(x = 26, N = 200, M = 25, m = 15) < 0.001
+```
 
 ```{r}
 #| eval: false
@@ -194,6 +206,13 @@ exp_length_acp_M25_m15$m = m
 ##### M = 50, m = 5
 
 ```{r}
+ngh_pmf(x = 26, N = 200, M = 50, m = 5)
+
+ngh_pmf(x = 39, N = 200, M = 50, m = 5)
+ngh_pmf(x = 39, N = 200, M = 50, m = 5) < 0.001
+```
+
+```{r}
 #| eval: false
 
 M = 50
@@ -216,6 +235,13 @@ exp_length_acp_M50_m5$m = m
 ```
 
 ##### M = 50, m = 15
+
+```{r}
+ngh_pmf(x = 26, N = 200, M = 50, m = 15)
+
+ngh_pmf(x = 76, N = 200, M = 50, m = 15) 
+ngh_pmf(x = 76, N = 200, M = 50, m = 15) < 0.001
+```
 
 ```{r}
 #| eval: false
