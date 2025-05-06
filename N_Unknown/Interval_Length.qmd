@@ -846,6 +846,38 @@ ggplot(expected_value_plot_df, aes(x = N, y = ExpectedLength, color = Method)) +
   )
 ```
 
+```{r}
+#| message: false
+
+expected_value_plot_df <- read_csv(here::here("N_Unknown", 
+                                              "N_unknown_expected_length.csv"))
+
+relative_df <- expected_value_plot_df %>%
+  pivot_wider(names_from = Method, values_from = ExpectedLength) %>%
+  mutate(across(-c(N, M, m, CMC), ~ .x / CMC)) %>%
+  pivot_longer(cols = -c(N, M, m, CMC), names_to = "Method", values_to = "RelativeExpectedLength") %>%
+  mutate(facet_label = factor(
+    paste("M =", M, ", m =", m),
+    levels = c("M = 25 , m = 5", "M = 50 , m = 5", "M = 25 , m = 15", "M = 50 , m = 15")
+  ))
+
+distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+
+ggplot(relative_df, aes(x = N, y = RelativeExpectedLength, color = Method)) +
+  geom_line(linewidth = 1, alpha = 0.6) +
+  scale_color_manual(values = distinct_colors) +
+  facet_wrap(~ facet_label, scales = "free") +
+  labs(x = "N", y = "Relative Expected Length (to CMC)", color = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(size = 12),
+    panel.spacing = unit(1, "lines"),
+    axis.title.y = element_text(margin = margin(r = 10)),
+    axis.title.x = element_text(margin = margin(t = 10))
+  )
+```
+
 ## Plot of Average Length and Average Coverage Probability
 
 ### Data Preparation
