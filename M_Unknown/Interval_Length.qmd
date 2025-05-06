@@ -361,6 +361,36 @@ ggplot(all_results, aes(x = M, y = ExpectedLength, color = Method)) +
   )
 ```
 
+```{r}
+all_results <- read_csv("expected_length.csv") %>%
+  filter(!(Method %in% c("Normal Approximation (MLE)", "Normal Approximation (Unbiased)")))
+
+relative_df <- all_results %>%
+  pivot_wider(names_from = Method, values_from = ExpectedLength) %>%
+  mutate(across(-c(M, N, m, CMC), ~ .x / CMC)) %>%
+  pivot_longer(cols = -c(M, N, m, CMC), names_to = "Method", values_to = "RelativeExpectedLength") %>%
+  mutate(facet_label = factor(
+    paste("N =", N, ", m =", m),
+    levels = c("N = 50 , m = 3", "N = 200 , m = 3", "N = 50 , m = 20", "N = 200 , m = 20")
+  ))
+
+distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+
+ggplot(relative_df, aes(x = M, y = RelativeExpectedLength, color = Method)) +
+  geom_line(size = 1, alpha = 0.6) +
+  scale_color_manual(values = distinct_colors) +
+  facet_wrap(~ facet_label, scales = "free") +
+  labs(x = "M", y = "Relative Expected Length (to CMC)", color = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(size = 12),
+    panel.spacing = unit(1, "lines"),
+    axis.title.y = element_text(margin = margin(r = 10)),
+    axis.title.x = element_text(margin = margin(t = 10))
+  )
+```
+
 # Plot of Average Length
 
 Note: Should we include Normal Approximation methods in the plot? I was thinking no since the coverage sucks, so even since the expected length is good, it gives a false idea because coverage sucks.
