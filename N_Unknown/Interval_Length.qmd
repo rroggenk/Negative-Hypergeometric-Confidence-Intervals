@@ -146,10 +146,10 @@ average_length <- function(data_frame, lb_col_name, ub_col_name) {
 ##### M = 25, m = 5
 
 ```{r}
-ngh_pmf(x = 26, N = 200, M = 25, m = 5)
-
-ngh_pmf(x = 75, N = 200, M = 25, m = 5)
-ngh_pmf(x = 75, N = 200, M = 25, m = 5) < 0.001
+# ngh_pmf(x = 26, N = 200, M = 25, m = 5)
+# 
+# ngh_pmf(x = 75, N = 200, M = 25, m = 5)
+# ngh_pmf(x = 75, N = 200, M = 25, m = 5) < 0.001
 ```
 
 ```{r}
@@ -158,11 +158,11 @@ ngh_pmf(x = 75, N = 200, M = 25, m = 5) < 0.001
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 425
+max_N = 1200
 N_values = M:200
 
 CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 75)
 
 exp_length_acp_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "lower_bound", 
@@ -177,8 +177,8 @@ exp_length_acp_M25_m5$m = m
 ##### M = 25, m = 15
 
 ```{r}
-ngh_pmf(x = 26, N = 200, M = 25, m = 15)
-ngh_pmf(x = 26, N = 200, M = 25, m = 15) < 0.001
+# ngh_pmf(x = 26, N = 200, M = 25, m = 15)
+# ngh_pmf(x = 26, N = 200, M = 25, m = 15) < 0.001
 ```
 
 ```{r}
@@ -206,10 +206,10 @@ exp_length_acp_M25_m15$m = m
 ##### M = 50, m = 5
 
 ```{r}
-ngh_pmf(x = 26, N = 200, M = 50, m = 5)
-
-ngh_pmf(x = 39, N = 200, M = 50, m = 5)
-ngh_pmf(x = 39, N = 200, M = 50, m = 5) < 0.001
+# ngh_pmf(x = 26, N = 200, M = 50, m = 5)
+# 
+# ngh_pmf(x = 39, N = 200, M = 50, m = 5)
+# ngh_pmf(x = 39, N = 200, M = 50, m = 5) < 0.001
 ```
 
 ```{r}
@@ -218,11 +218,11 @@ ngh_pmf(x = 39, N = 200, M = 50, m = 5) < 0.001
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 870
+max_N = 1400
 N_values = M:200
 
 CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 39)
 
 exp_length_acp_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "lower_bound", 
@@ -237,10 +237,10 @@ exp_length_acp_M50_m5$m = m
 ##### M = 50, m = 15
 
 ```{r}
-ngh_pmf(x = 26, N = 200, M = 50, m = 15)
-
-ngh_pmf(x = 76, N = 200, M = 50, m = 15) 
-ngh_pmf(x = 76, N = 200, M = 50, m = 15) < 0.001
+# ngh_pmf(x = 26, N = 200, M = 50, m = 15)
+# 
+# ngh_pmf(x = 76, N = 200, M = 50, m = 15) 
+# ngh_pmf(x = 76, N = 200, M = 50, m = 15) < 0.001
 ```
 
 ```{r}
@@ -249,11 +249,11 @@ ngh_pmf(x = 76, N = 200, M = 50, m = 15) < 0.001
 M = 50
 m = 15
 conf_level = 0.95
-max_N = 210
+max_N = 500
 N_values = M:200
 
 CI <- CI_Analog_CP_N_Unknown_vec(M = M, m = m, conf_level = conf_level, max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 76)
 
 exp_length_acp_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "lower_bound", 
@@ -275,12 +275,12 @@ exp_length_acp_M50_m15$m = m
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 505
+max_N = 1250
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "MST") %>%
-  filter(x <= 25)
+  filter(x <= 75)
 
 exp_length_mst_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -325,12 +325,12 @@ exp_length_mst_M25_m15$m = m
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 1160
+max_N = 1400
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "MST") %>%
-  filter(x <= 25)
+  filter(x <= 39)
 
 exp_length_mst_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -350,12 +350,12 @@ exp_length_mst_M50_m5$m = m
 M = 50
 m = 15
 conf_level = 0.95
-max_N = 220
+max_N = 500
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "MST") %>%
-  filter(x <= 25)
+  filter(x <= 76)
 
 exp_length_mst_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -377,12 +377,12 @@ exp_length_mst_M50_m15$m = m
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 550
+max_N = 1250
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "CG") %>%
-  filter(x <= 25)
+  filter(x <= 75)
 
 exp_length_cg_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -427,12 +427,12 @@ exp_length_cg_M25_m15$m = m
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 1165
+max_N = 1400
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "CG") %>%
-  filter(x <= 25)
+  filter(x <= 39)
 
 exp_length_cg_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -452,12 +452,12 @@ exp_length_cg_M50_m5$m = m
 M = 50
 m = 15
 conf_level = 0.95
-max_N = 230
+max_N = 500
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "CG") %>%
-  filter(x <= 25)
+  filter(x <= 76)
 
 exp_length_cg_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -479,12 +479,12 @@ exp_length_cg_M50_m15$m = m
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 470
+max_N = 1250
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "BK") %>%
-  filter(x <= 25)
+  filter(x <= 75)
 
 exp_length_bk_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -529,12 +529,12 @@ exp_length_bk_M25_m15$m = m
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 1000
+max_N = 1400
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "BK") %>%
-  filter(x <= 25)
+  filter(x <= 39)
 
 exp_length_bk_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -554,12 +554,12 @@ exp_length_bk_M50_m5$m = m
 M = 50
 m = 15
 conf_level = 0.95
-max_N = 220
+max_N = 500
 N_values = M:200
 
 CI <- minimal_cardinality_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                                           max_N = max_N, procedure = "BK") %>%
-  filter(x <= 25)
+  filter(x <= 76)
 
 exp_length_bk_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -581,12 +581,12 @@ exp_length_bk_M50_m15$m = m
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 425
+max_N = 1250
 N_values = M:200
 
 CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                              max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 75)
 
 exp_length_blaker_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -631,12 +631,12 @@ exp_length_blaker_M25_m15$m = m
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 870
+max_N = 1400
 N_values = M:200
 
 CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                              max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 39)
 
 exp_length_blaker_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -656,12 +656,12 @@ exp_length_blaker_M50_m5$m = m
 M = 50
 m = 15
 conf_level = 0.95
-max_N = 210
+max_N = 500
 N_values = M:200
 
 CI <- blaker_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                              max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 76)
 
 exp_length_blaker_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -683,12 +683,12 @@ exp_length_blaker_M50_m15$m = m
 M = 25
 m = 5
 conf_level = 0.95
-max_N = 380
+max_N = 1250
 N_values = M:200
 
 CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                           max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 75)
 
 exp_length_cmc_M25_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -733,12 +733,12 @@ exp_length_cmc_M25_m15$m = m
 M = 50
 m = 5
 conf_level = 0.95
-max_N = 770
+max_N = 1400
 N_values = M:200
 
 CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                           max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 39)
 
 exp_length_cmc_M50_m5 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -758,12 +758,12 @@ exp_length_cmc_M50_m5$m = m
 M = 50
 m = 15
 conf_level = 0.95
-max_N = 205
+max_N = 500
 N_values = M:200
 
 CI <- cmc_ci_N_unkown_vec(M = M, m = m, conf_level = conf_level, 
                           max_N = max_N) %>%
-  filter(x <= 25)
+  filter(x <= 76)
 
 exp_length_cmc_M50_m15 <- expected_length_N_unknown(data_frame = CI, 
                                                     lb_col_name = "ci_lb", 
@@ -807,7 +807,7 @@ df_list <- list(exp_length_acp_M25_m5,
                 )
 expected_value_df <- bind_rows(df_list)
 
-# write.csv(expected_value_df, file.path(getwd(), "N_unknown_expected_length.csv"), 
+# write.csv(expected_value_df, file.path(getwd(), "N_unknown_expected_length.csv"),
 #           row.names = FALSE)
 ```
 
