@@ -378,6 +378,7 @@ distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magent
 
 ggplot(relative_df, aes(x = M, y = RelativeExpectedLength, color = Method)) +
   geom_line(size = 1, alpha = 0.6) +
+  geom_hline(yintercept = 1, color = "magenta", linetype = "dashed") +
   scale_color_manual(values = distinct_colors) +
   facet_wrap(~ facet_label, scales = "free") +
   labs(x = "M", y = "Relative Expected Length (to CMC)", color = "Method") +
