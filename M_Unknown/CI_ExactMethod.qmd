@@ -77,8 +77,11 @@ x = 4
 N = 50
 M = 21
 
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
 data = data.frame(x = seq(0, 50))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
+
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -93,8 +96,10 @@ x = 4
 N = 50
 M = 21
 
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
 data = data.frame(x = seq(0, 50))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -111,6 +116,62 @@ ggplot(data, aes(x = x, y = y)) +
     axis.ticks.length = unit(2, "mm"),
     axis.text.x = element_text(margin = margin(t = 5)),
     axis.text.y = element_text(margin = margin(r = 5))) 
+
+
+
+ggplot(data, aes(x = x, y = y)) +
+  geom_linerange(aes(ymin = 0, ymax = y)) +
+  geom_vline(xintercept = x, color = "red") +
+  xlab("x") +
+  ylab("Probability") +
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)))
+
+
+
+ggplot(data, aes(x = x, y = y)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = x, color = "red") +
+  xlab("x") +
+  ylab("Probability") +
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)))
+```
+
+```{r}
+m <- 3
+x <- 4
+N <- 50
+M <- 21
+
+x_vals <- 0:50
+y_vals <- sapply(x_vals, function(x) ngh_pmf(x, N, M, m))
+
+plot(x_vals, y_vals, type = "b", 
+     xlab = "x", ylab = "Probability")
+abline(v = x, col = "red", lty = 2)
+
+
+plot(x_vals, y_vals, type = "h",
+     xlab = "x", ylab = "Probability")
+abline(v = x, col = "red", lty = 2)
 ```
 
 ### Lower Bound
@@ -124,8 +185,10 @@ x = 4
 N = 50
 M = 6
 
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
 data = data.frame(x = seq(0, 50))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -146,8 +209,10 @@ x = 4
 N = 50
 M = 6
 
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
 data = data.frame(x = seq(0, 50))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -166,6 +231,25 @@ ggplot(data, aes(x = x, y = y)) +
     axis.text.y = element_text(margin = margin(r = 5))) 
 ```
 
+```{r}
+m <- 3
+x <- 4
+N <- 50
+M <- 6
+
+x_vals <- 0:50
+y_vals <- sapply(x_vals, function(x) ngh_pmf(x, N, M, m))
+
+plot(x_vals, y_vals, type = "b", 
+     xlab = "x", ylab = "Probability")
+abline(v = x, col = "red", lty = 2)
+
+
+plot(x_vals, y_vals, type = "h",
+     xlab = "x", ylab = "Probability")
+abline(v = x, col = "red", lty = 2)
+```
+
 ### Upper Bound
 
 ```{r}
@@ -177,8 +261,10 @@ x = 4
 N = 50
 M = 37
 
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
 data = data.frame(x = seq(0, 50))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 # data$y = ngh_pmf(x = (data$x - m), N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
@@ -201,8 +287,10 @@ x = 4
 N = 50
 M = 37
 
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
 data = data.frame(x = seq(0, 50))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 # data$y = ngh_pmf(x = (data$x - m), N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
@@ -221,6 +309,25 @@ ggplot(data, aes(x = x, y = y)) +
     axis.text.x = element_text(margin = margin(t = 5)),
     axis.text.y = element_text(margin = margin(r = 5))) +
   scale_x_continuous(limits = c(0, 10), breaks = c(0, 5, 10))
+```
+
+```{r}
+m <- 3
+x <- 4
+N <- 50
+M <- 37
+
+x_vals <- 0:50
+y_vals <- sapply(x_vals, function(x) ngh_pmf(x, N, M, m))
+
+plot(x_vals, y_vals, type = "b", 
+     xlab = "x", ylab = "Probability")
+abline(v = x, col = "red", lty = 2)
+
+
+plot(x_vals, y_vals, type = "h",
+     xlab = "x", ylab = "Probability")
+abline(v = x, col = "red", lty = 2)
 ```
 
 ## Confidence Interval Function
