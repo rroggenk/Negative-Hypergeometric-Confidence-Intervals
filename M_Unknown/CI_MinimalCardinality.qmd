@@ -2008,3 +2008,119 @@ ggplot() +
     axis.text.x = element_text(margin = margin(t = 5)),
     axis.text.y = element_text(margin = margin(r = 5)))
 ```
+
+```{r}
+custom_colors <- c(
+  "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#e6ab02", "#a6761d", "#666666", 
+  "#0173b2", "#de8f05", "#029e73", "#d55e00", "#cc78bc", "#ca9161", "#fbafe4", "#949494", 
+  "#56b4e9", "#f0e442", "#0072b2", "#f4a582", "#8da0cb", "#fc8d62", "#66c2a5", "#e78ac3", 
+  "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3", "#c51b7d", "#8c510a", "#01665e", "#542788",
+  "#fdae61", "#fee08b", "#d73027", "#1a9850", "#4575b4", "#91bfdb", "#762a83", "#af8dc3", 
+  "#b2182b", "#4393c3", "#f4a582"
+)
+
+filtered_plot3 <- filtered_plot2 %>%
+  filter(!(M == 6 & x_set == "6-39"))
+
+ggplot() +
+  geom_line(data = filtered_plot3, aes(x = M, 
+                                       y = coverage_prob, 
+                                       group = x_set, 
+                                       color = x_set)) +
+  geom_point(data = all_ac_mc_N_50_m_3, aes(x = M, 
+                                            y = coverage_prob, 
+                                            group = x_set, 
+                                            color = x_set)) +
+  labs(x = "M", y = "Coverage Probability") +
+  geom_hline(yintercept = conf_level, color = "red") +
+  coord_cartesian(xlim = c(5.5, 10.5), ylim = c(conf_level - 0.005, 0.98)) +
+  scale_y_continuous(breaks = c(0.95)) +
+  scale_color_manual(values = custom_colors) + 
+  theme_minimal() +
+  theme(
+    legend.position = "none", 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5))) +
+  # M = 6
+  annotate("text", 
+           x = 6.05, 
+           y = 0.952,
+           label = paste0("2-33"), 
+           color = "#542788",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  annotate("text", 
+           x = 5.7, 
+           y = 0.9547,
+           label = paste0("5-36"), 
+           color = "#762a83",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  annotate("text", 
+           x = 5.705, 
+           y = 0.9578,
+           label = paste0("3-34"), 
+           color = "#fee08b",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  annotate("text", 
+           x = 5.71, 
+           y = 0.9593,
+           label = paste0("4-35"), 
+           color = "#1a9850",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  # M = 7
+  annotate("text", 
+           x = 7, 
+           y = 0.9525,
+           label = paste0("4-32"), 
+           color = "#d73027",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  annotate("text", 
+           x = 6.7, 
+           y = 0.9565,
+           label = paste0("2-30"), 
+           color = "#01665e",
+           angle = 0, hjust = 0, vjust = 1, size = 4) + 
+  annotate("text", 
+           x = 6.7, 
+           y = 0.958,
+           label = paste0("3-31"), 
+           color = "#fdae61",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  # M = 8
+  annotate("text", 
+           x = 7.7, 
+           y = 0.9543,
+           label = paste0("2-27"), 
+           color = "#8c510a",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  # M = 9
+  annotate("text", 
+           x = 8.69, 
+           y = 0.955,
+           label = paste0("2-25"), 
+           color = "#c51b7d",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  annotate("text", 
+           x = 8.69, 
+           y = 0.9565,
+           label = paste0("1-24"), 
+           color = "#e78ac3",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  # M = 10
+  annotate("text", 
+           x = 9.9, 
+           y = 0.95365,
+           label = paste0("2-23"), 
+           color = "#b3b3b3",
+           angle = 0, hjust = 0, vjust = 1, size = 4) +
+  annotate("text", 
+           x = 9.7, 
+           y = 0.9576,
+           label = paste0("1-22"), 
+           color = "#66c2a5",
+           angle = 0, hjust = 0, vjust = 1, size = 4)
+```

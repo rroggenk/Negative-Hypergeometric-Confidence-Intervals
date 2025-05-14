@@ -818,7 +818,8 @@ expected_value_plot_df <- read_csv(here::here("N_Unknown",
                                               "N_unknown_expected_length.csv"))
 
 # Define a distinct color palette
-distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
 
 # Custom labels for M and m
 M_labels <- c("25" = "M = 25", "50" = "M = 50")
@@ -861,13 +862,18 @@ relative_df <- expected_value_plot_df %>%
     levels = c("M = 25 , m = 5", "M = 50 , m = 5", "M = 25 , m = 15", "M = 50 , m = 15")
   ))
 
-distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
 
-ggplot(relative_df, aes(x = N, y = RelativeExpectedLength, color = Method)) +
-  geom_line(linewidth = 1, alpha = 0.6) +
+ggplot(relative_df, aes(x = N, y = RelativeExpectedLength, 
+                        color = Method, linetype = Method)) +
+  geom_line(linewidth = 1, alpha = 1) +
   scale_color_manual(values = distinct_colors) +
-  facet_wrap(~ facet_label, scales = "free") +
-  labs(x = "N", y = "Relative Expected Length (to CMC)", color = "Method") +
+  facet_wrap(~ facet_label, scales = "free") + 
+  scale_y_continuous(limits = c(1, NA)) +
+  #scale_x_continuous(expand = expansion(mult = c(0, 0.05))) +
+  labs(x = "N", y = "Relative Expected Length (to CMC)", 
+       color = "Method", linetype = "Method") +
   theme_minimal() +
   theme(
     legend.position = "bottom",
@@ -1818,13 +1824,14 @@ average_length_cp_plot_df$facet_label <- factor(
 )
 
 # Define a distinct color palette
-distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
 
 # Create the scatter plot using facet_wrap for independent axes
 ggplot(average_length_cp_plot_df, aes(x = AverageLength, 
                                       y = AverageCoverageProbability, 
                                       color = Method)) +
-  geom_point(size = 3, alpha = 0.5) +  # Adjust point size and transparency
+  geom_point(size = 3) +  # Adjust point size and transparency
   geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
   facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
   scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette

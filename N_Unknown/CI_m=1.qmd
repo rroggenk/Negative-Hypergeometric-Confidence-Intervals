@@ -114,7 +114,7 @@ ac %>%
                 group = x_set, 
                 color = a)) +
   scale_color_manual(
-  values = c("0" = "#F8766D", "1" = "#00BA38", "2" = "#619CFF"), 
+  values = c("0" = "#0072B2", "1" = "#E69F00", "2" = "#CC79A7"), 
   labels = c("0" = "RB(0)", "1" = "RB(1)", "2" = "RB(2)")) +
   labs(x = "N", y = "Coverage Probability", color = NULL) +
   geom_hline(yintercept = 0.80, color = "red") +

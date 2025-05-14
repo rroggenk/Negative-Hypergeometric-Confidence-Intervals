@@ -362,6 +362,8 @@ ggplot(all_results, aes(x = M, y = ExpectedLength, color = Method)) +
 ```
 
 ```{r}
+#| message: false
+
 all_results <- read_csv("expected_length.csv") %>%
   filter(!(Method %in% c("Normal Approximation (MLE)", "Normal Approximation (Unbiased)")))
 
@@ -374,14 +376,17 @@ relative_df <- all_results %>%
     levels = c("N = 50 , m = 3", "N = 200 , m = 3", "N = 50 , m = 20", "N = 200 , m = 20")
   ))
 
-distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
 
-ggplot(relative_df, aes(x = M, y = RelativeExpectedLength, color = Method)) +
-  geom_line(size = 1, alpha = 0.6) +
-  geom_hline(yintercept = 1, color = "magenta", linetype = "dashed") +
+ggplot(relative_df, aes(x = M, y = RelativeExpectedLength, 
+                        color = Method, linetype = Method)) +
+  geom_line(linewidth = 1, alpha = 1) +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed") +
   scale_color_manual(values = distinct_colors) +
-  facet_wrap(~ facet_label, scales = "free") +
-  labs(x = "M", y = "Relative Expected Length (to CMC)", color = "Method") +
+  facet_wrap(~ facet_label, scales = "free") + 
+  labs(x = "M", y = "Relative Expected Length (to CMC)", 
+       color = "Method", linetype = "Method") +
   theme_minimal() +
   theme(
     legend.position = "bottom",
@@ -458,6 +463,9 @@ Commented out b/c saved dataset as a .csv file so I don't have to re-run code ea
 ```
 
 ```{r}
+#| message: false
+set.seed(818)
+
 # Load the data
 results <- read_csv("average_length_cov_prob.csv")
 
@@ -468,11 +476,21 @@ results$facet_label <- factor(
 )
 
 # Define a distinct color palette
-distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+distinct_colors <- c(
+  "#0072B2", # blue
+  "#E69F00", # orange
+  "#CC79A7", # pink
+  "#009E73", # green
+  "#9400D3", # purple
+  "#F0E442", # yellow
+  "#56B4E9", # sky blue (from extended CUD palette)
+  "#D55E00"  # vermilion (also from extended CUD)
+)
 
 # Create the scatter plot using facet_wrap for independent axes
 ggplot(results, aes(x = AverageLength, y = AverageCovProb, color = Method)) +
-  geom_point(size = 3, alpha = 0.5) +  # Adjust point size and transparency
+  geom_jitter(size = 3, alpha = 0.8, width = 0, height = 0) +  
   geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
   facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
   scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
