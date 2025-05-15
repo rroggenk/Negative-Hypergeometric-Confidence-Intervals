@@ -425,6 +425,50 @@ M_unknown_CI_comp %>%
 ```
 
 ```{r}
+# Data
+df <- data.frame(
+  category = c("NHG better", "HG better", "NHG = HG"),
+  value = c(56.05, 17.21, 26.74)
+)
+
+# Add cumulative and midpoint for label positioning
+df <- df %>%
+  arrange(desc(category)) %>%
+  mutate(
+    fraction = value / sum(value),
+    ymax = cumsum(fraction),
+    ymin = c(0, head(ymax, n = -1)),
+    labelPosition = (ymax + ymin) / 2,
+    label = paste0(category, "\n", round(value, 1), "%")
+  )
+
+# Custom fill colors
+custom_colors <- c(
+  "NHG better" = "#6c94b2",
+  "HG better" = "#b2d9e8",
+  "NHG = HG" = "#9da2c2"
+)
+
+# Pie chart with labels (no legend)
+ggplot(df, aes(x = "", y = value, fill = category)) +
+  geom_bar(stat = "identity", width = 1, color = "#21272c") +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = custom_colors) +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA),
+    plot.background = element_rect(fill = "#ecf6fa", color = NA)
+  ) +
+  annotate("text",
+           x = 1.15,  # Controls radial distance from center
+           y = df$labelPosition * sum(df$value),
+           label = df$label,
+           size = 5,
+           color = "#21272c")
+```
+
+```{r}
 M_unknown_CI_comp %>%
   mutate(
     ratio_cat = case_when(
@@ -748,6 +792,50 @@ N_unknown_CI_comp %>%
   mutate(
     percentage = round(100 * count / sum(count), 2)
   )
+```
+
+```{r}
+# Data
+df <- data.frame(
+  category = c("NHG better", "HG better", "NHG = HG"),
+  value = c(42.18, 39.80, 18.03)
+)
+
+# Add cumulative and midpoint for label positioning
+df <- df %>%
+  arrange(desc(category)) %>%
+  mutate(
+    fraction = value / sum(value),
+    ymax = cumsum(fraction),
+    ymin = c(0, head(ymax, n = -1)),
+    labelPosition = (ymax + ymin) / 2,
+    label = paste0(category, "\n", round(value, 1), "%")
+  )
+
+# Custom fill colors
+custom_colors <- c(
+  "NHG better" = "#6c94b2",
+  "HG better" = "#b2d9e8",
+  "NHG = HG" = "#9da2c2"
+)
+
+# Pie chart with labels (no legend)
+ggplot(df, aes(x = "", y = value, fill = category)) +
+  geom_bar(stat = "identity", width = 1, color = "#21272c") +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = custom_colors) +
+  theme_void() +
+  theme(
+    legend.position = "none",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA),
+    plot.background = element_rect(fill = "#ecf6fa", color = NA)
+  ) +
+  annotate("text",
+           x = 1.15,  # Controls radial distance from center
+           y = df$labelPosition * sum(df$value),
+           label = df$label,
+           size = 5,
+           color = "#21272c")
 ```
 
 ```{r}
