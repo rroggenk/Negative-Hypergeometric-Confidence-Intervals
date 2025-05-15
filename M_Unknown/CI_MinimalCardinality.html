@@ -3460,114 +3460,291 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb690-7"><a href="#cb690-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#b2182b"</span>, <span class="st">"#4393c3"</span>, <span class="st">"#f4a582"</span></span>
 <span id="cb690-8"><a href="#cb690-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb690-9"><a href="#cb690-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb690-10"><a href="#cb690-10" aria-hidden="true" tabindex="-1"></a>filtered_plot3 <span class="ot">&lt;-</span> filtered_plot2 <span class="sc">%&gt;%</span></span>
-<span id="cb690-11"><a href="#cb690-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(M <span class="sc">==</span> <span class="dv">6</span> <span class="sc">&amp;</span> x_set <span class="sc">==</span> <span class="st">"6-39"</span>))</span>
-<span id="cb690-12"><a href="#cb690-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb690-13"><a href="#cb690-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb690-14"><a href="#cb690-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> filtered_plot3, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
-<span id="cb690-15"><a href="#cb690-15" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">y =</span> coverage_prob, </span>
-<span id="cb690-16"><a href="#cb690-16" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">group =</span> x_set, </span>
-<span id="cb690-17"><a href="#cb690-17" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
-<span id="cb690-18"><a href="#cb690-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> all_ac_mc_N_50_m_3, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
-<span id="cb690-19"><a href="#cb690-19" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">y =</span> coverage_prob, </span>
-<span id="cb690-20"><a href="#cb690-20" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">group =</span> x_set, </span>
-<span id="cb690-21"><a href="#cb690-21" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
-<span id="cb690-22"><a href="#cb690-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability"</span>) <span class="sc">+</span></span>
-<span id="cb690-23"><a href="#cb690-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb690-24"><a href="#cb690-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">5.5</span>, <span class="fl">10.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="fl">0.98</span>)) <span class="sc">+</span></span>
-<span id="cb690-25"><a href="#cb690-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="fl">0.95</span>)) <span class="sc">+</span></span>
-<span id="cb690-26"><a href="#cb690-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> custom_colors) <span class="sc">+</span> </span>
-<span id="cb690-27"><a href="#cb690-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb690-28"><a href="#cb690-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb690-29"><a href="#cb690-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>, </span>
-<span id="cb690-30"><a href="#cb690-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb690-31"><a href="#cb690-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb690-32"><a href="#cb690-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">size =</span> <span class="dv">1</span>),</span>
-<span id="cb690-33"><a href="#cb690-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.5</span>),</span>
-<span id="cb690-34"><a href="#cb690-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.length =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">"mm"</span>),</span>
-<span id="cb690-35"><a href="#cb690-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">5</span>)),</span>
-<span id="cb690-36"><a href="#cb690-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">5</span>))) <span class="sc">+</span></span>
-<span id="cb690-37"><a href="#cb690-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 6</span></span>
-<span id="cb690-38"><a href="#cb690-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-39"><a href="#cb690-39" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.05</span>, </span>
-<span id="cb690-40"><a href="#cb690-40" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.952</span>,</span>
-<span id="cb690-41"><a href="#cb690-41" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-33"</span>), </span>
-<span id="cb690-42"><a href="#cb690-42" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#542788"</span>,</span>
-<span id="cb690-43"><a href="#cb690-43" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-44"><a href="#cb690-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-45"><a href="#cb690-45" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.7</span>, </span>
-<span id="cb690-46"><a href="#cb690-46" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9547</span>,</span>
-<span id="cb690-47"><a href="#cb690-47" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"5-36"</span>), </span>
-<span id="cb690-48"><a href="#cb690-48" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#762a83"</span>,</span>
-<span id="cb690-49"><a href="#cb690-49" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-50"><a href="#cb690-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-51"><a href="#cb690-51" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.705</span>, </span>
-<span id="cb690-52"><a href="#cb690-52" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9578</span>,</span>
-<span id="cb690-53"><a href="#cb690-53" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"3-34"</span>), </span>
-<span id="cb690-54"><a href="#cb690-54" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#fee08b"</span>,</span>
-<span id="cb690-55"><a href="#cb690-55" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-56"><a href="#cb690-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-57"><a href="#cb690-57" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.71</span>, </span>
-<span id="cb690-58"><a href="#cb690-58" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9593</span>,</span>
-<span id="cb690-59"><a href="#cb690-59" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"4-35"</span>), </span>
-<span id="cb690-60"><a href="#cb690-60" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#1a9850"</span>,</span>
-<span id="cb690-61"><a href="#cb690-61" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-62"><a href="#cb690-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 7</span></span>
-<span id="cb690-63"><a href="#cb690-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-64"><a href="#cb690-64" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="dv">7</span>, </span>
-<span id="cb690-65"><a href="#cb690-65" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9525</span>,</span>
-<span id="cb690-66"><a href="#cb690-66" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"4-32"</span>), </span>
-<span id="cb690-67"><a href="#cb690-67" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#d73027"</span>,</span>
-<span id="cb690-68"><a href="#cb690-68" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-69"><a href="#cb690-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-70"><a href="#cb690-70" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.7</span>, </span>
-<span id="cb690-71"><a href="#cb690-71" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9565</span>,</span>
-<span id="cb690-72"><a href="#cb690-72" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-30"</span>), </span>
-<span id="cb690-73"><a href="#cb690-73" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#01665e"</span>,</span>
-<span id="cb690-74"><a href="#cb690-74" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> </span>
-<span id="cb690-75"><a href="#cb690-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-76"><a href="#cb690-76" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.7</span>, </span>
-<span id="cb690-77"><a href="#cb690-77" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.958</span>,</span>
-<span id="cb690-78"><a href="#cb690-78" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"3-31"</span>), </span>
-<span id="cb690-79"><a href="#cb690-79" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#fdae61"</span>,</span>
-<span id="cb690-80"><a href="#cb690-80" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-81"><a href="#cb690-81" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 8</span></span>
-<span id="cb690-82"><a href="#cb690-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-83"><a href="#cb690-83" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">7.7</span>, </span>
-<span id="cb690-84"><a href="#cb690-84" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9543</span>,</span>
-<span id="cb690-85"><a href="#cb690-85" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-27"</span>), </span>
-<span id="cb690-86"><a href="#cb690-86" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#8c510a"</span>,</span>
-<span id="cb690-87"><a href="#cb690-87" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-88"><a href="#cb690-88" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 9</span></span>
-<span id="cb690-89"><a href="#cb690-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-90"><a href="#cb690-90" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">8.69</span>, </span>
-<span id="cb690-91"><a href="#cb690-91" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.955</span>,</span>
-<span id="cb690-92"><a href="#cb690-92" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-25"</span>), </span>
-<span id="cb690-93"><a href="#cb690-93" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#c51b7d"</span>,</span>
-<span id="cb690-94"><a href="#cb690-94" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-95"><a href="#cb690-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-96"><a href="#cb690-96" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">8.69</span>, </span>
-<span id="cb690-97"><a href="#cb690-97" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9565</span>,</span>
-<span id="cb690-98"><a href="#cb690-98" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"1-24"</span>), </span>
-<span id="cb690-99"><a href="#cb690-99" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#e78ac3"</span>,</span>
-<span id="cb690-100"><a href="#cb690-100" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-101"><a href="#cb690-101" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 10</span></span>
-<span id="cb690-102"><a href="#cb690-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-103"><a href="#cb690-103" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">9.9</span>, </span>
-<span id="cb690-104"><a href="#cb690-104" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.95365</span>,</span>
-<span id="cb690-105"><a href="#cb690-105" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-23"</span>), </span>
-<span id="cb690-106"><a href="#cb690-106" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#b3b3b3"</span>,</span>
-<span id="cb690-107"><a href="#cb690-107" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb690-108"><a href="#cb690-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb690-109"><a href="#cb690-109" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">9.7</span>, </span>
-<span id="cb690-110"><a href="#cb690-110" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9576</span>,</span>
-<span id="cb690-111"><a href="#cb690-111" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"1-22"</span>), </span>
-<span id="cb690-112"><a href="#cb690-112" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#66c2a5"</span>,</span>
-<span id="cb690-113"><a href="#cb690-113" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb690-10"><a href="#cb690-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb690-11"><a href="#cb690-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb690-12"><a href="#cb690-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> filtered_plot2, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
+<span id="cb690-13"><a href="#cb690-13" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">y =</span> coverage_prob, </span>
+<span id="cb690-14"><a href="#cb690-14" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">group =</span> x_set, </span>
+<span id="cb690-15"><a href="#cb690-15" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb690-16"><a href="#cb690-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> all_ac_mc_N_50_m_3, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
+<span id="cb690-17"><a href="#cb690-17" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">y =</span> coverage_prob, </span>
+<span id="cb690-18"><a href="#cb690-18" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">group =</span> x_set, </span>
+<span id="cb690-19"><a href="#cb690-19" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb690-20"><a href="#cb690-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability"</span>, </span>
+<span id="cb690-21"><a href="#cb690-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Plot of All Minimal Cardinality Acceptancee Curves"</span>) <span class="sc">+</span></span>
+<span id="cb690-22"><a href="#cb690-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"#ee6c4d"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb690-23"><a href="#cb690-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb690-24"><a href="#cb690-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="fl">0.95</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb690-25"><a href="#cb690-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> custom_colors) <span class="sc">+</span> </span>
+<span id="cb690-26"><a href="#cb690-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb690-27"><a href="#cb690-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb690-28"><a href="#cb690-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb690-29"><a href="#cb690-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#ecf6fa"</span>, <span class="at">color =</span> <span class="cn">NA</span>), </span>
+<span id="cb690-30"><a href="#cb690-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#ecf6fa"</span>, <span class="at">color =</span> <span class="cn">NA</span>),  </span>
+<span id="cb690-31"><a href="#cb690-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb690-32"><a href="#cb690-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb690-33"><a href="#cb690-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"#21272c"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">size =</span> <span class="dv">1</span>),</span>
+<span id="cb690-34"><a href="#cb690-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.5</span>),</span>
+<span id="cb690-35"><a href="#cb690-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.length =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">"mm"</span>),</span>
+<span id="cb690-36"><a href="#cb690-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">5</span>)),</span>
+<span id="cb690-37"><a href="#cb690-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">5</span>)),</span>
+<span id="cb690-38"><a href="#cb690-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"#21272c"</span>),</span>
+<span id="cb690-39"><a href="#cb690-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"#21272c"</span>)</span>
+<span id="cb690-40"><a href="#cb690-40" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="CI_MinimalCardinality_files/figure-html/unnamed-chunk-116-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="CI_MinimalCardinality_files/figure-html/plot%20for%20thesis%20presentation%20(1)-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb691"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb691-1"><a href="#cb691-1" aria-hidden="true" tabindex="-1"></a>custom_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb691-2"><a href="#cb691-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#1b9e77"</span>, <span class="st">"#d95f02"</span>, <span class="st">"#7570b3"</span>, <span class="st">"#e7298a"</span>, <span class="st">"#66a61e"</span>, <span class="st">"#e6ab02"</span>, <span class="st">"#a6761d"</span>, <span class="st">"#666666"</span>, </span>
+<span id="cb691-3"><a href="#cb691-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#0173b2"</span>, <span class="st">"#de8f05"</span>, <span class="st">"#029e73"</span>, <span class="st">"#d55e00"</span>, <span class="st">"#cc78bc"</span>, <span class="st">"#ca9161"</span>, <span class="st">"#fbafe4"</span>, <span class="st">"#949494"</span>, </span>
+<span id="cb691-4"><a href="#cb691-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#56b4e9"</span>, <span class="st">"#f0e442"</span>, <span class="st">"#0072b2"</span>, <span class="st">"#f4a582"</span>, <span class="st">"#8da0cb"</span>, <span class="st">"#fc8d62"</span>, <span class="st">"#66c2a5"</span>, <span class="st">"#e78ac3"</span>, </span>
+<span id="cb691-5"><a href="#cb691-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#a6d854"</span>, <span class="st">"#ffd92f"</span>, <span class="st">"#e5c494"</span>, <span class="st">"#b3b3b3"</span>, <span class="st">"#c51b7d"</span>, <span class="st">"#8c510a"</span>, <span class="st">"#01665e"</span>, <span class="st">"#542788"</span>,</span>
+<span id="cb691-6"><a href="#cb691-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#fdae61"</span>, <span class="st">"#fee08b"</span>, <span class="st">"#d73027"</span>, <span class="st">"#1a9850"</span>, <span class="st">"#4575b4"</span>, <span class="st">"#91bfdb"</span>, <span class="st">"#762a83"</span>, <span class="st">"#af8dc3"</span>, </span>
+<span id="cb691-7"><a href="#cb691-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#b2182b"</span>, <span class="st">"#4393c3"</span>, <span class="st">"#f4a582"</span></span>
+<span id="cb691-8"><a href="#cb691-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb691-9"><a href="#cb691-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb691-10"><a href="#cb691-10" aria-hidden="true" tabindex="-1"></a>filtered_plot3 <span class="ot">&lt;-</span> filtered_plot2 <span class="sc">%&gt;%</span></span>
+<span id="cb691-11"><a href="#cb691-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(M <span class="sc">==</span> <span class="dv">6</span> <span class="sc">&amp;</span> x_set <span class="sc">==</span> <span class="st">"6-39"</span>))</span>
+<span id="cb691-12"><a href="#cb691-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb691-13"><a href="#cb691-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb691-14"><a href="#cb691-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> filtered_plot3, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
+<span id="cb691-15"><a href="#cb691-15" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">y =</span> coverage_prob, </span>
+<span id="cb691-16"><a href="#cb691-16" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">group =</span> x_set, </span>
+<span id="cb691-17"><a href="#cb691-17" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb691-18"><a href="#cb691-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> all_ac_mc_N_50_m_3, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
+<span id="cb691-19"><a href="#cb691-19" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">y =</span> coverage_prob, </span>
+<span id="cb691-20"><a href="#cb691-20" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">group =</span> x_set, </span>
+<span id="cb691-21"><a href="#cb691-21" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb691-22"><a href="#cb691-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability"</span>) <span class="sc">+</span></span>
+<span id="cb691-23"><a href="#cb691-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb691-24"><a href="#cb691-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">5.5</span>, <span class="fl">10.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="fl">0.98</span>)) <span class="sc">+</span></span>
+<span id="cb691-25"><a href="#cb691-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="fl">0.95</span>)) <span class="sc">+</span></span>
+<span id="cb691-26"><a href="#cb691-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> custom_colors) <span class="sc">+</span> </span>
+<span id="cb691-27"><a href="#cb691-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb691-28"><a href="#cb691-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb691-29"><a href="#cb691-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>, </span>
+<span id="cb691-30"><a href="#cb691-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb691-31"><a href="#cb691-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb691-32"><a href="#cb691-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">size =</span> <span class="dv">1</span>),</span>
+<span id="cb691-33"><a href="#cb691-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.5</span>),</span>
+<span id="cb691-34"><a href="#cb691-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.length =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">"mm"</span>),</span>
+<span id="cb691-35"><a href="#cb691-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">5</span>)),</span>
+<span id="cb691-36"><a href="#cb691-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">5</span>))) <span class="sc">+</span></span>
+<span id="cb691-37"><a href="#cb691-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 6</span></span>
+<span id="cb691-38"><a href="#cb691-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-39"><a href="#cb691-39" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.05</span>, </span>
+<span id="cb691-40"><a href="#cb691-40" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.952</span>,</span>
+<span id="cb691-41"><a href="#cb691-41" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-33"</span>), </span>
+<span id="cb691-42"><a href="#cb691-42" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#542788"</span>,</span>
+<span id="cb691-43"><a href="#cb691-43" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-44"><a href="#cb691-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-45"><a href="#cb691-45" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.7</span>, </span>
+<span id="cb691-46"><a href="#cb691-46" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9547</span>,</span>
+<span id="cb691-47"><a href="#cb691-47" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"5-36"</span>), </span>
+<span id="cb691-48"><a href="#cb691-48" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#762a83"</span>,</span>
+<span id="cb691-49"><a href="#cb691-49" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-50"><a href="#cb691-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-51"><a href="#cb691-51" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.705</span>, </span>
+<span id="cb691-52"><a href="#cb691-52" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9578</span>,</span>
+<span id="cb691-53"><a href="#cb691-53" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"3-34"</span>), </span>
+<span id="cb691-54"><a href="#cb691-54" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#fee08b"</span>,</span>
+<span id="cb691-55"><a href="#cb691-55" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-56"><a href="#cb691-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-57"><a href="#cb691-57" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.71</span>, </span>
+<span id="cb691-58"><a href="#cb691-58" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9593</span>,</span>
+<span id="cb691-59"><a href="#cb691-59" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"4-35"</span>), </span>
+<span id="cb691-60"><a href="#cb691-60" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#1a9850"</span>,</span>
+<span id="cb691-61"><a href="#cb691-61" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-62"><a href="#cb691-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 7</span></span>
+<span id="cb691-63"><a href="#cb691-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-64"><a href="#cb691-64" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="dv">7</span>, </span>
+<span id="cb691-65"><a href="#cb691-65" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9525</span>,</span>
+<span id="cb691-66"><a href="#cb691-66" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"4-32"</span>), </span>
+<span id="cb691-67"><a href="#cb691-67" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#d73027"</span>,</span>
+<span id="cb691-68"><a href="#cb691-68" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-69"><a href="#cb691-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-70"><a href="#cb691-70" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.7</span>, </span>
+<span id="cb691-71"><a href="#cb691-71" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9565</span>,</span>
+<span id="cb691-72"><a href="#cb691-72" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-30"</span>), </span>
+<span id="cb691-73"><a href="#cb691-73" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#01665e"</span>,</span>
+<span id="cb691-74"><a href="#cb691-74" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> </span>
+<span id="cb691-75"><a href="#cb691-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-76"><a href="#cb691-76" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.7</span>, </span>
+<span id="cb691-77"><a href="#cb691-77" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.958</span>,</span>
+<span id="cb691-78"><a href="#cb691-78" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"3-31"</span>), </span>
+<span id="cb691-79"><a href="#cb691-79" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#fdae61"</span>,</span>
+<span id="cb691-80"><a href="#cb691-80" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-81"><a href="#cb691-81" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 8</span></span>
+<span id="cb691-82"><a href="#cb691-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-83"><a href="#cb691-83" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">7.7</span>, </span>
+<span id="cb691-84"><a href="#cb691-84" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9543</span>,</span>
+<span id="cb691-85"><a href="#cb691-85" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-27"</span>), </span>
+<span id="cb691-86"><a href="#cb691-86" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#8c510a"</span>,</span>
+<span id="cb691-87"><a href="#cb691-87" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-88"><a href="#cb691-88" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 9</span></span>
+<span id="cb691-89"><a href="#cb691-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-90"><a href="#cb691-90" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">8.69</span>, </span>
+<span id="cb691-91"><a href="#cb691-91" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.955</span>,</span>
+<span id="cb691-92"><a href="#cb691-92" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-25"</span>), </span>
+<span id="cb691-93"><a href="#cb691-93" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#c51b7d"</span>,</span>
+<span id="cb691-94"><a href="#cb691-94" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-95"><a href="#cb691-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-96"><a href="#cb691-96" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">8.69</span>, </span>
+<span id="cb691-97"><a href="#cb691-97" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9565</span>,</span>
+<span id="cb691-98"><a href="#cb691-98" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"1-24"</span>), </span>
+<span id="cb691-99"><a href="#cb691-99" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#e78ac3"</span>,</span>
+<span id="cb691-100"><a href="#cb691-100" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-101"><a href="#cb691-101" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 10</span></span>
+<span id="cb691-102"><a href="#cb691-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-103"><a href="#cb691-103" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">9.9</span>, </span>
+<span id="cb691-104"><a href="#cb691-104" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.95365</span>,</span>
+<span id="cb691-105"><a href="#cb691-105" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"2-23"</span>), </span>
+<span id="cb691-106"><a href="#cb691-106" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#b3b3b3"</span>,</span>
+<span id="cb691-107"><a href="#cb691-107" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb691-108"><a href="#cb691-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb691-109"><a href="#cb691-109" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">9.7</span>, </span>
+<span id="cb691-110"><a href="#cb691-110" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9576</span>,</span>
+<span id="cb691-111"><a href="#cb691-111" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"1-22"</span>), </span>
+<span id="cb691-112"><a href="#cb691-112" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#66c2a5"</span>,</span>
+<span id="cb691-113"><a href="#cb691-113" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_MinimalCardinality_files/figure-html/unnamed-chunk-117-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb692"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb692-1"><a href="#cb692-1" aria-hidden="true" tabindex="-1"></a>custom_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb692-2"><a href="#cb692-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#1b9e77"</span>, <span class="st">"#d95f02"</span>, <span class="st">"#7570b3"</span>, <span class="st">"#e7298a"</span>, <span class="st">"#66a61e"</span>, <span class="st">"#e6ab02"</span>, <span class="st">"#a6761d"</span>, <span class="st">"#666666"</span>, </span>
+<span id="cb692-3"><a href="#cb692-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#0173b2"</span>, <span class="st">"#de8f05"</span>, <span class="st">"#029e73"</span>, <span class="st">"#d55e00"</span>, <span class="st">"#cc78bc"</span>, <span class="st">"#ca9161"</span>, <span class="st">"#fbafe4"</span>, <span class="st">"#949494"</span>, </span>
+<span id="cb692-4"><a href="#cb692-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#56b4e9"</span>, <span class="st">"#f0e442"</span>, <span class="st">"#0072b2"</span>, <span class="st">"#f4a582"</span>, <span class="st">"#8da0cb"</span>, <span class="st">"#fc8d62"</span>, <span class="st">"#66c2a5"</span>, <span class="st">"#e78ac3"</span>, </span>
+<span id="cb692-5"><a href="#cb692-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#a6d854"</span>, <span class="st">"#ffd92f"</span>, <span class="st">"#e5c494"</span>, <span class="st">"#b3b3b3"</span>, <span class="st">"#c51b7d"</span>, <span class="st">"#8c510a"</span>, <span class="st">"#01665e"</span>, <span class="st">"#542788"</span>,</span>
+<span id="cb692-6"><a href="#cb692-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#fdae61"</span>, <span class="st">"#fee08b"</span>, <span class="st">"#d73027"</span>, <span class="st">"#1a9850"</span>, <span class="st">"#4575b4"</span>, <span class="st">"#91bfdb"</span>, <span class="st">"#762a83"</span>, <span class="st">"#af8dc3"</span>, </span>
+<span id="cb692-7"><a href="#cb692-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"#b2182b"</span>, <span class="st">"#4393c3"</span>, <span class="st">"#f4a582"</span></span>
+<span id="cb692-8"><a href="#cb692-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb692-9"><a href="#cb692-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb692-10"><a href="#cb692-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb692-11"><a href="#cb692-11" aria-hidden="true" tabindex="-1"></a>filtered_plot3 <span class="ot">&lt;-</span> filtered_plot2 <span class="sc">%&gt;%</span></span>
+<span id="cb692-12"><a href="#cb692-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(M <span class="sc">==</span> <span class="dv">6</span> <span class="sc">&amp;</span> x_set <span class="sc">==</span> <span class="st">"6-39"</span>))</span>
+<span id="cb692-13"><a href="#cb692-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb692-14"><a href="#cb692-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb692-15"><a href="#cb692-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> filtered_plot3, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
+<span id="cb692-16"><a href="#cb692-16" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">y =</span> coverage_prob, </span>
+<span id="cb692-17"><a href="#cb692-17" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">group =</span> x_set, </span>
+<span id="cb692-18"><a href="#cb692-18" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb692-19"><a href="#cb692-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> all_ac_mc_N_50_m_3, <span class="fu">aes</span>(<span class="at">x =</span> M, </span>
+<span id="cb692-20"><a href="#cb692-20" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">y =</span> coverage_prob, </span>
+<span id="cb692-21"><a href="#cb692-21" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">group =</span> x_set, </span>
+<span id="cb692-22"><a href="#cb692-22" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">color =</span> x_set)) <span class="sc">+</span></span>
+<span id="cb692-23"><a href="#cb692-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"M"</span>, <span class="at">y =</span> <span class="st">"Coverage Probability"</span>) <span class="sc">+</span></span>
+<span id="cb692-24"><a href="#cb692-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> conf_level, <span class="at">color =</span> <span class="st">"#ee6c4d"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb692-25"><a href="#cb692-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">5.5</span>, <span class="fl">10.5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(conf_level <span class="sc">-</span> <span class="fl">0.005</span>, <span class="fl">0.98</span>)) <span class="sc">+</span></span>
+<span id="cb692-26"><a href="#cb692-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="fl">0.95</span>)) <span class="sc">+</span></span>
+<span id="cb692-27"><a href="#cb692-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> custom_colors) <span class="sc">+</span> </span>
+<span id="cb692-28"><a href="#cb692-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb692-29"><a href="#cb692-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb692-30"><a href="#cb692-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb692-31"><a href="#cb692-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#ecf6fa"</span>, <span class="at">color =</span> <span class="cn">NA</span>), </span>
+<span id="cb692-32"><a href="#cb692-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#ecf6fa"</span>, <span class="at">color =</span> <span class="cn">NA</span>),  </span>
+<span id="cb692-33"><a href="#cb692-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb692-34"><a href="#cb692-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb692-35"><a href="#cb692-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">"#21272c"</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">size =</span> <span class="dv">1</span>),</span>
+<span id="cb692-36"><a href="#cb692-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_line</span>(<span class="at">size =</span> <span class="fl">0.5</span>),</span>
+<span id="cb692-37"><a href="#cb692-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.length =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">"mm"</span>),</span>
+<span id="cb692-38"><a href="#cb692-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">5</span>)),</span>
+<span id="cb692-39"><a href="#cb692-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">5</span>)),</span>
+<span id="cb692-40"><a href="#cb692-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"#21272c"</span>),</span>
+<span id="cb692-41"><a href="#cb692-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"#21272c"</span>)</span>
+<span id="cb692-42"><a href="#cb692-42" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb692-43"><a href="#cb692-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 6</span></span>
+<span id="cb692-44"><a href="#cb692-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-45"><a href="#cb692-45" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.05</span>, </span>
+<span id="cb692-46"><a href="#cb692-46" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.952</span>,</span>
+<span id="cb692-47"><a href="#cb692-47" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"2-33"</span>, </span>
+<span id="cb692-48"><a href="#cb692-48" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#6a3d9a"</span>,  <span class="co"># position 30</span></span>
+<span id="cb692-49"><a href="#cb692-49" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-50"><a href="#cb692-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-51"><a href="#cb692-51" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.7</span>, </span>
+<span id="cb692-52"><a href="#cb692-52" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9547</span>,</span>
+<span id="cb692-53"><a href="#cb692-53" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"5-36"</span>, </span>
+<span id="cb692-54"><a href="#cb692-54" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#762a83"</span>,  <span class="co"># originally at position 39 — keep same if still using</span></span>
+<span id="cb692-55"><a href="#cb692-55" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-56"><a href="#cb692-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-57"><a href="#cb692-57" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.705</span>, </span>
+<span id="cb692-58"><a href="#cb692-58" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9578</span>,</span>
+<span id="cb692-59"><a href="#cb692-59" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"3-34"</span>, </span>
+<span id="cb692-60"><a href="#cb692-60" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#fdb462"</span>,  <span class="co"># position 33</span></span>
+<span id="cb692-61"><a href="#cb692-61" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-62"><a href="#cb692-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-63"><a href="#cb692-63" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">5.71</span>, </span>
+<span id="cb692-64"><a href="#cb692-64" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9593</span>,</span>
+<span id="cb692-65"><a href="#cb692-65" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"4-35"</span>, </span>
+<span id="cb692-66"><a href="#cb692-66" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#b3de69"</span>,  <span class="co"># position 40</span></span>
+<span id="cb692-67"><a href="#cb692-67" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-68"><a href="#cb692-68" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 7</span></span>
+<span id="cb692-69"><a href="#cb692-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-70"><a href="#cb692-70" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="dv">7</span>, </span>
+<span id="cb692-71"><a href="#cb692-71" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9525</span>,</span>
+<span id="cb692-72"><a href="#cb692-72" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"4-32"</span>, </span>
+<span id="cb692-73"><a href="#cb692-73" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#d73027"</span>,  <span class="co"># position 35</span></span>
+<span id="cb692-74"><a href="#cb692-74" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-75"><a href="#cb692-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-76"><a href="#cb692-76" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.7</span>, </span>
+<span id="cb692-77"><a href="#cb692-77" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9565</span>,</span>
+<span id="cb692-78"><a href="#cb692-78" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"2-30"</span>, </span>
+<span id="cb692-79"><a href="#cb692-79" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#01665e"</span>,  <span class="co"># position 31</span></span>
+<span id="cb692-80"><a href="#cb692-80" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span> </span>
+<span id="cb692-81"><a href="#cb692-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-82"><a href="#cb692-82" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">6.7</span>, </span>
+<span id="cb692-83"><a href="#cb692-83" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.958</span>,</span>
+<span id="cb692-84"><a href="#cb692-84" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"3-31"</span>, </span>
+<span id="cb692-85"><a href="#cb692-85" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#fdb462"</span>,  <span class="co"># position 33 (again)</span></span>
+<span id="cb692-86"><a href="#cb692-86" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-87"><a href="#cb692-87" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 8</span></span>
+<span id="cb692-88"><a href="#cb692-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-89"><a href="#cb692-89" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">7.7</span>, </span>
+<span id="cb692-90"><a href="#cb692-90" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9543</span>,</span>
+<span id="cb692-91"><a href="#cb692-91" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"2-27"</span>, </span>
+<span id="cb692-92"><a href="#cb692-92" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#b15928"</span>,  <span class="co"># position 30</span></span>
+<span id="cb692-93"><a href="#cb692-93" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-94"><a href="#cb692-94" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 9</span></span>
+<span id="cb692-95"><a href="#cb692-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-96"><a href="#cb692-96" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">8.69</span>, </span>
+<span id="cb692-97"><a href="#cb692-97" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.955</span>,</span>
+<span id="cb692-98"><a href="#cb692-98" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"2-25"</span>, </span>
+<span id="cb692-99"><a href="#cb692-99" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#c51b7d"</span>,  <span class="co"># position 29</span></span>
+<span id="cb692-100"><a href="#cb692-100" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-101"><a href="#cb692-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-102"><a href="#cb692-102" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">8.69</span>, </span>
+<span id="cb692-103"><a href="#cb692-103" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9565</span>,</span>
+<span id="cb692-104"><a href="#cb692-104" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"1-24"</span>, </span>
+<span id="cb692-105"><a href="#cb692-105" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#e78ac3"</span>,  <span class="co"># position 24</span></span>
+<span id="cb692-106"><a href="#cb692-106" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-107"><a href="#cb692-107" aria-hidden="true" tabindex="-1"></a>  <span class="co"># M = 10</span></span>
+<span id="cb692-108"><a href="#cb692-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-109"><a href="#cb692-109" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">9.9</span>, </span>
+<span id="cb692-110"><a href="#cb692-110" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.95365</span>,</span>
+<span id="cb692-111"><a href="#cb692-111" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"2-23"</span>, </span>
+<span id="cb692-112"><a href="#cb692-112" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#b3b3b3"</span>,  <span class="co"># position 28</span></span>
+<span id="cb692-113"><a href="#cb692-113" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb692-114"><a href="#cb692-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
+<span id="cb692-115"><a href="#cb692-115" aria-hidden="true" tabindex="-1"></a>           <span class="at">x =</span> <span class="fl">9.7</span>, </span>
+<span id="cb692-116"><a href="#cb692-116" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fl">0.9576</span>,</span>
+<span id="cb692-117"><a href="#cb692-117" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"1-22"</span>, </span>
+<span id="cb692-118"><a href="#cb692-118" aria-hidden="true" tabindex="-1"></a>           <span class="at">color =</span> <span class="st">"#66c2a5"</span>,  <span class="co"># position 23</span></span>
+<span id="cb692-119"><a href="#cb692-119" aria-hidden="true" tabindex="-1"></a>           <span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="CI_MinimalCardinality_files/figure-html/plot%20for%20thesis%20presentation%20(2)-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

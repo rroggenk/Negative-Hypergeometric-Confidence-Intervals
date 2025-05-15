@@ -378,6 +378,33 @@ ggplot(M_unknown_CI_comp,
   axis.text.y = element_text(margin = margin(r = 5)))
 ```
 
+```{r}
+ggplot(M_unknown_CI_comp, 
+       aes(x = x, y = ratio, color = factor(n))) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
+  facet_wrap(~ N, scales = "free_x", 
+             labeller = as_labeller(N_labels)) +
+  labs(x = "x",
+       y = "CI Ratio (NHG/HG)",
+       color = "n") +
+  theme_minimal() +
+  theme(
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
+  )
+```
+
 ### Performance Metrics
 
 ```{r}
@@ -632,6 +659,34 @@ ggplot(N_unknown_CI_comp,
   axis.ticks.length = unit(2, "mm"),
   axis.text.x = element_text(margin = margin(t = 5)),
   axis.text.y = element_text(margin = margin(r = 5)))
+```
+
+```{r}
+ggplot(N_unknown_CI_comp, 
+       aes(x = x, y = ratio, color = factor(n))) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed") + 
+  coord_cartesian(ylim = c(min(N_unknown_CI_comp$ratio), 2.5)) +
+  facet_wrap(~ M, scales = "free_x", 
+             labeller = as_labeller(M_labels)) +
+  labs(x = "x",
+       y = "CI Ratio (NHG/HG)",
+       color = "n") +
+  theme_minimal() +
+  theme(
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
+  )
 ```
 
 ### Performance Metrics

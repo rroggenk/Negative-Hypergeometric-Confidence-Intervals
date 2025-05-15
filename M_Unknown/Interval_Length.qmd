@@ -397,6 +397,35 @@ ggplot(relative_df, aes(x = M, y = RelativeExpectedLength,
   )
 ```
 
+```{r}
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
+
+ggplot(relative_df, aes(x = M, y = RelativeExpectedLength, 
+                        color = Method, linetype = Method)) +
+  geom_line(linewidth = 1, alpha = 1) +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed") +
+  scale_color_manual(values = distinct_colors) +
+  facet_wrap(~ facet_label, scales = "free") + 
+  labs(x = "M", y = "Relative Expected Length (to CMC)", 
+       color = "Method", linetype = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
+  )
+```
+
 # Plot of Average Length
 
 Note: Should we include Normal Approximation methods in the plot? I was thinking no since the coverage sucks, so even since the expected length is good, it gives a false idea because coverage sucks.
@@ -499,5 +528,43 @@ ggplot(results, aes(x = AverageLength, y = AverageCovProb, color = Method)) +
   theme(
     legend.position = "bottom",
     strip.text = element_text(size = 12)  # Increase facet label size for clarity
+  )
+```
+
+```{r}
+# Define a distinct color palette
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+distinct_colors <- c(
+  "#0072B2", # blue
+  "#E69F00", # orange
+  "#CC79A7", # pink
+  "#009E73", # green
+  "#9400D3", # purple
+  "#F0E442", # yellow
+  "#56B4E9", # sky blue (from extended CUD palette)
+  "#D55E00"  # vermilion (also from extended CUD)
+)
+
+# Create the scatter plot using facet_wrap for independent axes
+ggplot(results, aes(x = AverageLength, y = AverageCovProb, color = Method)) +
+  geom_jitter(size = 3, alpha = 0.8, width = 0, height = 0) +  
+  geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
+  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
+  scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
+  labs(x = "Average Length", y = "Average Coverage Probability", color = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
   )
 ```

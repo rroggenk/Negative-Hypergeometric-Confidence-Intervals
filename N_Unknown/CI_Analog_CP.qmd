@@ -26,8 +26,10 @@ x = 4
 N = 49
 M = 21
 
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
 data = data.frame(x = seq(0, 15))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -48,8 +50,10 @@ x = 4
 N = 29
 M = 21
 
-data = data.frame(x = seq(0, N-M))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
+data = data.frame(x = seq(0, 15))
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -75,8 +79,10 @@ x = 4
 N = 204
 M = 21
 
-data = data.frame(x = seq(0, N-M))
-data$y = ngh_pmf(x = (data$x), N = N, M = M, m = m)
+ngh_pmf_vec <- Vectorize(ngh_pmf)
+
+data = data.frame(x = seq(0, 15))
+data$y = ngh_pmf_vec(x = data$x, N = N, M = M, m = m)
 ggplot(data, aes(x = x, y = y)) +
   geom_line() +
   geom_vline(xintercept = x, color = "red") +
@@ -360,6 +366,34 @@ ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
     axis.text.y = element_text(margin = margin(r = 5)))
 ```
 
+```{r}
+#| label: plot for thesis presentation
+
+ggplot(coverage_df, aes(x = N, y = coverage_prob, group = group)) +
+  geom_line(color = "#3c5366") +
+  geom_point(color = "#3c5366") +
+  labs(x = "N", y = "Coverage Probability", 
+       title = "Coverage Probability Plot for Analog to Clopper-Pearson Method") +
+  geom_hline(yintercept = conf_level, color = "#ee6c4d", linetype = "dashed") +
+  scale_y_continuous(breaks = c(0.95, 1), limits = c(conf_level - 0.005, 1)) +
+  scale_x_continuous(breaks = seq(25, 250, by = 25)) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
+  )
+```
+
 ## Plot for interplay between a cpf and resulting intervals
 
 ```{r}
@@ -598,4 +632,206 @@ ggplot() +
 
 # geom_label: x = (lb + ub - size) / 2
 # size = 2.5
+```
+
+```{r}
+#| label: interplay plot for presentation
+
+ggplot() +
+  geom_line(data = coverage_df, aes(x = N, y = coverage_prob, group = group), color = "#3c5366") +
+  geom_point(data = coverage_df, aes(x = N, y = coverage_prob, group = group), color = "#3c5366") +
+  labs(x = "N", y = "Coverage Probability") +
+  geom_hline(yintercept = conf_level, color = "#ee6c4d", linetype = "dashed") +
+  scale_y_continuous(breaks = c(0.80, 1), limits = c(0.65, 1.015)) +
+  scale_x_continuous(breaks = 
+                       c(40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170),
+                     limits = c(39, 170.1)) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
+  ) +
+  annotate("text", 
+           x = 39, 
+           y = 1.014,
+           label = paste0("0-0"), 
+           angle = 0, hjust = 0.5, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 44.9, 
+           y = 0.97,
+           label = paste0("0-1"), 
+           angle = -75, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 48.7, 
+           y = 0.965,
+           label = paste0("0-2"), 
+           angle = -75, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 53, 
+           y = 0.955,
+           label = paste0("0-3"), 
+           angle = -75, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 58, 
+           y = 0.948,
+           label = paste0("0-4"), 
+           angle = -70, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 62.5, 
+           y = 0.948,
+           label = paste0("0-5"), 
+           angle = -65, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 61, 
+           y = 0.825,
+           label = paste0("1-5"), 
+           angle = 0, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 66.5, 
+           y = 0.87,
+           label = paste0("1-6"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 71.5, 
+           y = 0.89,
+           label = paste0("1-7"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 76.7, 
+           y = 0.905,
+           label = paste0("1-8"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 80, 
+           y = 0.923,
+           label = paste0("1-9"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 82.5, 
+           y = 0.845,
+           label = paste0("2-9"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 87, 
+           y = 0.868,
+           label = paste0("2-10"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 92.5, 
+           y = 0.88,
+           label = paste0("2-11"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 96.5, 
+           y = 0.895,
+           label = paste0("2-12"), 
+           angle = -45, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 97.5, 
+           y = 0.83,
+           label = paste0("3-12"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 101.5, 
+           y = 0.852,
+           label = paste0("3-13"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 106.5, 
+           y = 0.868,
+           label = paste0("3-14"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 111, 
+           y = 0.88,
+           label = paste0("3-15"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 114, 
+           y = 0.825,
+           label = paste0("4-15"), 
+           angle = -30, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 117, 
+           y = 0.845,
+           label = paste0("4-16"), 
+           angle = -25, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 122, 
+           y = 0.857,
+           label = paste0("4-17"), 
+           angle = -25, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 127, 
+           y = 0.868,
+           label = paste0("4-18"), 
+           angle = -25, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 131.5, 
+           y = 0.838,
+           label = paste0("5-19"), 
+           angle = -20, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 137, 
+           y = 0.85,
+           label = paste0("5-20"), 
+           angle = -20, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 143, 
+           y = 0.86,
+           label = paste0("5-21"), 
+           angle = -20, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 147, 
+           y = 0.833,
+           label = paste0("6-22"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 152.5, 
+           y = 0.8435,
+           label = paste0("6-23"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 158, 
+           y = 0.853,
+           label = paste0("6-24"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
+  annotate("text", 
+           x = 163, 
+           y = 0.83,
+           label = paste0("7-25"), 
+           angle = -15, hjust = 0, vjust = 1, size = 3) +
+  geom_errorbarh(data = ci_results, 
+                aes(y = y_axis, xmin = lower_bound, xmax = upper_bound), color = "#3c5366") +
+  geom_label(aes(x = 49.75, y = 0.785, label = "CI(0)"), 
+             color = "#21272c", fill = "#ecf6fa", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 59.25, y = 0.765, label = "CI(1)"), 
+             color = "#21272c", fill = "#ecf6fa", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 69.75, y = 0.745, label = "CI(2)"), 
+             color = "#21272c", fill = "#ecf6fa", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 79.75, y = 0.725, label = "CI(3)"), 
+             color = "#21272c", fill = "#ecf6fa", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 90.75, y = 0.705, label = "CI(4)"), 
+             color = "#21272c", fill = "#ecf6fa", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 101.25, y = 0.685, label = "CI(5)"), 
+             color = "#21272c", fill = "#ecf6fa", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1) +
+  geom_label(aes(x = 111.75, y = 0.665, label = "CI(6)"), 
+             color = "#21272c", fill = "#ecf6fa", 
+             label.size = 0.4, size = 2.5, hjust = 0, vjust = 1)
 ```

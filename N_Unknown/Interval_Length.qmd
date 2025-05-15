@@ -884,6 +884,36 @@ ggplot(relative_df, aes(x = N, y = RelativeExpectedLength,
   )
 ```
 
+```{r}
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
+
+ggplot(relative_df, aes(x = N, y = RelativeExpectedLength, 
+                        color = Method, linetype = Method)) +
+  geom_line(linewidth = 1, alpha = 1) +
+  scale_color_manual(values = distinct_colors) +
+  facet_wrap(~ facet_label, scales = "free") + 
+  scale_y_continuous(limits = c(1, NA)) +
+  #scale_x_continuous(expand = expansion(mult = c(0, 0.05))) +
+  labs(x = "N", y = "Relative Expected Length (to CMC)", 
+       color = "Method", linetype = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
+  )
+```
+
 ## Plot of Average Length and Average Coverage Probability
 
 ### Data Preparation
@@ -1840,6 +1870,37 @@ ggplot(average_length_cp_plot_df, aes(x = AverageLength,
   theme(
     legend.position = "bottom",
     strip.text = element_text(size = 12)  # Increase facet label size for clarity
+  )
+```
+
+```{r}
+# Define a distinct color palette
+# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
+
+# Create the scatter plot using facet_wrap for independent axes
+ggplot(average_length_cp_plot_df, aes(x = AverageLength, 
+                                      y = AverageCoverageProbability, 
+                                      color = Method)) +
+  geom_point(size = 3) +  # Adjust point size and transparency
+  geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
+  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
+  scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
+  labs(x = "Average Length", y = "Average Coverage Probability", color = "Method") +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
   )
 ```
 

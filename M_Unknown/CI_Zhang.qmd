@@ -559,3 +559,32 @@ ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
     axis.text.x = element_text(margin = margin(t = 5)),
     axis.text.y = element_text(margin = margin(r = 5))) 
 ```
+
+```{r}
+#| label: plot for thesis presentation
+
+ggplot(coverage_df, aes(x = M, y = coverage_prob, group = group)) +
+  geom_line(color = "#3c5366") +
+  geom_point(color = "#3c5366") +
+  labs(x = "M", y = "Coverage Probability", 
+       title = "Coverage Probability Plot for Large Sample Approximation") +
+  geom_hline(yintercept = conf_level, color = "#ee6c4d", linetype = "dashed") +
+  ylim(0, 1) +
+  scale_x_continuous(breaks = c(0, 10, 20, 30, 40, 50), limits = c(0, 50)) +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 0.95, 1), limits = c(0, 1)) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.background = element_rect(fill = "#ecf6fa", color = NA), 
+    plot.background = element_rect(fill = "#ecf6fa", color = NA),  
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(color = "#21272c", fill = NA, size = 1),
+    axis.ticks = element_line(size = 0.5),
+    axis.ticks.length = unit(2, "mm"),
+    axis.text.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(margin = margin(r = 5)),
+    axis.title = element_text(color = "#21272c"),
+    plot.title = element_text(color = "#21272c")
+  )
+```
