@@ -2032,7 +2032,7 @@ ggplot() +
                                             group = x_set, 
                                             color = x_set)) +
   labs(x = "M", y = "Coverage Probability", 
-       title = "Plot of All Minimal Cardinality Acceptancee Curves") +
+       title = "Plot of All Minimal Cardinality Acceptance Curves") +
   geom_hline(yintercept = conf_level, color = "#ee6c4d", linetype = "dashed") +
   coord_cartesian(ylim = c(conf_level - 0.005, 1)) +
   scale_y_continuous(breaks = c(0.95, 1)) +
