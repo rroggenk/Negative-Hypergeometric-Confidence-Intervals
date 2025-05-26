@@ -493,10 +493,18 @@ Commented out b/c saved dataset as a .csv file so I don't have to re-run code ea
 
 ```{r}
 #| message: false
-set.seed(818)
+set.seed(1)
 
 # Load the data
 results <- read_csv("average_length_cov_prob.csv")
+
+# Remove rows where Method is "Normal"
+results <- results %>% 
+  filter(Method != "Normal Approximation (MLE)") %>%
+  filter(Method != "Normal Approximation (Unbiased)")
+
+# Replace method name
+results$Method <- gsub("Analog to Clopper-Pearson", "ACP", results$Method)
 
 # Combine N and m labels into a single factor for facetting
 results$facet_label <- factor(
@@ -504,8 +512,7 @@ results$facet_label <- factor(
   levels = c("N = 50 , m = 3", "N = 200 , m = 3", "N = 50 , m = 20", "N = 200 , m = 20")
 )
 
-# Define a distinct color palette
-# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan", "magenta", "yellow")
+# Define a distinct color palette (CUD palette, extended)
 distinct_colors <- c(
   "#0072B2", # blue
   "#E69F00", # orange
@@ -513,21 +520,39 @@ distinct_colors <- c(
   "#009E73", # green
   "#9400D3", # purple
   "#F0E442", # yellow
-  "#56B4E9", # sky blue (from extended CUD palette)
-  "#D55E00"  # vermilion (also from extended CUD)
+  "#56B4E9", # sky blue
+  "#D55E00"  # vermilion
 )
 
-# Create the scatter plot using facet_wrap for independent axes
-ggplot(results, aes(x = AverageLength, y = AverageCovProb, color = Method)) +
-  geom_jitter(size = 3, alpha = 0.8, width = 0, height = 0) +  
+# Select shapes that support fill (21–25)
+shape_vals <- c(21, 22, 23, 24, 25, 21, 22, 23)[1:length(unique(results$Method))]
+
+# Create the plot
+ggplot(results, aes(
+  x = AverageLength, 
+  y = AverageCovProb, 
+  color = Method, 
+  shape = Method, 
+  fill = Method
+)) +
+  geom_jitter(size = 3, alpha = 0.9, width = 0.015, height = 0, stroke = 1.1) +
   geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
-  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
-  scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
-  labs(x = "Average Length", y = "Average Coverage Probability", color = "Method") +
+  facet_wrap(~ facet_label, scales = "free_x") +  # fix y-axis only
+  scale_color_manual(values = distinct_colors) +
+  scale_fill_manual(values = distinct_colors) +
+  scale_shape_manual(values = shape_vals) +
+  scale_y_continuous(limits = c(0.95, 0.983)) +  # manually fix y-axis
+  labs(
+    x = "Average Length", 
+    y = "Average Coverage Probability", 
+    color = "Method", 
+    shape = "Method", 
+    fill = "Method"
+  ) +
   theme_minimal() +
   theme(
     legend.position = "bottom",
-    strip.text = element_text(size = 12)  # Increase facet label size for clarity
+    strip.text = element_text(size = 12)
   )
 ```
 

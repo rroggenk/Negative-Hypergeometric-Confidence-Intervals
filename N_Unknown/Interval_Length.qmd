@@ -1853,23 +1853,40 @@ average_length_cp_plot_df$facet_label <- factor(
   levels = c("M = 25 , m = 5", "M = 50 , m = 5", "M = 25 , m = 15", "M = 50 , m = 15")
 )
 
-# Define a distinct color palette
-# distinct_colors <- c("red", "blue", "green", "purple", "orange", "cyan")
+# Rename method for cleaner legend
+average_length_cp_plot_df$Method <- gsub(
+  "Analog to Clopper-Pearson", "ACP", average_length_cp_plot_df$Method
+)
+
+# Define color palette
 distinct_colors <- c("#0072B2", "#E69F00", "#CC79A7", "#009E73", "#9400D3", "#F0E442")
 
-# Create the scatter plot using facet_wrap for independent axes
-ggplot(average_length_cp_plot_df, aes(x = AverageLength, 
-                                      y = AverageCoverageProbability, 
-                                      color = Method)) +
-  geom_point(size = 3) +  # Adjust point size and transparency
+# Plot
+ggplot(average_length_cp_plot_df, aes(
+  x = AverageLength, 
+  y = AverageCoverageProbability, 
+  color = Method, 
+  fill = Method,             # Map fill to Method
+  shape = Method             # Shapes 21–25 support fill
+)) +
+  geom_point(size = 3, stroke = 1.2) +  # stroke controls border thickness
   geom_hline(yintercept = 0.95, color = "red", linetype = "dashed") +
-  facet_wrap(~ facet_label, scales = "free") +  # Use facet_wrap with free scales
-  scale_color_manual(values = distinct_colors) +  # Apply the distinct color palette
-  labs(x = "Average Length", y = "Average Coverage Probability", color = "Method") +
+  facet_wrap(~ facet_label, scales = "free_x") +
+  scale_y_continuous(limits = c(0.949, 0.973)) +
+  scale_color_manual(values = distinct_colors) +
+  scale_fill_manual(values = distinct_colors) +  # match fill to color
+  scale_shape_manual(values = c(21, 22, 23, 24, 25, 21)) +  # pick from 21–25
+  labs(
+    x = "Average Length", 
+    y = "Average Coverage Probability", 
+    color = "Method", 
+    shape = "Method", 
+    fill = "Method"
+  ) +
   theme_minimal() +
   theme(
     legend.position = "bottom",
-    strip.text = element_text(size = 12)  # Increase facet label size for clarity
+    strip.text = element_text(size = 12)
   )
 ```
 
